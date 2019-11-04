@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:class:7.3-14-b79">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/class/7.3-14-b79/class-7.3-14-b79.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/class/7.3-14-b79/class-7.3-14-b79-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/class/7.3-14-b79/class-7.3-14-b79-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

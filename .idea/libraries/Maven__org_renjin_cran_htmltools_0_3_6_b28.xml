@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:htmltools:0.3.6-b28">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/htmltools/0.3.6-b28/htmltools-0.3.6-b28.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/htmltools/0.3.6-b28/htmltools-0.3.6-b28-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/htmltools/0.3.6-b28/htmltools-0.3.6-b28-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

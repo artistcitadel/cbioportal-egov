@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <mapper namespace="dataDownload">
+ 	<!-- 승인목록 조회 -->
+	<select id="selectMyApplyCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM 
+				CC_RSCH_APRV_MGMT A
+			INNER JOIN 
+				CC_ITEM_CONT B 
+			ON A.CONT_SEQ = B.SEQ
+			INNER JOIN 
+				CC_ITEM_CONT_DATA C
+			ON A.DATA_SEQ = C.SEQ
+			WHERE 1=1
+				AND A.PER_CODE = #{PER_CODE}
+				AND A.APRV_YN = 'Y'
+	</select>
+	
+ 	<!-- 승인목록 가져오기 -->
+	<select id="selectMyApplyList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ,
+			CONCAT('row_', C.SEQ) AS DT_RowId,
+			A.PER_CODE,
+			(SELECT C.PER_NAME FROM CC_PERINX C WHERE C.PER_CODE = A.PER_CODE LIMIT 0,1) AS PER_NAME,
+			(SELECT F.DEPT_NAME FROM CC_DEPINX F WHERE F.DEPT_CODE = (SELECT E.DEPT_CODE FROM CC_PERINX E WHERE E.PER_CODE = A.PER_CODE LIMIT 0,1) LIMIT 0,1) AS DEPT_NAME,
+			A.CONT_SEQ,
+			A.DATA_SEQ,
+			DATE_FORMAT(A.RSCH_DT, '%Y-%m-%d %H:%i') AS RSCH_DT,
+			A.APRV_PER_CODE,
+			(SELECT D.PER_NAME FROM CC_PERINX D WHERE D.PER_CODE = A.APRV_PER_CODE LIMIT 0,1) AS APRV_PER_NAME,
+			A.APRV_YN,
+			DATE_FORMAT(A.APRV_DT, '%Y-%m-%d %H:%i') AS APRV_DT,
+			B.CONDT_NM,
+			C.DATA_NM,
+			C.TABLE_ID,
+			A.REJT_REASON,
+			A.PURPOSE_CD,
+			B.METH_CD,
+			B.SAVE_CD
+		FROM 
+			CC_RSCH_APRV_MGMT A
+		INNER JOIN 
+			CC_ITEM_CONT B 
+		ON A.CONT_SEQ = B.SEQ
+		INNER JOIN 
+			CC_ITEM_CONT_DATA C
+		ON A.DATA_SEQ = C.SEQ
+		WHERE 1=1
+			AND A.PER_CODE = #{PER_CODE}
+			AND A.APRV_YN = 'Y'
+			<if test="SITE_CODE == 'KUH'"> AND DATE(NOW())-DATE(A.RSCH_DT) <![CDATA[ < ]]> 8 </if>
+		ORDER BY A.RSCH_DT DESC
+	</select>
+	
+	<select id="dataDownload" parameterType="map" resultType="hashmap">
+		SELECT * 
+		FROM ${TABLE_ID}
+		WHERE 1=1
+			AND PERIOD_CD = #{PERIOD_CD}
+		ORDER BY PERIOD_CD ASC
+	</select>
+	
+	<select id="dataDownloadColumn" parameterType="map" resultType="hashmap">
+		SELECT COLUMN_ID, COLUMN_COMMENT, DATA_TYPE, HIDDEN_YN
+		FROM CC_ITEM_CONT_DATA_DETL
+		WHERE 1=1
+			AND DATA_SEQ = #{DATA_SEQ}
+		ORDER BY SEQ ASC
+	</select>
+	
+</mapper>
+ 
+ 
+ 

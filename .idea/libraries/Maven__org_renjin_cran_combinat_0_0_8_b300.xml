@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:combinat:0.0-8-b300">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/combinat/0.0-8-b300/combinat-0.0-8-b300.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/combinat/0.0-8-b300/combinat-0.0-8-b300-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/combinat/0.0-8-b300/combinat-0.0-8-b300-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

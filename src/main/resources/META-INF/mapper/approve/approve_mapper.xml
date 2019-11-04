@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <mapper namespace="approve">
+ 	<!-- 개인조건+데이터 조회 -->
+	<select id="selectMySaveCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM 
+				CC_ITEM_CONT_DATA A JOIN CC_ITEM_CONT B ON A.PER_CODE = B.PER_CODE AND A.CONT_SEQ = B.SEQ
+			WHERE 1=1
+				AND A.PER_CODE = #{PER_CODE}
+	            AND A.SEQ NOT IN (SELECT DATA_SEQ FROM CC_RSCH_APRV_MGMT WHERE PER_CODE = #{PER_CODE})
+	</select>
+	
+ 	<!-- 개인조건+데이터 가져오기 -->
+	<select id="selectMySaveList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ,		
+			CONCAT('row_', A.SEQ) AS DT_RowId,
+			A.CONT_SEQ,
+			B.CONDT_NM,
+			A.DATA_NM,
+			DATE_FORMAT(A.UDT_DT, '%Y-%m-%d %H:%i') AS UDT_DT,
+			A.TABLE_ID,
+			B.METH_CD,
+			B.SAVE_CD    
+        FROM
+            CC_ITEM_CONT_DATA A JOIN CC_ITEM_CONT B ON A.PER_CODE = B.PER_CODE AND A.CONT_SEQ = B.SEQ
+        WHERE
+            A.PER_CODE = #{PER_CODE}
+            AND A.SEQ NOT IN (SELECT DATA_SEQ FROM CC_RSCH_APRV_MGMT WHERE PER_CODE = #{PER_CODE})
+            AND B.METH_CD != 'RG'
+        ORDER BY A.UDT_DT DESC
+	</select>
+	
+	<!-- 승인요청 저장  -->
+	<insert id="insertPurposeData" parameterType="map">
+		INSERT INTO CC_RSCH_APRV_MGMT 
+		(                           
+			PER_CODE,       /* 요청자 ID */
+			CONT_SEQ,       /* 연구조건 일련번호 */
+			DATA_SEQ,       /* 데이터 일련번호 */
+			RSCH_DT,		/* 승인요청일자 */
+			PURPOSE_CD		/* 추출목적 */
+			<if test="APRV_YN != null and APRV_YN != ''"> ,APRV_YN, APRV_PER_CODE ,APRV_DT </if> /* 승인요청 확인*/ 
+			
+		)
+		VALUES
+		(
+			#{PER_CODE},
+			#{CONT_SEQ},
+			#{SEQ},
+			NOW(),
+			#{PURPOSE_CD}
+			<if test="APRV_YN != null and APRV_YN != ''"> ,#{APRV_YN},#{APRV_PER_CODE} ,NOW() </if>/* 승인요청 확인*/ 
+		
+		)
+	
+	</insert>
+	
+	<!-- 승인요청/조회 조회 -->
+	<select id="selectRequestCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM 
+				CC_RSCH_APRV_MGMT A
+			INNER JOIN 
+				CC_ITEM_CONT B 
+			ON A.CONT_SEQ = B.SEQ
+			INNER JOIN 
+				CC_ITEM_CONT_DATA C
+			ON A.DATA_SEQ = C.SEQ
+			WHERE 1=1
+			<if test="PER_CODE != null and PER_CODE != ''">
+				AND A.PER_CODE = #{PER_CODE}
+			</if>
+			<if test="APROVE_FILTER == true">
+				AND (A.APRV_YN = '' OR A.APRV_YN IS null)
+			</if>
+	</select>
+	
+ 	<!-- 승인요청/조회 가져오기 -->
+	<select id="selectRequestList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ,
+			CONCAT('row_', C.SEQ) AS DT_RowId,
+			A.PER_CODE,
+			(SELECT C.PER_NAME FROM CC_PERINX C WHERE C.PER_CODE = A.PER_CODE LIMIT 0,1) AS PER_NAME,
+			(SELECT F.DEPT_NAME FROM CC_DEPINX F WHERE F.DEPT_CODE = (SELECT E.DEPT_CODE FROM CC_PERINX E WHERE E.PER_CODE = A.PER_CODE LIMIT 0,1) LIMIT 0,1) AS DEPT_NAME,
+			A.CONT_SEQ,
+			A.DATA_SEQ,
+			DATE_FORMAT(A.RSCH_DT, '%Y-%m-%d %H:%i') AS RSCH_DT,
+			A.APRV_PER_CODE,
+			(SELECT D.PER_NAME FROM CC_PERINX D WHERE D.PER_CODE = A.APRV_PER_CODE LIMIT 0,1) AS APRV_PER_NAME,
+			A.APRV_YN,
+			DATE_FORMAT(A.APRV_DT, '%Y-%m-%d %H:%i') AS APRV_DT,
+			B.CONDT_NM,
+			C.DATA_NM,
+			C.TABLE_ID,
+			A.REJT_REASON,
+			A.PURPOSE_CD,
+			B.METH_CD,
+			B.SAVE_CD
+		FROM 
+			CC_RSCH_APRV_MGMT A
+		INNER JOIN 
+			CC_ITEM_CONT B 
+		ON A.CONT_SEQ = B.SEQ
+		INNER JOIN 
+			CC_ITEM_CONT_DATA C
+		ON A.DATA_SEQ = C.SEQ
+		WHERE 1=1
+			<if test="PER_CODE != null and PER_CODE != ''">
+			AND A.PER_CODE = #{PER_CODE}
+			</if>
+			<if test="APROVE_FILTER == true">
+			AND (A.APRV_YN = '' OR A.APRV_YN IS null)
+			</if>
+			
+		ORDER BY A.RSCH_DT DESC
+		<if test="length != null and length != ''">
+		LIMIT #{start},#{length}
+		</if>
+        
+	</select>
+	
+	<!-- 데이터컬럼정보 가져오기 -->
+	<select id="selectDataColumnList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM 	CC_ITEM_CONT_DATA_DETL
+		WHERE 1=1
+		AND DATA_SEQ=#{SEQ}	
+	</select>
+	
+	
+	<!-- 데이터주기정보 가져오기 -->
+	<select id="selectDataResultPeriodList" parameterType="map" resultType="hashmap">
+		SELECT  PERIOD_CD
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		GROUP BY PERIOD_CD
+		ORDER BY PERIOD_CD
+	</select>
+	
+	<!-- 데이터정보 가져오기 -->
+	<select id="selectDataResultList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM	${TABLE_ID}
+		WHERE 	1=1		
+	</select>
+	
+	
+	<!-- 승인알림 count -->
+	<select id="selectApproveCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+		FROM 
+			CC_RSCH_APRV_MGMT A
+		INNER JOIN 
+			CC_ITEM_CONT B 
+		ON A.CONT_SEQ = B.SEQ
+		INNER JOIN 
+			CC_ITEM_CONT_DATA C
+		ON A.DATA_SEQ = C.SEQ
+		WHERE 1=1
+			AND A.APRV_YN IS NULL
+	</select>
+	
+	<!-- 승인알림 list -->
+	<select id="selectApproveList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ,
+			A.PER_CODE,
+			(SELECT C.PER_NAME FROM CC_PERINX C WHERE C.PER_CODE = A.PER_CODE LIMIT 0,1) AS PER_NAME,
+			(SELECT F.DEPT_NAME FROM CC_DEPINX F WHERE F.DEPT_CODE = (SELECT E.DEPT_CODE FROM CC_PERINX E WHERE E.PER_CODE = A.PER_CODE LIMIT 0,1)) AS DEPT_NAME,
+			A.CONT_SEQ,
+			A.DATA_SEQ,
+			DATE_FORMAT(A.RSCH_DT, '%Y-%m-%d %H:%i') AS RSCH_DT,
+			B.CONDT_NM,
+			C.DATA_NM
+		FROM 
+			CC_RSCH_APRV_MGMT A
+		INNER JOIN 
+			CC_ITEM_CONT B 
+		ON A.CONT_SEQ = B.SEQ
+		INNER JOIN 
+			CC_ITEM_CONT_DATA C
+		ON A.DATA_SEQ = C.SEQ
+		WHERE 1=1
+			AND A.APRV_YN IS NULL
+		ORDER BY A.RSCH_DT DESC	
+	</select>
+	
+	<!-- 데이터 삭제 -->
+	<delete id="delApproveData" parameterType="map">
+		DELETE FROM CC_ITEM_CONT_DATA WHERE SEQ=#{SEQ} AND CONT_SEQ=#{CONT_SEQ} AND TABLE_ID=#{TABLE_ID}
+	</delete>
+	
+	<!-- 데이터 테이블 drop -->
+	<delete id="dropApproveDataTable" parameterType="map">
+		<if test="TABLE_ID != '' and TABLE_ID != null">
+			DROP TABLE ${TABLE_ID}
+		</if>
+	</delete>
+	
+	<!-- 테이블 있는지 확인 -->
+	<select id="checkTable" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+		FROM 
+			${TABLE_ID}
+		WHERE 1=1
+	</select>
+	
+</mapper>
+ 
+ 
+ 

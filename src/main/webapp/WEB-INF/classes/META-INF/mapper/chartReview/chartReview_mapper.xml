@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <mapper namespace="chartReview">
+ 	<!-- 개인조건+데이터 조회 -->
+	<select id="selectMySaveCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM 
+				CC_ITEM_CONT_DATA A JOIN CC_ITEM_CONT B ON A.PER_CODE = B.PER_CODE AND A.CONT_SEQ = B.SEQ
+			WHERE 1=1
+				AND A.PER_CODE = #{PER_CODE}
+	</select>
+	
+ 	<!-- 개인조건+데이터 가져오기 -->
+	<select id="selectMySaveList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ,
+			CONCAT('row_', A.SEQ) AS DT_RowId,	
+			A.CONT_SEQ,
+			B.CONDT_NM,
+			A.DATA_NM,
+			DATE_FORMAT(A.UDT_DT, '%Y-%m-%d %H:%i') AS UDT_DT,
+			A.TABLE_ID,
+			B.METH_CD,
+			B.SAVE_CD	    
+        FROM
+            CC_ITEM_CONT_DATA A JOIN CC_ITEM_CONT B ON A.PER_CODE = B.PER_CODE AND A.CONT_SEQ = B.SEQ
+        WHERE
+            A.PER_CODE = #{PER_CODE}
+            AND B.SHARE_CD = 'P'
+            AND B.METH_CD != 'RG'
+        ORDER BY A.UDT_DT DESC
+	</select>
+	
+	<!-- row 제외 -->
+	<update id="updateDataDel" parameterType="map">
+		UPDATE   ${TABLE_ID}
+		SET		 	DEL_YN = #{DEL_YN}
+		WHERE	1=1
+		AND 	${GV_PAT_SBST_NO} = #{PAT_SBST_NO}
+		AND		PERIOD_CD	= #{PERIOD_CD}	
+	</update>
+	
+	<update id="alterColumnAdd" parameterType="map">
+		ALTER TABLE ${TABLE_ID}
+		ADD ${ColumnDB} ${ColumnType}
+	</update>
+	
+	<insert id="insertDataColumn" parameterType="map">
+		INSERT INTO CC_ITEM_CONT_DATA_DETL 
+		(                           
+			DATA_SEQ,
+			COLUMN_ID,
+			COLUMN_COMMENT,
+			UDT_DT,
+			CRT_DT,
+			OLAP_YN,
+			ITEM_SEQ,
+			DATA_TYPE,
+			ITEM_TYPE,
+			ADD_ITEM_YN,
+			HIDDEN_YN
+		)
+		VALUES
+		(
+			#{DATA_SET},
+			#{ColumnDB},
+			#{ColumnTable},
+			NOW(),
+			NOW(),
+			'N',
+			0,
+			#{ColumnType},
+			#{ColumnTypeCode},
+			'Y',
+			'N'
+		)
+	
+	</insert>
+	
+	<update id="alterColumnDel" parameterType="map">
+		ALTER TABLE ${TABLE_ID} 
+		DROP COLUMN ${columnId}
+	</update>
+	
+	<delete id="deleteDataColumn" parameterType="map">
+		DELETE FROM CC_ITEM_CONT_DATA_DETL 
+		WHERE SEQ IN (${chkVal})	
+	</delete>
+	
+	<!-- 입력항목 필드값 추가 -->
+	<update id="updateDataVal" parameterType="map">
+		UPDATE   ${TABLE_ID}
+		SET		 ${fieldVal}
+		WHERE	1=1
+		AND 	${GV_PAT_SBST_NO} = #{PAT_SBST_NO}
+		AND		PERIOD_CD	= #{PERIOD_CD}	
+	</update>
+	
+	<!-- 환자 아이디 가져오기 -->
+	<select id="selectPatId" parameterType="map" resultType="hashmap">
+		SELECT 
+			PAT_ID
+		FROM 
+			CRDW_SECU.BACKUP_uICE_SBST_NO
+		WHERE
+			PAT_SBST_NO = #{pat_sbst_no}
+	</select>
+	
+</mapper>
+ 
+ 
+ 

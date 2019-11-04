@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <!-- 항목조인목록 조회 -->
+ <mapper namespace="study_common">
+	<select id="selectItemJoinList" parameterType="map" resultType="hashmap">
+		SELECT 	A.SCHEMA_1
+		,A.TABLE_1
+		,A.COLUMN_1
+		,A.SCHEMA_2
+		,A.TABLE_2
+		,A.COLUMN_2
+FROM	CC_ITEM_JOIN A
+WHERE 	1=1
+AND (
+	(A.TABLE_1=#{SEARCH_TABLE_1} OR A.TABLE_2=#{SEARCH_TABLE_1}) AND 
+	(A.TABLE_1=#{SEARCH_TABLE_2} OR A.TABLE_2=#{SEARCH_TABLE_2})
+)
+		
+	</select>
+	
+	<select id="selectCrossSectionStudyList" parameterType="map" resultType="hashmap">
+		${QUERY}
+	</select>
+	
+	
+	
+	<select id="selectItemCont" parameterType="map" resultType="hashmap">
+		SELECT 	 A.SEQ
+				,A.SHARE_CD
+				,A.METH_CD
+				,A.CONDT_NM
+				,A.PER_CODE
+				,A.CC_CASE_NUM
+				,A.CC_MAT_CD
+				,A.CC_CONT_CD
+				,A.CC_POP_NUM
+		FROM	CC_ITEM_CONT A
+		WHERE	1=1
+		AND		A.SEQ=#{CONT_SEQ}
+	</select>
+	
+	<select id="selectItemContDetl" parameterType="map" resultType="hashmap">
+		SELECT   A.SEQ
+				,A.ITEM_SEQ
+				,A.CONT_SEQ
+				,A.PER_CODE
+				,A.ORDER
+				,A.INC_EXC
+				,A.TAB_CD
+				,A.GR_LV
+				,A.INPUT_VAL0
+				,A.INPUT_VAL1
+				,A.INPUT_VAL2
+				,A.CNT
+				,A.AGG
+				,A.AND_OR
+				,A.FIRST_YN
+				,A.BASE_DT_YN
+				,A.RANGE_CD
+				,A.RANGE_DN
+				,A.DELETE_YN
+		FROM	CC_ITEM_CONT_DETL A
+		WHERE	1=1
+		AND 	A.CONT_SEQ=#{CONT_SEQ}
+	</select>
+	
+	
+	<select id="selectItemContData" parameterType="map" resultType="hashmap">
+		SELECT   A.SEQ
+				,A.PER_CODE
+				,A.CONT_SEQ
+				,A.DATA_NM
+				,A.DATA_SEQ
+				,A.TABLE_ID
+		FROM	CC_ITEM_CONT_DATA A
+		WHERE	1=1
+		AND 	A.CONT_SEQ=#{CONT_SEQ}
+		AND 	A.SEQ=#{DATA_SEQ}
+	
+	</select>
+	
+	
+	<select id="selectItemContDataDetl" parameterType="map"
+		resultType="hashmap">
+		SELECT   A.SEQ
+				,A.DATA_SEQ
+				,A.COLUMN_ID
+				,A.COLUMN_COMMENT
+				,A.ITEM_SEQ
+				,A.DATA_TYPE
+				,A.ITEM_TYPE
+				,A.OLAP_YN
+		FROM	CC_ITEM_CONT_DATA_DETL A
+		WHERE	1=1
+		AND 	A.DATA_SEQ=#{DATA_SEQ}
+		AND 	A.OLAP_YN = 'Y'
+		<if test="ITEM_TYPE != null and ITEM_TYPE != ''">
+			AND  A.ITEM_TYPE IN ( ${ITEM_TYPE} )
+		</if>
+		ORDER BY A.ITEM_TYPE
+	</select>
+	
+	<update id="updateResultTable" parameterType="map">
+		${SQL}
+	</update>
+	<select id="selectUpdateResultTable" parameterType="map">${SQL}</select>
+	
+	
+	
+
+</mapper>
+ 
+ 
+ 

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:deldir:0.1-15-b17">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/deldir/0.1-15-b17/deldir-0.1-15-b17.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/deldir/0.1-15-b17/deldir-0.1-15-b17-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/deldir/0.1-15-b17/deldir-0.1-15-b17-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="log">
+  
+  	<!-- 웹로그 카운트 조회 -->
+	<select id="selectWebLogCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM CC_LOG_ACCESS 
+			WHERE 1=1
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+					AND TYPE=#{SEARCH_VAL}
+			</if>
+			<if test="SEARCH_START_DATE != null and SEARCH_START_DATE != '' and SEARCH_END_DATE != null and SEARCH_END_DATE != ''">
+					AND CRT_DT BETWEEN #{SEARCH_START_DATE} AND #{SEARCH_END_DATE}
+			</if>
+	</select>
+	
+	
+ 	<!-- 웹로그 조회 -->
+	<select id="selectWebLogList" parameterType="map" resultType="hashmap">
+		SELECT @RNUM := @RNUM + 1 AS NUM,
+				A.*
+		FROM
+		(
+			SELECT 
+				SEQ,
+				TYPE,
+				REQUEST_URL,
+				PER_CODE,
+				ACCESS_IP,
+				/*DATE_FORMAT(CRT_DT, "%Y-%m-%d %r") AS CRT_DT,*/
+				DATE_FORMAT( CRT_DT, "%Y-%m-%d %H:%m:%s" ) AS CRT_DT,
+				MESSAGE
+			FROM CC_LOG_ACCESS 
+			WHERE 1=1
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+					AND TYPE=#{SEARCH_VAL}
+			</if>
+			<if test="SEARCH_START_DATE != null and SEARCH_START_DATE != '' and SEARCH_END_DATE != null and SEARCH_END_DATE != ''">
+					AND CRT_DT BETWEEN #{SEARCH_START_DATE} AND #{SEARCH_END_DATE}
+			</if>
+		)A ,
+		(SELECT @RNUM := #{start} ) R
+		ORDER BY SEQ DESC	
+		LIMIT #{start},#{length}
+	</select>
+	
+	<!-- Etl로그 카운트 조회 -->
+	<select id="selectEtlLogCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+			FROM ${SCHEMA}.LOG_STP 
+			WHERE 1=1
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+				<choose>
+					<when test="SEARCH_KEY == '001'">
+						AND UPPER(TRANSNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+						
+					</when>
+					<when test="SEARCH_KEY == '002'">
+						AND UPPER(STEPNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+					</when>
+					
+					<otherwise>
+						AND (
+								UPPER(TRANSNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+								OR	UPPER(STEPNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+						)
+					
+					</otherwise>
+				</choose>
+			
+			</if>	
+			<if test="SEARCH_START_DATE != null and SEARCH_START_DATE != '' and SEARCH_END_DATE != null and SEARCH_END_DATE != ''">
+					AND LOG_DATE BETWEEN #{SEARCH_START_DATE} AND #{SEARCH_END_DATE}
+			</if>
+	</select>
+	
+	<!-- Etl로그 조회 -->
+	<select id="selectEtlLogList" parameterType="map" resultType="hashmap">
+		SELECT 
+				TRANSNAME,
+				STEPNAME,
+				LINES_OUTPUT,
+				ERRORS,
+				TO_CHAR(LOG_DATE,'YYYY-MM-DD') AS LOG_DATE
+			FROM ${SCHEMA}.LOG_STP 
+			WHERE 1=1
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+				<choose>
+					<when test="SEARCH_KEY == '001'">
+						AND UPPER(TRANSNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+					</when>
+					<when test="SEARCH_KEY == '002'">
+						AND UPPER(ERRORS) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+					</when>
+					
+					<otherwise>
+						AND (
+								UPPER(TRANSNAME) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+								OR	UPPER(ERRORS) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%'
+						)
+					
+					</otherwise>
+				</choose>
+			
+			</if>	
+			<if test="SEARCH_START_DATE != null and SEARCH_START_DATE != '' and SEARCH_END_DATE != null and SEARCH_END_DATE != ''">
+					AND LOG_DATE BETWEEN #{SEARCH_START_DATE} AND #{SEARCH_END_DATE}
+			</if>
+		
+		ORDER BY LOG_DATE DESC
+		LIMIT #{length} OFFSET #{start}
+		
+	</select>
+	
+
+</mapper>
+ 
+ 
+ 

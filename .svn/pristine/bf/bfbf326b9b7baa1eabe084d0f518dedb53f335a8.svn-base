@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd"> 
+
+<tiles-definitions> 
+	<definition name="index" template="/WEB-INF/views/index.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition> 
+	
+	<definition name="/index.tiles" extends="index">
+	</definition>
+	
+	<definition name="login" template="/WEB-INF/views/login.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+	</definition> 
+	
+	<definition name="/login.tiles" extends="login">
+	</definition>  
+	
+	
+	<definition name="dashboard" template="/WEB-INF/views/dashboard.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition> 
+	
+	<definition name="/dashboard.tiles" extends="dashboard">
+	</definition>
+	
+	<!-- 연구 -->
+	<definition name="research" template="/WEB-INF/views/research/researchIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="studyLeft" value="/WEB-INF/views/research/researchLeft.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition>
+	
+	<!-- 승인요청 -->
+	<definition name="/research/approve/*.tiles" extends="research">
+		<put-attribute name="researchSideBar" value="" />
+		<put-attribute name="content" value="/WEB-INF/views/research/approve/{1}.jsp" />
+	</definition>
+	
+	<!-- 차트리뷰 -->
+	<definition name="/research/chartReview/*.tiles" extends="research">
+		<put-attribute name="researchSideBar" value="" />
+		<put-attribute name="content" value="/WEB-INF/views/research/chartReview/{1}.jsp" />
+	</definition>
+	
+	<!-- data download -->
+	<definition name="/research/dataDownload/*.tiles" extends="research">
+		<put-attribute name="researchSideBar" value="" />
+		<put-attribute name="content" value="/WEB-INF/views/research/dataDownload/{1}.jsp" />
+	</definition>
+	
+	<!-- 단면, 코호트, 사례대조 연구 -->
+	<definition name="/research/*/*.tiles" extends="research">
+		<put-attribute name="researchSideBar" value="/WEB-INF/views/research/researchSideBar.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/research/{1}/{2}.jsp" />
+	</definition> 
+	
+	<!-- 연구조건용 팝업 -->
+	<definition name="researchPop" template="/WEB-INF/views/research/researchPopIndex.jsp"> 
+	</definition>
+	
+	<!-- 단면, 코호트, 사례대조 연구 연구조건용 팝업 -->
+	<definition name="/research/*/*/pop.tiles" extends="researchPop">
+		<put-attribute name="researchSideBar" value="/WEB-INF/views/research/researchSideBar.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/research/{1}/{2}.jsp" />
+	</definition> 
+		
+	<!-- 기초분석 -->
+	<definition name="basicAnalysis" template="/WEB-INF/views/research/basicAnalysis/basicAnalysisIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+	</definition>
+	
+	<definition name="/basicAnalysis/*.tiles" extends="basicAnalysis">
+		<put-attribute name="content" value="/WEB-INF/views/research/basicAnalysis/{1}.jsp" />
+	</definition> 
+	
+	<!-- 시각화 -->
+	<definition name="/visualize/*.tiles" extends="basicAnalysis">
+		<put-attribute name="content" value="/WEB-INF/views/research/visualize/{1}.jsp" />
+	</definition> 
+	
+	<!-- 레지스트리 -->
+	<definition name="registry" template="/WEB-INF/views/rg/rgIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="rgLeft" value="/WEB-INF/views/rg/rgLeft.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition>
+	
+	<definition name="/rg/*.tiles" extends="registry">
+		<put-attribute name="content" value="/WEB-INF/views/rg/{1}.jsp" />
+	</definition> 
+	
+	
+	<!-- 정형보고서 -->
+	<definition name="report" template="/WEB-INF/views/report/reportIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="reportLeft" value="/WEB-INF/views/report/reportLeft.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition>
+	
+	<definition name="/report/*.tiles" extends="report">
+		<put-attribute name="content" value="/WEB-INF/views/report/{1}.jsp" />
+	</definition> 
+	
+	<!-- POPUP -->
+	<definition name="popup" template="/WEB-INF/views/popup/popupIndex.jsp">
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+	</definition>
+	
+	<definition name="/popup/*.tiles" extends="popup">
+		<put-attribute name="content" value="/WEB-INF/views/popup/{1}.jsp" />
+		<put-attribute name="visualizeSideBar" value="/WEB-INF/views/popup/visualizeSideBar.jsp" />
+	</definition> 
+	
+	
+	<definition name="sample" template="/WEB-INF/views/sample.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+	</definition> 
+	
+	<definition name="sample.tiles" extends="sample">
+	</definition> 
+	
+	<definition name="admin" template="/WEB-INF/views/admin/adminIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="adminLeft" value="/WEB-INF/layouts/adminLeft.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition>
+
+	<definition name="/admin/*.tiles" extends="admin">
+		<put-attribute name="content" value="/WEB-INF/views/admin/{1}.jsp" />
+	</definition> 
+	
+	<definition name="cohort" template="/WEB-INF/views/cohort/cohortIndex.jsp"> 
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="adminLeft" value="/WEB-INF/views/cohort/cohortLeft.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+	</definition>
+	
+	<definition name="/cohort/*.tiles" extends="cohort">
+		<put-attribute name="content" value="/WEB-INF/views/cohort/{1}.jsp" />
+	</definition> 
+	
+	<!-- ERROR -->
+	<definition name="error" template="/WEB-INF/views/error/errorIndex.jsp">
+		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" /> 
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
+		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+	</definition>
+	
+	<definition name="/error/*.tiles" extends="error">
+		<put-attribute name="content" value="/WEB-INF/views/error/{1}.jsp" />
+	</definition> 
+	
+	<!-- <definition name="*/*/*.tiles" extends="layouts-tiles"> 
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" /> 
+	</definition>  -->
+</tiles-definitions>

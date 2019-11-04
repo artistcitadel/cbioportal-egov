@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="visualpopup">
+ 
+	<!-- 그래프 저장 항목 삭제 -->
+	<delete id="deleteVisualGraph" parameterType="map">
+		DELETE FROM CC_VISUAL_GR
+		WHERE	
+				DATA_SEQ=#{DATA_SEQ}
+				AND CONT_SEQ=#{CONT_SEQ}
+				AND GRAPH_SEQ=#{GRAPH_SEQ}
+	</delete>
+
+	<!-- 그래프 저장 세부 항목 삭제 -->
+	<delete id="deleteVisualGraphDetl" parameterType="map">
+		DELETE FROM CC_VISUAL_GR_DETL 
+		WHERE SEQ = #{SEQ}
+	</delete>
+	
+	<!-- 그래프 저장 리스트 -->
+	<select id="selViusalGraphList" parameterType="map" resultType="hashmap">
+		SELECT *, '../images/graph.png' as icon
+		FROM 	CC_VISUAL_GR
+		WHERE 1=1
+		AND DATA_SEQ=#{DATA_SEQ}
+		AND CONT_SEQ=#{CONT_SEQ}
+		order by CRT_DT DESC
+	</select>
+	
+	<!--  그래프 저장 항목 하나 선택 -->	
+	<select id="selViusalGraph" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM 	CC_VISUAL_GR
+		WHERE 1=1
+		AND DATA_SEQ=#{DATA_SEQ}
+		AND CONT_SEQ=#{CONT_SEQ}
+		AND GRAPHNM = #{GRAPHNM}
+	</select>
+	
+	<!-- 그래프 저장 항목 리스트 -->
+	<select id="selViusalGraphDetlList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM 	CC_VISUAL_GR_DETL
+		WHERE 1=1
+		AND GRAPH_SEQ=#{GRAPH_SEQ}
+	</select>
+
+	<!-- 그래프 저장 insert-->
+	<insert id="insertVisualGraph" parameterType="map">
+		INSERT INTO CC_VISUAL_GR
+		(
+			 CONT_SEQ, DATA_SEQ, GRAPHNM, GRAPHKIND, 
+			 PREPROCESS1, PREPROCESS2, PREPROCESS3, PER_CODE ,CRT_DT
+		)
+		VALUES(
+			 #{CONT_SEQ},#{DATA_SEQ},#{GRAPHNM},#{GRAPHKIND}
+			,#{PREPROCESS1},#{PREPROCESS2},#{PREPROCESS3},#{PER_CODE},NOW()
+		)
+	</insert>
+	
+	<!-- 그래프 저장 항목 insert-->
+	<insert id="insertVisualGraphDetl" parameterType="map">
+		INSERT INTO CC_VISUAL_GR_DETL
+		(
+			GRAPH_SEQ, ITEM_VALUE, PARAMXY, ITEM_TYPE,
+			FILTER_VALUE1, FILTER_VALUE2, PER_CODE, CRT_DT, ITEM_GROUP
+		)
+		VALUES(
+			 #{GRAPH_SEQ},#{ITEM_VALUE},#{PARAMXY},#{ITEM_TYPE},#{FILTER_VALUE1},#{FILTER_VALUE2},#{PER_CODE},NOW(),#{ITEM_GROUP}
+		)
+	</insert>
+		
+	<!-- 컬럼정보 리스트 -->
+	<select id="selViusalColumnsList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM 	CC_ITEM_CONT_DATA_DETL
+		WHERE 1=1
+		AND DATA_SEQ=#{DATA_SEQ}
+		AND DATA_TYPE is not NULL
+		AND DATA_TYPE!='';
+	</select>
+	
+		<!--테이블 이름 -->
+	<select id="selViusalTableID" parameterType="map" resultType="hashmap">
+		SELECT  *
+		FROM	CC_ITEM_CONT_DATA A
+		WHERE 	1=1
+		AND 	A.CONT_SEQ = #{CONT_SEQ}
+		AND 	A.SEQ = #{SEQ}
+	</select>
+	
+			<!--테이블 데이터 -->
+	<select id="selViusalTableData" parameterType="map" resultType="hashmap">
+		SELECT  *
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		<if test="COL_ID != null and COL_ID != ''">
+		ORDER BY ${COL_ID} <if test="COL_TYPE == 'TEXT'"> DESC </if>
+		</if>
+	</select>
+	
+	<select id="selViusalColumnCnt" parameterType="map" resultType="Integer">
+		SELECT  count(${COLUMN_NM})
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		AND 	${COLUMN_NM} IS NOT NULL
+	</select>
+	
+	<select id="selViusalColumnAxisCnt" parameterType="map" resultType="Integer">
+		select COUNT(*) as CNT
+		FROM(	
+			SELECT  count(*)
+			FROM	${TABLE_ID}
+			WHERE 	1=1
+			AND 	${COLUMN_NM} IS NOT NULL
+			GROUP BY
+			<if test="GRDT == null or GRDT == ''">
+				<if test="GRNUM == null or GRNUM == ''">
+					${COLUMN_NM}
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+					FLOOR(${COLUMN_NM}/${GRNUM})
+				</if>
+			</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">YEAR(${COLUMN_NM}),WEEK(${COLUMN_NM})</if>
+				<if test="GRDT.equals('MONTH')">YEAR(${COLUMN_NM}),MONTH(${COLUMN_NM})</if>
+				<if test="GRDT.equals('QUARTER')">YEAR(${COLUMN_NM}),QUARTER(${COLUMN_NM})</if>	
+				<if test="GRDT.equals('YEAR')">YEAR(${COLUMN_NM})</if>		
+			</if>
+			) T1
+	</select>
+	
+				<!--summary 데이터 -->
+	<select id="selViusalSummaryData" parameterType="map" resultType="Double">
+		SELECT  ${NUMLIST}
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		and ${NUMLIST} is not null
+		
+	</select>
+	
+
+	<select id="selViusalFrequency" parameterType="map" resultType="hashmap">
+	
+		SELECT  	
+			<if test="ITEM_TYPE == 'DATE'"> DATE(${X}) as  ${X}</if>
+			<if test="ITEM_TYPE != 'DATE'">		${X}	</if>, count(*) as CNT
+		FROM	${TABLE_ID}
+		WHERE 	1=1	
+		and ${X} is not NULL
+		group by
+			<if test="ITEM_TYPE == 'DATE'"> DATE(${X}) </if>
+			<if test="ITEM_TYPE != 'DATE'">		${X}	</if>
+		order by 1
+	</select>
+	
+	<!--num 전체 데이터 -->
+	<select id="selViusalNumFrequency" parameterType="map" resultType="Integer">
+		SELECT  ${X}
+		FROM	${TABLE_ID}
+		WHERE 	1=1	
+		and ${X} is not NULL
+		order by ${X}
+	</select>
+	
+					<!--테이블 데이터 -->
+	<select id="selViusalBarGraph1" parameterType="map" resultType="hashmap">
+		SELECT  
+			CNT
+			,ROUND(CNT / SUM( CNT ) OVER(),2) AS RATIO
+		<if test="GRDT == null or GRDT == ''">,XDATA</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">,DY,DW</if>
+			<if test="GRDT.equals('MONTH')">,DY,DM</if>
+			<if test="GRDT.equals('QUARTER')">,DY,DQ</if>
+			<if test="GRDT.equals('YEAR')">,DY</if>			
+		</if>
+		<if test="X2 != null and X2 != ''">
+				<if test="GRDT2 == null or GRDT2 == ''">,X2DATA</if>
+				<if test="GRDT2 != null and GRDT2 != ''">		
+					<if test="GRDT2.equals('WEEK')">,DY2,DW2</if>
+					<if test="GRDT2.equals('MONTH')">,DY2 ,DM2</if>
+					<if test="GRDT2.equals('QUARTER')">,DY2 ,DQ2</if>
+					<if test="GRDT2.equals('YEAR')">,DY2</if>			
+				</if>
+		</if>
+	FROM
+		(
+		SELECT  
+			count(*) as CNT
+			<if test="GRDT == null or GRDT == ''">
+				<if test="GRNUM == null or GRNUM == ''">
+					<if test="ITEM_TYPE == 'DATE'">, DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">,		${X}	</if>  AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				, FLOOR(${X}/${GRNUM}) AS XDATA
+				</if>
+			</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">,YEAR(${X}) as DY,WEEK(${X}) AS DW</if>
+				<if test="GRDT.equals('MONTH')">,YEAR(${X}) as DY ,MONTH(${X}) AS DM</if>
+				<if test="GRDT.equals('QUARTER')">,YEAR(${X}) as DY ,QUARTER(${X}) AS DQ</if>
+				<if test="GRDT.equals('YEAR')">,YEAR(${X}) AS DY</if>			
+			</if>
+			<if test="X2 != null and X2 != ''">
+				<if test="GRDT2 == null or GRDT2 == ''">
+					<if test="GRNUM2 == null or GRNUM2 == ''">
+						<if test="ITEM_TYPE2 == 'DATE'">, DATE(${X2})     </if>
+						<if test="ITEM_TYPE2 != 'DATE'">,		${X2}	</if>  AS X2DATA
+					</if>
+					<if test="GRNUM2 != null and GRNUM2 != ''">
+						, FLOOR(${X2}/${GRNUM2}) AS X2DATA
+					</if>
+				</if>
+				<if test="GRDT2 != null and GRDT2 != ''">		
+					<if test="GRDT2.equals('WEEK')">,YEAR(${X2}) as DY2,WEEK(${X2}) AS DW2</if>
+					<if test="GRDT2.equals('MONTH')">,YEAR(${X2}) as DY2 ,MONTH(${X2}) AS DM2</if>
+					<if test="GRDT2.equals('QUARTER')">,YEAR(${X2}) as DY2 ,QUARTER(${X2}) AS DQ2</if>
+					<if test="GRDT2.equals('YEAR')">,YEAR(${X2}) AS DY2</if>			
+				</if>
+			</if> 
+		FROM	${TABLE_ID}
+		WHERE 	1=1	
+		and ${X} is not NULL
+		<if test="X2 != null and X2 != ''">
+			and ${X2}  is not NULL
+		</if>
+		${filterQuery}
+		group by
+			<if test="GRDT == null or GRDT == ''">XDATA</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+				<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+				<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>	
+				<if test="GRDT.equals('YEAR')">YEAR(${X})</if>		
+			</if>
+			 <if test="X2 != null and X2 != ''">
+					<if test="GRDT2 == null or GRDT2 == ''">,X2DATA</if>
+					<if test="GRDT2 != null and GRDT2 != ''">		
+						<if test="GRDT2.equals('WEEK')">,YEAR(${X2}),WEEK(${X2})</if>
+						<if test="GRDT2.equals('MONTH')">,YEAR(${X2}),MONTH(${X2})</if>
+						<if test="GRDT2.equals('QUARTER')">,YEAR(${X2}),QUARTER(${X2})</if>
+						<if test="GRDT2.equals('YEAR')">,YEAR(${X2})</if>			
+					</if>
+			 </if>
+	) T1
+		<if test="P3 == null or P3 == ''">
+			ORDER BY
+			<if test="GRDT == null or GRDT == ''">XDATA ${P3} </if>
+				<if test="GRDT != null and GRDT != ''">
+					<if test="GRDT.equals('WEEK')">		DY	${P3} ,DW	${P3} </if>
+					<if test="GRDT.equals('MONTH')">	DY	${P3} ,DM	${P3} </if>
+					<if test="GRDT.equals('QUARTER')">	DY	${P3} ,DQ	${P3} </if>
+					<if test="GRDT.equals('YEAR')">		DY	${P3} 	</if>			
+				 </if> 
+				 <if test="X2 != null and X2 != ''">
+					<if test="GRDT2 == null or GRDT2 == ''">,X2DATA ${P3}</if>
+					<if test="GRDT2 != null and GRDT2 != ''">		
+						<if test="GRDT2.equals('WEEK')">	,DY2	${P3} ,DW2	${P3} </if>
+						<if test="GRDT2.equals('MONTH')">	,DY2	${P3} ,DM2	${P3} </if>
+						<if test="GRDT2.equals('QUARTER')">	,DY2	${P3} ,DQ2	${P3} </if>
+						<if test="GRDT2.equals('YEAR')">	,DY2	${P3} 	</if>			
+				</if>
+			</if>
+		</if>
+		<if test="P3 != null and P3 != ''">
+		ORDER BY CNT ${P3}
+				<if test="GRDT == null or GRDT == ''">,XDATA ${P3} </if>
+				<if test="GRDT != null and GRDT != ''">
+						<if test="GRDT.equals('WEEK')">		,DY	${P3} ,DW	${P3} </if>
+					<if test="GRDT.equals('MONTH')">	,DY	${P3} ,DM	${P3} </if>
+					<if test="GRDT.equals('QUARTER')">	,DY	${P3} ,DQ	${P3} </if>
+					<if test="GRDT.equals('YEAR')">		,DY	${P3} 	</if>			
+				 </if> 
+				 <if test="X2 != null and X2 != ''">
+					<if test="GRDT2 == null or GRDT2 == ''">,X2DATA ${P3}</if>
+					<if test="GRDT2 != null and GRDT2 != ''">		
+						<if test="GRDT2.equals('WEEK')">	,DY2	${P3} ,DW2	${P3} </if>
+						<if test="GRDT2.equals('MONTH')">	,DY2	${P3} ,DM2	${P3} </if>
+						<if test="GRDT2.equals('QUARTER')">	,DY2	${P3} ,DQ2	${P3} </if>
+						<if test="GRDT2.equals('YEAR')">	,DY2	${P3} 	</if>			
+					</if>
+				</if>		
+		</if>
+
+	</select>
+	
+	<select id="selViusalBarGraph2" parameterType="map" resultType="hashmap">
+	SELECT SUM(${Y}) AS S
+		, ROUND(AVG(${Y}),2) AS M
+		<if test="X != null and X != ''">
+			<if test="GRDT == null or GRDT == ''">
+				<if test="GRNUM == null or GRNUM == ''">
+					<if test="ITEM_TYPE == 'DATE'">, DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">,		${X}	</if>  AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				, FLOOR(${X}/${GRNUM}) AS XDATA
+				</if>
+			</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">,YEAR(${X}) as DY,WEEK(${X}) AS DW</if>
+				<if test="GRDT.equals('MONTH')">,YEAR(${X}) as DY ,MONTH(${X}) AS DM</if>
+				<if test="GRDT.equals('QUARTER')">,YEAR(${X}) as DY ,QUARTER(${X}) AS DQ</if>
+				<if test="GRDT.equals('YEAR')">,YEAR(${X}) AS DY</if>			
+			</if>
+		</if>
+	FROM ${TABLE_ID}
+	WHERE
+	1=1
+	AND ${Y} is not NULL
+	<if test="X != null and X != ''">
+	AND ${X} is not NULL
+	</if>
+	${filterQuery}
+	<if test="X != null and X != ''">
+	GROUP BY 
+		<if test="GRDT == null or GRDT == ''">XDATA</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>
+			<if test="GRDT.equals('YEAR')">YEAR(${X})</if>			
+		</if>
+		</if>
+		<if test="X != null and X != ''">
+			<if test="P3 == null or P3 == ''">
+			ORDER BY
+				<if test="GRDT == null or GRDT == ''">XDATA ${P3} </if>
+					<if test="GRDT != null and GRDT != ''">
+						<if test="GRDT.equals('WEEK')">		YEAR(${X})	${P3} ,WEEK(${X})	${P3} </if>
+						<if test="GRDT.equals('MONTH')">	YEAR(${X})	${P3} ,MONTH(${X})	${P3} </if>
+						<if test="GRDT.equals('QUARTER')">	YEAR(${X})	${P3} ,QUARTER(${X})${P3} </if>
+						<if test="GRDT.equals('YEAR')">		YEAR(${X})	${P3} 	</if>			
+					 </if> 
+					 <if test="X2 != null and X2 != ''">
+						<if test="GRDT2 == null or GRDT2 == ''">X2DATA ${P3}</if>
+						<if test="GRDT2 != null and GRDT2 != ''">		
+							<if test="GRDT2.equals('WEEK')">	YEAR(${X2})	${P3} ,WEEK(${X2})	${P3} </if>
+							<if test="GRDT2.equals('MONTH')">	YEAR(${X2})	${P3} ,MONTH(${X2})	${P3} </if>
+							<if test="GRDT2.equals('QUARTER')">	YEAR(${X2})	${P3} ,QUARTER(${X2})${P3} </if>
+							<if test="GRDT2.equals('YEAR')">	YEAR(${X2})	${P3} 	</if>			
+					</if>
+				</if>
+			</if>
+		</if>
+		<if test="P3 != null and P3 != ''" >
+			<if test="P1.equals('SUM')">
+			ORDER BY S ${P3} 
+			</if>
+			<if test="P1.equals('MEAN')">
+			ORDER BY M ${P3} 
+			</if>
+		</if>
+	</select>
+	
+	<select id="selViusalGroupData" parameterType="map" resultType="hashmap">
+	SELECT
+			<if test="GRDT == '' or GRDT == null"> 
+				<if test="GRNUM == null or GRNUM == ''">
+					<if test="ITEM_TYPE == 'DATE'"> DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">		${X}	</if> AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				FLOOR(${X}/${GRNUM}) AS XDATA
+				</if>
+			</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">YEAR(${X})	|| '년 ' || WEEK(${X})	|| '주기' as XDATA</if>
+				<if test="GRDT.equals('MONTH')">YEAR(${X})	|| '년 ' || MONTH(${X})	|| '월' as  XDATA</if>
+				<if test="GRDT.equals('QUARTER')">YEAR(${X})|| '년 ' || QUARTER(${X})	|| '분기' as  XDATA</if>
+				<if test="GRDT.equals('YEAR')">YEAR(${X})	|| '년' as  XDATA</if>			
+			</if>
+	FROM
+		${TABLE_ID}
+	WHERE
+		1 = 1
+		and ${X} is not NULL
+	GROUP BY
+		<if test="GRDT == '' or GRDT == null">XDATA</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>	
+			<if test="GRDT.equals('YEAR')">YEAR(${X})</if>		
+		</if>
+	ORDER by
+		<if test="GRDT == '' or GRDT == null">XDATA ASC</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">YEAR(${X}) ASC,WEEK(${X}) ASC</if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}) ASC,MONTH(${X}) ASC</if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}) ASC,QUARTER(${X}) ASC</if>	
+			<if test="GRDT.equals('YEAR')">YEAR(${X}) ASC</if>		
+		</if> 
+	</select>
+	
+	<select id="selVisualBoxGraph1" parameterType="map" resultType="Integer">
+	SELECT
+		${Y} AS YDATA
+	FROM
+		${TABLE_ID}
+	WHERE
+		1 = 1
+		and ${Y} is not NULL
+		${filterQuery}
+	</select>
+	
+	<select id="selVisualBoxGraph2" parameterType="map" resultType="hashmap">
+	SELECT
+		${Y} AS YDATA
+	<if test="X != null and X != ''" >
+		<if test="GRDT == null or GRDT == ''">
+			<if test="GRNUM == null or GRNUM == ''">
+				, <if test="ITEM_TYPE == 'DATE'"> DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">		${X}	</if> AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				, FLOOR(${X}/${GRNUM}) AS XDATA
+			</if>
+		</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">,YEAR(${X}) as DY,WEEK(${X}) AS DW</if>
+			<if test="GRDT.equals('MONTH')">,YEAR(${X}) as DY ,MONTH(${X}) AS DM</if>
+			<if test="GRDT.equals('QUARTER')">,YEAR(${X}) as DY ,QUARTER(${X}) AS DQ</if>
+			<if test="GRDT.equals('YEAR')">,YEAR(${X}) AS DY</if>
+		</if>
+	</if>
+	<if test="X2 != null and X2 != ''" >
+		<if test="GRDT2 == null or GRDT2 == ''">
+			<if test="GRNUM2 == null or GRNUM2 == ''">
+				, <if test="ITEM_TYPE2 == 'DATE'"> DATE(${X2})     </if>
+					<if test="ITEM_TYPE2 != 'DATE'">		${X2}	</if> AS X2DATA
+				</if>
+				<if test="GRNUM2 != null and GRNUM2 != ''">
+				, FLOOR(${X2}/${GRNUM2}) AS X2DATA
+				</if>
+		</if>
+		<if test="GRDT2 != null and GRDT2 != ''">		
+			<if test="GRDT2.equals('WEEK')">,YEAR(${X2}) as DY2,WEEK(${X2}) AS DW2</if>
+			<if test="GRDT2.equals('MONTH')">,YEAR(${X2}) as DY2 ,MONTH(${X2}) AS DM2</if>
+			<if test="GRDT2.equals('QUARTER')">,YEAR(${X2}) as DY2 ,QUARTER(${X2}) AS DQ2</if>
+			<if test="GRDT2.equals('YEAR')">,YEAR(${X2}) AS DY2</if>			
+		</if>
+	</if>
+	FROM
+		${TABLE_ID}
+	WHERE
+		1 = 1
+		and ${Y} is not NULL
+	<if test="X != null and X != ''" >
+		and ${X} is not NULL
+	</if>
+	<if test="X2 != null and X2 != ''" >
+		and ${X2} is not NULL			 
+	</if>
+		${filterQuery}
+	ORDER BY	
+		<if test="GRDT == null or GRDT == ''">XDATA ${P3} </if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">YEAR(${X}) ${P3} ,WEEK(${X}) 	${P3} </if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}) ${P3} ,MONTH(${X}) 	${P3} </if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}) ${P3} ,QUARTER(${X})${P3} </if>
+			<if test="GRDT.equals('YEAR')">YEAR(${X}) ${P3} </if>
+		</if>
+	</select>
+	
+	<select id="selVisualScatterGraph" parameterType="map" resultType="hashmap">
+		SELECT
+			${Y} AS YDATA , ${X} AS XDATA
+		<if test="X2 != null and X2 != ''" >		
+			<if test="GRDT2 == null or GRDT2 == ''">
+				<if test="GRNUM2 == null or GRNUM2 == ''">
+					,
+					<if test="ITEM_TYPE2 == 'DATE'"> DATE(${X2})     </if>
+					<if test="ITEM_TYPE2 != 'DATE'">		${X2}	</if> AS X2DATA
+				</if>
+				<if test="GRNUM2 != null and GRNUM2 != ''">
+					,FLOOR(${X2}/${GRNUM2}) AS X2DATA
+				</if></if>
+			<if test="GRDT2 != null and GRDT2 != ''">		
+				<if test="GRDT2.equals('WEEK')">,YEAR(${X2})	|| '년 ' || WEEK(${X2})	|| '주기' as X2DATA</if>
+				<if test="GRDT2.equals('MONTH')">,YEAR(${X2})	|| '년 ' || MONTH(${X2})	|| '월' as X2DATA</if>
+				<if test="GRDT2.equals('QUARTER')">,YEAR(${X2})|| '년 ' || QUARTER(${X2})	|| '분기' as X2DATA</if>
+				<if test="GRDT2.equals('YEAR')">,YEAR(${X2})	|| '년' as X2DATA</if>			
+			</if>
+		</if>
+		FROM
+			${TABLE_ID}
+		WHERE
+			1 = 1
+			and ${Y} is not NULL
+			and ${X} is not NULL
+		<if test="X2 != null and X2 != ''" >
+			and ${X2} is not NULL			
+		</if>
+		${filterQuery}
+				ORDER BY XDATA ${P3} 
+		
+	</select>
+	
+	<select id="selVisualStackBarGraph" parameterType="map" resultType="hashmap">
+	SELECT	
+			SUM(${Y}) as S
+			, ROUND(AVG(${Y}),2) as M
+			<if test="GRDT == null or GRDT == ''">
+				<if test="GRNUM == null or GRNUM == ''">
+				, <if test="ITEM_TYPE == 'DATE'"> DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">		${X}	</if> AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				, FLOOR(${X}/${GRNUM}) AS XDATA
+				</if>
+			</if>
+			
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">,YEAR(${X}) as DY,WEEK(${X}) AS DW</if>
+				<if test="GRDT.equals('MONTH')">,YEAR(${X}) as DY ,MONTH(${X}) AS DM</if>
+				<if test="GRDT.equals('QUARTER')">,YEAR(${X}) as DY ,QUARTER(${X}) AS DQ</if>
+				<if test="GRDT.equals('YEAR')">,YEAR(${X}) AS DY</if>			
+			</if>
+			<if test="GRDT2 == null or GRDT2 == ''">
+				<if test="GRNUM2 == null or GRNUM2 == ''">
+				, <if test="ITEM_TYPE2 == 'DATE'"> DATE(${X2})     </if>
+					<if test="ITEM_TYPE2 != 'DATE'">		${X2}	</if> AS X2DATA
+				</if>
+				<if test="GRNUM2 != null and GRNUM2 != ''">
+				, FLOOR(${X2}/${GRNUM2}) AS X2DATA
+				</if>
+			</if>
+			
+			<if test="GRDT2 != null and GRDT2 != ''">		
+				<if test="GRDT2.equals('WEEK')">,YEAR(${X2}) as DY2,WEEK(${X2}) AS DW2</if>
+				<if test="GRDT2.equals('MONTH')">,YEAR(${X2}) as DY2 ,MONTH(${X2}) AS DM2</if>
+				<if test="GRDT2.equals('QUARTER')">,YEAR(${X2}) as DY2 ,QUARTER(${X2}) AS DQ2</if>
+				<if test="GRDT2.equals('YEAR')">,YEAR(${X2}) AS DY2</if>			
+			</if>
+	FROM 
+		${TABLE_ID}
+	WHERE 
+		${X} is not NULL
+		and ${X2} is not NULL
+		and ${Y} is not NULL
+		${filterQuery}
+	GROUP BY
+			<if test="GRDT == null or GRDT == ''">XDATA</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+				<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+				<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>	
+				<if test="GRDT.equals('YEAR')">YEAR(${X})</if>		
+			</if>
+			<if test="GRDT2 == null or GRDT2 == ''">,X2DATA</if>
+			<if test="GRDT2 != null and GRDT2 != ''">		
+				<if test="GRDT2.equals('WEEK')">,YEAR(${X2}),WEEK(${X2})</if>
+				<if test="GRDT2.equals('MONTH')">,YEAR(${X2}),MONTH(${X2})</if>
+				<if test="GRDT2.equals('QUARTER')">,YEAR(${X2}),QUARTER(${X2})</if>
+				<if test="GRDT2.equals('YEAR')">,YEAR(${X2})</if>			
+			</if>
+		<if test="GRDT == null or GRDT == ''">ORDER BY XDATA ${P3} </if>
+		<if test="GRDT != null and GRDT != ''">
+			<if test="GRDT.equals('WEEK')">ORDER BY		YEAR(${X})	${P3} ,WEEK(${X})	${P3} </if>
+			<if test="GRDT.equals('MONTH')">ORDER BY	YEAR(${X})	${P3} ,MONTH(${X})	${P3} </if>
+			<if test="GRDT.equals('QUARTER')">ORDER BY	YEAR(${X})	${P3} ,QUARTER(${X})${P3} </if>
+			<if test="GRDT.equals('YEAR')">ORDER BY		YEAR(${X})	${P3} 	</if>			
+		 </if> 
+	</select>
+		
+	<select id="selVisualBarSpotGraph" parameterType="map" resultType="hashmap">
+	SELECT SUM(${Y}) AS S1
+		, ROUND(AVG(${Y}),2) AS M1
+		, SUM(${Y2}) AS S2
+		, ROUND(AVG(${Y2}),2) AS M2
+			<if test="GRDT == null or GRDT == ''">
+				<if test="GRNUM == null or GRNUM == ''">
+				, <if test="ITEM_TYPE == 'DATE'"> DATE(${X})     </if>
+					<if test="ITEM_TYPE != 'DATE'">		${X}	</if> AS XDATA
+				</if>
+				<if test="GRNUM != null and GRNUM != ''">
+				, FLOOR(${X}/${GRNUM}) AS XDATA
+				</if>
+			</if>
+			<if test="GRDT != null and GRDT != ''">		
+				<if test="GRDT.equals('WEEK')">,YEAR(${X}) as DY,WEEK(${X}) AS DW</if>
+				<if test="GRDT.equals('MONTH')">,YEAR(${X}) as DY ,MONTH(${X}) AS DM</if>
+				<if test="GRDT.equals('QUARTER')">,YEAR(${X}) as DY ,QUARTER(${X}) AS DQ</if>
+				<if test="GRDT.equals('YEAR')">,YEAR(${X}) AS DY</if>			
+			</if>
+	FROM ${TABLE_ID}
+	WHERE
+	1=1
+	AND ${Y} is not NULL
+	AND ${Y2} is not NULL
+	AND ${X} is not NULL
+		${filterQuery}
+	GROUP BY
+		<if test="GRDT == null or GRDT == ''">XDATA</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>
+			<if test="GRDT.equals('YEAR')">YEAR(${X})</if>			
+		</if>
+			<if test="GRDT == null or GRDT == ''">ORDER BY XDATA ${P3} </if>
+			<if test="GRDT != null and GRDT != ''">
+				<if test="GRDT.equals('WEEK')">ORDER BY		YEAR(${X})	${P3} ,WEEK(${X})	${P3} </if>
+				<if test="GRDT.equals('MONTH')">ORDER BY	YEAR(${X})	${P3} ,MONTH(${X})	${P3} </if>
+				<if test="GRDT.equals('QUARTER')">ORDER BY	YEAR(${X})	${P3} ,QUARTER(${X})${P3} </if>
+				<if test="GRDT.equals('YEAR')">ORDER BY		YEAR(${X})	${P3} 	</if>			
+			 </if> 
+
+	</select>
+	
+	<select id="selVisualLineGraph" parameterType="map" resultType="hashmap">
+		SELECT
+		SUM(${Y}) as S
+		,ROUND(AVG(${Y}),2) as M
+		<if test="GRDT == null or GRDT == ''">
+		,
+			<if test="ITEM_TYPE == 'DATE'"> DATE(${X})     </if>
+			<if test="ITEM_TYPE != 'DATE'">		${X}	</if> AS XDATA
+		</if>
+		<if test="GRDT != null and GRDT != ''">		
+			<if test="GRDT.equals('WEEK')">,YEAR(${X})	|| '년 ' || WEEK(${X})	|| '주기' as XDATA</if>
+			<if test="GRDT.equals('MONTH')">,YEAR(${X})	|| '년 ' || MONTH(${X})	|| '월' as XDATA</if>
+			<if test="GRDT.equals('QUARTER')">,YEAR(${X})|| '년 ' || QUARTER(${X})	|| '분기' as XDATA</if>
+			<if test="GRDT.equals('YEAR')">,YEAR(${X})	|| '년' as XDATA</if>			
+		</if>
+		<if test="X2 != null and X2 != ''" >
+			<if test="GRDT2 == null or GRDT2 == ''">
+				<if test="GRNUM2 == null or GRNUM2 == ''">
+					,<if test="ITEM_TYPE2 == 'DATE'"> DATE(${X2})     </if>
+					<if test="ITEM_TYPE2 != 'DATE'">		${X2}	</if> AS X2DATA
+				</if>
+				<if test="GRNUM2 != null and GRNUM2 != ''">
+					,FLOOR(${X2}/${GRNUM2}) AS X2DATA
+				</if></if>
+			<if test="GRDT2 != null and GRDT2 != ''">		
+				<if test="GRDT2.equals('WEEK')">,YEAR(${X2})	|| '년 ' || WEEK(${X2})	|| '주기' as X2DATA</if>
+				<if test="GRDT2.equals('MONTH')">,YEAR(${X2})	|| '년 ' || MONTH(${X2})	|| '월' as X2DATA</if>
+				<if test="GRDT2.equals('QUARTER')">,YEAR(${X2})|| '년 ' || QUARTER(${X2})	|| '분기' as X2DATA</if>
+				<if test="GRDT2.equals('YEAR')">,YEAR(${X2})	|| '년' as X2DATA</if>			
+			</if>
+			
+		</if>
+		FROM
+			${TABLE_ID}
+		WHERE
+			1 = 1
+			and ${Y} is not NULL
+			and ${X} is not NULL
+		<if test="X2 != null and X2 != ''" >
+			and ${X2} is not NULL			
+		</if>
+			${filterQuery}
+		GROUP BY
+		<if test="GRDT == null or GRDT == ''">XDATA</if>
+		<if test="GRDT != null and GRDT != ''">
+			<if test="GRDT.equals('WEEK')">YEAR(${X}),WEEK(${X})</if>
+			<if test="GRDT.equals('MONTH')">YEAR(${X}),MONTH(${X})</if>
+			<if test="GRDT.equals('QUARTER')">YEAR(${X}),QUARTER(${X})</if>	
+			<if test="GRDT.equals('YEAR')">YEAR(${X})</if>	
+		</if>
+		<if test="X2 != null and X2 != ''" >
+			, X2DATA	
+		</if>
+			ORDER BY
+			<if test="GRDT == null or GRDT == ''">XDATA ${P3} </if>
+			<if test="GRDT != null and GRDT != ''">
+				<if test="GRDT.equals('WEEK')">		YEAR(${X})	${P3} ,WEEK(${X})	${P3} </if>
+				<if test="GRDT.equals('MONTH')">	YEAR(${X})	${P3} ,MONTH(${X})	${P3} </if>
+				<if test="GRDT.equals('QUARTER')">	YEAR(${X})	${P3} ,QUARTER(${X})${P3} </if>
+				<if test="GRDT.equals('YEAR')">		YEAR(${X})	${P3} 	</if>			
+			 </if> 
+
+	</select>
+	<select id="selVisualHeatYear" parameterType="map" resultType="String">
+	SELECT
+		YEAR(${X}) || '년'
+	FROM
+		${TABLE_ID}
+	WHERE 1=1
+		AND ${X} IS NOT NULL
+		AND ${Y} IS NOT NULL
+			${filterQuery}
+	GROUP BY YEAR(${X})
+	ORDER BY YEAR(${X}) ASC
+	</select>
+	<select id="selVisualHeatMonth" parameterType="map" resultType="String">
+	SELECT
+		MONTH(${X}) || '월'
+	FROM
+		${TABLE_ID}
+	WHERE 1=1
+		AND ${X} IS NOT NULL
+		AND ${Y} IS NOT NULL
+			${filterQuery}
+	GROUP BY MONTH(${X})
+	ORDER BY MONTH(${X}) ASC
+	</select>
+	<select id="selVisualHeatMap" parameterType="map" resultType="hashmap">
+	SELECT
+		YEAR(${X}) || '년' AS YEAR
+		,MONTH(${X}) || '월' AS MONTH
+		,ROUND(AVG(${Y}),2) AS M
+	FROM
+		${TABLE_ID}
+	WHERE 1=1
+		AND ${X} IS NOT NULL
+		AND ${Y} IS NOT NULL
+			${filterQuery}
+	GROUP BY YEAR(${X}),MONTH(${X})
+	ORDER BY YEAR(${X}) ASC
+	</select>	
+</mapper>

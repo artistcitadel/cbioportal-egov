@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:magrittr:1.5-b322">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/magrittr/1.5-b322/magrittr-1.5-b322.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/magrittr/1.5-b322/magrittr-1.5-b322-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/magrittr/1.5-b322/magrittr-1.5-b322-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

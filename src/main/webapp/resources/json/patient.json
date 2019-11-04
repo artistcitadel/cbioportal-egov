@@ -1,0 +1,24 @@
+
+  [
+    { "patientId":"2679234583",
+		  "sampleId":"AMC000",
+			"age":"52",
+			"cancerStudies":"ovly",
+			"cancerType":"BC",
+			"cancerTypeDetails":"BCD"
+		},
+		{ "patientId":"2679234584",
+		  "sampleId":"AMC000",
+			"age":"12",
+			"cancerStudies":"loveTumor",
+			"cancerType":"BC",
+			"cancerTypeDetails":"BCD"
+		},
+				{ "patientId":"2679234585",
+		  "sampleId":"AMC000",
+			"age":"12",
+			"cancerStudies":"heartTumor",
+			"cancerType":"BC",
+			"cancerTypeDetails":"BCD"
+		}
+	]

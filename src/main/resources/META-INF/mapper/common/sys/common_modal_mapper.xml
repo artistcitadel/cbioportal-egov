@@ -1,0 +1,1203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <mapper namespace="common_modal">
+ 	<!-- 상병코드 가져오기 -->
+	<select id="selectDiseaseCodeW" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.DIS_CODE AS CODE,
+			A.DIS_KNAM AS KNAM,
+			A.DIS_ENAM AS ENAM,
+			A.DIS_USED,
+			A.DIS_INDEX,
+			A.DIS_STND,
+			A.DIS_RSFL,
+			A.DIS_STFL,
+			A.DIS_ABBR,
+			A.DIS_SEQ,
+			A.DIS_REMARK,
+			A.DIS_FRDT,
+			A.DIS_TODT,
+			A.DIS_MINAGE,
+			A.DIS_MAXAGE,
+			A.DIS_SEX
+  	  FROM
+  	  		${SCHEMA}.CC_DISINX A
+  	  WHERE
+  	       1=1 
+ 	    <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+ 	    	<if test="SEARCH_KEY == 0">
+	   		 AND UPPER(A.DIS_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 </if>
+	   		 <if test="SEARCH_KEY == 1">
+	   		 AND (UPPER(A.DIS_KNAM) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 OR UPPER(A.DIS_ENAM) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%')
+	   		 </if>
+	    </if> 
+		
+	</select>
+	
+	<!-- 상병코드 가져오기 with 사업장코드 -->
+	<select id="selectDiseaseCodeWInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.DIS_CODE AS CODE,
+			A.DIS_KNAM AS KNAM,
+			A.DIS_ENAM AS ENAM,
+			A.DIS_USED,
+			A.DIS_INDEX,
+			A.DIS_STND,
+			A.DIS_RSFL,
+			A.DIS_STFL,
+			A.DIS_ABBR,
+			A.DIS_SEQ,
+			A.DIS_REMARK,
+			A.DIS_FRDT,
+			A.DIS_TODT,
+			A.DIS_MINAGE,
+			A.DIS_MAXAGE,
+			A.DIS_SEX,
+			A.INSTCD
+  	  FROM
+  	  		${SCHEMA}.CC_DISINX A
+  	  WHERE
+  	       1=1 
+ 	    <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+ 	    	<if test="SEARCH_KEY == 0">
+	   		 AND UPPER(A.DIS_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 </if>
+	   		 <if test="SEARCH_KEY == 1">
+	   		 AND (UPPER(A.DIS_KNAM) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 OR UPPER(A.DIS_ENAM) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%')
+	   		 </if>
+	    </if> 
+		
+	</select>
+	
+	<!-- 받아온 상병코드 넣어주기 -->
+	<select id="selectDiseaseParentCodeListW" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.DIS_CODE AS CODE,
+			A.DIS_KNAM AS KNAM,
+			A.DIS_ENAM AS ENAM,
+			A.DIS_USED,
+			A.DIS_INDEX,
+			A.DIS_STND,
+			A.DIS_RSFL,
+			A.DIS_STFL,
+			A.DIS_ABBR,
+			A.DIS_SEQ,
+			A.DIS_REMARK,
+			A.DIS_FRDT,
+			A.DIS_TODT,
+			A.DIS_MINAGE,
+			A.DIS_MAXAGE,
+			A.DIS_SEX
+  	  FROM
+  	  		${SCHEMA}.CC_DISINX A
+  	  WHERE
+  	       1=1 
+ 	  AND DIS_CODE IN
+ 	 	 ( ${SEARCH_VAL} )
+		
+	</select>
+	
+	<!-- 받아온 상병코드 넣어주기 with 사업장코드 -->
+	<select id="selectDiseaseParentCodeListWInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.DIS_CODE AS CODE,
+			A.DIS_KNAM AS KNAM,
+			A.DIS_ENAM AS ENAM,
+			A.DIS_USED,
+			A.DIS_INDEX,
+			A.DIS_STND,
+			A.DIS_RSFL,
+			A.DIS_STFL,
+			A.DIS_ABBR,
+			A.DIS_SEQ,
+			A.DIS_REMARK,
+			A.DIS_FRDT,
+			A.DIS_TODT,
+			A.DIS_MINAGE,
+			A.DIS_MAXAGE,
+			A.DIS_SEX,
+			A.INSTCD
+  	  FROM
+  	  		${SCHEMA}.CC_DISINX A
+  	  WHERE
+  	       1=1 
+ 	  AND INSTCD || '^' || DIS_CODE IN
+ 	 	 ( ${SEARCH_VAL} )
+		
+	</select>
+	
+	<!-- 트리 만들기 -->
+	<select id="selectDiseaseCodeTreeW" parameterType="map" resultType="hashmap">
+		SELECT
+		    DISTINCT '전체공유조건' AS text,
+		    #{code3} AS id,
+		    '-1' AS parentid,
+		    - 1 AS value,
+		    '../../images/folder.png' AS icon
+		FROM
+		    DUAL
+		UNION SELECT
+		    LOV_NM AS text,
+		    CONCAT(PER_CODE,'_',DEPT_CODE,'_',SEQ,'_',LOV_CD) AS id,
+		    #{code3} AS parentid,
+		    seq AS value,
+		    '../../images/contactsIcon.png' AS icon
+		FROM
+		   ${tableNm}
+		WHERE
+		   LOV_CD = #{code3}
+		UNION SELECT
+		    DISTINCT '과공유조건' AS text,
+		    #{code2} AS id,
+		    '-2' AS parentid,
+		    - 1 AS value,
+		    '../../images/folder.png' AS icon
+		FROM
+		    DUAL
+		UNION SELECT
+		    LOV_NM AS text,
+		    CONCAT(PER_CODE,'_',DEPT_CODE,'_',SEQ,'_',LOV_CD) AS id,
+		    #{code2} AS parentid,
+		    seq AS value,
+		    '../../images/contactsIcon.png' AS icon
+		FROM
+		${tableNm}
+		WHERE
+		    TRIM(DEPT_CODE) = TRIM(#{deptCode})
+		    AND LOV_CD = #{code2}
+		UNION SELECT
+		    DISTINCT '개인조건' AS text,
+		    #{code1} AS id,
+		    '-3' AS parentid,
+		    - 1 AS value,
+		    '../../images/folder.png' AS icon
+		FROM
+		    DUAL
+		UNION SELECT
+		    LOV_NM AS text,
+		    CONCAT(PER_CODE,'_',DEPT_CODE,'_',SEQ,'_',LOV_CD) AS id,
+		    #{code1} AS parentid,
+		    seq AS value,
+		    '../../images/contactsIcon.png' AS icon
+		FROM
+		${tableNm}
+		WHERE
+		    PER_CODE = TRIM(#{perCode})
+		    AND LOV_CD = #{code1}
+		ORDER BY
+		    value,
+		    parentid
+		
+	</select>
+	
+	<!-- 트리의 상병코드 뿌려주기 -->
+	<select id="selectSearchSelectItemContDetlWList" parameterType="map" resultType="hashmap">
+		SELECT
+				LOV_CD,
+				PER_CODE,
+				SEQ,
+				LOV_NM,
+				PER_NAME,
+				DEPT_CODE,
+				${codeNm} AS CODE,
+				${enamNm} AS ENAM,
+				${knamNm} AS KNAM,
+				SHARE_REQ_YN,
+				SHARE_REQ_DT,
+				LDNG_DT
+		FROM ${tableNm}
+			WHERE LOV_CD=#{id}
+			AND LOV_NM = #{label}
+			AND SEQ = #{value}
+	</select>
+	
+	<!-- 트리의 상병코드 뿌려주기 with 사업장코드 -->
+	<select id="selectSearchSelectItemContDetlWListInstCd" parameterType="map" resultType="hashmap">
+		SELECT
+				LOV_CD,
+				PER_CODE,
+				SEQ,
+				LOV_NM,
+				PER_NAME,
+				DEPT_CODE,
+				${codeNm} AS CODE,
+				${enamNm} AS ENAM,
+				${knamNm} AS KNAM,
+				SHARE_REQ_YN,
+				SHARE_REQ_DT,
+				LDNG_DT,
+				INSTCD
+		FROM ${tableNm}
+			WHERE LOV_CD=#{id}
+			AND LOV_NM = #{label}
+			AND SEQ = #{value}
+	</select>
+	
+	<!-- 상병코드 조건저장 시 SEQ받아오기  -->
+	<select id="selectLovMaxSeq" parameterType="map" resultType="java.lang.Integer">
+		SELECT  IFNULL(MAX(SEQ), 0) + 1 as SEQ FROM ${tableNm} WHERE LOV_CD IN (${code})
+	</select>
+	
+	<!-- 상병코드 조건저장 -->
+	<insert id="insertDiseaseCodeForTreeW" parameterType="map">
+		INSERT INTO ${tableNm}
+			(
+				LOV_CD, 
+				PER_CODE, 
+				SEQ, 
+				LOV_NM, 
+				PER_NAME, 
+				DEPT_CODE,  
+				${codeCol}, 
+				${enamCol}, 
+				${knamCol}, 
+				SHARE_REQ_YN, 
+				SHARE_REQ_DT, 
+				LDNG_DT
+			)
+		VALUES
+			(
+				#{insertMode}, 
+				#{perCode}, 
+				#{maxSeq}, 
+				#{lovNm}, 
+				#{perName}, 
+				#{deptCode}, 
+				#{code}, 
+				#{enam}, 
+				#{knam}, 
+				'N', 
+				NOW(), 
+				NOW()
+			)
+	</insert>
+	
+	<!-- 상병코드 조건저장 with 사업장코드 -->
+	<insert id="insertDiseaseCodeForTreeWInstCd" parameterType="map">
+		INSERT INTO ${tableNm}
+			(
+				LOV_CD, 
+				PER_CODE, 
+				SEQ, 
+				LOV_NM, 
+				PER_NAME, 
+				DEPT_CODE,  
+				${codeCol}, 
+				${enamCol}, 
+				${knamCol}, 
+				SHARE_REQ_YN, 
+				SHARE_REQ_DT, 
+				LDNG_DT,
+				INSTCD
+			)
+		VALUES
+			(
+				#{insertMode}, 
+				#{perCode}, 
+				#{maxSeq}, 
+				#{lovNm}, 
+				#{perName}, 
+				#{deptCode}, 
+				#{code}, 
+				#{enam}, 
+				#{knam}, 
+				'N', 
+				NOW(), 
+				NOW(),
+				#{INSTCD}
+			)
+	</insert>
+	
+	<!-- 상병코드 조건삭제 -->
+	<delete id="deleteDiseaseCodeForTreeW" parameterType="map">
+		delete  FROM  ${tableNm}
+		WHERE	1=1
+		AND 	SEQ IN (${maxSeq})	
+		AND		PER_CODE = #{perCode}
+		<if test="delCode != null and delCode != ''">
+	  	    	AND LOV_CD IN (${delCode})
+		</if>  	
+	</delete>
+	
+	
+	<!-- 상병코드 공유 -->
+	<insert id="insertDiseaseShareCodeForTreeW" parameterType="map">
+		INSERT INTO ${tableNm}
+			(
+				LOV_CD, 
+				PER_CODE, 
+				SEQ, 
+				LOV_NM, 
+				PER_NAME, 
+				DEPT_CODE,  
+				${codeCol}, 
+				${enamCol}, 
+				${knamCol}, 
+				SHARE_REQ_YN, 
+				SHARE_REQ_DT, 
+				LDNG_DT
+			)
+		SELECT 
+			#{insertMode}, 
+			#{perCode}, 
+			#{maxSeq}, 
+			#{lovNm}, 
+			#{perName}, 
+			#{deptCode},  
+			${codeCol}, 
+			${enamCol}, 
+			${knamCol}, 
+			SHARE_REQ_YN, 
+			NOW(), 
+			NOW()
+		FROM 
+			${tableNm}
+		WHERE SEQ = #{beforeSeq}
+	</insert>
+	
+	<!-- 상병코드 공유 with 사업장코드 -->
+	<insert id="insertDiseaseShareCodeForTreeWInstCd" parameterType="map">
+		INSERT INTO ${tableNm}
+			(
+				LOV_CD, 
+				PER_CODE, 
+				SEQ, 
+				LOV_NM, 
+				PER_NAME, 
+				DEPT_CODE,  
+				${codeCol}, 
+				${enamCol}, 
+				${knamCol}, 
+				SHARE_REQ_YN, 
+				SHARE_REQ_DT, 
+				LDNG_DT,
+				INSTCD
+			)
+		SELECT 
+			#{insertMode}, 
+			#{perCode}, 
+			#{maxSeq}, 
+			#{lovNm}, 
+			#{perName}, 
+			#{deptCode},  
+			${codeCol}, 
+			${enamCol}, 
+			${knamCol}, 
+			SHARE_REQ_YN, 
+			NOW(), 
+			NOW(),
+			INSTCD
+		FROM 
+			${tableNm}
+		WHERE SEQ = #{beforeSeq}
+	</insert>
+	
+	<!-- 처방코드 selectbox 뿌려주기 -->
+	<select id="selectSelectBoxP" parameterType="map" resultType="hashmap">
+		SELECT DISTINCT
+	  	    		${columnName} AS CODE, NVL(${columnKorName},${columnName}) AS KNAM, NVL(${columnName} || ':' || ${columnKorName},${columnName}) as SUMNAM
+			 FROM 
+			 		${SCHEMA}.${tableName}
+			 WHERE
+			 	 TRIM(${whereColumnName}) ${logic} ${whereColumnData}
+			 AND 
+			 	  TRIM(${columnName}) != ''
+			 AND 
+			 	  TRIM(${columnKorName}) != ''
+			 ORDER BY 
+			 		CODE
+	</select>
+	
+	<select id="selectCodeListPA" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.ORD_CODE AS CODE,
+			A.ORD_KNAM AS KNAM,
+			A.ORD_ENAM AS ENAM,
+			A.ORD_SNAM,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+			A.ORD_KIND,
+			A.ORD_SCLS,
+			A.ORD_TRDP,
+		    CASE A.ORD_PRFL WHEN '1' THEN '가능' WHEN '2' THEN '불가능' END ORD_PRFL,
+   			CASE A.ORD_GRFL WHEN '1' THEN '그룹' WHEN '2' THEN '싱글' END ORD_PRFL,
+			A.ORD_BQTY,
+			A.ORD_UNIT,
+			A.ORD_DCFL,
+			A.ORD_SPCD,
+			A.ORD_SUCD,
+			A.ORD_ETDT,
+			A.ORD_ETPR 
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  		TRIM(A.ORD_KIND) != ''
+	 	    <if test="ORDKIND != null and ORDKIND != ''">
+	  	    	AND A.ORD_KIND = #{ORDKIND}
+			</if>  	       
+	 	    <if test="ORDSCLS != null and ORDSCLS != ''">
+	  	    	AND A.ORD_SCLS = #{ORDSCLS}
+			</if> 
+ 	    <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+ 	    		<if test="SEARCH_KEY == 0">
+	   		 AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+	   		 </if>
+ 	    	<if test="SEARCH_KEY == 1">
+	   		 AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 </if>
+	    </if> 
+	</select>
+	
+	<select id="selectCodeListPAInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.ORD_CODE AS CODE,
+			A.ORD_KNAM AS KNAM,
+			A.ORD_ENAM AS ENAM,
+			A.ORD_SNAM,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+			A.ORD_KIND,
+			A.ORD_SCLS,
+			A.ORD_TRDP,
+		    CASE A.ORD_PRFL WHEN '1' THEN '가능' WHEN '2' THEN '불가능' END ORD_PRFL,
+   			CASE A.ORD_GRFL WHEN '1' THEN '그룹' WHEN '2' THEN '싱글' END ORD_PRFL,
+			A.ORD_BQTY,
+			A.ORD_UNIT,
+			A.ORD_DCFL,
+			A.ORD_SPCD,
+			A.ORD_SUCD,
+			A.ORD_ETDT,
+			A.ORD_ETPR,
+			A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  		TRIM(A.ORD_KIND) != ''
+	 	    <if test="ORDKIND != null and ORDKIND != ''">
+	  	    	AND A.ORD_KIND = #{ORDKIND}
+			</if>  	       
+	 	    <if test="ORDSCLS != null and ORDSCLS != ''">
+	  	    	AND A.ORD_SCLS = #{ORDSCLS}
+			</if> 
+ 	    <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+ 	    		<if test="SEARCH_KEY == 0">
+	   		 AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+	   		 </if>
+ 	    	<if test="SEARCH_KEY == 1">
+	   		 AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+	   		 </if>
+	    </if> 
+	</select>
+	
+	<select id="selectCodeListPB" parameterType="map" resultType="hashmap">
+		SELECT 
+		    A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.LB_GR_FLAG,
+		    A.LB_PB_G_CODE,
+		    A.LB_PB_G_NM,
+		    A.LB_PB_CODE,
+		    A.LB_PB_NM,
+		    A.LB_SP_CODE,
+		    A.LB_SP_NM,
+		    A.LB_RS_B_CODE,
+		    A.LB_RS_TYPE,
+		    A.LB_TX_FLAG,
+		    A.LB_M_MAX,
+		    A.LB_M_MIN,
+		    A.LB_W_MAX,
+		    A.LB_W_MIN,
+		    A.LB_Y_MAX,
+		    A.LB_Y_MIN,
+		    A.LB_TS_CODE,
+		    A.LB_SL_CODE,
+		    A.LB_SL_NM,
+		    A.LB_UNIT,
+		    A.LB_HL_CHK,
+		    A.LB_DP_CHK,
+		    A.LB_DLT_FLAG,
+		    A.LB_APP_FLAG,
+		    A.LB_D_MAX,
+		    A.LB_D_MIN,
+		    A.LB_P_MAX,
+		    A.LB_P_MIN
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+    	  	A.ORD_KIND = 'LAB'
+	 	    <if test="LBSLCODE != null and LBSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{LBSLCODE}
+			</if>  	       
+		<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPBInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+		    A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.LB_GR_FLAG,
+		    A.LB_PB_G_CODE,
+		    A.LB_PB_G_NM,
+		    A.LB_PB_CODE,
+		    A.LB_PB_NM,
+		    A.LB_SP_CODE,
+		    A.LB_SP_NM,
+		    A.LB_RS_B_CODE,
+		    A.LB_RS_TYPE,
+		    A.LB_TX_FLAG,
+		    A.LB_M_MAX,
+		    A.LB_M_MIN,
+		    A.LB_W_MAX,
+		    A.LB_W_MIN,
+		    A.LB_Y_MAX,
+		    A.LB_Y_MIN,
+		    A.LB_TS_CODE,
+		    A.LB_SL_CODE,
+		    A.LB_SL_NM,
+		    A.LB_UNIT,
+		    A.LB_HL_CHK,
+		    A.LB_DP_CHK,
+		    A.LB_DLT_FLAG,
+		    A.LB_APP_FLAG,
+		    A.LB_D_MAX,
+		    A.LB_D_MIN,
+		    A.LB_P_MAX,
+		    A.LB_P_MIN,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+    	  	A.ORD_KIND = 'LAB'
+	 	    <if test="LBSLCODE != null and LBSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{LBSLCODE}
+			</if>  	       
+		<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPC" parameterType="map" resultType="hashmap">
+		SELECT 
+			  A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.RAD_ROOM_CODE,
+		    A.RAD_ROOM_NAME,
+		    A.RAD_PART_CODE,
+		    A.RAD_PART_NAME,
+		    A.RAD_D_PAR_CODE,
+		    A.RAD_D_PAR_NAME,
+		    A.RAD_PACSPECIALITY,
+		    A.RAD_CNT
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND 
+  	  	 A.ORD_KIND = 'RAD'
+  	  	  <if test="RADPACSPECIALITY != null and RADPACSPECIALITY != ''">
+	  	    	AND A.ORD_SCLS = #{RADPACSPECIALITY}
+			</if> 
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPCInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+			  A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.RAD_ROOM_CODE,
+		    A.RAD_ROOM_NAME,
+		    A.RAD_PART_CODE,
+		    A.RAD_PART_NAME,
+		    A.RAD_D_PAR_CODE,
+		    A.RAD_D_PAR_NAME,
+		    A.RAD_PACSPECIALITY,
+		    A.RAD_CNT,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND 
+  	  	 A.ORD_KIND = 'RAD'
+  	  	  <if test="RADPACSPECIALITY != null and RADPACSPECIALITY != ''">
+	  	    	AND A.ORD_SCLS = #{RADPACSPECIALITY}
+			</if> 
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPD" parameterType="map" resultType="hashmap">
+		SELECT 
+		       A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.FUN_L_CLS,
+		    A.FUN_L_CLS_NM,
+		    A.FUN_M_CLS,
+		    A.FUN_M_CLS_NM,
+		    A.FUN_S_CLS,
+		    A.FUN_S_CLS_NM,
+		    A.FUN_DEPT_CODE,
+		    A.FUN_DEPT_NM
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 A.ORD_KIND = 'SPE'
+	 	    <if test="SPSLCODE != null and SPSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{SPSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPDInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+		       A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.FUN_L_CLS,
+		    A.FUN_L_CLS_NM,
+		    A.FUN_M_CLS,
+		    A.FUN_M_CLS_NM,
+		    A.FUN_S_CLS,
+		    A.FUN_S_CLS_NM,
+		    A.FUN_DEPT_CODE,
+		    A.FUN_DEPT_NM,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 A.ORD_KIND = 'SPE'
+	 	    <if test="SPSLCODE != null and SPSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{SPSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPE" parameterType="map" resultType="hashmap">
+		SELECT 
+		       A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.PT_B_CODE,
+		    A.PT_B_NM,
+		    A.PT_D_CODE,
+		    A.PT_D_NM,
+		    A.PT_SLIP,
+		    CASE    A.PT_IOGU WHEN 'I' THEN '원외' WHEN 'O' THEN '원내' END PT_IOGU
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 A.ORD_KIND = 'PAT'
+	 	    <if test="PATHSLCODE != null and PATHSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{PATHSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPEInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+		       A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.PT_B_CODE,
+		    A.PT_B_NM,
+		    A.PT_D_CODE,
+		    A.PT_D_NM,
+		    A.PT_SLIP,
+		    CASE    A.PT_IOGU WHEN 'I' THEN '원외' WHEN 'O' THEN '원내' END PT_IOGU,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 A.ORD_KIND = 'PAT'
+	 	    <if test="PATHSLCODE != null and PATHSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{PATHSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPF" parameterType="map" resultType="hashmap">
+		SELECT 
+		    A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.MB_PROC_TYPE,
+		    A.MB_CONT_QTY,
+		    A.MB_CONT_UNIT,
+		    A.MB_STND_QTY,
+		    A.MB_STND_UNIT,
+		    A.MB_PCK_UNIT,
+			CASE     A.MB_THRU_CHAN WHEN '1' THEN '경구' WHEN '2' THEN '외용' WHEN '3' THEN '주사' END MB_THRU_CHAN,
+			CASE     A.MB_MED_FLAG WHEN '1' THEN '전문/급여' WHEN '2' THEN '전문/비급여' WHEN '3' THEN '일반/급여' WHEN '4' THEN '일반/비급여' WHEN '5' THEN '임상시험용' WHEN '6' THEN '연구용' WHEN '7' THEN '무상공급,정부지원'  WHEN '8' THEN '원료약품' END MB_MED_FLAG,
+		    A.MB_MED_FLAG,
+		    A.MB_ELEM_CODE,
+		    A.MB_ELEM_NM,
+		    A.MB_CLSS_COED,
+		    A.MB_CLSS_NM,
+		    CASE     A.MB_KEEP_FLAG1 WHEN '1' THEN '냉장' WHEN '2' THEN '냉동' WHEN '3' THEN '실온' END MB_KEEP_FLAG1,
+			CASE     A.MB_KEEP_FLAG2 WHEN '1' THEN '차광' WHEN '2' THEN '비차광' WHEN '3' THEN '암소' WHEN '4' THEN '기타' END MB_KEEP_FLAG2,
+			CASE     A.MB_KEEP_FLAG3 WHEN '1' THEN '방습' WHEN '2' THEN '비방습' WHEN '3' THEN '기밀' WHEN '4' THEN '밀봉' WHEN '5' THEN '기타' END MB_KEEP_FLAG3,
+			CASE     A.MB_INVN_FLAG WHEN '1' THEN 'AMP' WHEN '2' THEN 'VIAL' WHEN '3' THEN '수액' WHEN '0' THEN '일반' WHEN '4' THEN '기초수액' END MB_INVN_FLAG,
+			A.MB_INVN_FLAG,
+		    A.MB_FULL_QTY,
+		    A.MB_DAY_CNT,
+		    A.MB_TMP1,
+		    A.MB_MINIMUM_QTY,
+		    A.MB_VOLUMN,
+		    A.MB_FLUID
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 	A.ORD_KIND = 'MED'
+  	  		 <if test="MBTHRUCHAN != null and MBTHRUCHAN != ''">
+	  	    	AND A.MB_THRU_CHAN = #{MBTHRUCHAN}
+			</if>  	       
+  	  		<!--  <if test="mbElemCode != null and mbElemCode != ''">
+	  	    	AND A.MB_ELEM_CODE = #{mbElemCode}
+			</if>  --> 	       
+	 	    <if test="MBCLSSCODE != null and MBCLSSCODE != ''">
+	  	    	AND A.MB_CLSS_COED = #{MBCLSSCODE}
+			</if> 
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPFInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+		    A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.MB_PROC_TYPE,
+		    A.MB_CONT_QTY,
+		    A.MB_CONT_UNIT,
+		    A.MB_STND_QTY,
+		    A.MB_STND_UNIT,
+		    A.MB_PCK_UNIT,
+			CASE     A.MB_THRU_CHAN WHEN '1' THEN '경구' WHEN '2' THEN '외용' WHEN '3' THEN '주사' END MB_THRU_CHAN,
+			CASE     A.MB_MED_FLAG WHEN '1' THEN '전문/급여' WHEN '2' THEN '전문/비급여' WHEN '3' THEN '일반/급여' WHEN '4' THEN '일반/비급여' WHEN '5' THEN '임상시험용' WHEN '6' THEN '연구용' WHEN '7' THEN '무상공급,정부지원'  WHEN '8' THEN '원료약품' END MB_MED_FLAG,
+		    A.MB_MED_FLAG,
+		    A.MB_ELEM_CODE,
+		    A.MB_ELEM_NM,
+		    A.MB_CLSS_COED,
+		    A.MB_CLSS_NM,
+		    CASE     A.MB_KEEP_FLAG1 WHEN '1' THEN '냉장' WHEN '2' THEN '냉동' WHEN '3' THEN '실온' END MB_KEEP_FLAG1,
+			CASE     A.MB_KEEP_FLAG2 WHEN '1' THEN '차광' WHEN '2' THEN '비차광' WHEN '3' THEN '암소' WHEN '4' THEN '기타' END MB_KEEP_FLAG2,
+			CASE     A.MB_KEEP_FLAG3 WHEN '1' THEN '방습' WHEN '2' THEN '비방습' WHEN '3' THEN '기밀' WHEN '4' THEN '밀봉' WHEN '5' THEN '기타' END MB_KEEP_FLAG3,
+			CASE     A.MB_INVN_FLAG WHEN '1' THEN 'AMP' WHEN '2' THEN 'VIAL' WHEN '3' THEN '수액' WHEN '0' THEN '일반' WHEN '4' THEN '기초수액' END MB_INVN_FLAG,
+			A.MB_INVN_FLAG,
+		    A.MB_FULL_QTY,
+		    A.MB_DAY_CNT,
+		    A.MB_TMP1,
+		    A.MB_MINIMUM_QTY,
+		    A.MB_VOLUMN,
+		    A.MB_FLUID,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND
+  	  	 	A.ORD_KIND = 'MED'
+  	  		 <if test="MBTHRUCHAN != null and MBTHRUCHAN != ''">
+	  	    	AND A.MB_THRU_CHAN = #{MBTHRUCHAN}
+			</if>  	       
+  	  		<!--  <if test="mbElemCode != null and mbElemCode != ''">
+	  	    	AND A.MB_ELEM_CODE = #{mbElemCode}
+			</if>  --> 	       
+	 	    <if test="MBCLSSCODE != null and MBCLSSCODE != ''">
+	  	    	AND A.MB_CLSS_COED = #{MBCLSSCODE}
+			</if> 
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPG" parameterType="map" resultType="hashmap">
+		SELECT 
+		  A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.PT_FLAG1,
+		    A.PT_FLAG2,
+		    A.PT_PART,
+		    A.PT_PART_LNM,
+		    A.PT_PART_RNM
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND 
+  	  	 A.ORD_KIND = 'OPR'
+	 	    <if test="OPSLCODE != null and OPSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{OPSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCodeListPGInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+		  A.ORD_CODE AS CODE,
+		    A.ORD_ADAT,
+		    A.ORD_ASAT,
+		    A.ORD_KNAM AS KNAM,
+		    A.ORD_ENAM AS ENAM,
+		    A.ORD_SNAM,
+		    A.PT_FLAG1,
+		    A.PT_FLAG2,
+		    A.PT_PART,
+		    A.PT_PART_LNM,
+		    A.PT_PART_RNM,
+		    A.INSTCD
+	  FROM
+			${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+  	  AND 
+  	  	 A.ORD_KIND = 'OPR'
+	 	    <if test="OPSLCODE != null and OPSLCODE != ''">
+	  	    	AND A.ORD_SCLS = #{OPSLCODE}
+			</if>  	       
+ 	     <if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+			<if test="SEARCH_KEY == 0">
+				AND (UPPER(A.ORD_KNAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%' OR UPPER(A.ORD_ENAM) LIKE '%' ||   UPPER(#{SEARCH_VAL}) || '%') 
+			</if>
+			<if test="SEARCH_KEY == 1">
+				AND UPPER(A.ORD_CODE) LIKE  '%' ||  UPPER(#{SEARCH_VAL}) || '%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 받아온 처방코드 넣어주기 -->
+	<select id="selectDiseaseParentCodeListP" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.ORD_CODE AS CODE,
+			A.ORD_KNAM AS KNAM,
+			A.ORD_ENAM AS ENAM
+  	  FROM
+  	  		${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+ 	  AND ORD_CODE IN
+ 	 	 ( ${SEARCH_VAL} )
+		
+	</select>
+	
+	<!-- 받아온 처방코드 넣어주기 with 사업장코드 -->
+	<select id="selectDiseaseParentCodeListPInstCd" parameterType="map" resultType="hashmap">
+		SELECT 
+  	  		A.ORD_CODE AS CODE,
+			A.ORD_KNAM AS KNAM,
+			A.ORD_ENAM AS ENAM,
+			INSTCD
+  	  FROM
+  	  		${SCHEMA}.CC_ORDR_CD A
+  	  WHERE
+  	       1=1 
+ 	  AND INSTCD || '^' || ORD_CODE IN
+ 	 	 ( ${SEARCH_VAL} )
+		
+	</select>
+	
+	
+	<select id="selectCommonCodeList" parameterType="map" resultType="hashmap">
+		${QUERY}
+	</select>
+	
+	<!-- 2H -->
+	<select id="selectUpperCommonCodeList2H" parameterType="map" resultType="hashmap">
+		SELECT
+			    A.*
+			FROM
+			    CC_ITEM_MGMT A
+			WHERE
+				A.TABLE = (
+					SELECT 
+						UPPER_TABLE 
+					FROM 
+						CC_ITEM_MGMT 
+					WHERE 
+						ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+						AND SEQ=#{item_seq}
+					)
+				AND A.COLUMN = (
+					SELECT 
+						UPPER_COLUMN 
+					FROM 
+						CC_ITEM_MGMT 
+					WHERE 
+						ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+						AND SEQ=#{item_seq}
+					)
+	</select>
+	
+	<!-- 3H -->
+	<select id="selectUpperCommonCodeList3H" parameterType="map" resultType="hashmap">
+		SELECT
+			    *
+			FROM
+			    CC_ITEM_MGMT B
+			WHERE
+				B.TABLE = (
+					SELECT
+					    A.UPPER_TABLE
+					FROM
+					    CC_ITEM_MGMT A
+					WHERE
+						A.TABLE = (
+							SELECT 
+								UPPER_TABLE 
+							FROM 
+								CC_ITEM_MGMT 
+							WHERE 
+								ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+								AND SEQ=#{item_seq}
+							)
+						AND A.COLUMN = (
+							SELECT 
+								UPPER_COLUMN 
+							FROM 
+								CC_ITEM_MGMT 
+							WHERE 
+								ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+								AND SEQ=#{item_seq}
+							)
+					)
+				AND
+					B.COLUMN = (
+					SELECT
+					    A.UPPER_COLUMN
+					FROM
+					    CC_ITEM_MGMT A
+					WHERE
+						A.TABLE = (
+							SELECT 
+								UPPER_TABLE 
+							FROM 
+								CC_ITEM_MGMT 
+							WHERE 
+								ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+								AND SEQ=#{item_seq}
+							)
+						AND A.COLUMN = (
+							SELECT 
+								UPPER_COLUMN 
+							FROM 
+								CC_ITEM_MGMT 
+							WHERE 
+								ITEM_CATE_DETL_SEQ=#{item_cateDetl_seq} 
+								AND SEQ=#{item_seq}
+							)
+					)
+	</select>
+	
+	<!-- 3HTMR 기록내용선택 -->
+	<select id="selectCommonCodeList_3HT_MR_EDIT" parameterType="map" resultType="hashmap">
+		SELECT UMR_RESULT AS CODE_NM
+		FROM ${SCHEMA}.MR_BASS_EMR
+		WHERE FORMCODE = #{formCode}
+		  AND UMR_CODE = #{umrCode}
+		GROUP BY UMR_RESULT
+		ORDER BY 1
+	</select>
+	
+	<!-- 3HTMR 기록내용선택 -->
+	<select id="selectCommonCodeList_3HT_MR_EDITInstCd" parameterType="map" resultType="hashmap">
+		SELECT UMR_RESULT AS CODE_NM, INSTCD
+		FROM ${SCHEMA}.MR_BASS_EMR
+		WHERE FORMCODE = #{formCode}
+		  AND UMR_CODE = #{umrCode}
+		  AND INSTCD = #{INSTCD}
+		GROUP BY UMR_RESULT
+		ORDER BY 1
+	</select>
+	
+	<!-- 3HTMR 기록내용선택 -->
+	<select id="selectCommonCodeList_3HT_MR_LIST" parameterType="map" resultType="hashmap">
+		SELECT UMR_VALUE AS CODE, UMR_DISPLAY AS CODE_NM
+		FROM ${SCHEMA}.MR_UMR_DETAIL
+		WHERE UMR_CODE = #{umrCode}
+		  AND UMR_USE = 'Y'
+		ORDER BY 1
+	</select>
+	
+	<!-- 3HTMR 기록내용선택 -->
+	<select id="selectCommonCodeList_3HT_MR_LISTInstCd" parameterType="map" resultType="hashmap">
+		SELECT UMR_VALUE AS CODE, UMR_DISPLAY AS CODE_NM, INSTCD
+		FROM ${SCHEMA}.MR_UMR_DETAIL
+		WHERE UMR_CODE = #{umrCode}
+		  AND UMR_USE = 'Y'
+		  AND INSTCD = #{INSTCD}
+		ORDER BY 1
+	</select>
+	
+	<!-- 3HTMR 기록내용선택 -->
+	<select id="selectCommonCodeList_3HT_MR_CHECK" parameterType="map" resultType="hashmap">
+		SELECT A.CODE, A.CODE_NM
+		FROM (SELECT 'Y' AS CODE, 'CHECKED' AS CODE_NM UNION ALL SELECT 'N' AS CODE, 'UNCHECKED' AS CODE_NM) A
+		ORDER BY 1 DESC
+	</select>
+	
+	
+	<!-- 키워드 대표어 -->
+	<select id="selectKeyWordCodeList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ, A.TERM 
+		FROM 
+			CC_SYNONYM A
+		LEFT OUTER JOIN CC_SYNONYM_ITEM_MAP B ON (A.SEQ=B.TERM_REP_SEQ)
+		WHERE 1=1
+			AND B.ITEM_CATE_SEQ	= #{item_cate_seq}
+			AND B.ITEM_CATE_DETL_SEQ = #{item_cate_detl_seq}
+			AND A.DELETE_YN = 'N'
+		<if test="SEARCH_VAL != ''">
+			AND A.TERM LIKE CONCAT('%',LOWER(#{SEARCH_VAL}),'%')
+		</if>		
+	</select>
+	
+	<!-- 키워드 상세 -->
+	<select id="selectKeyWordCodeDetlList" parameterType="map" resultType="hashmap">
+		SELECT 
+			A.SEQ, A.TERM
+		FROM 
+			CC_SYNONYM A
+		WHERE 1=1
+			AND A.REP_SEQ = #{REP_SEQ}
+			AND A.DELETE_YN = 'N'
+	</select>
+	
+</mapper>
+ 
+ 
+ 

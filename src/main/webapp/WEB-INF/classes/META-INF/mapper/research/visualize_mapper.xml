@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="visualize">
+ 
+	<!-- vertica에서 olap id 가져오는 쿼리문 -->
+	<select id="selectReportId" resultType="hashmap" parameterType="map">
+		WITH QR AS(
+		    SELECT
+		        REQUEST,
+		        END_TIMESTAMP
+		    FROM
+		        V_MONITOR.QUERY_REQUESTS
+		    WHERE
+		        REQUEST LIKE '%TM_OLAP_%'
+		        AND REQUEST LIKE 'SELECT "tm".%'
+		) SELECT
+		    SPLIT_PART( MIN( LAST_USE_DT ||'^'|| A.OLAP_ID ),'^',2
+		    ) AS OLAP_ID,
+		    MIN(LAST_USE_DT) AS LAST_USE_DT
+		FROM
+		    (
+		        SELECT
+		            'TM_OLAP_01' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_01%'
+		    UNION ALL SELECT
+		            'TM_OLAP_02' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_02%'
+		    UNION ALL SELECT
+		            'TM_OLAP_03' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_03%'
+		    UNION ALL SELECT
+		            'TM_OLAP_04' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_04%'
+		    UNION ALL SELECT
+		            'TM_OLAP_05' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_05%'
+		    UNION ALL SELECT
+		            'TM_OLAP_06' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_06%'
+		    UNION ALL SELECT
+		            'TM_OLAP_07' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_07%'
+		    UNION ALL SELECT
+		            'TM_OLAP_08' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_08%'
+		    UNION ALL SELECT
+		            'TM_OLAP_09' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_09%'
+		    UNION ALL SELECT
+		            'TM_OLAP_10' AS OLAP_ID,
+		            MAX(END_TIMESTAMP) AS LAST_USE_DT
+		        FROM
+		            QR
+		        WHERE
+		            REQUEST LIKE '%TM_OLAP_10%'
+		    ) A
+	</select>
+
+	<!-- vertica에서 가져온 olap id와 일치하는 olap url 및 olap id를 mariaDB에서 가져오는 쿼리문 -->
+	<select id="selectOlapMgmt" resultType="hashmap" parameterType="map">
+		SELECT *
+		  FROM CC_OLAP_MGMT
+		 WHERE OLAP_ID = '${OLAP_ID}' 
+	</select>
+	
+	<!-- create table 전에 해당 이름으로 된 table이 있는지 확인하는 쿼리문 -->
+	<select id="selectExistTableList" parameterType="map" resultType="hashmap">
+		SELECT *
+		  FROM v_catalog.TABLES A
+		WHERE A.TABLE_NAME = '${OLAP_ID}'
+	</select>
+	
+	<!-- table 삭제하는 쿼리문 -->
+	<update id="dropTableForVisualize" parameterType="map">
+		DROP TABLE ${SCHEMA}.${OLAP_ID}
+	</update>
+	
+	<!-- olap id를 table 이름으로, 해당 seq와 일치하는 column list를 column으로 table 생성하는 쿼리문 -->
+	<update id="createTableForVisualize" parameterType="map">
+		CREATE TABLE ${SCHEMA}.${OLAP_ID}
+		 AS
+		SELECT 
+		<foreach item="columnName" collection="COLUMN_NAME" open="" separator="," close="">
+		 ${columnName}
+		</foreach>
+		FROM ${TABLE_ID}
+	</update>
+	
+	<!-- 사용중인(했던)  OLAP_ID 조회 -->
+	<select id="selectUseIdList" resultType="hashmap">
+		SELECT
+		        DISTINCT REGEXP_SUBSTR(REQUEST, 'TM_OLAP_[0-9][0-9]') AS OLAP_ID
+		    FROM
+		        V_MONITOR.QUERY_REQUESTS
+		    WHERE
+		        REQUEST LIKE '%TM_OLAP_%'
+		        AND REQUEST LIKE 'SELECT "tm".%'
+		        AND DATEDIFF(HOUR, END_TIMESTAMP, CURRENT_TIMESTAMP) &lt;= 1
+	</select>
+	
+	<!-- 시각화 정보테이블 조회 -->
+	<select id="selectOlapInfoList" resultType="hashmap">
+		SELECT OLAP_ID
+		  FROM CC_OLAP_MGMT
+		  ORDER BY OLAP_ID
+	</select>
+	
+</mapper>

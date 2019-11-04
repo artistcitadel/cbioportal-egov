@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="dashBoardMgmt">
+ 	<!-- dashboard 등록  -->
+	<insert id="insertDashBoardMgmt" parameterType="map">
+		INSERT INTO CC_DASHBOARD 
+		(             
+			SEQ,              
+			SERVICE_STAT_SQL,               /* 서비스 상태 메시지 생성 SQL */
+			RESEARCH_TARGET_STAT_SQL,       /* 연구대상 통계 정보 생성 SQL */
+			UDT_DT,             			/* 수정일자 */
+			UDT_ID,							/* 변경자 ID */
+			CRT_ID,							/* 생성자 ID */
+			CRT_DT,							/* 변경일자 */
+			SUMMARY_WIDTH,					/* SUMMARY 길이 */
+			SHOW_MY_RESEARCH				/* 나의 연구현황 표출여부 */
+		)
+		VALUES
+		(
+			1,
+			#{SERVICE_STAT_SQL},
+			#{RESEARCH_TARGET_STAT_SQL},
+			NOW(),
+			#{CRT_ID},
+			#{UDT_ID},
+			NOW(),
+			#{SUMMARY_WIDTH},
+			#{SHOW_MY_RESEARCH}
+		)
+		ON DUPLICATE KEY UPDATE 
+			SERVICE_STAT_SQL 			= #{SERVICE_STAT_SQL},				/* 서비스 상태 메시지 생성 SQL */
+			RESEARCH_TARGET_STAT_SQL 	= #{RESEARCH_TARGET_STAT_SQL},		/* 연구대상 통계 정보 생성 SQL */
+			UDT_DT 						= NOW(),							/* 수정일자 */
+			UDT_ID 						= #{UDT_ID},						/* 변경자 ID */
+			SUMMARY_WIDTH 				= #{SUMMARY_WIDTH},					/* SUMMARY 길이 */
+			SHOW_MY_RESEARCH 			= #{SHOW_MY_RESEARCH}				/* 나의 연구현황 표출여부 */
+	
+	</insert>
+	
+	<!-- 게시판 조회 -->
+	<select id="selectDashBoardMgmt" parameterType="map" resultType="hashmap">
+		SELECT 
+			SERVICE_STAT_SQL,
+			RESEARCH_TARGET_STAT_SQL,
+			SHOW_MY_RESEARCH,
+			SUMMARY_WIDTH
+		FROM CC_DASHBOARD 
+	</select>
+	
+	<!-- chart 등록  -->
+	<insert id="insertChartMgmt" parameterType="map">
+		INSERT INTO CC_DASHBOARD_CHART 
+		(                     
+			TITLE,          /* 차트 제목 */
+			TYPE,       	/* 차트 종류 */
+			DATA_SQL,       /* 데이터 생성 SQL */
+			WIDTH,			/* 차트 넓이. 50%, 100% */
+			SHOW_YN,		/* 표출여부 */
+			ORDER_NUM,		/* 표출순서 */
+			UDT_DT,			/* 수정일자 */
+			UDT_ID,			/* 변경자 ID */
+			CRT_ID, 		/* 생성자 ID */
+			CRT_DT, 		/* 변경일자 */
+			DIM, 			/* 차트 DIM */
+			MEASURE, 		/* 차트 MEASURE */
+			COLS			/* 차트 MEASURE checkbox 전체 값 value||check여부||disabled여부 */
+		)
+		VALUES
+		(
+			#{TITLE},
+			#{TYPE},
+			#{DATA_SQL},
+			#{WIDTH},
+			#{SHOW_YN},
+			ORDER_NUM + 1,
+			NOW(),
+			#{UDT_ID},
+			#{CRT_ID},
+			NOW(),
+			#{DIM},
+			#{MEASURE},
+			#{COLS}
+		)
+	
+	</insert>
+	
+	<!-- chart 수정 -->
+	<update id="updateChartMgmt" parameterType="map">
+		UPDATE   CC_DASHBOARD_CHART
+		SET		TITLE			= #{TITLE},
+				TYPE			= #{TYPE},
+				DATA_SQL		= #{DATA_SQL},
+				WIDTH			= #{WIDTH},
+				SHOW_YN			= #{SHOW_YN},
+				UDT_DT			= NOW(),
+				UDT_ID			= #{UDT_ID},
+				DIM				= #{DIM},
+				MEASURE			= #{MEASURE},
+				COLS			= #{COLS}
+		WHERE	SEQ = #{SEQ}
+	
+	</update>
+	
+	<!-- chart 조회 -->
+	<select id="selectChartMgmt" parameterType="map" resultType="hashmap">
+		SELECT @RNUM := @RNUM + 1 AS NUM,
+				A.*
+		FROM
+		(
+			SELECT 
+				SEQ,
+				TITLE,
+				TYPE,
+				DATA_SQL,
+				WIDTH,
+				SHOW_YN,
+				ORDER_NUM,
+				DIM,
+				MEASURE,
+				COLS
+			FROM CC_DASHBOARD_CHART 
+		)A ,
+		(SELECT @RNUM := 0 ) R
+		
+		ORDER BY ORDER_NUM ASC
+	</select>
+	
+	<!-- chart 삭제 -->
+	<delete id="deleteChartMgmt" parameterType="map">
+		DELETE FROM CC_DASHBOARD_CHART
+		WHERE	SEQ = #{SEQ}
+	
+	</delete>
+	
+	<!-- chart 자기 order 번호 변경 -->
+	<update id="orderChartMgmtUp" parameterType="map">
+		UPDATE	CC_DASHBOARD_CHART
+		SET		ORDER_NUM = #{ORDER_NUM_PARTNER}
+		WHERE	SEQ = #{SEQ}	
+	</update>
+	
+	<!-- chart 바뀔 order 번호 변경 -->
+	<update id="orderChartMgmtDown" parameterType="map">
+		UPDATE   CC_DASHBOARD_CHART
+		SET		 ORDER_NUM = #{ORDER_NUM}
+		WHERE	SEQ = #{SEQ_PARTNER}	
+	</update>
+		
+	<!-- chart Dimension & Measures -->
+	<select id="selectChartSQL" parameterType="map" resultType="hashmap">
+		${CHART_SQL}
+	</select>
+
+</mapper>
+ 
+ 
+ 

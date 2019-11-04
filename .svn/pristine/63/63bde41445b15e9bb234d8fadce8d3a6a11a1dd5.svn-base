@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="commonCode">
+ 
+ 	<!-- 그룹코드 카운트 조회 -->
+	<select id="groupCodeCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+		FROM CC_COMMON_CODE_GROUP A
+	</select>
+ 
+ 	<!-- 그룹코드 조회 -->
+	<select id="groupCodeList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM	
+		(
+			SELECT @RNUM := @RNUM + 1 AS NUM,A.*
+			FROM
+			(
+				SELECT	 A.SEQ 			/* 그룹코드 */
+						,A.COMM_GRP_ID 	/* 그룹명 */
+						,A.COMM_GRP_NM 	/* 그룹명 */
+						,A.USE_YN
+				FROM	CC_COMMON_CODE_GROUP A
+				WHERE	1 = 1
+				ORDER BY A.SEQ DESC
+			)A ,
+			(SELECT @RNUM := 0 ) R
+		)TB1 
+		WHERE 1=1
+		ORDER BY NUM DESC
+		LIMIT 0,#{length}
+		<!-- LIMIT 1,#{length} -->
+	
+	</select>
+	
+	<!-- 코드관리에서 사용 할 그룹코드 조회 -->
+	<select id="codeGroupCodeList" parameterType="map" resultType="hashmap">
+		SELECT   A.SEQ         		/* 그룹코드 */
+				,A.COMM_GRP_ID      /* 그룹명 */
+				,A.COMM_GRP_NM      /* 그룹명 */
+		FROM CC_COMMON_CODE_GROUP A
+		WHERE 1=1
+		ORDER BY A.SEQ ASC
+	
+	</select>
+	
+	<!-- 그룹코드 등록-->
+	<insert id="insertGroupCode" parameterType="map">
+		INSERT INTO CC_COMMON_CODE_GROUP
+		(
+			 COMM_GRP_NM		/* 공통코드그룹명 */
+			,COMM_GRP_ID		/* 그룹코드 */
+			,CRT_DT				/* 생성일자 */
+			,CRT_ID				/* 생성자 ID */ 
+		)
+		VALUES(
+			 #{COMM_GRP_NM }
+			,#{COMM_GRP_ID}
+			,CURRENT_TIMESTAMP
+			,#{CRT_ID }
+		)
+	</insert>
+	
+	<!-- 그룹코드 수정-->
+	<update id="updateGroupCode" parameterType="map">
+		UPDATE  CC_COMMON_CODE_GROUP
+		SET 	 COMM_GRP_NM = #{COMM_GRP_NM }		/* 공통코드그룹명 */
+				,UDT_DT = NOW()								/* 수정일자  */
+				,UDT_ID = #{UDT_ID }							/* 변경자 ID */
+		WHERE SEQ = #{SEQ }								/* 공통코드그룹 일련번호 */
+	</update>
+	
+	<!-- 그룹코드 삭제-->
+	<delete id="deleteGroupCode" parameterType="map">
+		DELETE FROM CC_COMMON_CODE_GROUP
+		WHERE SEQ = #{SEQ } 		/* 공통코드그룹 일련번호 */
+	</delete>
+	
+	<!-- 그룹코드 삭제 시 관련된 코드 리스트 삭제 -->
+	<delete id="deleteCodeList" parameterType="map">
+		DELETE FROM CC_COMMON_CODE
+		<!-- WHERE COMM_GRP_SEQ = #{SEQ } 		/* 공통코드그룹 일련번호 */ -->
+		WHERE COMM_GRP_ID = #{COMM_GRP_ID }
+		
+	</delete>
+	
+	
+	<!-- 코드 카운트 조회 -->
+	<select id="codeCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS TOT_CNT
+		FROM CC_COMMON_CODE A
+		WHERE 1=1
+		<if test="COMM_GRP_SEQ != null and COMM_GRP_SEQ != ''">
+			 AND A.COMM_GRP_SEQ = #{COMM_GRP_SEQ }
+		</if>
+		<if test="COMM_GRP_ID != null and COMM_GRP_ID != ''">
+			 AND A.COMM_GRP_ID = #{COMM_GRP_ID }
+		</if>
+		<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+					<choose>
+						<when test="SEARCH_KEY == '001'">
+							AND A.COMM_CD_ID LIKE CONCAT('%',#{SEARCH_VAL},'%')
+						</when>
+						<when test="SEARCH_KEY == '002'">
+							AND A.COMM_CD_NM LIKE CONCAT('%',#{SEARCH_VAL},'%')
+						</when>
+						<otherwise>
+							AND 
+							(
+									A.COMM_CD_ID LIKE CONCAT('%',#{SEARCH_VAL},'%')
+									OR	A.COMM_CD_NM LIKE CONCAT('%',#{SEARCH_VAL},'%')
+							)
+						
+						</otherwise>
+					</choose>
+				</if>
+	</select>
+ 
+ 	<!-- 코드 조회 -->
+	<select id="codeList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM	
+		(
+			SELECT @RNUM := @RNUM + 1 AS NUM,
+					A.*
+			FROM
+			(
+				SELECT A.SEQ					/* 공통코드 일련번호 */   
+						,A.COMM_GRP_SEQ      	/* 공통코드그룹 일련번호 */
+						,A.COMM_GRP_ID      	/* 공통코드그룹 아이디 */
+						,A.COMM_CD_ID			/* 공통코드ID */
+						,A.COMM_CD_NM			/* 공통코드명 */
+						,A.COMM_CD_EXT1
+						,A.COMM_CD_EXT2
+						,A.COMM_CD_EXT3
+						,A.USE_YN       		/* 공통코드 사용여부 */				
+						,A.SORT        			/* 공통코드 순서 */
+						,A.COMM_CD_DESC			/* 공통코드 설명 */
+						,A.UPPER_COMM_CD_ID		/* 상위공통코드 */
+				FROM CC_COMMON_CODE A
+				WHERE 1=1
+				<if test="COMM_GRP_SEQ != null and COMM_GRP_SEQ != ''">
+					 AND A.COMM_GRP_SEQ = #{COMM_GRP_SEQ }
+				</if>
+				<if test="COMM_GRP_ID != null and COMM_GRP_ID != ''">
+					 AND A.COMM_GRP_ID = #{COMM_GRP_ID }
+				</if>
+				<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+					<choose>
+						<when test="SEARCH_KEY == '001'">
+							AND A.COMM_CD_ID LIKE CONCAT('%',#{SEARCH_VAL},'%')
+						</when>
+						<when test="SEARCH_KEY == '002'">
+							AND A.COMM_CD_NM LIKE CONCAT('%',#{SEARCH_VAL},'%')
+						</when>
+						<otherwise>
+							AND 
+							(
+									A.COMM_CD_ID LIKE CONCAT('%',#{SEARCH_VAL},'%')
+									OR	A.COMM_CD_NM LIKE CONCAT('%',#{SEARCH_VAL},'%')
+							)
+						
+						</otherwise>
+					</choose>
+				</if>
+			)A ,
+			(SELECT @RNUM := 0 ) R
+		)TB1 WHERE 1=1
+		ORDER BY TB1.COMM_GRP_ID ,TB1.SORT,TB1.COMM_CD_ID ASC
+		LIMIT #{start},#{length}
+	
+	</select>
+	
+	<!-- 코드 순서 조회 -->
+	<select id="codeOrderList" parameterType="map" resultType="hashmap">
+		SELECT SORT
+		FROM CC_COMMON_CODE
+		WHERE COMM_GRP_ID = #{COMM_GRP_ID }
+		ORDER BY SORT ASC
+	
+	</select>
+	
+	<!-- 코드 등록-->
+	<insert id="insertCode" parameterType="map">
+		INSERT INTO CC_COMMON_CODE(
+			COMM_GRP_SEQ		/* 공통코드그룹 일련번호 */
+			,COMM_GRP_ID
+			,UPPER_COMM_CD_ID
+			,COMM_CD_ID			/* 공통코드ID */
+			,COMM_CD_NM			/* 공통코드명 */
+			,COMM_CD_EXT1
+			,COMM_CD_EXT2
+			,COMM_CD_EXT3
+			,COMM_CD_DESC		/* 공통코드설명 */
+			,SORT				/* 공통코드 순서 */
+			,USE_YN				/* 공통코드 사용여부 */
+			,CRT_DT				/* 생성일자 */
+			,CRT_ID				/* 생성자 ID */
+			
+		)VALUES(
+			#{COMM_GRP_SEQ }
+			,#{COMM_GRP_ID }
+			,#{UPPER_COMM_CD_ID}
+			,#{COMM_CD_ID }
+			,#{COMM_CD_NM }
+			,#{COMM_CD_EXT1 }
+			,#{COMM_CD_EXT2 }
+			,#{COMM_CD_EXT3 }
+			,#{COMM_CD_DESC }
+			,#{SORT }
+			,#{USE_YN }
+			,NOW()
+			,#{CRT_ID }
+		)
+	</insert>
+	
+	<!-- 코드 수정(바뀔 sort 번호)-->
+	<update id="updateChangeCode" parameterType="map">
+		UPDATE 	CC_COMMON_CODE
+		SET		SORT = #{CHANGE_SORT }				/* 공통코드 순서 */
+				,UDT_DT = NOW()						/* 수정일자 */
+				,UDT_ID = #{UDT_ID }				/* 변경자 ID */
+		WHERE COMM_GRP_SEQ = #{COMM_GRP_SEQ }
+		AND SORT = #{SORT }				
+	</update>
+	
+	<!-- 코드 수정(자기 sort 번호)-->
+	<update id="updateCode" parameterType="map">
+		UPDATE CC_COMMON_CODE
+		SET  COMM_GRP_SEQ = #{COMM_GRP_SEQ }		/* 공통코드그룹 일련번호 */
+			,COMM_GRP_ID = #{COMM_GRP_ID }			/* 공통코드그룹 일련번호 */
+			,UPPER_COMM_CD_ID=#{UPPER_COMM_CD_ID}
+			,COMM_CD_ID = #{COMM_CD_ID }			/* 공통코드ID */
+			,COMM_CD_NM = #{COMM_CD_NM }			/* 공통코드명 */
+			,COMM_CD_EXT1 = #{COMM_CD_EXT1 }        /* 공통코드 부가1 */
+			,COMM_CD_EXT2 = #{COMM_CD_EXT2 }        /* 공통코드 부가2 */
+			,COMM_CD_EXT3 = #{COMM_CD_EXT3 }        /* 공통코드 부가3 */
+			,COMM_CD_DESC = #{COMM_CD_DESC }		/* 공통코드설명 */
+			,SORT = #{SORT }						/* 공통코드 순서 */
+			,USE_YN = #{USE_YN }					/* 공통코드 사용여부 */
+			,UDT_DT = NOW()							/* 수정일자 */
+			,UDT_ID = #{UDT_ID }					/* 변경자 ID */
+		WHERE SEQ = #{SEQ }							/* 공통코드 일련번호 */
+	</update>
+	
+	<!-- 코드 삭제-->
+	<delete id="deleteCode" parameterType="map">
+		DELETE FROM  CC_COMMON_CODE
+		WHERE SEQ = #{SEQ }						/* 공통코드 일련번호 */
+		
+	</delete>
+
+
+</mapper>
+ 
+ 
+ 

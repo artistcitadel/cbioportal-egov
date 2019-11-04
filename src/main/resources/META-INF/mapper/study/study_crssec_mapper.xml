@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <!-- 단면연구 -->
+ <mapper namespace="crssec">
+	
+	
+	
+	<select id="selectItemCont" parameterType="map" resultType="hashmap">
+		SELECT 	 A.SEQ
+				,A.SHARE_CD
+				,A.PER_CODE
+				,A.METH_CD
+				,A.CONDT_NM
+				,A.CC_SAM_NUM
+				,A.CC_POP_NUM
+				,A.CC_MAT_CD
+				,A.CC_CONT_CD
+				,A.CC_CASE_NUM
+				,A.CC_AGE_NUM
+				,A.SAVE_CD
+				,A.INSTCD
+		FROM 	CC_ITEM_CONT A
+		WHERE 1=1
+		AND A.SEQ=#{SEARCH_ITEM_CONT_SEQ}
+			
+	
+	</select>
+	
+	
+	<delete id="deleteItemCont" parameterType="map">
+		DELETE FROM CC_ITEM_CONT 
+		WHERE SEQ=#{SEQ} 
+	</delete>
+	<delete id="deleteItemContDetl" parameterType="map">
+		DELETE FROM CC_ITEM_CONT_DETL 
+		WHERE CONT_SEQ=#{CONT_SEQ}
+		<if test="TAB_CD != null and TAB_CD != ''">
+		AND TAB_CD='P'
+		</if>
+	
+	</delete>
+	<select id="selectItemContData" resultType="hashmap" parameterType="map">
+		SELECT  *
+		FROM	CC_ITEM_CONT_DATA A
+		WHERE 	1=1
+		AND 	A.CONT_SEQ = #{SEARCH_ITEM_CONT_SEQ}
+		AND 	A.SEQ = #{SEARCH_DATA_ID}
+	
+	</select>
+	<select id="selectDataResulPeriodtList" parameterType="map" resultType="hashmap">
+		SELECT  PERIOD_CD
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		<if test="PERIOD_CD != null and PERIOD_CD != ''">
+		AND PERIOD_CD=#{PERIOD_CD}
+		</if>
+		<if test="PAT_SBST_NO != null and PAT_SBST_NO != ''">
+		AND ${GV_PAR_SBST_NO}=#{PAT_SBST_NO}
+		</if>
+		GROUP BY PERIOD_CD
+		ORDER BY PERIOD_CD
+		
+	</select>
+	<select id="selectDataResultList" parameterType="map" resultType="hashmap">
+		SELECT  A.*,
+				'${TABLE_ID}' AS TABLE_ID
+		FROM	${TABLE_ID} A
+		WHERE 	1=1
+		<if test="PERIOD_CD != null and PERIOD_CD != ''">
+		AND PERIOD_CD=#{PERIOD_CD}
+		</if>
+		<if test="PAT_SBST_NO != null and PAT_SBST_NO != ''">
+		AND ${GV_PAR_SBST_NO}=#{PAT_SBST_NO}
+		</if>
+		${SORT}
+		
+	</select>
+		<select id="selectRegexSearchDataList" parameterType="map" resultType="hashmap">
+		SELECT  A.*,
+				'${TABLE_ID}' AS TABLE_ID
+		FROM	${TABLE_ID} A
+		WHERE 	1=1
+		<if test="PERIOD_CD != null and PERIOD_CD != ''">
+		AND PERIOD_CD=#{PERIOD_CD}
+		</if>
+		AND REGEXP_LIKE(CAST(${COLUM_ID} AS VARCHAR),#{REXSEARCH},#{REXTXT})
+
+		${SORT}
+		
+	</select>
+	<select id="selectDataColumnList" parameterType="map"
+		resultType="hashmap">
+		SELECT *
+		FROM 	CC_ITEM_CONT_DATA_DETL
+		WHERE 1=1
+		AND DATA_SEQ=#{SEARCH_DATA_ID}
+	</select>
+
+	
+	<insert id="insertDataColumn" parameterType="map">
+		INSERT INTO CC_ITEM_CONT_DATA_DETL (DATA_SEQ,COLUMN_ID,COLUMN_COMMENT,UDT_DT,CRT_DT,OLAP_YN,ITEM_SEQ,DATA_TYPE,ITEM_TYPE,HIDDEN_YN)
+		VALUES
+		(
+			#{DATA_SEQ},#{COLUMN_ID},#{COLUMN_COMMENT},	NOW()	,NOW(),
+			#{OLAP_YN},
+			#{ITEM_SEQ},
+			#{DATA_TYPE},
+			#{ITEM_TYPE},
+			#{HIDDEN_YN}
+		)
+	</insert>
+	
+	<delete id="deleteItemContDataDetl" parameterType="map">
+		DELETE FROM CC_ITEM_CONT_DATA_DETL
+		WHERE DATA_SEQ=#{DATA_SEQ}
+	
+	</delete>
+	<delete id="deleteItemContData" parameterType="map">
+		DELETE FROM CC_ITEM_CONT_DATA
+		WHERE SEQ=#{SEQ}
+	</delete>
+	
+	<select id="selectDataResultTableSize" parameterType="map" resultType="hashmap">
+		SELECT /*+ LABEL(COMPRESSED_TABLE_SIZE)*/
+		       	A.ANCHOR_TABLE_SCHEMA, 
+		       	A.ANCHOR_TABLE_NAME, 
+		       	SUM(A.ROW_COUNT) AS ROW_COUNT,
+		       	TRUNC(SUM(A.USED_BYTES) / (1024),2) AS USED_COMPRESSED_MB
+		FROM   	V_MONITOR.PROJECTION_STORAGE A
+		WHERE 	1=1
+		AND 	A.ANCHOR_TABLE_SCHEMA || '.' ||A.ANCHOR_TABLE_NAME=#{TABLE_ID}
+		GROUP  BY A.ANCHOR_TABLE_SCHEMA, 
+		          A.ANCHOR_TABLE_NAME
+		ORDER  BY SUM(USED_BYTES) DESC
+		
+	</select>
+
+
+</mapper>
+ 
+ 
+ 

@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ <mapper namespace="common_sys">
+ 	<!-- 연구항목공유 조회 -->
+ 	<select id="selectItemCont" parameterType="map" resultType="hashmap">
+		SELECT 	 A.SEQ
+				,A.SHARE_CD
+				,B.COMM_CD_NM AS SHARE_NM
+				,A.PER_CODE
+				,A.METH_CD
+				,A.CONDT_NM
+				,A.CC_SAM_NUM
+				,A.CC_POP_NUM
+				,A.CC_MAT_CD
+				,A.CC_CONT_CD
+				,A.CC_CASE_NUM
+				,A.CC_AGE_NUM
+				,A.SAVE_CD
+				,A.INSTCD
+		FROM 	CC_ITEM_CONT A
+		LEFT OUTER JOIN CC_COMMON_CODE B ON (A.SHARE_CD=B.COMM_CD_ID AND B.COMM_GRP_ID='CDW_SHARE_CD')
+		WHERE 1=1
+		AND A.SEQ=#{SEARCH_ITEM_CONT_SEQ}
+		AND A.METH_CD NOT IN ('RG')
+	</select>
+	
+	<!-- 연구항목조건 데이터 정보 조회 -->
+	<select id="selectItemContData" resultType="hashmap" parameterType="map">
+		SELECT  *
+		FROM	CC_ITEM_CONT_DATA A
+		WHERE 	1=1
+		AND 	A.CONT_SEQ = #{SEARCH_ITEM_CONT_SEQ}
+		AND 	A.SEQ = #{SEARCH_DATA_ID}
+	
+	</select>
+	
+	<select id="selectDataColumnList" parameterType="map"
+		resultType="hashmap">
+		SELECT *
+		FROM 	CC_ITEM_CONT_DATA_DETL
+		WHERE 1=1
+		AND DATA_SEQ=#{SEARCH_DATA_ID}
+	</select>
+	
+	
+	<select id="selectDataResulPeriodtList" parameterType="map" resultType="hashmap">
+		SELECT  PERIOD_CD
+		FROM	${TABLE_ID}
+		WHERE 	1=1
+		<if test="PERIOD_CD != null and PERIOD_CD != ''">
+		AND PERIOD_CD=#{PERIOD_CD}
+		</if>
+		<if test="PAT_SBST_NO != null and PAT_SBST_NO != ''">
+		AND ${GV_PAR_SBST_NO}=#{PAT_SBST_NO}
+		</if>
+		GROUP BY PERIOD_CD
+		ORDER BY PERIOD_CD
+		
+	</select>
+	
+	
+	<select id="selectDataResultList" parameterType="map" resultType="hashmap">
+		SELECT  A.*,
+				'${TABLE_ID}' AS TABLE_ID
+		FROM	${TABLE_ID} A
+		WHERE 	1=1
+		<if test="PERIOD_CD != null and PERIOD_CD != ''">
+		AND PERIOD_CD=#{PERIOD_CD}
+		</if>
+		<if test="PAT_SBST_NO != null and PAT_SBST_NO != ''">
+		AND ${GV_PAR_SBST_NO}=#{PAT_SBST_NO}
+		</if>
+		${SORT}
+		
+	</select>
+	
+ 	<select id="selectCommonCodeList" parameterType="map" resultType="hashmap">
+			SELECT 	COM.SEQ,
+					COM.COMM_GRP_ID,		
+					COM.COMM_GRP_SEQ,
+					COM.COMM_CD_ID AS VALUE,
+					COM.COMM_CD_NM AS TEXT,
+					COM.SORT,
+					COM.COMM_CD_EXT1,
+					COM.COMM_CD_EXT2,
+					COM.COMM_CD_EXT3,
+					COM.COMM_CD_DESC
+			FROM 	CC_COMMON_CODE COM 
+			WHERE 	1=1
+			<if test="SEARCH_COMM_GRP_SEQ != null and SEARCH_COMM_GRP_SEQ != ''">
+			AND 	COM.COMM_GRP_SEQ=#{SEARCH_COMM_GRP_SEQ}
+			</if>
+			
+			<if test="SEARCH_COMM_GRP_ID != null and SEARCH_COMM_GRP_ID != ''">
+			AND 	COM.COMM_GRP_ID=#{SEARCH_COMM_GRP_ID}
+			</if>
+			
+			<if test="SEARCH_COMM_CD_ID != null and SEARCH_COMM_CD_ID != ''">
+			AND 	COM.COMM_CD_ID=#{SEARCH_COMM_CD_ID}
+			</if>
+			AND 	COM.USE_YN = 'Y'
+			ORDER BY COM.SORT ASC
+
+	</select>
+	
+	
+	
+	<select id="selectItemCateTree" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM
+		(
+			SELECT   1 							AS lvl
+					,A.ITEM_CATE 			AS id
+					,'0' 						AS parentid
+					,A.ITEM_CATE 				AS text
+					,'../../images/folder.png' 	AS icon
+					,A.ITEM_CATE_SEQ			AS value
+					,'true'					AS expanded
+			FROM	CC_ITEM_MGMT A
+			WHERE 1=1
+			AND 	A.ITEM_CATE_SEQ IS NOT NULL 
+			AND 	A.ITEM_CATE_SEQ &lt;&gt; 0
+			AND		A.ITEM_CATE_SEQ IN (
+					SELECT  ITEM_CATE_SEQ 
+					FROM	CC_ITEM_MGMT TB1
+					WHERE	1=1
+					<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+					AND 	TB1.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+					</if>
+					
+					<if test="SEARCH_GMEC_YN != null and SEARCH_GMEC_YN != ''">
+					AND 	TB1.GMEC_YN = #{SEARCH_GMEC_YN}
+					</if>
+					
+					<if test="SEARCH_HCC_YN != null and SEARCH_HCC_YN != ''">
+					AND 	TB1.HCC_YN = #{SEARCH_HCC_YN}
+					</if>
+					
+			)
+			GROUP BY A.ITEM_CATE_SEQ
+					,A.ITEM_CATE
+					
+			UNION ALL
+			
+			SELECT  2 AS lvl
+					,B.ITEM_CATE_DETL 	AS id
+					,B.ITEM_CATE_SEQ 		AS parentid
+					,B.ITEM_CATE_DETL 		AS text
+					,'../../images/folder.png' AS icon
+					,CONCAT(B.ITEM_CATE_SEQ,',',B.ITEM_CATE_DETL_SEQ) 			AS value
+					,'true'					AS expanded
+			FROM	CC_ITEM_MGMT B
+			WHERE 1=1
+			AND 	B.ITEM_CATE_SEQ IS NOT NULL 
+			AND 	B.ITEM_CATE_SEQ &lt;&gt; 0
+			AND 	B.ITEM_CATE_DETL_SEQ IS NOT NULL
+			AND		B.ITEM_CATE_DETL_SEQ IN (
+					SELECT  ITEM_CATE_DETL_SEQ 
+					FROM	CC_ITEM_MGMT TB1
+					WHERE	1=1
+					<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+					AND 	TB1.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+					</if>
+					
+					<if test="SEARCH_GMEC_YN != null and SEARCH_GMEC_YN != ''">
+					AND 	TB1.GMEC_YN = #{SEARCH_GMEC_YN}
+					</if>
+					
+					<if test="SEARCH_HCC_YN != null and SEARCH_HCC_YN != ''">
+					AND 	TB1.HCC_YN = #{SEARCH_HCC_YN}
+					</if>
+					
+			)
+			GROUP BY B.ITEM_CATE_SEQ
+					,B.ITEM_CATE_DETL_SEQ
+					,B.ITEM_CATE
+					,B.ITEM_CATE_DETL
+					
+			union all
+			SELECT   3 AS lvl
+				,C.ITEM_NM 					AS id
+				,C.ITEM_CATE_DETL_SEQ 	AS parentid
+				,C.ITEM_NM 				AS text
+				,CASE C.ITEM_TYPE 	WHEN 'COD' THEN '../../images/COD.png'
+									WHEN 'DAT' THEN '../../images/DAT.png'
+									WHEN 'NUM' THEN '../../images/NUM.png'
+									WHEN 'TEX' THEN '../../images/TEX.png'
+		 		END AS icon
+		 		,CONCAT(C.ITEM_CATE_SEQ,',',C.ITEM_CATE_DETL_SEQ,',',C.SEQ) 			AS value
+		 		,'true'					AS expanded
+		FROM	CC_ITEM_MGMT C
+		WHERE 1=1
+		AND 	C.ITEM_CATE_SEQ IS NOT NULL 
+		AND 	C.ITEM_CATE_SEQ &lt;&gt; 0
+		AND 	C.ITEM_CATE_DETL_SEQ IS NOT NULL
+		
+		<if test="SEARCH_ITEM_CATE_SEQ != null and SEARCH_ITEM_CATE_SEQ != ''">
+		AND 	C.ITEM_CATE_SEQ = #{SEARCH_ITEM_CATE_SEQ}
+		</if>
+		
+		<if test="SEARCH_ITEM_CATE_DETL_SEQ != null and SEARCH_ITEM_CATE_DETL_SEQ != ''">
+		AND 	C.ITEM_CATE_DETL_SEQ = #{SEARCH_ITEM_CATE_DETL_SEQ}
+		</if>
+		
+		<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+		AND 	C.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+		</if>
+		
+		<if test="SEARCH_GMEC_YN != null and SEARCH_GMEC_YN != ''">
+		AND 	C.GMEC_YN = #{SEARCH_GMEC_YN}
+		</if>
+		
+		<if test="SEARCH_HCC_YN != null and SEARCH_HCC_YN != ''">
+		AND 	C.HCC_YN = #{SEARCH_HCC_YN}
+		</if>
+			
+		)D WHERE 1=1
+		<if test="SEARCH_LVL != null and SEARCH_LVL != ''">
+		AND D.lvl &gt;=  #{SEARCH_LVL}
+		</if>
+		
+	</select>
+	
+	<!-- LEVEL 1 -->
+	<select id="selectItemCateList" parameterType="map" resultType="hashmap">
+		SELECT	*
+		FROM
+		(
+			SELECT   A.CATE_NM 		AS id
+					,'0' 			AS parentid
+					,A.CATE_NM 		AS label
+					,'../../images/folder.png' 	AS icon
+					,A.SEQ			AS value
+					,'true'			AS expanded
+					,A.ORDER 		AS "order"
+			FROM	CC_ITEM_CATE A
+			WHERE 1=1
+			AND 	A.SEQ IS NOT NULL 
+			
+					<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+						AND		A.SEQ IN (
+							SELECT  ITEM_CATE_SEQ 
+							FROM	CC_ITEM_MGMT TB1
+							WHERE	1=1
+							AND 	TB1.SEARCH_YN='Y'
+							AND 	TB1.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+						)
+					</if>
+					
+					<if test="SEARCH_ITEM_SEL_TYPE != null and SEARCH_ITEM_SEL_TYPE != ''">
+						<choose>
+							<when test="SEARCH_ITEM_SEL_TYPE == 'GMEC'">
+								AND		A.SEQ IN (
+									SELECT  ITEM_CATE_SEQ 
+									FROM	CC_ITEM_MGMT TB1
+									WHERE	1=1
+									AND 	TB1.SEARCH_YN='Y'
+									AND 	TB1.GMEC_YN = 'Y'
+								)
+								
+							</when>
+							
+							<when test="SEARCH_ITEM_SEL_TYPE == 'HCC'">
+								AND		A.SEQ IN (
+									SELECT TB2.ITEM_CATE_SEQ
+									FROM
+									(
+										SELECT @RNUM := @RNUM + 1 AS NUM,
+														TB1.*
+										FROM
+										(
+											SELECT 	A.TABLE, A.COLUMN, A.ITEM_CATE_SEQ,A.SEARCH_CNT
+											FROM CC_ITEM_MGMT A,
+											(SELECT @RNUM := 0 ) R
+											WHERE	A.SEARCH_CNT &gt; 0
+											ORDER BY SEARCH_CNT DESC
+										)TB1
+									)TB2 WHERE NUM &lt; 50
+									
+								)
+								
+							</when>
+						</choose>
+					</if>
+					
+			
+			<if test="SEARCH_ITEM_SEL_TYPE != null and SEARCH_ITEM_SEL_TYPE != ''">
+				<choose>
+					<when test="SEARCH_ITEM_SEL_TYPE == 'HCC'">
+					</when>
+					<otherwise>
+					UNION ALL
+					SELECT 	'개인자료' AS id
+							,'0' AS parentid
+							,'개인자료' AS label
+							,'../../images/folder.png' 	AS icon
+							,999	AS value
+							,'true'			AS expanded
+							,999 			AS "order"
+					FROM	DUAL
+					</otherwise>
+				</choose>
+			</if>
+			
+		)TB1
+		ORDER BY TB1.ORDER ASC
+	</select>
+	
+	
+	<select id="selectItemCateDetlList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM
+		(
+			SELECT   A.CATE_NM 	AS id
+					,A.ITEM_CATE_SEQ 		AS parentid
+					,A.CATE_NM 		AS label
+					,'../../images/folder.png' AS icon
+					,A.SEQ 			AS value
+					,'true'					AS expanded
+					,A.ORDER 		AS "order"
+			FROM	CC_ITEM_CATE_DETL A
+			WHERE 	1=1
+			AND 	A.ITEM_CATE_SEQ=#{SEARCH_ITEM_CATE_SEQ}
+			AND 	A.SEQ IS NOT NULL
+			
+					<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+						AND		A.SEQ IN (
+							SELECT  ITEM_CATE_DETL_SEQ 
+							FROM	CC_ITEM_MGMT TB1
+							WHERE	1=1
+							AND 	TB1.SEARCH_YN='Y'
+							AND 	TB1.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+						)
+					</if>
+					
+					<if test="SEARCH_ITEM_SEL_TYPE != null and SEARCH_ITEM_SEL_TYPE != ''">
+						<choose>
+							<when test="SEARCH_ITEM_SEL_TYPE == 'GMEC'">
+							AND		A.SEQ IN (
+								SELECT  ITEM_CATE_DETL_SEQ 
+								FROM	CC_ITEM_MGMT TB1
+								WHERE	1=1
+								AND 	TB1.SEARCH_YN='Y'
+								AND 	TB1.GMEC_YN = 'Y'
+							)
+							</when>
+							
+							<when test="SEARCH_ITEM_SEL_TYPE == 'HCC'">
+							AND		A.SEQ IN (
+								SELECT TB2.ITEM_CATE_DETL_SEQ
+								FROM
+								(
+									SELECT @RNUM := @RNUM + 1 AS NUM,
+													TB1.*
+									FROM
+									(
+										SELECT 	A.TABLE, A.COLUMN, A.ITEM_CATE_DETL_SEQ,A.SEARCH_CNT
+										FROM CC_ITEM_MGMT A,
+										(SELECT @RNUM := 0 ) R
+										WHERE	A.SEARCH_CNT &gt; 0
+										ORDER BY SEARCH_CNT DESC
+									)TB1
+								)TB2 WHERE NUM &lt; 50
+							)
+
+							</when>
+						</choose>
+					</if>
+			
+			<if test="SEARCH_ITEM_CATE_SEQ == 999">
+			UNION ALL
+				SELECT 	ITEM_CATE_DETL AS id
+						,999 AS parentid
+						,ITEM_CATE_DETL AS label
+						,'../../images/folder.png' 	AS icon
+						,ITEM_CATE_DETL_SEQ	AS value
+						,'true'			AS expanded
+						,SEQ 			AS "order"
+				FROM	CC_ITEM_MGMT
+				WHERE	ITEM_CATE_SEQ=999
+				AND 	ITEM_DESC=#{SEARCH_PER_CODE}
+			</if>
+			
+		)TB1
+		GROUP BY TB1.id
+		ORDER BY TB1.order
+		<if test="SEARCH_ITEM_CATE_SEQ == 999">
+			DESC
+		</if>
+		
+	</select>
+	
+	<select id="selectItemMgmtTreeList" parameterType="map" resultType="hashmap">
+		SELECT	*
+		FROM
+		(
+			SELECT   C.SEQ				AS id
+					,C.ITEM_CATE_DETL_SEQ 	AS parentid
+					,C.ITEM_NM 				AS label
+					,CASE C.ITEM_TYPE 	WHEN 'COD' THEN '../../images/COD.png'
+										WHEN 'DAT' THEN '../../images/DAT.png'
+										WHEN 'NUM' THEN '../../images/NUM.png'
+										WHEN 'TEX' THEN '../../images/TEX.png'
+			 		END AS icon
+			 		,C.SEQ 			AS value
+			 		,C.ORDER		AS "order"
+			FROM	CC_ITEM_MGMT C
+			WHERE 1=1
+			AND 	C.ITEM_CATE_SEQ IS NOT NULL 
+			AND 	C.SEARCH_YN='Y'
+			<if test="SEARCH_ITEM_CATE_SEQ != null and SEARCH_ITEM_CATE_SEQ != ''">
+			AND 	C.ITEM_CATE_SEQ = #{SEARCH_ITEM_CATE_SEQ}
+			</if>
+			
+			<if test="SEARCH_ITEM_CATE_DETL_SEQ != null and SEARCH_ITEM_CATE_DETL_SEQ != ''">
+			AND 	C.ITEM_CATE_DETL_SEQ = #{SEARCH_ITEM_CATE_DETL_SEQ}
+			</if>
+			
+			<if test="SEARCH_SYNONYM_YN != null and SEARCH_SYNONYM_YN != ''">
+			AND 	C.SYNONYM_YN = #{SEARCH_SYNONYM_YN}
+			</if>
+			
+			<if test="SEARCH_ITEM_SEL_TYPE != null and SEARCH_ITEM_SEL_TYPE != ''">
+				<choose>
+					<when test="SEARCH_ITEM_SEL_TYPE == 'GMEC'">
+						AND 	C.GMEC_YN = 'Y'
+					</when>
+					
+					<when test="SEARCH_ITEM_SEL_TYPE == 'HCC'">
+						AND		C.SEQ IN (
+								SELECT TB2.SEQ
+								FROM
+								(
+									SELECT @RNUM := @RNUM + 1 AS NUM,
+													TB1.*
+									FROM
+									(
+										SELECT 	A.TABLE, A.COLUMN, A.SEQ,A.SEARCH_CNT
+										FROM CC_ITEM_MGMT A,
+										(SELECT @RNUM := 0 ) R
+										WHERE	A.SEARCH_CNT &gt; 0
+										ORDER BY SEARCH_CNT DESC
+									)TB1
+								)TB2 WHERE NUM &lt; 50					
+					)
+					</when>
+				</choose>
+			</if>
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+				AND UPPER(C.ITEM_NM) LIKE CONCAT('%',#{SEARCH_VAL},'%')
+			</if>
+			AND C.ITEM_NM &lt;&gt; '미내원'
+			
+			
+		)TB1
+		ORDER BY  TB1.ORDER ASC
+	</select>
+	
+	
+	<!-- 조건공유 트리 -->
+	<select id="selectItemContTreeList" parameterType="map"
+		resultType="hashmap">
+		<!-- 전체공유조건 -->
+		SELECT  (SELECT COMM_CD_NM FROM CC_COMMON_CODE WHERE COMM_GRP_ID='CDW_SHARE_CD' AND COMM_CD_ID='A') AS text	
+				,'A' AS id
+				,'-1' AS parentid
+				,'-1' AS value
+				,'../../images/folder.png' AS icon
+				,'0' AS position
+				,'' AS PER_CODE
+				,'' AS DEPT_CODE
+				,'' AS UDT_DT
+		FROM	DUAL
+		UNION ALL
+		SELECT  <if test='INSTCD_YN == "Y"'>
+					CONCAT(CASE A.INSTCD WHEN '031' THEN '[본원] ' WHEN '032' THEN '[칠곡] ' ELSE '[전체] ' END , A.CONDT_NM) AS text
+					<!-- A.CONDT_NM AS text -->
+				</if>
+				
+				<if test='INSTCD_YN == "N"'>
+					A.CONDT_NM AS text
+				</if>
+				,A.SEQ AS id
+				,'A' AS parentid
+				,A.SEQ AS value
+				,'../../images/contactsIcon.png' AS icon
+				,'0' AS position
+				,A.PER_CODE
+				,A.DEPT_CODE
+				,A.UDT_DT
+		FROM	CC_ITEM_CONT A
+		WHERE 	1=1
+		AND		A.SHARE_CD = 'A'
+		AND A.METH_CD NOT IN ('RG')
+		<if test="SEARCH_METH_CD != null and SEARCH_METH_CD != ''">
+		AND 	A.METH_CD=#{SEARCH_METH_CD}
+		</if>
+		
+		<!-- 과공유조건 -->
+		UNION ALL
+		SELECT  (SELECT COMM_CD_NM FROM CC_COMMON_CODE WHERE COMM_GRP_ID='CDW_SHARE_CD' AND COMM_CD_ID='D') AS text
+				,'D' AS id
+				,'-1' AS parentid
+				,'-1' AS value
+				,'../../images/folder.png' AS icon
+				,'0' AS position
+				,'' AS PER_CODE
+				,'' AS DEPT_CODE
+				,'' AS UDT_DT
+		FROM	DUAL
+		UNION ALL
+		SELECT  <if test='INSTCD_YN == "Y"'>
+					CONCAT(CASE A.INSTCD WHEN '031' THEN '[본원] ' WHEN '032' THEN '[칠곡] ' ELSE '[전체] ' END , A.CONDT_NM) AS text
+					<!-- A.CONDT_NM AS text -->
+				</if>
+				
+				<if test='INSTCD_YN == "N"'>
+					A.CONDT_NM AS text
+				</if>
+				,A.SEQ AS id
+				,'D' AS parentid
+				,A.SEQ AS value
+				,'../../images/contactsIcon.png' AS icon
+				,'0' AS position
+				,A.PER_CODE
+				,A.DEPT_CODE
+				,A.UDT_DT
+		FROM	CC_ITEM_CONT A
+		WHERE 	1=1
+		AND		A.SHARE_CD = 'D'
+		AND 	A.METH_CD NOT IN ('RG')
+		<if test="SEARCH_METH_CD != null and SEARCH_METH_CD != ''">
+		AND 	A.METH_CD=#{SEARCH_METH_CD}
+		</if>
+		AND 	A.DEPT_CODE=#{SEARCH_DEPT_CODE}
+		
+		<!-- 개인공유 -->
+		UNION ALL
+		SELECT  (SELECT COMM_CD_NM FROM CC_COMMON_CODE WHERE COMM_GRP_ID='CDW_SHARE_CD' AND COMM_CD_ID='S') AS text
+				,'S' AS id
+				,'-1' AS parentid
+				,'-1' AS value
+				,'../../images/folder.png' AS icon
+				,'0' AS position
+				,'' AS PER_CODE
+				,'' AS DEPT_CODE
+				,'' AS UDT_DT
+		FROM	DUAL
+		UNION ALL
+		SELECT  <if test='INSTCD_YN == "Y"'>
+					CONCAT(CASE A.INSTCD WHEN '031' THEN '[본원] ' WHEN '032' THEN '[칠곡] ' ELSE '[전체] ' END , A.CONDT_NM) AS text
+					<!-- A.CONDT_NM AS text -->
+				</if>
+				
+				<if test='INSTCD_YN == "N"'>
+					A.CONDT_NM AS text
+				</if>
+				,A.SEQ AS id
+				,'S' AS parentid
+				,A.SEQ AS value
+				,'../../images/contactsIcon.png' AS icon
+				,'0' AS position
+				,A.PER_CODE
+				,A.DEPT_CODE
+				,A.UDT_DT
+		FROM	CC_ITEM_CONT A
+		WHERE 	1=1
+		AND		A.SHARE_CD = 'S'
+		AND 	A.METH_CD NOT IN ('RG')
+		<if test="SEARCH_METH_CD != null and SEARCH_METH_CD != ''">
+		AND 	A.METH_CD=#{SEARCH_METH_CD}
+		</if>
+		AND 	A.PER_CODE=#{SEARCH_PER_CODE}
+		
+		<!-- 개인조건 -->
+		UNION ALL
+		SELECT  (SELECT COMM_CD_NM FROM CC_COMMON_CODE WHERE COMM_GRP_ID='CDW_SHARE_CD' AND COMM_CD_ID='P') AS text
+				,'P' AS id
+				,'-1' AS parentid
+				,'-1' AS value
+				,'../../images/folder.png' AS icon
+				,'0' AS position
+				,'' AS PER_CODE
+				,'' AS DEPT_CODE
+				,'' AS UDT_DT
+		FROM	DUAL
+		UNION ALL
+		SELECT  <if test='INSTCD_YN == "Y"'>
+					CONCAT(CASE A.INSTCD WHEN '031' THEN '[본원] ' WHEN '032' THEN '[칠곡] ' ELSE '[전체] ' END , A.CONDT_NM) AS text
+					<!-- A.CONDT_NM AS text -->
+				</if>
+				
+				<if test='INSTCD_YN == "N"'>
+					A.CONDT_NM AS text
+				</if>
+				,A.SEQ AS id
+				,'P' AS parentid
+				,A.SEQ AS value
+				,CASE SAVE_CD WHEN 'SC' THEN '../../images/icon_search_patient.png' WHEN 'SI' THEN '../../images/icon_search_studyitem.png' END AS icon
+				,'0' AS position
+				,A.PER_CODE
+				,A.DEPT_CODE
+				,A.UDT_DT
+		FROM	CC_ITEM_CONT A
+		WHERE 	1=1
+		AND		A.SHARE_CD = 'P'
+		AND 	A.METH_CD NOT IN ('RG')
+		<if test="SEARCH_METH_CD != null and SEARCH_METH_CD != ''">
+		AND 	A.METH_CD=#{SEARCH_METH_CD}
+		</if>
+		AND 	A.PER_CODE=#{SEARCH_PER_CODE}
+		UNION ALL
+		SELECT  (SELECT COMM_CD_NM FROM CC_COMMON_CODE WHERE COMM_GRP_ID='CDW_SHARE_CD' AND COMM_CD_ID='E') AS text
+				,'E' AS id
+				,'-1' AS parentid
+				,'-1' AS value
+				,'../../images/folder.png' AS icon
+				,'0' AS position
+				,'' AS PER_CODE
+				,'' AS DEPT_CODE
+				,'' AS UDT_DT
+		FROM	DUAL
+		UNION ALL
+		SELECT  CONCAT(A.CONDT_NM,' > ',B.DATA_NM) AS text
+				,B.SEQ AS id
+				,'E' AS parentid
+				,A.SEQ AS value
+				,'../../images/contactsIcon.png' AS icon
+				,1 AS position
+				,A.PER_CODE
+				,A.DEPT_CODE
+				,B.UDT_DT
+		FROM	CC_ITEM_CONT A
+		LEFT OUTER JOIN CC_ITEM_CONT_DATA B ON (A.SEQ=B.CONT_SEQ)
+		WHERE 1=1
+		<if test="SEARCH_METH_CD != null and SEARCH_METH_CD != ''">
+		AND 	A.METH_CD=#{SEARCH_METH_CD}
+		</if>
+		AND A.METH_CD NOT IN ('RG')
+		AND A.SEQ IN (
+			SELECT TB1.CONT_SEQ
+			FROM CC_ITEM_CONT_DATA TB1
+			WHERE 1=1
+			GROUP BY TB1.CONT_SEQ
+		)
+		AND 	A.PER_CODE=#{SEARCH_PER_CODE}
+		ORDER BY 
+			CASE
+				ID
+				WHEN 'A' THEN 9999
+				WHEN 'D' THEN 8888
+				WHEN 'S' THEN 7777
+				WHEN 'P' THEN 6666
+				WHEN 'E' THEN 5555
+				ELSE UDT_DT
+			END DESC
+				
+	</select>
+	
+	
+	
+	<select id="selectItemMgmtList" parameterType="map" resultType="hashmap">
+		SELECT   '' 						AS CONT_SEQ
+				,'' 						AS CONT_DTL_SEQ
+				,ITEM.SEQ 					AS ITEM_SEQ
+				,ITEM.ITEM_CATE_SEQ 		AS ITEM_CATE_SEQ
+				,ITEM.ITEM_CATE_DETL_SEQ 	AS ITEM_CATE_DETL_SEQ
+				,IFNULL(ITEM_CAT.CATE_NM,ITEM.ITEM_CATE) 			AS ITEM_CATE_NM
+				,IFNULL(ITEM_CAT_DTL.CATE_NM,ITEM.ITEM_CATE_DETL) 		AS ITEM_CATE_DETL_NM
+				,ITEM.ITEM_NM		
+				,ITEM.SCHEMA            
+				,ITEM.TABLE             
+				,ITEM.TABLE_COMMENT     
+				,ITEM.COLUMN            
+				,ITEM.COLUMN_COMMENT    
+				,ITEM.DATA_TYPE         
+				,ITEM.ITEM_NM           
+				,ITEM.ORDER	            
+				,ITEM.SEARCH_YN         
+				,ITEM.ITEM_TYPE         
+				,ITEM.CODE_TYPE         
+				,ITEM.CODE_SET          
+				,ITEM.POPUP_YN          
+				,ITEM.POPUP_PROGRAM_ID  
+				,ITEM.UPPER_TABLE       
+				,ITEM.UPPER_COLUMN      
+				,ITEM.GMEC_YN           
+				,ITEM.HCC_YN            
+				,ITEM.SYNONYM_YN        
+				,ITEM.ITEM_DESC         
+				,ITEM.CS_REPEAT_YN      
+				,ITEM.CH_DEFAULT_YN     
+				,ITEM.CH_CENSORING_YN   
+				,ITEM.BASE_DT_COLUMN
+				,(
+					SELECT
+						DATA_TYPE
+					FROM
+						CC_ITEM_MGMT ITEM_BASE
+					WHERE
+						ITEM_BASE.`SCHEMA` = ITEM.`SCHEMA`
+						AND ITEM_BASE.`TABLE` = ITEM.`TABLE`
+						AND ITEM_BASE.`COLUMN` = ITEM.BASE_DT_COLUMN
+					GROUP BY ITEM_BASE.`COLUMN`
+				) AS BASE_DT_DATA_TYPE
+				,ITEM.POPUP_COLUMN
+				,ITEM.ITEM_FIRST_YN
+				,IFNULL(ITEM.INSTCD_YN,'N') AS INSTCD_YN
+				,'' AS SHARE_CD
+				,'' AS SHARE_NM
+				,'' AS TAB_CD
+				,'0' AS GR_LV
+				,'' AS INPUT_VAL0
+				,'' AS INPUT_VAL1
+				,'' AS INPUT_VAL2
+				,'' AS CNT
+				,'' AS INC_EXC
+				,'' AS BASE_DT_YN
+				,'' AS FIRST_YN
+				,'' AS AND_OR
+				,'' AS AGG
+				,'' AS DELETE_YN
+				,'' AS RANGE_CD
+				,'' AS RANGE_DN
+				,'' AS ITEM_TEXT
+				,'' AS IS_NULL_OR_BLANK
+		FROM	CC_ITEM_MGMT ITEM
+		LEFT OUTER JOIN CC_ITEM_CATE ITEM_CAT ON (ITEM.ITEM_CATE_SEQ=ITEM_CAT.SEQ)
+		LEFT OUTER JOIN CC_ITEM_CATE_DETL ITEM_CAT_DTL ON (ITEM.ITEM_CATE_DETL_SEQ=ITEM_CAT_DTL.SEQ)
+		WHERE	3=3
+		<if test="SEARCH_SCHEMA != null and SEARCH_SCHEMA != ''">
+		AND 	ITEM.SCHEMA = #{SEARCH_SCHEMA}
+		</if>
+		<if test="SEARCH_TABLE != null and SEARCH_TABLE != ''">
+		AND 	ITEM.TABLE = #{SEARCH_TABLE}
+		</if>
+		
+		<if test="SEARCH_COLUMN != null and SEARCH_COLUMN != ''">
+		AND 	ITEM.COLUMN = #{SEARCH_COLUMN}
+		</if>
+		
+		<if test="SEARCH_ITEM_CATE_SEQ != null and SEARCH_ITEM_CATE_SEQ != ''">
+		AND 	ITEM.ITEM_CATE_SEQ = #{SEARCH_ITEM_CATE_SEQ}
+		</if>
+		<if test="SEARCH_ITEM_CATE_DETL_SEQ != null and SEARCH_ITEM_CATE_DETL_SEQ != ''">
+		AND 	ITEM.ITEM_CATE_DETL_SEQ = #{SEARCH_ITEM_CATE_DETL_SEQ}
+		</if>
+		<if test="SEARCH_SEQ != null and SEARCH_SEQ != ''">
+		AND 	ITEM.SEQ = #{SEARCH_SEQ}
+		</if>
+		
+		<if test="SEARCH_YN != null and SEARCH_YN != ''">
+		AND 	ITEM.SEARCH_YN = #{SEARCH_YN}
+		</if>
+		
+		<if test="SEARCH_CH_CENSORING_YN != null and SEARCH_CH_CENSORING_YN != ''">
+		AND		ITEM.CH_CENSORING_YN=#{SEARCH_CH_CENSORING_YN} 
+		</if>
+		
+		
+		
+		
+		
+		
+		<if test="SEARCH_ITEM_SEL_TYPE != null and SEARCH_ITEM_SEL_TYPE != ''">
+			<choose>
+				<when test="SEARCH_ITEM_SEL_TYPE == 'GMEC'">
+					AND 	ITEM.GMEC_YN = 'Y'
+				</when>
+				
+				<when test="SEARCH_ITEM_SEL_TYPE == 'HCC'">
+					AND		ITEM.SEQ IN (
+								SELECT TB2.SEQ
+								FROM
+								(
+									SELECT @RNUM := @RNUM + 1 AS NUM,
+													TB1.*
+									FROM
+									(
+										SELECT 	A.TABLE, A.COLUMN, A.SEQ,A.SEARCH_CNT
+										FROM CC_ITEM_MGMT A,
+										(SELECT @RNUM := 0 ) R
+										WHERE	A.SEARCH_CNT > 0
+										ORDER BY SEARCH_CNT DESC
+									)TB1
+								)TB2 WHERE 50 > NUM					
+					)
+				</when>
+			</choose>
+		</if>
+		
+		<if test="SEARCH_PERIOD_COLUMN != null and SEARCH_PERIOD_COLUMN != ''">
+		AND CONCAT(ITEM.`TABLE`,'__',ITEM.`COLUMN`) = #{SEARCH_PERIOD_COLUMN}
+		AND (
+			ITEM.TABLE_COMMENT &lt;&gt; '생존분석'
+			OR 
+			ITEM.ITEM_NM &lt;&gt; '미내원'
+		)
+		</if>
+		
+		<!-- TAB CD C:조건,P:주기,R:연구항목 -->
+		<if test="SEARCH_TAB_CD != null and SEARCH_TAB_CD != ''">
+		AND ITEM.TAB_CD = #{SEARCH_TAB_CD}
+		</if>
+		
+		<!-- 내원정보 - 미내원은 생존분석에서 사용 -->
+		<if test="SEARCH_ITEM_CATE_DETL_SEQ == 2">
+		AND ITEM.ITEM_NM &lt;&gt; '미내원'
+		</if>
+		<!-- AND 	ITEM.SEQ = 3368 -->
+		
+		
+		ORDER BY ITEM.ORDER ASC
+	
+	
+	</select>
+	
+	
+	
+	<select id="selectItemContDetlList" parameterType="map" resultType="hashmap">
+		SELECT   CONT.SEQ 					AS CONT_SEQ
+				,CONT_DTL.SEQ 				AS CONT_DTL_SEQ
+				,ITEM.SEQ 					AS ITEM_SEQ
+				,ITEM.ITEM_CATE_SEQ 		AS ITEM_CATE_SEQ
+				,ITEM.ITEM_CATE_DETL_SEQ 	AS ITEM_CATE_DETL_SEQ
+				,IFNULL(ITEM_CAT.CATE_NM,ITEM.ITEM_CATE) 			AS ITEM_CATE_NM
+				,IFNULL(ITEM_CAT_DTL.CATE_NM,ITEM.ITEM_CATE_DETL) 		AS ITEM_CATE_DETL_NM
+				,ITEM.ITEM_NM		
+				,CONT.SHARE_CD
+				,(
+					SELECT COMM_CD_NM 
+					FROM CC_COMMON_CODE 
+					WHERE COMM_CD_ID = CONT.SHARE_CD AND COMM_GRP_ID = 'CDW_SHARE_CD'
+				) AS SHARE_NM
+				,CONT_DTL.TAB_CD
+				,CONT_DTL.GR_LV
+				,CASE WHEN CONT_DTL.SEQ = (
+					SELECT 	MIN(SEQ) 
+					FROM 	CC_ITEM_CONT_DETL E
+					WHERE	1=1
+					AND 	E.CONT_SEQ	=	CONT_DTL.CONT_SEQ
+					AND 	E.GR_LV 	= 	CONT_DTL.GR_LV
+					AND 	E.TAB_CD	= CONT_DTL.TAB_CD
+				) THEN 'S' END AS GR_LV_START
+				,CASE WHEN CONT_DTL.SEQ = (
+					SELECT 	MAX(SEQ) 
+					FROM	CC_ITEM_CONT_DETL E
+					WHERE	1=1
+					AND E.CONT_SEQ	=	CONT_DTL.CONT_SEQ
+					AND E.GR_LV 	= 	CONT_DTL.GR_LV
+					AND 	E.TAB_CD	= CONT_DTL.TAB_CD
+				) THEN 'E' END AS GR_LV_END
+				,CONT_DTL.INPUT_VAL0
+				,CONT_DTL.INPUT_VAL1
+				,CONT_DTL.INPUT_VAL2
+				,CONT_DTL.CNT
+				,CONT_DTL.INC_EXC
+				,CONT_DTL.BASE_DT_YN
+				,CONT_DTL.FIRST_YN
+				,CONT_DTL.AND_OR
+				,CONT_DTL.AGG
+				,CONT_DTL.DELETE_YN
+				,CONT_DTL.RANGE_CD
+				,CONT_DTL.RANGE_DN
+				,CONT_DTL.ITEM_TEXT
+				,CONT_DTL.IS_NULL_OR_BLANK
+				,ITEM.SCHEMA            
+				,ITEM.TABLE             
+				,ITEM.TABLE_COMMENT     
+				,ITEM.COLUMN            
+				,ITEM.COLUMN_COMMENT    
+				,ITEM.DATA_TYPE         
+				,ITEM.ITEM_NM           
+				,ITEM.ORDER	            
+				,ITEM.SEARCH_YN         
+				,ITEM.ITEM_TYPE         
+				,ITEM.CODE_TYPE         
+				,ITEM.CODE_SET          
+				,ITEM.POPUP_YN          
+				,ITEM.POPUP_PROGRAM_ID  
+				,ITEM.UPPER_TABLE       
+				,ITEM.UPPER_COLUMN      
+				,ITEM.GMEC_YN           
+				,ITEM.HCC_YN            
+				,ITEM.SYNONYM_YN        
+				,ITEM.ITEM_DESC         
+				,ITEM.CS_REPEAT_YN      
+				,ITEM.CH_DEFAULT_YN     
+				,ITEM.CH_CENSORING_YN   
+				,ITEM.BASE_DT_COLUMN
+				,(
+					SELECT
+						DATA_TYPE
+					FROM
+						CC_ITEM_MGMT ITEM_BASE
+					WHERE
+						ITEM_BASE.`SCHEMA` = ITEM.`SCHEMA`
+						AND ITEM_BASE.`TABLE` = ITEM.`TABLE`
+						AND ITEM_BASE.`COLUMN` = ITEM.BASE_DT_COLUMN
+					GROUP BY ITEM_BASE.`COLUMN`
+				) AS BASE_DT_DATA_TYPE
+				,ITEM.POPUP_COLUMN
+				,ITEM.ITEM_FIRST_YN
+				,IFNULL(ITEM.INSTCD_YN,'N') AS INSTCD_YN
+		FROM	CC_ITEM_CONT CONT,
+				CC_ITEM_CONT_DETL CONT_DTL,
+				CC_ITEM_MGMT ITEM
+		LEFT OUTER JOIN CC_ITEM_CATE ITEM_CAT ON (ITEM.ITEM_CATE_SEQ=ITEM_CAT.SEQ)
+		LEFT OUTER JOIN CC_ITEM_CATE_DETL ITEM_CAT_DTL ON (ITEM.ITEM_CATE_DETL_SEQ=ITEM_CAT_DTL.SEQ)
+		WHERE	1=1
+		AND 	CONT.SEQ=CONT_DTL.CONT_SEQ
+		AND 	CONT_DTL.ITEM_SEQ = ITEM.SEQ
+		AND 	CONT.SEQ = #{SEARCH_ITEM_CONT_SEQ}
+		AND 	CONT.METH_CD NOT IN ('RG')
+		ORDER BY CONT_DTL.ORDER ASC
+	</select>
+	
+	<delete id="deleteItemMgmt" parameterType="map">
+		DELETE FROM CC_ITEM_MGMT WHERE ITEM_CATE_DETL_SEQ=#{ITEM_CATE_DETL_SEQ}
+	</delete>
+	<select id="selectExistSchemaTableList" parameterType="map"
+		resultType="hashmap">
+		SELECT * FROM TABLES WHERE TABLE_SCHEMA = #{SCHEMA} AND
+		TABLE_NAME = #{TABLE}
+	</select>
+	<update id="updateItemMgmtSearchCnt" parameterType="map">
+		UPDATE CC_ITEM_MGMT 
+		SET SEARCH_CNT=SEARCH_CNT+1 
+		WHERE `SCHEMA`=#{SCHEMA}
+		AND `TABLE`=#{TABLE}
+		AND `COLUMN`=#{COLUMN}
+	
+	</update>
+
+</mapper>
+ 
+ 
+ 

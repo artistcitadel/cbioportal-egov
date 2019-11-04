@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.renjin.cran:R6:2.2.2-b36">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/R6/2.2.2-b36/R6-2.2.2-b36.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/R6/2.2.2-b36/R6-2.2.2-b36-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/renjin/cran/R6/2.2.2-b36/R6-2.2.2-b36-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
