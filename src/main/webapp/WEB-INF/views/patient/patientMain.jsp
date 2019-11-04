@@ -33,63 +33,63 @@
 
 <section class="contents">
 
-<div class="container-fulid">
-	<div class="row" id="row1">
-		<div class="col-xs-3 col" style="background-color: white;">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control" style="border:none" value="Cohort 선택 :" disabled/>
+	<div class="container-fulid">
+		<div class="row" style="height:34px;margin-top:6px;">
+			<div class="col-xs-3 col" style="background-color: white; height:34px;padding:0px;padding-left:20px;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control input-sm" style="border:none" value="Cohort 선택 :" disabled/>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-xs-2 col">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control"  />
-					<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control input-sm"  />
+						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-xs-2 col">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control"  />
-					<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control input-sm"  />
+						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-xs-2 col">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<%--<button class="btn btn-primary" type="submit" style="height:34px;">초기화</button>--%>
-					<button class="btn btn-primary btn-xs btn-block" style="width:auto;height:34px;">
-						초기화
-					</button>
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:auto;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<%--<button class="btn btn-primary" type="submit" style="height:34px;">초기화</button>--%>
+						<button class="btn btn-primary btn-xs btn-block" style="width:auto;height:34px;">
+							초기화
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="container-fulid">
-	<div class="row" id="row1">
-		<div class="col-xs-3 col" style="background-color: white;">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control" style="border:none" value="필터 선택 Mutated Genes =" disabled/>
+	<div class="container-fulid">
+		<div class="row" style="height:34px;margin-top:6px;">
+			<div class="col-xs-3 col" style="background-color: white; height:34px;padding:0px;padding-left:20px;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control input-sm" style="border:none" value="필터 선택 Mutated Genes =" disabled/>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-xs-2 col">
-			<div class="form-group">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control"  />
-					<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
+				<div class="form-group">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control input-sm"  />
+						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-xs-2 col">
-			<div class="form-group">
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:auto;">
+			  <div class="form-group">
 				<div class="form-group has-feedback">
 					<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
 						초기화
@@ -97,10 +97,11 @@
 					<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
 						저장
 					</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-5 col" align="right">
+			   	 </div>
+			    </div>
+		     </div>
+
+		<div class="col-xs-5 col" align="right" style="background-color: white; height:34px;padding:0px;width:auto;">
 			<div class="form-group">
 				<div class="form-group has-feedback" style="height:34px;">
 					<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
@@ -109,55 +110,55 @@
 					<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
 						Mutation View
 					</button>
-
 				</div>
 			</div>
 		</div>
+
+	  </div>
 	</div>
-</div>
 
 	<div class="container-fulid">
-		<div class="row" id="row1">
-			<div class="col-xs-3 col" style="background-color: white;">
+		<div class="row" id="row1" style="height:20px;margin-top:6px;margin-bottom:10px;">
+			<div class="col-xs-3 col" style="background-color: white; height:34px;padding:0px;padding-left:20px;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
-						<input type="text" class="form-control" style="border:none" value="환자 선택 :" disabled/>
+						<input type="text" class="form-control input-sm" style="border:none" value="환자 선택 :" disabled/>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col">
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
-						<input type="text" class="form-control"  />
+						<input type="text" class="form-control input-sm"  disabled/>
 						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col">
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
-						<input type="text" class="form-control"  />
+						<input type="text" class="form-control input-sm"  disabled/>
 						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col">
+			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:auto;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
-						<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
+						<button class="btn btn-primary btn-xs" style="width:auto;height:30px;">
 							초기화
 						</button>
-						<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
+						<button class="btn btn-primary btn-xs" style="width:auto;height:30px;">
 							저장
 						</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-xs-3 col" align="right">
+			<div class="col-xs-3 col" align="right" style="background-color: white; height:34px;padding:0px;width:auto;">
 				<div class="form-group">
-					<div class="form-group has-feedback" style="height:34px;">
-						<button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
+					<div class="form-group has-feedback" style="height:30px;">
+						<button class="btn btn-primary btn-xs" style="width:auto;height:30px;">
 							Patient View
 						</button>
 					</div>
@@ -168,7 +169,14 @@
 	</div>
 
 <div class="container-fluid" >
-	<p class="h2">PATIENT LIST</p>
+	<p class="h4">PATIENT LIST</p>
+	<input class="form-control-inline input-sm" id="patientId" type="text" name="patientId" style="width:150px;"/>
+	<input class="form-control-inline input-sm" id="sampleId" type="text" name="sampleId" style="width:140px;"/>
+	<input class="form-control-inline input-sm" id="age" type="text" name="age" style="width:100px;"/>
+	<input class="form-control-inline input-sm" id="cancerStudies" type="text" name="cancerStudies" style="width:150px;"/>
+	<input class="form-control-inline input-sm" id="cancerType" type="text" name="cancerTypeDetails" style="width:140px;"/>
+	<input class="form-control-inline input-sm" id="cancerTypeDetails" type="text" name="cancerTypeDetails" style="width:150px;"/>
+
 	<div id="grid">
 	</div>
 </div>

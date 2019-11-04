@@ -36,6 +36,20 @@
 		.patient-table tr:nth-child(odd) {
 			background-color: #E9F2F9;
 		}
+
+		./*form-control-inline {
+			width:150px;
+		}*/
+
+		/*.col {
+			background-color: white;
+			height: 35px;
+			padding: 0px;
+		}
+		.row {
+		    height:25px;
+			margin-top:6px;
+		  }*/
 	</style>
 </head>
 <body class="hold-transition skin-black sidebar-mini fixed">
@@ -62,6 +76,8 @@
 	<tiles:insertAttribute name="modal"/>
 </div>
 <!-- ./wrapper -->
-
+<script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
+<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
+<script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
 </body>
 </html>

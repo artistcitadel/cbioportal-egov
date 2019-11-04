@@ -198,6 +198,9 @@
 
     </div>
 
+    <div class="container-fluid" >
+
+    </div>
 
 </section>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
