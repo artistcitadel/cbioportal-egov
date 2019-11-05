@@ -86,5 +86,6 @@
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
 <script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
 <script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
+<script src="<c:url value="/js/raphael.min.js" />"></script>
 </body>
 </html>

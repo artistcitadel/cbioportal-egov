@@ -72,10 +72,8 @@
     </div>
 
     <div class="container-fluid" >
-        <div className="genomicOverviewTracksContainer" />
+        <div id="genomicOverviewTracksContainer" style="width:500px;height: 200px;"/>
     </div>
 <div id="svg"></div>
 </section>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
-<script src="<c:url value="/js/raphael.min.js" />"></script>
-
