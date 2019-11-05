@@ -32,176 +32,50 @@
 </section>
 
 <section class="contents">
-
-    <div class="container-fulid">
-        <div class="row" id="row1">
-            <div class="col-xs-3 col" style="background-color: white;">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" style="border:none" value="Cohort 선택 :" disabled/>
-                    </div>
+    <div class="container-fulid" style="margin-top:10px;">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#" style="font-size: small;">Maie, 69 years old, Colorectal Cancer, LIVING(40 months)</a>
                 </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  />
-                        <i class="form-control-feedback glyphicon glyphicon-remove"></i>
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Summary</a>
+                    </li>
+                    <li><a href="#">Data</a></li>
+                    <li><a href="#">유사환자</a></li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" />
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
             </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  />
-                        <i class="form-control-feedback glyphicon glyphicon-remove"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <%--<button class="btn btn-primary" type="submit" style="height:34px;">초기화</button>--%>
-                        <button class="btn btn-primary btn-xs btn-block" style="width:auto;height:34px;">
-                            초기화
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fulid">
-        <div class="row" id="row1">
-            <div class="col-xs-3 col" style="background-color: white;">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" style="border:none" value="필터 선택 Mutated Genes =" disabled/>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  />
-                        <i class="form-control-feedback glyphicon glyphicon-remove"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            초기화
-                        </button>
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            저장
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-5 col" align="right">
-                <div class="form-group">
-                    <div class="form-group has-feedback" style="height:34px;">
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            Cohort Analysis
-                        </button>
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            Mutation View
-                        </button>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fulid">
-        <div class="row" id="row1">
-            <div class="col-xs-3 col" style="background-color: white;">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" style="border:none" value="환자 선택 :" disabled/>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  />
-                        <i class="form-control-feedback glyphicon glyphicon-remove"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  />
-                        <i class="form-control-feedback glyphicon glyphicon-remove"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-2 col">
-                <div class="form-group">
-                    <div class="form-group has-feedback">
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            초기화
-                        </button>
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            저장
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-3 col" align="right">
-                <div class="form-group">
-                    <div class="form-group has-feedback" style="height:34px;">
-                        <button class="btn btn-primary btn-xs" style="width:auto;height:34px;">
-                            Patient View
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container" style="padding-left: 0px;">
-        <br/>
-        <%--<p class="h2">PATIENT VIEW</p>--%>
-
-        <div class="col-sm-10">
-          <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group btn-group-justified">
-              <div class="btn-group">
-                <button type="button" class="btn btn-success">
-                  <span class="glyphicon glyphicon-ok"></span>
-                  Summary
-                </button>
-              </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default" onClick="location.href='patientData'">
-
-                Data
-              </button>
-            </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default" onClick="location.href='patientQuasi'">
-
-                유사환자
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+            <ul class="pagination pull-right" >
+                <li><a href="#">First</a></li>
+                <li><a href="#">&laquo</a></li>
+                <li class="disabled">
+                    <span style="height:34px;width:40px;">1
+                        <%--<input value="1" style="border:none;height:34px;width:40px;">--%>
+                    </span>
+                </li>
+                <%--<li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li class="active"><a href="#">5</a></li>--%>
+                <li class="disabled"><a href="#">&raquo</a></li>
+                <li class="disabled"><a href="#">Last</a></li>
+            </ul>
+        </nav>
     </div>
 
     <div class="container-fluid" >
-
+        <div className="genomicOverviewTracksContainer" />
     </div>
-
+<div id="svg"></div>
 </section>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
+<script src="<c:url value="/js/raphael.min.js" />"></script>
 

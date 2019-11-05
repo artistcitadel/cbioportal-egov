@@ -37,10 +37,17 @@
 			background-color: #E9F2F9;
 		}
 
-		./*form-control-inline {
+		#scroll {
+			overflow-y:auto;
+			overflow-x:hidden;
+			height:auto;
+			max-height:400px;
+			border:1px solid black;
+			width:100%;
+		}
+		/*.form-control-inline {
 			width:150px;
 		}*/
-
 		/*.col {
 			background-color: white;
 			height: 35px;

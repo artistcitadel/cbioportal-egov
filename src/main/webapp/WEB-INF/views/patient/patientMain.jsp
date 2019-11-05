@@ -117,8 +117,8 @@
 	  </div>
 	</div>
 
-	<div class="container-fulid">
-		<div class="row" id="row1" style="height:20px;margin-top:6px;margin-bottom:10px;">
+	<div class="container-fulid" id="scroll">
+		<div class="row" id="row1" style="height:34px;margin-top:6px;margin-bottom:10px;">
 			<div class="col-xs-3 col" style="background-color: white; height:34px;padding:0px;padding-left:20px;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
@@ -126,7 +126,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
+			<div id="patientList">
+		<%--		<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" width="110px">
+						<span class="input-group-btn">
+						<button type="button" class="btn btn-default btn-sm">
+						  <span class="glyphicon glyphicon-remove"></span>
+						</button>
+				   </span>
+					</div>
+				</div>--%>
+			</div>
+			<%--<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
 						<input type="text" class="form-control input-sm"  disabled/>
@@ -141,7 +153,7 @@
 						<i class="form-control-feedback glyphicon glyphicon-remove"></i>
 					</div>
 				</div>
-			</div>
+			</div>--%>
 			<div class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:auto;">
 				<div class="form-group">
 					<div class="form-group has-feedback">
@@ -168,7 +180,7 @@
 		</div>
 	</div>
 
-<div class="container-fluid" >
+<div class="container-fluid">
 	<p class="h4">PATIENT LIST</p>
 	<input class="form-control-inline input-sm" id="patientId" type="text" name="patientId" style="width:150px;"/>
 	<input class="form-control-inline input-sm" id="sampleId" type="text" name="sampleId" style="width:140px;"/>

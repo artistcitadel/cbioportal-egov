@@ -1,4 +1,5 @@
 var PDATA;
+var PIDX=0;
 $(document).ready(function () {
     //var url = "/resources/json/patient.json";
     // prepare the data
@@ -19,6 +20,20 @@ $(document).ready(function () {
         //console.log(temp);
         setData(temp);
     });
+
+    $('#grid').on('cellselect', function (event) {
+        var columnheader = $("#grid").jqxGrid('getcolumn', event.args.datafield).text;
+        //alert(event.args.datafield);
+        //alert($("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId'));
+        //alert("Row with bound index: " + event.args.rowindex +" has been clicked.");
+        if(event.args.datafield==='patientId'){
+            //alert($("#grid").jqxGrid('getcellvalue', event.args.datafield));
+            var props={value:$("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId')};
+            $("#patientList").append(getPatientRow(props));
+            ++PIDX;
+        }
+    });
+
 });
 
 function setData(data){
@@ -49,7 +64,7 @@ function setData(data){
             // altrows: true,
             // enabletooltips: true,
             // editable: true,
-             selectionmode: 'multiplecellsadvanced',
+             selectionmode: 'singlecell',
             columns: [
                 { text: 'Patient Id',  datafield: 'patientId', width: 150 },
                 { text: 'Sample Id',  datafield: 'sampleId', width: 150 },
@@ -59,5 +74,29 @@ function setData(data){
                 { text: 'Cancer Type Details',  datafield: 'cancerTypeDetails', width: 150 },
             ],
         });
+  /*  $("div").on('click', '[id^=patientremove_]', function(e) {
+        var idx = this.id.split("_")[1];
+          removePatientRow(idx);
+    });*/
+}
 
+function getPatientRow(props){
+    var txt =
+      ' <div id= "patient_'+(PIDX)+'"  class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:min-content;"> \
+          <div class="input-group" style="width:min-content"> \
+            <input type="text" class="form-control input-sm" value="'+props.value+'" style="width:110px"> \
+              <span class="input-group-btn"> \
+                <button type="button" class="btn btn-default btn-sm" onClick="removePatientRow()"> \
+                  <span class="glyphicon glyphicon-remove"></span> \
+               </button> \
+              </span> \
+           </div> \
+         </div> ';
+    console.log(txt);
+    return txt;
+}
+
+function removePatientRow(){
+    console.log('ddd');
+    $("#patient_"+(--PIDX)).remove();
 }
