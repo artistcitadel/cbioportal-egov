@@ -21,7 +21,7 @@
 <script>
     $(document).ready(function () {
 
-        var paper = Raphael("genomicOverviewTracksContainer", 1120, 45);
+        var paper = Raphael("genomicOverviewTracksContainer", 1120, 445);
         //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
 
         var chmName = [
@@ -55,90 +55,85 @@
         }
 
 //--event bar chart
-        //var pixelMap = [];
-        /*pixelMap[0][78] = "SLC27A3: G111D";
-        pixelMap[0][123] = "ZFP36L2: C174Sfs*302";
-        pixelMap[0][249] = "SI: V109I";
-        pixelMap[0][519] = "PRKDC: X133_splice";
-        pixelMap[0][708] = "KMT2D: V5208Wfs*35";
-        pixelMap[0][711] = "KRT85: G85R";
-        pixelMap[0][1056] = "ENOX2: H250Q";
 
-        pixelMap[1][18] = "SLC27A3: G111D";
-        pixelMap[1][183] = "ZFP36L2: C174Sfs*302";
-        pixelMap[1][289] = "SI: V109I";
-        pixelMap[1][569] = "PRKDC: X133_splice";
-        pixelMap[1][768] = "KMT2D: V5208Wfs*35";
-        pixelMap[1][761] = "KRT85: G85R";
-        pixelMap[1][1096] = "ENOX2: H250Q";*/
-   /*     pixelMap[0][1] = {"pixil":78, "text":"SLC27A3: G111D"};
-        pixelMap[0][2] = {"pixil":123, "text":"ZFP36L2: C174Sfs*302"};
-        pixelMap[0][3] = {"pixil":249, "text":"SI: V109I"};
-        pixelMap[0][4] = {"pixil":519, "text":"PRKDC: X133_splice"};
-        pixelMap[0][5] = {"pixil":708, "text":"KMT2D: V5208Wfs*35"};
-        pixelMap[0][6] = {"pixil":711, "text":"KRT85: G85R"};
-        pixelMap[0][7] = {"pixil":1056, "text":"ENOX2: H250Q"};
-
-        pixelMap[1][1] = {"pixil":18, "text":"SLC27A3: G111D"};
-        pixelMap[1][2] = {"pixil":183, "text":"ZFP36L2: C174Sfs*302"};
-        pixelMap[1][3] = {"pixil":289, "text":"SI: V109I"};
-        pixelMap[1][4] = {"pixil":569, "text":"PRKDC: X133_splice"};
-        pixelMap[1][5] = {"pixil":768, "text":"KMT2D: V5208Wfs*35"};
-        pixelMap[1][6] = {"pixil":761, "text":"KRT85: G85R"};
-        pixelMap[1][7] = {"pixil":1096, "text":"ENOX2: H250Q"};*/
-
-      /*var  pixelMap = [
-                       {'position': '78',  'text':['SLC27A3: G111D']},
-                       {'position': '123', 'text': ['ZFP36L2: C174Sfs*302']},
-                       {'position': '249', 'text': ['SI: V109I']},
-                       {'position': '519',  'text': ['PRKDC: X133_splice']},
-                       {'position': '708',  'text': ['KMT2D: V5208Wfs*35']},
-                       {'position':  '711',  'text': ['KRT85: G85R']},
-                       {'position':   '1056', 'text': ['ENOX2: H250Q']},
-                       {'position':  '18',  'text': ['SLC27A3: G111D']},
-                       {'position':   '183',  'text': ['ZFP36L2: SLC27A3: G111D']},
-                       {'position':  '289',  'text': ['SI: V109I']},
-                       {'position':  '569',  'text': ['text":"PRKDC: X133_splice']},
-                       {'position':   '768',  'text': ['KMT2D: V5208Wfs*35']},
-                       {'position':   '761',  'text': ['KRT85: G85R']},
-                       {'position':   '1096',  'text': ['ENOX2: H250Q']}
-                       ];*/
 
       // for(var k=0;k<pixelMap.length;k++) {
       //     //plotMuts(paper, sel, chmInfo, rowIndex, _trackData, 'AdCC10T');
       //     plotMuts(paper, pixelMap[k], k);
       // }
-      plotMuts(paper);
+
       function fyRow(row) {
         return 2*5+10+row*(20+5);
       }
 
-      function plotMuts(p) {
+        var pixelMap = [[],[]];
+        pixelMap[0][78] = ["SLC27A3: G111D"];
+        //pixelMap[0][123] = ["ZFP36L2: C174Sfs*302"];
+        //pixelMap[0][249] = ["SI: V109I"];
+         pixelMap[0][519] = ["PRKDC: X133_splice"];
+        //pixelMap[0][708] = ["KMT2D: V5208Wfs*35"];
+        //pixelMap[0][711] = ["KRT85: G85R"];
+        pixelMap[0][1056] = ["ENOX2: H250Q"];
+/*
+        pixelMap[1][18] = ["SLC27A3: G111D"];
+        pixelMap[1][183] = ["ZFP36L2: C174Sfs*302"];
+        pixelMap[1][289] = ["SI: V109I"];
+        pixelMap[1][569] = ["PRKDC: X133_splice"];
+        pixelMap[1][768] = ["KMT2D: V5208Wfs*35"];
+        pixelMap[1][761] = ["KRT85: G85R"];
+        pixelMap[1][1096] = ["ENOX2: H250Q"];*/
+
+
+         for(var i=0;i<pixelMap.length;i++) {
+            plotMuts(paper, pixelMap[i], i);
+        }
+
+       function getZeroBase(seed){
+             console.log(seed);
+             var f = seed.substring(0,1);
+             var l = seed.substring(1);
+             //console.log( ' l ', l);
+             var z='';
+             for(var i=0;i<l.length;i++){
+                 z+='0';
+             }
+             var t = f+z;
+             console.log('zero base ', t);
+             var idx = 0;
+             if(Number(t)<100)idx = 1;
+             if(Number(t)>=100 && Number(t)<1000) idx = f;
+             if(Number(t)>=1000 && Number(t)<10000) idx = f+'0';
+             console.log( 'getZeroBase ', idx);
+             return idx;
+       }
+      function getIdx(pos){
+        return xt[pos];
+      }
+
+      function plotMuts(p,pixelMap, row) {
+          var r = p.rect(110-22, 26, 3, 10);
+          r.attr("fill","#0f0");
+          r.attr("stroke", "#0f0");
+          r.attr("stroke-width", 1);
+          r.attr("opacity", 0.5);
+          r.translate(0.5, 0.5);
+
+             return ;
           //console.log('call plotMuts ');
-          var pixelMap = [];
-          pixelMap[78] = ["SLC27A3: G111D"];
-          pixelMap[123] = ["ZFP36L2: C174Sfs*302"];
-          pixelMap[249] = ["SI: V109I"];
-          pixelMap[519] = ["PRKDC: X133_splice"];
-          pixelMap[708] = ["KMT2D: V5208Wfs*35"];
-          pixelMap[711] = ["KRT85: G85R"];
-          pixelMap[1056] = ["ENOX2: H250Q"];
-
-         /* pixelMap[18] = ["SLC27A3: G111D"];
-          pixelMap[183] = ["ZFP36L2: C174Sfs*302"];
-          pixelMap[289] = ["SI: V109I"];
-          pixelMap[569] = ["PRKDC: X133_splice"];
-          pixelMap[768] = ["KMT2D: V5208Wfs*35"];
-          pixelMap[761] = ["KRT85: G85R"];
-          pixelMap[1096] = ["ENOX2: H250Q"];*/
-
           var maxCount = 5; // set max height to 5 mutations
-          var yRow = fyRow(1)   +20;
+          var yRow = fyRow(row)   +20;
+          var idx = 0;
           $.each(pixelMap, function(i, arr) {
-              var pixil = i;
-              if (arr) {
-                  //console.log(i);
+               if (arr) {
+                  var position =  getZeroBase(i.toString());
+                   //var pixil = i;
+                   var pixil = getIdx(position-1);
+                   console.log( ' mpo ', i , ' ', pixil);
+                   if(pixil <= 25 && idx===0)pixil=25+(25-pixil);
+                  console.log('pixil ', pixil);
                   var h = arr.length>maxCount ? 20 : (20*arr.length/maxCount);
+                  console.log(yRow-h);
+                   pixil = 150;
                   var r = p.rect(pixil, yRow-h, 3, h);
                   r.attr("fill","#0f0");
                   r.attr("stroke", "#0f0");
@@ -147,11 +142,12 @@
                   r.translate(0.5, 0.5);
                     //console.log(r.node, arr.join("</br>"));
                     //addToolTip(r.node, arr.join("</br>"), 100, '');
+                   ++idx;
               }
           });
 
-        var label = "MUT";
-        var t = p.text(12,yRow-20/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+        //var label = "MUT"+row;
+        //var t = p.text(12,yRow-20/2-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
        }
 
 
@@ -197,14 +193,14 @@
         paper.setViewBox(viewBox.X,viewBox.Y,viewBoxWidth,viewBoxHeight,true);
     }
 
-    function wheel(event){
+   /* function wheel(event){
         var delta = 0;
-        if(!event){ /* For IE. */
+        if(!event){ /!* For IE. *!/
             event = window.event;
         }
-        if(event.wheelDelta){ /* IE/Opera. */
+        if(event.wheelDelta){ /!* IE/Opera. *!/
             delta = event.wheelDelta/120;
-        } else if (event.detail) { /** Mozilla case. */
+        } else if (event.detail) { /!** Mozilla case. *!/
             delta = -event.detail/3;
         }
         if(delta){
@@ -217,10 +213,10 @@
     }
 
     if (window.addEventListener)
-        /** DOMMouseScroll is for mozilla. */
+        /!** DOMMouseScroll is for mozilla. *!/
         window.addEventListener('DOMMouseScroll', wheel, false);
-    /** IE/Opera. */
-    window.onmousewheel = document.onmousewheel = wheel;
+    /!** IE/Opera. *!/
+    window.onmousewheel = document.onmousewheel = wheel;*/
 
     });
 
