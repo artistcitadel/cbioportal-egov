@@ -60,8 +60,7 @@
 	$.session.set('DEPT_NAME'	,gvPERINX.DEPT_NAME);
 	$.session.set('PER_PASS'	,gvPERINX.PER_PASS);
 	$.session.set('INSTCD'		,gvINSTCD);
-	
-	
+
 	//메뉴 권한용
 	var vMNUINX = '<%= session.getAttribute("jsonMNUINX") %>';
 	var vREPINX = '<%= session.getAttribute("jsonREPINX") %>'; 
@@ -179,7 +178,7 @@
 		clearTimer();
 	    initTimer();
 		
-		
+
 	});
 		
 	

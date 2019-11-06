@@ -1,12 +1,4 @@
 $(document).ready(function () {
-    // var paper = Raphael("genomicOverviewTracksContainer", 500, 300);
-    // var dot = paper.circle(250, 150, 30).attr({
-    //     fill: "#FFF",
-    //     stroke: "#000",
-    //     "stroke-width": 1
-    // });
-
-    //var elementId = document.getElementsByClassName('genomicOverviewTracksContainer')[0];
     var paper = Raphael("genomicOverviewTracksContainer", 1120, 45);
     function getChmEndsPerc(chms, total) {
         var ends = [0];
@@ -128,23 +120,14 @@ $(document).ready(function () {
         526.9697327106381, 572.9245600897901, 623.5859315660505, 669.9043460216972, 715.9346453279611, 758.5687838781829, 796.6655477990097, 832.5985211536636, 865.6218770284456,
         894.9923405132889, 922.260815714477, 945.751410098799, 966.6650512744061, 985.6955774273036, 1002.7194004282773, 1038.086398409267, 1074.8348613915593];
     for (var i = 0; i < chmInfo.genomeRef.length-1; i++) {
-       // if (chmInfo.genomeRef[i] === 0 && genomeBuild === "GRCm38") {
-            // Do not display chromosomes 20, 21 and 22 in mouse, they do not exist
-            // They have length 0 in the file chromosomeSizes.json
-       // } else {
-            //var xt = chmInfo.loc2xpixil(i,0,config);
             drawLine(xt[i], yRuler, xt[i], 5, paper, '#f0f', 1);
-
-            //var m = chmInfo.middle(i,config);
-            //console.log('chmInfo.chmName(i) ', chmInfo.chmName(i));
             paper.text(m[i], 10, chmName[i]);
             console.log('text ', m[i], 10, chmName[i]);
-        //}
     }
-    // drawLine(25 + 2060, yRuler, 25 + 1060, 5, paper, '#f0f', 1);
-
+    drawLine(1090, yRuler, 1090, 5, paper, '#f0f', 1);
 
     function drawLine(x1, y1, x2, y2, p, cl, width) {
+        width=2;
         //console.log( 'x1 ', x1 , ' y1 ', y1, ' x2 ', x2, ' y2 ',y2, ' p ', p, ' cl ', cl, ' width ', width);
         var path = "M" + x1 + " " + y1 + " L" + x2 + " " + y2;
         var line = p.path(path);
@@ -588,6 +571,7 @@ sel.canvasHeight = function() {
     return 2*sel.rowMargin+sel.ticHeight+sel.nRows*(sel.rowHeight+sel.rowMargin);
 };
 
+// --- chromsomes end --- //>
 
 // --- mutation events bar chart ---
 //_.each(this.props.sampleManager.samples, (sample: ClinicalDataBySampleId) => {
@@ -602,431 +586,23 @@ for(var i=0;i<10;i++) {
 // --- end of mutation events bar chart ---
 function plotMuts(p, config,chmInfo,row, mutations ,caseId) {
     console.log('call plotMuts ');
-    var numMut = 0;
-    /*//console.log(' mutations ', mutations);
-    console.log('caseId ' , caseId);
-    console.log( ' p ', p);
-    console.log(' config ', config);
-    console.log(' chmInfo ', chmInfo);*/
-
-    //var mutObjs = _.filter(mutations, function(_mutObj: Mutation){ return _mutObj.sampleId === caseId; } );
-    //console.log(' mutObjs ', mutObjs);
-    var mutObjs = [{
-        center: "MSKCC",
-        chr: "22",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 29758989,
-        entrezGeneId: 162,
-        fisValue: 1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 162, hugoGeneSymbol: "AP1B1", type: "protein-coding"},
-        keyword: "AP1B1 truncating",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Splice_Site",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "X48_splice",
-        proteinPosEnd: 48,
-        proteinPosStart: 48,
-        referenceAllele: "C",
-        refseqMrnaId: "NA",
-        sampleId: "AdCC10T",
-        startPosition: 29758989,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 37,
-        tumorRefCount: 63,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "G",
-        variantType: "SNP"
-    },{
-        center: "MSKCC",
-        chr: "1",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 11194409,
-        entrezGeneId: 2475,
-        fisValue:1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 2475, hugoGeneSymbol: "MTOR", type: "protein-coding"},
-        keyword: "MTOR R1749 missense",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "R1749G",
-        proteinPosEnd: 1749,
-        proteinPosStart: 1749,
-        referenceAllele: "G",
-        refseqMrnaId: "NM_004958.3",
-        sampleId: "AdCC10T",
-        startPosition: 11194409,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 15,
-        tumorRefCount: 85,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "C",
-        variantType: "SNP"
-    },{
-        center: "MSKCC",
-        chr: "NA",
-        endPosition: -1,
-        entrezGeneId: 4602,
-        fisValue: -1,
-        functionalImpactScore: "NA",
-        gene: {entrezGeneId: 4602, hugoGeneSymbol: "MYB", type: "protein-coding"},
-        keyword: "MYB MYB-NFIB Fusion",
-        linkMsa: "NA",
-        linkPdb: "NA",
-        linkXvar: "NA",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "NA",
-        mutationType: "Fusion",
-        ncbiBuild: "NA",
-        normalAltCount: -1,
-        normalRefCount: -1,
-        patientId: "AdCC10T",
-        proteinChange: "MYB-NFIB Fusion",
-        proteinPosEnd: -1,
-        proteinPosStart: -1,
-        referenceAllele: "NA",
-        refseqMrnaId: "NA",
-        sampleId: "AdCC10T",
-        startPosition: -1,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: -1,
-        tumorRefCount: -1,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "NA",
-        variantAllele: "",
-        variantType: "NA"
-    },{
-        center: "MSKCC",
-        chr: "15",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 52643623,
-        entrezGeneId: 4644,
-        fisValue:1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 4644, hugoGeneSymbol: "MYO5A", type: "protein-coding"},
-        keyword: "MYO5A R1226 missense",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "R1226H",
-        proteinPosEnd: 1226,
-        proteinPosStart: 1226,
-        referenceAllele: "C",
-        refseqMrnaId: "NM_000259.3",
-        sampleId: "AdCC10T",
-        startPosition: 52643623,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 36,
-        tumorRefCount: 64,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "T",
-        variantType: "SNP"
-    },{
-        center: "MSKCC",
-        chr: "NA",
-        endPosition: -1,
-        entrezGeneId: 4781,
-        fisValue: -1,
-        functionalImpactScore: "NA",
-        gene: {entrezGeneId: 4781, hugoGeneSymbol: "NFIB", type: "protein-coding"},
-        keyword: "NFIB MYB-NFIB Fusion",
-        linkMsa: "NA",
-        linkPdb: "NA",
-        linkXvar: "NA",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "NA",
-        mutationType: "Fusion",
-        ncbiBuild: "NA",
-        normalAltCount: -1,
-        normalRefCount: -1,
-        patientId: "AdCC10T",
-        proteinChange: "MYB-NFIB Fusion",
-        proteinPosEnd: -1,
-        proteinPosStart: -1,
-        referenceAllele: "NA",
-        refseqMrnaId: "NA",
-        sampleId: "AdCC10T",
-        startPosition: -1,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: -1,
-        tumorRefCount: -1,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "NA",
-        variantAllele: "",
-        variantType: "NA",
-    },{
-        center: "MSKCC",
-        chr: "15",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 28483865,
-        entrezGeneId: 8924,
-        fisValue: 2.25,
-        functionalImpactScore: "M",
-        gene: {entrezGeneId: 8924, hugoGeneSymbol: "HERC2", type: "protein-coding"},
-        keyword: "HERC2 R1211 missense",
-        linkMsa: "getma.org/?cm=msa&ty=f&p=HERC2_HUMAN&rb=1209&re=1283&var=R1211C",
-        linkPdb: "getma.org/pdb.php?prot=HERC2_HUMAN&from=1209&to=1283&var=R1211C",
-        linkXvar: "getma.org/?cm=var&var=hg19,15,28483865,G,A&fts=all",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "R1211C",
-        proteinPosEnd: 1211,
-        proteinPosStart: 1211,
-        referenceAllele: "G",
-        refseqMrnaId: "NM_004667.5",
-        sampleId: "AdCC10T",
-        startPosition: 28483865,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 7,
-        tumorRefCount: 93,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "A",
-        variantType: "SNP",
-    },{
-        center: "MSKCC",
-        chr: "2",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 198267483,
-        entrezGeneId: 23451,
-        fisValue: 3.805,
-        functionalImpactScore: "H",
-        gene: {entrezGeneId: 23451, hugoGeneSymbol: "SF3B1", type: "protein-coding"},
-        keyword: "SF3B1 R625 missense",
-        linkMsa: "getma.org/?cm=msa&ty=f&p=SF3B1_HUMAN&rb=458&re=657&var=R625H",
-        linkPdb: "NA",
-        linkXvar: "getma.org/?cm=var&var=hg19,2,198267483,C,T&fts=all",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "R625H",
-        proteinPosEnd: 625,
-        proteinPosStart: 625,
-        referenceAllele: "C",
-        refseqMrnaId: "NM_012433.2",
-        sampleId: "AdCC10T",
-        startPosition: 198267483,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 36,
-        tumorRefCount: 64,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "T",
-        variantType: "SNP",
-    },{
-        center: "MSKCC",
-        chr: "5",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 167988433,
-        entrezGeneId: 79646,
-        fisValue: 3.745,
-        functionalImpactScore: "H",
-        gene: {entrezGeneId: 79646, hugoGeneSymbol: "PANK3", type: "protein-coding"},
-        keyword: "PANK3 I301 missense",
-        linkMsa: "getma.org/?cm=msa&ty=f&p=PANK3_HUMAN&rb=12&re=367&var=I301F",
-        linkPdb: "getma.org/pdb.php?prot=PANK3_HUMAN&from=12&to=367&var=I301F",
-        linkXvar: "getma.org/?cm=var&var=hg19,5,167988433,T,A&fts=all",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "I301F",
-        proteinPosEnd: 301,
-        proteinPosStart: 301,
-        referenceAllele: "T",
-        refseqMrnaId: "NM_024594.3",
-        sampleId: "AdCC10T",
-        startPosition: 167988433,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 13,
-        tumorRefCount: 87,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "A",
-        variantType: "SNP",
-    },{
-        center: "MSKCC",
-        chr: "17",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 30351758,
-        entrezGeneId: 114659,
-        fisValue:1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 114659, hugoGeneSymbol: "LRRC37B", type: "protein-coding"},
-        keyword: "LRRC37B L570 missense",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Missense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "L570I",
-        proteinPosEnd: 570,
-        proteinPosStart: 570,
-        referenceAllele: "C",
-        refseqMrnaId: "NM_052888.2",
-        sampleId: "AdCC10T",
-        startPosition: 30351758,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 9,
-        tumorRefCount: 91,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "A",
-        variantType: "SNP"
-    },{
-        center: "MSKCC",
-        chr: "2",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 205990357,
-        entrezGeneId: 117583,
-        fisValue:1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 117583, hugoGeneSymbol: "PARD3B", type: "protein-coding"},
-        keyword: "PARD3B truncating",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Nonsense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "R444*",
-        proteinPosEnd: 444,
-        proteinPosStart: 444,
-        referenceAllele: "C",
-        refseqMrnaId: "NM_205863.3",
-        sampleId: "AdCC10T",
-        startPosition: 205990357,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 27,
-        tumorRefCount: 73,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "T",
-        variantType: "SNP"
-    },{
-        center: "MSKCC",
-        chr: "23",
-        driverFilter: "",
-        driverFilterAnnotation: "",
-        driverTiersFilter: "",
-        driverTiersFilterAnnotation: "",
-        endPosition: 71359543,
-        entrezGeneId: 340527,
-        fisValue:1.4013,
-        functionalImpactScore: "",
-        gene: {entrezGeneId: 340527, hugoGeneSymbol: "NHSL2", type: "protein-coding"},
-        keyword: "NHSL2 truncating",
-        linkMsa: "",
-        linkPdb: "",
-        linkXvar: "",
-        molecularProfileId: "acbc_mskcc_2015_mutations",
-        mutationStatus: "SOMATIC",
-        mutationType: "Nonsense_Mutation",
-        ncbiBuild: "GRCh37",
-        patientId: "AdCC10T",
-        proteinChange: "Y484*",
-        proteinPosEnd: 484,
-        proteinPosStart: 484,
-        referenceAllele: "C",
-        refseqMrnaId: "NA",
-        sampleId: "AdCC10T",
-        startPosition: 71359543,
-        studyId: "acbc_mskcc_2015",
-        tumorAltCount: 33,
-        tumorRefCount: 67,
-        uniquePatientKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        uniqueSampleKey: "QWRDQzEwVDphY2JjX21za2NjXzIwMTU",
-        validationStatus: "Unknown",
-        variantAllele: "A",
-        variantType: "SNP"
-    }
-
-    ];
     var pixelMap=[];
-    for (var i = 0; i < mutObjs.length; i++) {
-        var mutObj = mutObjs[i];
-        if (typeof mutObj.chr !== 'undefined') {
-            var chm = translateChm(mutObj.chr);
-            console.log('chm ', chm);
-            if (chm != null && chm <= chmInfo.genomeRef.length) {
-                var x = Math.round(chmInfo.loc2xpixil(chm, (mutObj.startPosition + mutObj.endPosition)/2, config));
-                var xBin = x - x%config.pixelsPerBinMut;
-                if (pixelMap[xBin] == null) pixelMap[xBin] = [];
-                pixelMap[xBin].push(mutObj.gene.hugoGeneSymbol + ": " + mutObj.proteinChange);
-                numMut++;
-            }
-        }
-    }
+    pixelMap[78]=["SLC27A3: G111D"];
+    pixelMap[123]=["ZFP36L2: C174Sfs*302"];
+    pixelMap[249]=["SI: V109I"];
+    pixelMap[519]=["PRKDC: X133_splice"];
+    pixelMap[708]=["KMT2D: V5208Wfs*35"];
+    pixelMap[711]=["KRT85: G85R"];
+    pixelMap[1056]=["ENOX2: H250Q"];
     var maxCount = 5; // set max height to 5 mutations
-
+    //2*sel.rowMargin+sel.ticHeight+row*(sel.rowHeight+sel.rowMargin
+    //2*5+10+row*(20+5)
+    //config.rowHeight=20
     var yRow = config.yRow(row)+config.rowHeight;
     $.each(pixelMap, function(i, arr) {
         var pixil = i;
         if (arr) {
+            console.log(i);
             var h = arr.length>maxCount ? config.rowHeight : (config.rowHeight*arr.length/maxCount);
             var r = p.rect(pixil,yRow-h,config.pixelsPerBinMut,h);
             r.attr("fill","#0f0");
@@ -1034,11 +610,12 @@ function plotMuts(p, config,chmInfo,row, mutations ,caseId) {
             r.attr("stroke-width", 1);
             r.attr("opacity", 0.5);
             r.translate(0.5, 0.5);
+            console.log(r.node, arr.join("</br>"));
             //addToolTip(r.node, arr.join("</br>"), 100, '');
         }
     });
 
-    if (caseId!==null) {
+    /*if (caseId!==null) {
         //var label = caseMetaData.label[caseId]; //TODO: needed for patient view
         var label = "MUT";
         //var c = p.circle(12,yRow-config.rowHeight/2,6).attr({'stroke':caseMetaData.color[caseId], 'fill':caseMetaData.color[caseId]}); //TODO: needed for patient view
@@ -1046,13 +623,17 @@ function plotMuts(p, config,chmInfo,row, mutations ,caseId) {
         t.node.setAttribute('id','mutTrack' + caseId);
         //addToolTip(c.node, caseMetaData.tooltip[caseId],false,{my:'middle left',at:'middle right'}); //TODO: needed for patient view
         //addToolTip(t.node, caseMetaData.tooltip[caseId],false,{my:'middle left',at:'middle right'}); //TODO: needed for patient view
-    } else {
+        console.log(" t is ", t);
+    }
+    else {
+        console.log(0,yRow-config.rowHeight/2,'MUT').attr({'text-anchor': 'start'});
         p.text(0,yRow-config.rowHeight/2,'MUT').attr({'text-anchor': 'start'});
     }
     var t = p.text(config.xRightText(),yRow-config.rowHeight/2,mutations.length).attr({'text-anchor': 'start','font-weight': 'bold'});
+    console.log(t);
     //underlineText(t,p);
     var tip =  "Number of mutation events.";
-    //addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});
+    //addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});*/
 
 }
 function translateChm(chm) {

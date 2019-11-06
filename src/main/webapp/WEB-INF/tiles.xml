@@ -171,9 +171,9 @@
 		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" />
 		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
 		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
-		<put-attribute name="patient_top" value="/WEB-INF/layouts/patient_top.jsp" />
+		<!--<put-attribute name="patient_top" value="/WEB-INF/layouts/patient_top.jsp" />-->
 		<put-attribute name="adminLeft" value="/WEB-INF/views/patient/patientLeft.jsp" />
-		<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />
+		<!--<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />-->
 	</definition>
 
 	<definition name="/patient/*.tiles" extends="patient">

@@ -35,5 +35,10 @@ private static final Logger logger = LoggerFactory.getLogger(PatientcpmControlle
 	public String patientQuasi(){
 		return "/patient/patientQuasi.tiles";
 	}
+
+	@RequestMapping(value="/raphael")
+	public String raphael(){
+		return "/patient/raphael.tiles";
+	}
 }
 

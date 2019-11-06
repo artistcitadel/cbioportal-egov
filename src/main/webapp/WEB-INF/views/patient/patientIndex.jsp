@@ -7,7 +7,7 @@
 <head>
 	<tiles:insertAttribute name="head_css"/>
 	<tiles:insertAttribute name="js"/>
-	<tiles:insertAttribute name="patient_top"/>
+	<%--<tiles:insertAttribute name="patient_top"/>--%>
 
 	<style>
 		.patient-table {
@@ -71,7 +71,7 @@
 
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" data-toggle="control-sidebar">
-		<tiles:insertAttribute name="content"/>
+	<tiles:insertAttribute name="content"/>
 		<div style="position: absolute;left:-999px;">
 				<input type="text" class="">
 		</div>
@@ -79,10 +79,30 @@
 	<!-- /.content-wrapper -->
 	<!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-	<div class="control-sidebar-bg"></div>
-	<tiles:insertAttribute name="modal"/>
+	<%--<div class="control-sidebar-bg"></div>--%>
+	<%--<tiles:insertAttribute name="modal"/>--%>
 </div>
 <!-- ./wrapper -->
+<script>
+    $(document).ready(function () {
+        $(".sidebar-toggle").trigger("click");
+    });
+</script>
+<% String docRoot = "/"; %>
+<link rel="stylesheet" href="<%=docRoot%>jqwidgets/styles/jqx.base.css" type="text/css" />
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxmenu.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.selection.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.columnsresize.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.pager.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
+<script src="<%=docRoot%>js/lodash.min.js"></script>
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
 <script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
 <script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
