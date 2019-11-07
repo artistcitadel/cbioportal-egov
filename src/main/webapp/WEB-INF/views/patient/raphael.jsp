@@ -55,8 +55,43 @@
         }
 
 //--event bar chart
+var category =  {
+            "Time since diagnosis" :
+                [
+                    {
+                        "Specimen" : ["Tissue","BRC"]
+                    },
+                    {
+                        "Sugery":[]
+                    },
+                    {
+                        "Imaging":[]
+                    },
+                    {
+                        "Lab_test":[
+                            "CEA",
+                            "IHC",
+                            "MSI"
+                          ]
+                    },
+                    {
+                        "Treatment" : {
+                            "Chemonotherapy": [
+                                "bevacizumab [100mg]" ,
+                                "5-fluorouracil [1000mg]"
+                            ]
+                        }
+                    }
+                ]
+            };
 
-
+function getHolderIndex() {
+    var positionIndex = [];
+    for (var i = 0; i < chmName.length; i++) {
+        positionIndex.push(i);
+    }
+    return positionIndex;
+}
       // for(var k=0;k<pixelMap.length;k++) {
       //     //plotMuts(paper, sel, chmInfo, rowIndex, _trackData, 'AdCC10T');
       //     plotMuts(paper, pixelMap[k], k);
@@ -68,73 +103,147 @@
 
         var pixelMap = [[],[]];
         pixelMap[0][78] = ["SLC27A3: G111D"];
-        //pixelMap[0][123] = ["ZFP36L2: C174Sfs*302"];
-        //pixelMap[0][249] = ["SI: V109I"];
-         pixelMap[0][519] = ["PRKDC: X133_splice"];
-        //pixelMap[0][708] = ["KMT2D: V5208Wfs*35"];
-        //pixelMap[0][711] = ["KRT85: G85R"];
+        pixelMap[0][123] = ["ZFP36L2: C174Sfs*302"];
+        pixelMap[0][249] = ["SI: V109I"];
+        pixelMap[0][519] = ["PRKDC: X133_splice"];
+        pixelMap[0][708] = ["KMT2D: V5208Wfs*35"];
+        pixelMap[0][711] = ["KRT85: G85R"];
         pixelMap[0][1056] = ["ENOX2: H250Q"];
-/*
+
         pixelMap[1][18] = ["SLC27A3: G111D"];
         pixelMap[1][183] = ["ZFP36L2: C174Sfs*302"];
         pixelMap[1][289] = ["SI: V109I"];
         pixelMap[1][569] = ["PRKDC: X133_splice"];
         pixelMap[1][768] = ["KMT2D: V5208Wfs*35"];
         pixelMap[1][761] = ["KRT85: G85R"];
-        pixelMap[1][1096] = ["ENOX2: H250Q"];*/
+        pixelMap[1][1096] = ["ENOX2: H250Q"];
 
 
-         for(var i=0;i<pixelMap.length;i++) {
-            plotMuts(paper, pixelMap[i], i);
+        var diagonisis = [];
+        var round = 0;
+        getCategory(category);
+        function getCategory(category) {
+            _.map(category, function (i, n) {
+                console.log('category => ', ' ', i ,' = ',n + ' -> ', round);
+                //if(isNaN(n)) {
+                    //console.log(n, ' -> 0 level');
+                    //diagonisis.push(n+',0');
+                //}
+                //if(isNumber(n)){
+                 //   console.log('n==0 ',i[n]);
+               // }
+                //console.log('category => ', i, ' ',n, ' Level');
+                // for (var k = 0; k < i.length; k++) {
+                //     //console.log(i[k]);
+                //     getCategory(i[k]);
+                // }
+                //console.log($.isEmptyObject(i));
+                //console.log(' ', $.type(i));
+                if(!$.isEmptyObject(i) && $.type(i)!=="string") {
+                    //++round;
+                    console.log('lengn => ', _.map(i,function(a,b){console.log('submap ', a, ' ', b, ' ', a.length)}));
+                    getCategory(i);
+                    console.log("--------------------------------------------------------");
+                   // console.log('round ', round);
+                }
+            });
         }
 
-       function getZeroBase(seed){
+        return;
+        var label = ['ABC','DEF'];
+         for(var i=0;i<pixelMap.length;i++) {
+            plotMuts(paper, pixelMap[i], i, label[i]);
+        }
+
+        function getHundreadRatio(){
+          var track = [];
+          for(var i=1; i< xt.length;i++){
+              var trackUnitPeriod = xt[i]-xt[i-1];
+              track.push(trackUnitPeriod);
+          }
+          console.log(' track period is ', track);
+          //console.log(' average is ' , _.meanBy(track));
+          return track;
+       }
+       function getAddRatio(value){
+             var temp = value.toString();
+             // var len = temp.length;
+             // var seed="";
+             // for(var i=0;i<len;i++){
+             //     if(i==len-1)seed+="1";
+             //     else seed+="0"
+             // }
+             var seed = "0"+"."+value;
+             console.log( ' seed ', seed);
+             return Number(seed);
+       }
+       function getTargetPosition(seed){
+             var track = getHundreadRatio();
              console.log(seed);
-             var f = seed.substring(0,1);
-             var l = seed.substring(1);
-             //console.log( ' l ', l);
+             var f = seed.substring(0,1);  //prefix
+             var l = seed.substring(1);   //surfix
+             console.log( ' l ', l);
              var z='';
              for(var i=0;i<l.length;i++){
                  z+='0';
              }
              var t = f+z;
-             console.log('zero base ', t);
+             var ratio=10;
+             console.log('zero base ', t);   //ex) 78 123 249 519 708 => 0 100 200 500 700
+             console.log(' surfix length is ', l.length);
+             var temp = Number("1"+z);
+             console.log('temp ', temp);
+             var index = t/temp;
+             console.log('index ', index);
+
              var idx = 0;
-             if(Number(t)<100)idx = 1;
-             if(Number(t)>=100 && Number(t)<1000) idx = f;
-             if(Number(t)>=1000 && Number(t)<10000) idx = f+'0';
-             console.log( 'getZeroBase ', idx);
-             return idx;
+             if(Number(t)<100)idx = 0;
+             if(Number(t)>=100 && Number(t)<1000) {idx = index; ratio=100; }
+             if(Number(t)>=1000 && Number(t)<10000) {idx = index+'0'; ratio=1000;}
+             if(Number(t)>=10000 && Number(t)<100000) {idx = index+'00'; ratio=1000;}
+
+             var holder = getHolderIndex();
+             console.log( 'idx ', idx);
+             var position = holder[idx];
+             //if(idx>9){position = holder[idx-(l.length-(l.length-1))];}
+              console.log('position value ', position);
+              console.log(' the horzantal position is ', xt[position]);
+              var addup = Number(l)*getAddRatio(track[position]);
+              console.log( ' addup ', addup);
+
+              //var targetPosition = (xt[position] + (Number(l)/ratio * (ratio/10) ) );
+           var targetPosition = xt[position] + addup;
+              if(idx===0)targetPosition+=25;
+              console.log(' target position ' , targetPosition);
+              //console.log(' track is ', track[position-1]);
+              return targetPosition;
        }
-      function getIdx(pos){
-        return xt[pos];
-      }
 
-      function plotMuts(p,pixelMap, row) {
-          var r = p.rect(110-22, 26, 3, 10);
-          r.attr("fill","#0f0");
-          r.attr("stroke", "#0f0");
-          r.attr("stroke-width", 1);
-          r.attr("opacity", 0.5);
-          r.translate(0.5, 0.5);
-
-             return ;
+       function plotMuts(p,pixelMap, row, label) {
+          // var r = p.rect(110-22, 26, 3, 10);
+          // r.attr("fill","#0f0");
+          // r.attr("stroke", "#0f0");
+          // r.attr("stroke-width", 1);
+          // r.attr("opacity", 0.5);
+          // r.translate(0.5, 0.5);
+          //    return ;
           //console.log('call plotMuts ');
           var maxCount = 5; // set max height to 5 mutations
           var yRow = fyRow(row)   +20;
           var idx = 0;
           $.each(pixelMap, function(i, arr) {
                if (arr) {
-                  var position =  getZeroBase(i.toString());
+                  var position =  getTargetPosition(i.toString());
                    //var pixil = i;
-                   var pixil = getIdx(position-1);
-                   console.log( ' mpo ', i , ' ', pixil);
-                   if(pixil <= 25 && idx===0)pixil=25+(25-pixil);
-                  console.log('pixil ', pixil);
+                   //var pixil = getIdx(position-1);
+                  // console.log( ' mpo ', i , ' ', pixil);
+                  // if(pixil <= 25 && idx===0)pixil=25+(25-pixil);
+                  // console.log('pixil ', pixil);
+                   console.log(" position => ", position);
                   var h = arr.length>maxCount ? 20 : (20*arr.length/maxCount);
-                  console.log(yRow-h);
+                  //console.log(yRow-h);
                    pixil = 150;
-                  var r = p.rect(pixil, yRow-h, 3, h);
+                  var r = p.rect(position, yRow-h, 3, h);
                   r.attr("fill","#0f0");
                   r.attr("stroke", "#0f0");
                   r.attr("stroke-width", 1);
@@ -146,6 +255,8 @@
               }
           });
 
+          var label = label;
+         var t = p.text(12, yRow+7-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
         //var label = "MUT"+row;
         //var t = p.text(12,yRow-20/2-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
        }

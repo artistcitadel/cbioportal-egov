@@ -182,12 +182,12 @@
 
 <div class="container-fluid">
 	<p class="h4">PATIENT LIST</p>
-	<input class="form-control-inline input-sm" id="patientId" type="text" name="patientId" style="width:150px;"/>
+	<%--<input class="form-control-inline input-sm" id="patientId" type="text" name="patientId" style="width:150px;"/>
 	<input class="form-control-inline input-sm" id="sampleId" type="text" name="sampleId" style="width:140px;"/>
 	<input class="form-control-inline input-sm" id="age" type="text" name="age" style="width:100px;"/>
 	<input class="form-control-inline input-sm" id="cancerStudies" type="text" name="cancerStudies" style="width:150px;"/>
 	<input class="form-control-inline input-sm" id="cancerType" type="text" name="cancerTypeDetails" style="width:140px;"/>
-	<input class="form-control-inline input-sm" id="cancerTypeDetails" type="text" name="cancerTypeDetails" style="width:150px;"/>
+	<input class="form-control-inline input-sm" id="cancerTypeDetails" type="text" name="cancerTypeDetails" style="width:150px;"/>--%>
 
 	<div id="grid">
 	</div>

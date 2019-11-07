@@ -100,7 +100,8 @@
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.columnsresize.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.pager.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
-<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>
+<%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>--%>
+<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 <script src="<%=docRoot%>js/lodash.min.js"></script>
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>

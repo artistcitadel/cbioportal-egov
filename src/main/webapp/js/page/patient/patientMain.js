@@ -61,6 +61,8 @@ function setData(data){
             // pageable: true,
             autoheight: true,
             sortable: true,
+            filterable: true,
+            showfilterrow: true,
             // altrows: true,
             // enabletooltips: true,
             // editable: true,
