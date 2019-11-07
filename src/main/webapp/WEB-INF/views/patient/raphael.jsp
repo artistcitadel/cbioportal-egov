@@ -12,9 +12,9 @@
 </section>
 <p style="bottom-margin:125px;"></p>
 <p style="bottom-margin:125px;"></p>
-<section class="contents" >
+<section class="contents" style="overflow-x: auto; width: 1223px;">
     <div class="container-fluid" >
-        <div id="genomicOverviewTracksContainer" width="1120px" height="45px" style="overflow-x: auto;"/>
+        <div id="genomicOverviewTracksContainer" width="1123px" height="417px" style="overflow-x: auto;"/>
     </div>
 
 </section>
@@ -29,18 +29,22 @@
         ];
         var xt = [25, 110, 193, 261, 326, 388, 447, 501, 552, 600, 646, 693, 738, 778, 815, 850, 881, 908, 935, 955, 977, 993, 1011,1064];
         var m  = [67, 151, 227, 294, 357, 418, 474, 526, 572, 623, 669, 715, 758, 796, 832, 865, 894, 922, 945, 966, 985, 1002, 1038, 1074];
+        for(var i=0;i<xt.length;i++){
+            xt[i]+=145;
+            m[i]+=145;
+        }
 
         var yRuler = 15;
-
-        drawLine('25', yRuler, 1090, yRuler, paper, '#000', 1);
+        drawLine('170', yRuler, 1090+545, yRuler, paper, '#000', 1);
+        //drawLine('25', yRuler, 1090, yRuler, paper, '#000', 1);
 
         for (var i = 0; i < chmName.length; i++) {
-            drawLine(xt[i], yRuler, xt[i], 5, paper, '#000', 1);
-            paper.text(m[i], 10, chmName[i]);
+           // drawLine(xt[i], yRuler, xt[i], 5, paper, '#000', 1);
+           // paper.text(m[i], 10, chmName[i]);
             //console.log('text ', m[i], 10, chmName[i]);
         }
 
-        drawLine(1090, yRuler, 1090, 5, paper, '#000', 1);
+        //drawLine(1090+245, yRuler, 1090+245, 5, paper, '#000', 1);
 
         function drawLine(x1, y1, x2, y2, p, cl, width) {
             width=1;
@@ -56,34 +60,73 @@
 
 //--event bar chart
 var category =  {
-            "Time since diagnosis" :
-                [
-                    {
-                        "Specimen" : ["Tissue","BRC"]
-                    },
-                    {
-                        "Sugery":[]
-                    },
-                    {
-                        "Imaging":[]
-                    },
-                    {
-                        "Lab_test":[
-                            "CEA",
-                            "IHC",
-                            "MSI"
-                          ]
-                    },
-                    {
-                        "Treatment" : {
-                            "Chemonotherapy": [
-                                "bevacizumab [100mg]" ,
-                                "5-fluorouracil [1000mg]"
+                    "name":"Time since diagnosis",
+                     "level":"0",
+                      "data": [
+                          {
+                          "name": "Specimen",
+                          "level": "1",
+                          "data": [
+                             {"name": "Tissue","level": "2",},
+                             {"name": "BRC","level": "2",}
                             ]
-                        }
-                    }
-                ]
-            };
+                          }
+                        ,
+                          {
+                              "name": "Sugery",
+                              "level": "1",
+                          },
+                          {
+                              "name": "Imaging",
+                              "level": "1",
+                          },
+                          {
+                              "name:": "Lab_test",
+                              "level": "1",
+                              "data": [
+                                  {"name": "CEA", "level": "2"},
+                                  {"name": "IHC", "level": "2"},
+                                  {"name": "MSI", "level": "2"}
+                              ]
+                          }
+                        ,
+                          {
+                              "name": "Treatment",
+                              "level": "1",
+                              "data":
+                                      {
+                                          "name": "Chemonotherapy",
+                                          "level": "2",
+                                          "data":
+                                              [
+                                                  {"name": "bevacizumab [100mg]", "level": "3"},
+                                                  {"name": "5-fluorouracil [1000mg]", "level": "3"}
+                                              ]
+                                      }
+                          }
+                    ]
+              };
+
+        var leaf = [{"name": "Tissue"},{"name": "BRC"},{"name": "Sugery"},{"name": "Imaging"},{"name": "CEA"},{"name": "IHC"},{"name": "MSI"},{"name": "bevacizumab [100mg]"},{"name": "5-fluorouracil [1000mg]"}];
+        var dig = [];
+        function cat(cate) {
+            var txt = '';
+            _.map(cate, function (v, k) {
+                //console.log(k, '--> ', v);
+                if(k=='name'||_.isNumber(k)) {
+                    _.map(v, function(d,i){
+                        //if(i=='name'||i=='level')console.log("i => ",i ," => ",d);
+                       if(i=='name'){/*console.log('name ==> ', d);*/txt+=d+"|";}
+                       if(i=='level'){/*console.log('level ==> ', d);*/txt+=d; dig.push(txt);txt='';}
+                       if(i=='data')cat(v);
+                    });
+                }
+
+                if(k=='data')cat(v);
+            });
+        }
+     cat(category);
+     console.log(dig);
 
 function getHolderIndex() {
     var positionIndex = [];
@@ -118,42 +161,12 @@ function getHolderIndex() {
         pixelMap[1][761] = ["KRT85: G85R"];
         pixelMap[1][1096] = ["ENOX2: H250Q"];
 
-
-        var diagonisis = [];
-        var round = 0;
-        getCategory(category);
-        function getCategory(category) {
-            _.map(category, function (i, n) {
-                console.log('category => ', ' ', i ,' = ',n + ' -> ', round);
-                //if(isNaN(n)) {
-                    //console.log(n, ' -> 0 level');
-                    //diagonisis.push(n+',0');
-                //}
-                //if(isNumber(n)){
-                 //   console.log('n==0 ',i[n]);
-               // }
-                //console.log('category => ', i, ' ',n, ' Level');
-                // for (var k = 0; k < i.length; k++) {
-                //     //console.log(i[k]);
-                //     getCategory(i[k]);
-                // }
-                //console.log($.isEmptyObject(i));
-                //console.log(' ', $.type(i));
-                if(!$.isEmptyObject(i) && $.type(i)!=="string") {
-                    //++round;
-                    console.log('lengn => ', _.map(i,function(a,b){console.log('submap ', a, ' ', b, ' ', a.length)}));
-                    getCategory(i);
-                    console.log("--------------------------------------------------------");
-                   // console.log('round ', round);
-                }
-            });
-        }
-
-        return;
-        var label = ['ABC','DEF'];
-         for(var i=0;i<pixelMap.length;i++) {
-            plotMuts(paper, pixelMap[i], i, label[i]);
-        }
+        //var label = ['ABC','DEF'];
+        var label = "Time since diagnosis";
+        var t = paper.text(55, 10,label).attr({'text-anchor': 'center', 'fill':'black', "font-size": 12});
+         /*for(var i=0;i<pixelMap.length;i++) {
+            plotMuts(paper, pixelMap[i], i, dig[i]);
+        }*/
 
         function getHundreadRatio(){
           var track = [];
@@ -255,7 +268,7 @@ function getHolderIndex() {
               }
           });
 
-          var label = label;
+         var label = label;
          var t = p.text(12, yRow+7-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
         //var label = "MUT"+row;
         //var t = p.text(12,yRow-20/2-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
