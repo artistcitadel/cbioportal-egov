@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-
+<% String docRoot = "/"; %>
 <!DOCTYPE html>
 <html>
 <head>
 	<tiles:insertAttribute name="head_css"/>
 	<tiles:insertAttribute name="js"/>
 	<%--<tiles:insertAttribute name="patient_top"/>--%>
-
+	<%--<link rel="stylesheet" href="<%=docRoot%>css/patient.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/prefixed-bootstrap.min.css" type="text/css" />--%>
+	<link rel="stylesheet" href="<%=docRoot%>css/styles.css" type="text/css" />
 	<style>
 		.patient-table {
 			font-family: "Segoe UI", Arial, sans-serif;
@@ -88,7 +90,7 @@
         $(".sidebar-toggle").trigger("click");
     });
 </script>
-<% String docRoot = "/"; %>
+
 <link rel="stylesheet" href="<%=docRoot%>jqwidgets/styles/jqx.base.css" type="text/css" />
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdata.js"></script>
@@ -107,6 +109,14 @@
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
 <script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
 <script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
-<script src="<c:url value="/js/raphael.min.js" />"></script>
+
+<script type='text/javascript' src="<c:url value="/js/raphael/raphael.min.js" />"></script>
+<%--<script type='text/javascript' src="<c:url value="/js/raphael/jspdf-ggorgchart.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/StackBlur.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/canvg.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/raphael-ggorgchart.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/lib_gg_orgchart_v100b1.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/drag-on.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/jsrender.js" />"></script>--%>
 </body>
 </html>

@@ -1,0 +1,50 @@
+#main-nav {
+    padding-bottom:0;
+    margin-left:40px;
+    white-space:nowrap;
+}
+
+#main-nav ul {
+    padding:0;
+    margin:0;
+}
+
+#main-nav:first-child {
+    top:-22px;
+}
+
+#main-nav li {
+    list-style-type: none;
+    display: inline-block;
+    font: normal normal 400 14px/18px 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
+    margin-left:15px;
+}
+
+#main-nav li a:link, #main-nav li a:visited {
+    color: #777;
+}
+
+#main-nav li a:hover {
+    color: #000;
+    text-decoration:none;
+}
+
+#main-nav li.selected a:link, #main-nav li.selected a:visited {
+    color: #3786C2;
+    border-bottom: 2px solid #3786C2;
+    padding-bottom:4px;
+}
+
+
+
+.legacy .ui-tabs .ui-tabs-nav li a {
+    padding:.5em .8em !important;
+}
+
+.legacy #cc-bookmark {
+    word-break:break-word;
+}
+
+.legacy .studyContainer .contentWidth {
+    width:1300px;
+}

@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+  /*  svg{
+        width:-webkit-fill-available;
+    }*/
+</style>
 
 <section class="content-header">
     <h1>
@@ -12,16 +17,41 @@
 </section>
 <p style="bottom-margin:125px;"></p>
 <p style="bottom-margin:125px;"></p>
-<section class="contents" style="overflow-x: auto; width: 1223px;">
-    <div class="container-fluid" >
-        <div id="genomicOverviewTracksContainer" width="1123px" height="417px" style="overflow-x: auto;"/>
-    </div>
+<div class="contents" >
+    <div class="container-fluid" id="main-nav"><%--style="overflow-x: auto;"--%>
 
+        <div id="patientViewPageTabs" class="msk-tabs mainTabs" style="background-color:white;">
+            <ul class="nav nav-tabs">
+                <li class="active" style="cursor: pointer;"><a>Summary</a></li>
+                <li class="" style="cursor: pointer;"><a>Clinical Data</a></li>
+                <li class="" style="cursor: pointer;"><a>Heatmap</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="msk-tab">
+                    <div>
+                        <div id="timeline-container">
+                            <%--<div id="timeline_btn" style="display: flex; margin-bottom: 1px; justify-content: flex-end;">
+                                <input type="button" value="Grid on" class="btn btn-sm btn-success">
+                                <label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>
+                                <input type="button" value="+">
+                                <input type="button" value="-">
+                                <iframe id="frmAddBrc" hidden=""></iframe>
+                            </div>--%>
+                            <div id="timeline" style="overflow-x: auto;">
+                                <div id="genomicOverviewTracksContainer" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </section>
 <script>
     $(document).ready(function () {
 
-        var paper = Raphael("genomicOverviewTracksContainer", 1120, 445);
+        var paper = Raphael("genomicOverviewTracksContainer", 1245, 337);
         //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
 
         var chmName = [
@@ -35,16 +65,16 @@
         }
 
         var yRuler = 15;
-        drawLine('170', yRuler, 1090+545, yRuler, paper, '#000', 1);
+        drawLine('170', yRuler, 1090+150, yRuler, paper, '#000', 1);
         //drawLine('25', yRuler, 1090, yRuler, paper, '#000', 1);
 
         for (var i = 0; i < chmName.length; i++) {
-           // drawLine(xt[i], yRuler, xt[i], 5, paper, '#000', 1);
-           // paper.text(m[i], 10, chmName[i]);
+            drawLine(xt[i], yRuler, xt[i], 5, paper, '#000', 1);
+            paper.text(m[i], 10, chmName[i]);
             //console.log('text ', m[i], 10, chmName[i]);
         }
 
-        //drawLine(1090+245, yRuler, 1090+245, 5, paper, '#000', 1);
+        drawLine(1090+150, yRuler, 1090+150, 5, paper, '#000', 1);
 
         function drawLine(x1, y1, x2, y2, p, cl, width) {
             width=1;
@@ -60,47 +90,60 @@
 
 //--event bar chart
 var category =  {
+                    "id":"0",
                     "name":"Time since diagnosis",
                      "level":"0",
                       "data": [
                           {
                           "name": "Specimen",
+                          "id":"1",
+                          "pid":"0",
                           "level": "1",
                           "data": [
-                             {"name": "Tissue","level": "2",},
-                             {"name": "BRC","level": "2",}
+                             {"name": "Tissue","level": "2", "id":"2", "pid":"1"},
+                             {"name": "BRC","level": "2", "id":"3", "pid":"1"}
                             ]
                           }
                         ,
                           {
                               "name": "Sugery",
+                              "id":"4",
+                              "pid":"0",
                               "level": "1",
                           },
                           {
                               "name": "Imaging",
                               "level": "1",
+                              "id":"5",
+                              "pid":"0",
                           },
                           {
                               "name:": "Lab_test",
                               "level": "1",
+                              "id":"6",
+                              "pid":"0",
                               "data": [
-                                  {"name": "CEA", "level": "2"},
-                                  {"name": "IHC", "level": "2"},
-                                  {"name": "MSI", "level": "2"}
+                                  {"name": "CEA", "level": "2", "id":"7", "pid":"6"},
+                                  {"name": "IHC", "level": "2", "id":"8", "pid":"6"},
+                                  {"name": "MSI", "level": "2", "id":"9", "pid":"6"}
                               ]
                           }
                         ,
                           {
                               "name": "Treatment",
+                              "id":"10",
+                              "pid":"0",
                               "level": "1",
                               "data":
                                       {
                                           "name": "Chemonotherapy",
+                                          "id":"11",
+                                          "pid":"10",
                                           "level": "2",
                                           "data":
                                               [
-                                                  {"name": "bevacizumab [100mg]", "level": "3"},
-                                                  {"name": "5-fluorouracil [1000mg]", "level": "3"}
+                                                  {"name": "bevacizumab [100mg]", "level": "3", "id":"12", "pid":"11"},
+                                                  {"name": "5-fluorouracil [1000mg]", "level": "3", "id":"13", "pid":"11"}
                                               ]
                                       }
                           }
@@ -111,22 +154,42 @@ var category =  {
         var dig = [];
         function cat(cate) {
             var txt = '';
+            var item = {};
+            console.log(' cate is ', cate['id']);
+            item.id = cate['id'];
+            item.pid = cate['pid'];
             _.map(cate, function (v, k) {
-                //console.log(k, '--> ', v);
-                if(k=='name'||_.isNumber(k)) {
+                console.log(k, '--> ', v);
+                if(k=='name'){console.log('name ==> ', v);
+                    item.name=v;
+                    var leafnode = _.find(leaf, function(o) { return o.name == v; });
+                    item.leaf =(leafnode!=null)
+                }
+                if(k=='level'){/*console.log('level ==> ', d);*/item.level=v; dig.push(item);}
+                if(k =='data' || _.isNumber(k)) cat(v);
+
+            /*    if(k=='name'||_.isNumber(k)) {
                     _.map(v, function(d,i){
                         //if(i=='name'||i=='level')console.log("i => ",i ," => ",d);
-                       if(i=='name'){/*console.log('name ==> ', d);*/txt+=d+"|";}
-                       if(i=='level'){/*console.log('level ==> ', d);*/txt+=d; dig.push(txt);txt='';}
+                       // if(i=='name'){/!*console.log('name ==> ', d);*!/txt+=d+"|";}
+                       // if(i=='level'){/!*console.log('level ==> ', d);*!/txt+=d; dig.push(txt);txt='';}
+                        if(i=='name'){/!*console.log('name ==> ', d);*!/
+                            item.name=d;
+                            var leafnode = _.find(leaf, function(o) { return o.name == d; });
+                            //console.log('leafnode ' , (leafnode==null));
+                            item.leaf =(leafnode!=null)
+                        }
+                        if(i=='level'){/!*console.log('level ==> ', d);*!/item.level=d; dig.push(item);}
                        if(i=='data')cat(v);
                     });
                 }
 
-                if(k=='data')cat(v);
+                if(k=='data')cat(v);*/
             });
         }
      cat(category);
-     console.log(dig);
+     dig =  _.filter(dig, function(o) { return (o.name!=null && o.name!=='Time since diagnosis'); });
+     console.log('dig ', dig);
 
 function getHolderIndex() {
     var positionIndex = [];
@@ -144,7 +207,7 @@ function getHolderIndex() {
         return 2*5+10+row*(20+5);
       }
 
-        var pixelMap = [[],[]];
+       /* var pixelMap = [[],[]];
         pixelMap[0][78] = ["SLC27A3: G111D"];
         pixelMap[0][123] = ["ZFP36L2: C174Sfs*302"];
         pixelMap[0][249] = ["SI: V109I"];
@@ -159,14 +222,44 @@ function getHolderIndex() {
         pixelMap[1][569] = ["PRKDC: X133_splice"];
         pixelMap[1][768] = ["KMT2D: V5208Wfs*35"];
         pixelMap[1][761] = ["KRT85: G85R"];
-        pixelMap[1][1096] = ["ENOX2: H250Q"];
+        pixelMap[1][1096] = ["ENOX2: H250Q"];*/
+
+        var pixelMap = [{
+            "name": "tissue",
+            "data": [
+                {"axis": "78", "name": ["SLC27A3: G111D"]},
+                {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
+                {"axis": "249", "name": ["SI: V109I"]},
+                {"axis": "519", "name": ["PRKDC: X133_splice"]},
+                {"axis": "708", "name": ["KMT2D: V5208Wfs*35"]},
+                {"axis": "711", "name": ["KRT85: G85R"]},
+                {"axis": "1056", "name": ["ENOX2: H250Q"]}
+            ]
+        }
+            ,
+                {"name": "brc",
+            "data": [
+                {"axis": "18", "name": ["SLC27A3: G111D"]},
+                {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
+                {"axis": "289", "name": ["SI: V109I"]},
+                {"axis": "569", "name": ["PRKDC: X133_splice"]},
+                {"axis": "768", "name": ["KMT2D: V5208Wfs*35"]},
+                {"axis": "761", "name": ["KRT85: G85R"]},
+                {"axis": "1096", "name": ["ENOX2: H250Q"]}
+            ]
+        }]
+        ;
+
+
 
         //var label = ['ABC','DEF'];
+        console.log(' dig ', dig);
         var label = "Time since diagnosis";
         var t = paper.text(55, 10,label).attr({'text-anchor': 'center', 'fill':'black', "font-size": 12});
-         /*for(var i=0;i<pixelMap.length;i++) {
-            plotMuts(paper, pixelMap[i], i, dig[i]);
-        }*/
+         for(var i=0;i<dig.length;i++) {
+            plotMuts(paper, i, dig[i]);
+        }
+         console.log('plotrow ---------> ', plotrow);
 
         function getHundreadRatio(){
           var track = [];
@@ -232,7 +325,31 @@ function getHolderIndex() {
               return targetPosition;
        }
 
-       function plotMuts(p,pixelMap, row, label) {
+        function getPixelMap(pixel, item) {
+            console.log('item ', item);
+            var spot = [];
+            for(var i=0;i<pixel.length;i++) {
+                var pitem = _.map(pixel[i], function (value, key) {
+                     console.log(' key ', key);
+                     console.log('value ', value);
+                    if(key=='name' && value==item){
+                        find = true;
+                        console.log('find ');
+                        spot.push(pixel[i].data);
+                    }
+                    // if(find && key=='data'){
+                    //     console.log('find value' , value);
+                    //     spot.push(value);
+                    // }
+                });
+            }
+            return spot;
+        }
+
+       var plotrow =[];
+       function plotMuts(p, row, label) {
+
+          //  console.log(' plotMuts called====> ', label);
           // var r = p.rect(110-22, 26, 3, 10);
           // r.attr("fill","#0f0");
           // r.attr("stroke", "#0f0");
@@ -244,7 +361,39 @@ function getHolderIndex() {
           var maxCount = 5; // set max height to 5 mutations
           var yRow = fyRow(row)   +20;
           var idx = 0;
-          $.each(pixelMap, function(i, arr) {
+          //var rowindex = 0;
+
+           var timeline;
+           timeline.id = label.id;
+           timeline.pid = label.pid;
+           timeline.r = null;
+          if(label.leaf==true){
+            var pixeldataV = getPixelMap(pixelMap,label.name.toLowerCase()) || [];
+            console.log('pixeldata length =>', pixeldataV);
+            _.map(pixeldataV,function(pixeldata,k){
+                //console.log('k ', k, 'v ', pixeldata.length);
+                for(var i=0;i<pixeldata.length;i++){
+                    //console.log("  pixeldata[i].axis  ", pixeldata[i]);
+                    var position =  getTargetPosition(pixeldata[i].axis);
+                    console.log(" position => ", position);
+                    var h = pixeldata[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
+                    //console.log(yRow-h);
+                    pixil = 150;
+                    var r = p.rect(position, yRow-h, 3, h);
+                    r.attr("fill","#0f0");
+                    r.attr("stroke", "#0f0");
+                    r.attr("stroke-width", 1);
+                    r.attr("opacity", 0.5);
+                    r.translate(0.5, 0.5);
+                    //console.log(r.node, arr.join("</br>"));
+                    //addToolTip(r.node, arr.join("</br>"), 100, '');
+                    timeline.r =r;
+                    ++idx;
+                }
+            });
+          }
+
+          /*$.each(pixelMap, function(i, arr) {
                if (arr) {
                   var position =  getTargetPosition(i.toString());
                    //var pixil = i;
@@ -265,17 +414,24 @@ function getHolderIndex() {
                     //console.log(r.node, arr.join("</br>"));
                     //addToolTip(r.node, arr.join("</br>"), 100, '');
                    ++idx;
+                   //++rowinout;
               }
-          });
-
-         var label = label;
-         var t = p.text(12, yRow+7-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
+          });*/
+         //for(var i=0;i<rowindex;i++) {
+           //console.log('label.level ',label.level);
+           var deep = label.level;
+             var lbl = label.name;
+             //console.log(' LAVEL DEEP ==> ', Number(deep));
+             var t = p.text((12+Number(deep)*8), yRow + 7 - (row + 8), lbl).attr({'text-anchor': 'start', 'fill': 'black',  'cursor': 'pointer','font-size':'11' });
+         //}
         //var label = "MUT"+row;
         //var t = p.text(12,yRow-20/2-(row+8),label).attr({'text-anchor': 'center', 'fill':'black'});
+           timeline.t = t;
+           plotrow.push(timeline);
        }
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
  //--wheel zoom
     //var paper         = Raphael('paper');
     //paper.setViewBox(0,0,paper.width,paper.height);
@@ -317,14 +473,14 @@ function getHolderIndex() {
         paper.setViewBox(viewBox.X,viewBox.Y,viewBoxWidth,viewBoxHeight,true);
     }
 
-   /* function wheel(event){
+    function wheel(event){
         var delta = 0;
-        if(!event){ /!* For IE. *!/
+        if(!event){ /* For IE. */
             event = window.event;
         }
-        if(event.wheelDelta){ /!* IE/Opera. *!/
+        if(event.wheelDelta){ /* IE/Opera. */
             delta = event.wheelDelta/120;
-        } else if (event.detail) { /!** Mozilla case. *!/
+        } else if (event.detail) { /** Mozilla case. */
             delta = -event.detail/3;
         }
         if(delta){
@@ -336,11 +492,11 @@ function getHolderIndex() {
         event.returnValue = false;
     }
 
-    if (window.addEventListener)
-        /!** DOMMouseScroll is for mozilla. *!/
-        window.addEventListener('DOMMouseScroll', wheel, false);
-    /!** IE/Opera. *!/
-    window.onmousewheel = document.onmousewheel = wheel;*/
+    //if (window.addEventListener)
+        /** DOMMouseScroll is for mozilla. */
+   //     window.addEventListener('DOMMouseScroll', wheel, false);
+    /** IE/Opera. */
+    //window.onmousewheel = document.onmousewheel = wheel;
 
     });
 
