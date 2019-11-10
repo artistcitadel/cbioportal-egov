@@ -8,202 +8,128 @@
   <component name="ChangeListManager">
     <list default="true" id="8f67cda9-a09e-46a0-9e96-904c2b2f401d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asan.tobe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/asan.tobe.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/message/message-common_ko.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/message/message-common_ko.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/message/message-common_ko.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/message/message-common_ko.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/raphael.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/raphael.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/cmm/dao/BigcenMedAbstractMapperDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/cmm/service/BigcenMedAbstractServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/cmm/vo/BigcenMedVO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/cmm/web/BigcenMedAbstractController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/ResourceMonitoring/controller/ResourceMonitoringMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/approveMgmt/controller/ApproveMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/approveMgmt/dao/ApproveMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/approveMgmt/service/ApproveMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/approveMgmt/service/IApproveMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/auth/controller/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/auth/dao/AuthDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/auth/service/AuthServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/auth/service/IAuthService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/board/controller/BoardMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/board/dao/BoardMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/board/service/BoardMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/board/service/IBoardMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/commonCode/controller/CommonCodeMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/commonCode/dao/CommonCodeMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/commonCode/service/CommonCodeMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/commonCode/service/ICommonCodeMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/dashBoard/controller/DashBoardMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/dashBoard/dao/DashBoardMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/dashBoard/service/DashBoardMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/dashBoard/service/IDashBoardMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/join/controller/JoinMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/join/dao/JoinMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/join/service/IJoinMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/join/service/JoinMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/log/controller/LogMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/log/dao/LogMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/log/service/ILogMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/log/service/LogMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/menu/controller/MenuMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/monitoring/controller/MonitoringController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/ptsbsInsert/controller/PtsbsMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/ptsbsInsert/dao/PtsbsMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/ptsbsInsert/service/IPtsbsMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/ptsbsInsert/service/PtsbsMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/report/controller/ReportController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/report/dao/ReportDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/report/service/IReportService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/report/service/ReportServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/researchItem/controller/ResearchItemController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/researchItem/dao/ResearchItemDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/researchItem/service/IResearchItemService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/researchItem/service/ResearchItemServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/synonymDic/controller/SynonymController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/synonymDic/dao/SynonymDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/synonymDic/service/ISynonymService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/synonymDic/service/SynonymServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/user/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/user/dao/UserDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/user/service/IUserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/user/service/UserServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/userDataMgmt/controller/UserDataMgmtController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/userDataMgmt/dao/UserDataMgmtDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/userDataMgmt/service/IUserDataMgmtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/admin/userDataMgmt/service/UserDataMgmtServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/analysisFunctions/AnalysisFunctions.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/analysisFunctions/GroupMap.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/analysisFunctions/RenjinException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/cohortcpm/controller/CohortcpmController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/except/BizRuntimeException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/except/ExceptionController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/intercept/LoginInterceptor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/controller/FileUploadController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/controller/ModalController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/controller/SysController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/dao/ModalDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/dao/SysDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/service/IModalService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/service/ISysService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/service/ModalServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/common/sys/service/SysServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/controller/DashboardController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/controller/LoginController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/dao/DashboardDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/dao/LogAccessDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/dao/LoginDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/DashboardServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/IDashboardService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/ILogAccessService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/ILoginService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/LogAccessServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/main/service/LoginServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/mutationcpm/controller/MutationcpmController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patientcpm/controller/PatientcpmController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/rept/controller/ReptController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/rept/dao/ReptDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/rept/service/IReptService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/rept/service/ReptServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/approve/controller/ApproveController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/approve/dao/ApproveDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/approve/service/ApproveServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/approve/service/IApproveService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/basicAnalysis/controller/BasicAnalysisController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/basicAnalysis/dao/BasicAnalysisDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/basicAnalysis/service/BasicAnalysisServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/basicAnalysis/service/BasicAnalysisUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/basicAnalysis/service/IBasicAnalysisService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/casctrl/controller/CasCtrlController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/casctrl/dao/CasCtrlDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/casctrl/service/CasCtrlServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/casctrl/service/ICasCtrlService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/chartReview/controller/ChartReviewController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/chartReview/dao/ChartReviewDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/chartReview/service/ChartReviewServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/chartReview/service/IChartReviewService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/cohort/controller/CohortController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/cohort/service/CohortServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/cohort/service/ICohortService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/crssec/controller/CrossSectionalStudyController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/crssec/dao/CrossSectionalStudyDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/crssec/service/CrossSectionalStudyServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/crssec/service/ICrossSectionalStudyService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/dataDownload/controller/DataDownloadController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/dataDownload/dao/DataDownloadDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/dataDownload/service/DataDownloadServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/dataDownload/service/IDataDownloadService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/psnldta/controller/PersonalDataController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/psnldta/dao/PersonalDataDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/psnldta/service/IPersonalDataService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/psnldta/service/PersonalDataServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/controller/QueryController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/controller/QueryResultDataStoreController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/dao/QueryDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/dao/QueryResultDataStoreDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/service/IQueryResultDataStoreService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/service/IQueryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/service/QueryResultDataStoreServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/service/QueryServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/service/ResultServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/builder/BaseStudyModelService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/builder/CasCtrlStudy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/builder/CohortStudy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/builder/CrssecStudy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQL.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLSelectClause.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLSelectClauseR.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLSelectClauseRCohort.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClause.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClauseCode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClauseCodePopup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClauseDate.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClauseNumber.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/sql/helper/SQLWhereClauseText.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/query/vo/QueryVO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/sharingconditions/controller/SharingConditionsController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/sharingconditions/dao/SharingConditionsDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/sharingconditions/service/ISharingConditionsService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/sharingconditions/service/SharingConditionsServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/controller/VisualizeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/controller/VisualizePopupController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/dao/VisualizeDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/dao/VisualizePopupDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/service/IVisualizePopupService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/service/IVisualizeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/service/VisualizePopupServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/research/visualize/service/VisualizeServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/controller/SearchController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/dao/SearchDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/ISearchService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/service/SearchServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/vo/FieldsVO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/search/vo/SearchVO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/tableau/TableauServlet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/BigcenSecurityUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/DateUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/ListUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/MatcherUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/NetworkUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/PaginationUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/PropertiesUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/RequestUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/utils/StringUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/rg/main/controller/RgMainController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/patient.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/StackBlur.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/jspdf-ggorgchart.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/jsrender.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/lib_gg_orgchart_v100b1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/raphael-ggorgchart.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/raphael/rgbcolor.js" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="662276549">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.15" value="1" />
+          <entry key="project.open.time.21" value="1" />
+          <entry key="project.open.time.34" value="1" />
+          <entry key="project.open.time.39" value="1" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="css" value="3" />
+          <entry key="js" value="6" />
+          <entry key="jsp" value="7" />
+          <entry key="properties" value="1" />
+          <entry key="xml" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="3" />
+          <entry key="JSP" value="7" />
+          <entry key="JavaScript" value="6" />
+          <entry key="Properties" value="1" />
+          <entry key="XML" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="css" value="38" />
+          <entry key="js" value="131" />
+          <entry key="jsp" value="5197" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CSS" value="38" />
+          <entry key="JSP" value="5197" />
+          <entry key="JavaScript" value="131" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/raphael.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8993">
+              <caret line="529" selection-start-line="56" selection-start-column="4" selection-end-line="529" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="795">
+              <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/css/page/patient/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="724">
+              <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="682">
+              <caret line="118" column="59" selection-start-line="118" selection-start-column="59" selection-end-line="118" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -212,8 +138,47 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>getPixelMap</find>
+      <find>plotdrawing</find>
+      <find>paperNode</find>
+      <find>dig</find>
+      <find>IDS</find>
+      <find>plotMuts</find>
+      <find>timeline</find>
+      <find>setCTM</find>
+      <find>yRuler</find>
+      <find>handleMouseWheel</find>
+      <find>getEventPoint</find>
+      <find>setAttributes</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/webapp/js/raphael/raphael.easing.1.3.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/raphael/jquery.qtip.min.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/raphael/jquery.qtip.min.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/raphael/raphaelzpd.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/raphael/raphaelscale.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/raphael.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/css/page/patient/style.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -229,9 +194,133 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="10" />
+    <option name="width" value="1280" />
+    <option name="height" value="1047" />
+  </component>
   <component name="ProjectId" id="1Sv08f3kGRp8IMLgMsslEcVtk0O" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+              <item name="patient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+              <item name="patient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="patient" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -240,7 +329,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573030243510" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573365879417" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -272,11 +361,11 @@
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="Unnamed_asan_tobe" />
       </server-settings>
-      <predefined_log_file enabled="true" id="Tomcat" />
-      <predefined_log_file enabled="true" id="Tomcat Catalina" />
-      <predefined_log_file id="Tomcat Manager" />
-      <predefined_log_file id="Tomcat Host Manager" />
-      <predefined_log_file id="Tomcat Localhost Access" />
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <predefined_log_file id="Tomcat Catalina" enabled="true" />
+      <predefined_log_file id="Tomcat Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="1622" />
       </RunnerSettings>
@@ -356,10 +445,133 @@
       <workItem from="1573123472343" duration="15617000" />
       <workItem from="1573169194087" duration="2946000" />
       <workItem from="1573172302957" duration="75000" />
+      <workItem from="1573262576409" duration="17190000" />
+      <workItem from="1573293830553" duration="14181000" />
+      <workItem from="1573342881400" duration="17672000" />
+      <workItem from="1573379860532" duration="4034000" />
     </task>
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="53077000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="10" y="0" width="1280" height="1047" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25409836" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Web" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.7688938" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Application Servers" order="7" />
+      <window_info anchor="bottom" id="Spring" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32968238" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" />
+      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.32968238" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Maven Projects" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/raphael/raphael.easing.1.3.js" />
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/raphael/jquery.qtip.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="40" lean-forward="true" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/raphael/jquery.qtip.min.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/raphael/raphaelscale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="75" lean-forward="true" selection-start-line="42" selection-start-column="75" selection-end-line="42" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/raphael.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8993">
+          <caret line="529" selection-start-line="56" selection-start-column="4" selection-end-line="529" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/config/context-datasource.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="52" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/bigcen.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="43" column="53" lean-forward="true" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/css/page/patient/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="724">
+          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="118" column="59" selection-start-line="118" selection-start-column="59" selection-end-line="118" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

@@ -10,7 +10,11 @@
 	<%--<tiles:insertAttribute name="patient_top"/>--%>
 	<%--<link rel="stylesheet" href="<%=docRoot%>css/patient.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/prefixed-bootstrap.min.css" type="text/css" />--%>
-	<link rel="stylesheet" href="<%=docRoot%>css/styles.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/cbio-portal-styles.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/patient.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/react-table.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
 	<style>
 		.patient-table {
 			font-family: "Segoe UI", Arial, sans-serif;
@@ -107,16 +111,11 @@
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 <script src="<%=docRoot%>js/lodash.min.js"></script>
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
-<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
-<script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
-
+<%--<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
+<script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>--%>
 <script type='text/javascript' src="<c:url value="/js/raphael/raphael.min.js" />"></script>
-<%--<script type='text/javascript' src="<c:url value="/js/raphael/jspdf-ggorgchart.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/StackBlur.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/canvg.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/raphael-ggorgchart.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/lib_gg_orgchart_v100b1.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/drag-on.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/raphael/jsrender.js" />"></script>--%>
+<script type='text/javascript' src="<c:url value="/js/raphael/raphaelscale.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/raphael/jquery.qtip.min.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/page/patient/react-table.min.js" />"></script>
 </body>
 </html>
