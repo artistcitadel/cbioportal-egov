@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patientcpm">
+
+    <select id="selectPatientView" parameterType="map" resultType="hashmap">
+
+        SELECT DISTINCT A.EXAM_SLIP_CD PID ,
+                          A.EXAM_CD ID,
+                          A.EXAM_KOR_NM NAME,
+                          A.RCEP_DT TIME,
+                          CASE WHEN LENGTH(A.RCEP_DT)=8 THEN 'D'
+                          WHEN LENGTH(A.RCEP_DT)=6 THEN 'M'
+                          WHEN LENGTH(A.RCEP_DT)=4 THEN 'Y'
+                          ELSE ''
+                          END UNIT
+        FROM CLSPNEXRT A
+        WHERE A.RESCH_PAT_ID = #{patientId}
+        ORDER BY 1,4
+ 	</select>
+
+</mapper>
+
+

@@ -114,7 +114,9 @@
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 <script src="<%=docRoot%>js/lodash.min.js"></script>
+<script src="<c:url value="/js/common_const.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
+<script src="<c:url value="/js/page/patient/patientUtil.js" />"></script>
 <%--<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
 <script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>--%>
 <script type='text/javascript' src="<c:url value="/js/raphael/raphael.min.js" />"></script>

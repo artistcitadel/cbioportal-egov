@@ -4,7 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.softcen.bigcen.med.patientcpm.service.PatientcpmServiceImpl;
 
 @Controller
 @RequestMapping(value="/patient")
@@ -12,8 +19,8 @@ public class PatientcpmController {
 
 private static final Logger logger = LoggerFactory.getLogger(PatientcpmController.class);
 
-/*	@Autowired
-	private IBoardMgmtService boardMgmtService;*/
+	@Autowired
+	private PatientcpmServiceImpl patientcpmService;
 
 
 	@RequestMapping(value="/patientMain")
@@ -39,6 +46,30 @@ private static final Logger logger = LoggerFactory.getLogger(PatientcpmControlle
 	@RequestMapping(value="/raphael")
 	public String raphael(){
 		return "/patient/raphael.tiles";
+	}
+
+
+	/**
+	 * patient view inquery
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectPatientView")
+	public Object selectDashBoardMgmt(@RequestBody Map<String,String> paramMap){
+		logger.debug("[--- selectPatientView START ");
+
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+
+		try{
+			resultMap.put("patientView", patientcpmService.selectPatientView(paramMap));
+
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+
+		return resultMap;
 	}
 }
 
