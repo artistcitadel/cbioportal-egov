@@ -3,8 +3,9 @@ $(document).ready(function () {
     var dig = [];
     var PAPERNODE=[];
     var LASTYPOS=0;
+    //var BOTTOMLINE;
     var leaf = [{"name": "Tissue"},{"name": "BRC"},{"name": "Sugery"},{"name": "Imaging"},{"name": "CEA"},{"name": "IHC"},{"name": "MSI"},{"name": "bevacizumab [100mg]"},{"name": "5-fluorouracil [1000mg]"}];
-    var paper = Raphael("genomicOverviewTracksContainer", 1245, 415);
+    var paper = Raphael("genomicOverviewTracksContainer", 1245, 315);
     paper.scale({ zoom: true});
     //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
 
@@ -419,7 +420,10 @@ $(document).ready(function () {
                 ++k;
             }
         }
-        drawLine('1', LASTYPOS, 1090+150, LASTYPOS, paper, '#ccc', 1);
+        /*if(BOTTOMLINE)BOTTOMLINE.remove();
+        BOTTOMLINE = drawLine('1', LASTYPOS, 1090+150, LASTYPOS, paper, '#ccc', 1);*/
+        //paper.setSize(1090+150, LASTYPOS+5);
+        paper.setViewBox(0,0,1090+150,LASTYPOS+3,true);
     }
 
     function addToolTip(node, tip, showDelay, position) {
@@ -445,6 +449,7 @@ $(document).ready(function () {
         var w = $('svg').attr('width');
         w*=scale;
         $('svg').css('width',w);
+        LASTYPOS*=scale;
     });
 
     $('#zoomout').click(function() {
@@ -453,6 +458,7 @@ $(document).ready(function () {
         var w = $('svg').attr('width');
         w*=scale;
         $('svg').css('width',w);
+        LASTYPOS*=scale;
     });
 
     $('#xgrid').click(function() {
@@ -467,7 +473,5 @@ $(document).ready(function () {
         }
     });
     $('#xgrid').trigger('click');
-
-
 
 });

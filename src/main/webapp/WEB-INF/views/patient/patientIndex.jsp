@@ -8,12 +8,16 @@
 	<tiles:insertAttribute name="head_css"/>
 	<tiles:insertAttribute name="js"/>
 	<%--<tiles:insertAttribute name="patient_top"/>--%>
-	<%--<link rel="stylesheet" href="<%=docRoot%>css/patient.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>css/prefixed-bootstrap.min.css" type="text/css" />--%>
-	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/cbio-portal-styles.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/patient.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/react-table.css" type="text/css" />
+	<%--<link rel="stylesheet" href="docRoot%>css/ho.css" type="text/css" />
+	<link rel="stylesheet" href="docRoot%>css/prefixed-bootstrap.min.css" type="text/css" />--%>
+	<%--<link rel="stylesheet" href="docRoot%>css/page/patient/styles.css" type="text/css" />
+	<link rel="stylesheet" href="docRoot%>css/page/patient/cbio-portal-styles.css" type="text/css" />
+	<link rel="stylesheet" href="docRoot%>css/page/patient/patient.css" type="text/css" />
+	<link rel="stylesheet" href="docRoot%>css/page/patient/react-table.css" type="text/css" />--%>
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles0.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles4.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles11.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles16.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
 	<style>
 		.patient-table {
@@ -116,6 +120,5 @@
 <script type='text/javascript' src="<c:url value="/js/raphael/raphael.min.js" />"></script>
 <script type='text/javascript' src="<c:url value="/js/raphael/raphaelscale.js" />"></script>
 <script type='text/javascript' src="<c:url value="/js/raphael/jquery.qtip.min.js" />"></script>
-<script type='text/javascript' src="<c:url value="/js/page/patient/react-table.min.js" />"></script>
 </body>
 </html>
