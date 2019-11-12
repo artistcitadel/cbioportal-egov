@@ -11,5 +11,37 @@ $(document).ready(function () {
   ds_cond.callback = disposer;
   action.getPatientView(ds_cond);
 
-});
 
+    var scale = 1;
+    $('#zoomin').click(function() {
+        scale *= 1.2
+        paper.canvas.setAttribute("transform", "scale("+scale+")")
+        var w = $('svg').attr('width');
+        w*=scale;
+        $('svg').css('width',w);
+        LASTYPOS*=scale;
+    });
+
+    $('#zoomout').click(function() {
+        scale *= 0.8
+        paper.canvas.setAttribute("transform", "scale("+scale+")")
+        var w = $('svg').attr('width');
+        w*=scale;
+        $('svg').css('width',w);
+        LASTYPOS*=scale;
+    });
+
+    $('#xgrid').click(function() {
+        var val = $(this).val();
+        var show=true;
+        if(val==='Grid on'){$(this).val('Grid off');show=true;}
+        if(val==='Grid off'){$(this).val('Grid on');show=false;}
+        for(var i=0;i<XGRIDS.length;i++){
+            //console.log(XGRIDS[i]);
+            if(show)XGRIDS[i].show();
+            if(!show)XGRIDS[i].hide();
+        }
+    });
+    $('#xgrid').trigger('click');
+
+});
