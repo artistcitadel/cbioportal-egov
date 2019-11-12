@@ -7,9 +7,10 @@ var XGRIDS=[];
 var dig = [];
 var PAPERNODE=[];
 var LASTYPOS=0;
-var xPath = '170';
-var CATEGORY;
+var TIME;
 var DATA;
+var xt;
+var m;
 
 function disposer(result) {
    //console.log(result.patientView);
@@ -24,7 +25,7 @@ function disposer(result) {
             item.unit = data[i].UNIT;
             item.pid = data[i].PID;
             item.show = "1";
-            item.track = -1;
+            item.order=0;
             var level=1;
             if(!_.isUndefined(data[i].PID)) level = findLevel(data[i].PID,data,++level);
             item.level = level;
@@ -55,27 +56,16 @@ function setTimeLine(data){
   var start = 25 + leftpadding;
   var chmName = setChmName(data);
   console.log(chmName);
-  var xt = setXposition(start, chmName.length);
+  xt = setXposition(start, chmName.length);
   console.log(xt);
-  var m = setXnamePosition(xt);
+  m = setXnamePosition(xt);
   console.log(m);
   var end = xt[xt.length-1];
-   var margin = paperWidth-end;
-   end +=  margin;
+  var margin = paperWidth-end;
+  end +=  margin;
   console.log('xt[xt.length-1] ',end);
   drawTimeLine(start, chmName,xt,m, end);
   makeEventBarChart();
-}
-
-function setTimeToId(data, tmp){
-    for(var i=0;i<data.length; i++) {
-        for(var j=0;j<tmp.length;j++){
-            if(data[i].leaf && data[i].time===tmp[j]){
-                data[i].track = j;
-            }
-        }
-    }
-    DATA = data;
 }
 
 function setChmName(data){
@@ -85,6 +75,7 @@ function setChmName(data){
         temp.push(data[i].time);
     }
     var tmp = _.uniq(temp);
+    TIME = tmp;
     tmp = _.sortBy(tmp);
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
@@ -97,7 +88,7 @@ function setChmName(data){
     for(var k=0;k<size;k++){
         chmName.push((k+1)+unit);
     }
-    setTimeToId(data, tmp);
+    DATA = data;
     return chmName;
 }
 
@@ -173,7 +164,34 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 }
 
 // -- event bar chart -- //
+
+function setPlotAxis(){
+    var lineW = (xt[1]-xt[0])/10;
+    for(var i=0;i<TIME.length;i++){
+        var otime=TIME[i];
+        var order = 0;
+        for(var j=0;j<DATA.length; j++) {
+            if(DATA[j].leaf && DATA[j].time===TIME[i]){
+                //console.log(DATA[i].time,' ===' ,TIME[j])
+                if(otime===DATA[j].time){console.log("bingo ",TIME[i]); order+=1; DATA[j].order=order;}
+                //console.log(DATA[j].order, TIME[i]);
+                DATA[j].axis = xt[(i+1)*2]+(lineW*order);
+            }
+        }
+    }
+
+    for(var i=0;i<pixelMap.length;i++){
+      var findindex = _.findIndex(DATA, function(o) { return o.id === pixelMap[0].name; });
+        var pad = 0;
+        for(j=0;j<pixelMap[i].data.length;j++) {
+            pixelMap[i].data[j].axis += pad;
+            pixelMap[i].data[j].axis = DATA[i].axis;
+            pad+=2;
+        }
+    }
+}
 function makeEventBarChart() {
+    setPlotAxis();
     console.log(DATA);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
@@ -372,7 +390,7 @@ function makeEventBarChart() {
     }
 
 var pixelMap = [{
-        "name": "tissue",
+        "name": "BKLPNE",
         "data": [
             {"axis": "78", "name": ["SLC27A3: G111D"]},
             {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
@@ -384,7 +402,7 @@ var pixelMap = [{
         ]
     }
         ,
-        {"name": "brc",
+        {"name": "DB0064",
             "data": [
                 {"axis": "18", "name": ["SLC27A3: G111D"]},
                 {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
@@ -396,5 +414,4 @@ var pixelMap = [{
             ]
         }]
 ;
-
 
