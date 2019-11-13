@@ -7,10 +7,9 @@ $(document).ready(function () {
   action = new Action();
   util = new Util();
   var ds_cond = {};
-  ds_cond.data = {"patientId":"6128737361" };
+  ds_cond.data = {"qid":"selectDigClssify","patientId":"6128737361" };
   ds_cond.callback = disposer;
-  action.getPatientView(ds_cond);
-
+  action.selectList(ds_cond);
 
     var scale = 1;
     $('#zoomin').click(function() {

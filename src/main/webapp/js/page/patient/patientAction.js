@@ -25,7 +25,7 @@ function Action() {
         });
     }
 
-    self.getPatientView = function (props) {
+    self.selectList = function (props) {
         $.ajax({
             type: "post",
             /*headers: {
@@ -33,7 +33,7 @@ function Action() {
             },*/
             dataType: "json",
             cache: false,
-            url: gvSERVER+"/patient/selectPatientView",
+            url: gvSERVER+"/patient/selectList",
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,

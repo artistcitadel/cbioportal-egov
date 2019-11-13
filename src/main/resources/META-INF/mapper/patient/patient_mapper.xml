@@ -6,11 +6,10 @@
 
 <mapper namespace="patientcpm">
 
-    <select id="selectPatientView" parameterType="map" resultType="hashmap">
-
+    <select id="selectDigClssify" parameterType="map" resultType="hashmap">
         SELECT DISTINCT A.EXAM_SLIP_CD PID ,
                           A.EXAM_CD ID,
-                          A.EXAM_KOR_NM NAME,
+                          A.EXAM_ENG_NM NAME,
                           A.RCEP_DT TIME,
                           CASE WHEN LENGTH(A.RCEP_DT)=8 THEN 'D'
                           WHEN LENGTH(A.RCEP_DT)=6 THEN 'M'
@@ -22,6 +21,20 @@
         ORDER BY 1,4
  	</select>
 
+    <select id="selectTestSpec" parameterType="map" resultType="hashmap">
+    SELECT    'LAB_TEST' SUBJECT,
+                EXAM_CD ID ,
+                EXAM_ENG_NM NAME,
+                EXAM_RSLT_VAL EXAM,
+                MARK_RSLT_VAL MARK,
+                CRTE_MSR_VAL CRTE,
+                RCEP_DT TIME
+                FROM CLSPNEXRT
+                WHERE RESCH_PAT_ID = #{patientId}
+                AND LENGTH(EXAM_CD) = '6'
+                and exam_cd in('BB0013','BC0001')
+                ORDER BY 2, 6
+    </select>
 </mapper>
 
 

@@ -16,7 +16,6 @@ import com.softcen.bigcen.cmm.dao.BigcenMedAbstractMapperDAO;
 public class PatientcpmDAO extends BigcenMedAbstractMapperDAO{
 
 	private static final Logger logger = LoggerFactory.getLogger(LogMgmtDAO.class);
-
 	/**
 	 * patient tsd and timeline
 	 * @param paramMap
@@ -24,8 +23,9 @@ public class PatientcpmDAO extends BigcenMedAbstractMapperDAO{
 	 */
 	public List<Map<Object, Object>> selectPatientView(Map<String, String> paramMap){
 		logger.debug(">>>" + paramMap.toString());
-		return sqlSession.selectList("patientcpm.selectPatientView", paramMap);
-
+		String queryId = paramMap.get("qid");
+		System.err.println("qid " + queryId);
+		return sqlSession.selectList(queryId, paramMap);
 	}
 
 }

@@ -9,13 +9,15 @@ var PAPERNODE=[];
 var LASTYPOS=0;
 var TIME;
 var DATA;
+var chmName;
 var xt;
 var m;
+var UNIT="D";
 
-function disposer(result) {
+function disposer(json) {
    //console.log(result.patientView);
-  if(result.patientView.length>0){
-      var data = result.patientView;
+  if(json.result.length>0){
+      var data = json.result;
       var crow = [];
       for(var i=0;i<data.length;i++){
         var item = {};
@@ -54,7 +56,7 @@ function findLeaf(id, data){
 
 function setTimeLine(data){
   var start = 25 + leftpadding;
-  var chmName = setChmName(data);
+  chmName = setChmName(data);
   console.log(chmName);
   xt = setXposition(start, chmName.length);
   console.log(xt);
@@ -65,7 +67,15 @@ function setTimeLine(data){
   end +=  margin;
   console.log('xt[xt.length-1] ',end);
   drawTimeLine(start, chmName,xt,m, end);
-  makeEventBarChart();
+  getSpec();
+  //makeEventBarChart();
+}
+
+function getSpec(){
+    var ds_cond = {};
+    ds_cond.data = {"qid":"selectTestSpec","patientId":"6128737361" };
+    ds_cond.callback = makeEventBarChart;
+    action.selectList(ds_cond);
 }
 
 function setChmName(data){
@@ -80,13 +90,14 @@ function setChmName(data){
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
     var size = 0;
-    var unit = 'd';
+    //var unit = 'd';
     if(data[0].unit==='D') size =util.dateDiff(min,max);
     if(data[0].unit==='M') {size =util.monthAndYearDiff(min,max,'m'); unit='m';}
     if(data[0].unit==='Y') {size =Number(max)-Number(min); unit='y'}
 
     for(var k=0;k<size;k++){
-        chmName.push((k+1)+unit);
+        //chmName.push((k+1)+unit);
+        chmName.push((k+1));
     }
     DATA = data;
     return chmName;
@@ -164,40 +175,71 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 }
 
 // -- event bar chart -- //
-
-function setPlotAxis(){
-    var lineW = (xt[1]-xt[0])/10;
-    for(var i=0;i<TIME.length;i++){
-        var otime=TIME[i];
-        var order = 0;
-        for(var j=0;j<DATA.length; j++) {
-            if(DATA[j].leaf && DATA[j].time===TIME[i]){
-                //console.log(DATA[i].time,' ===' ,TIME[j])
-                if(otime===DATA[j].time){console.log("bingo ",TIME[i]); order+=1; DATA[j].order=order;}
-                //console.log(DATA[j].order, TIME[i]);
-                DATA[j].axis = xt[(i+1)*2]+(lineW*order);
-            }
-        }
+function findClassify(subject, data) {
+    var slot={};
+    if(subject=='LAB_TEST') {
+       slot = {"검사 결과값":data.EXAM,"표시 결과값":data.MARK,"기준 단위값" : data.CRTE};
     }
-
-    for(var i=0;i<pixelMap.length;i++){
-      var findindex = _.findIndex(DATA, function(o) { return o.id === pixelMap[0].name; });
-        var pad = 0;
-        for(j=0;j<pixelMap[i].data.length;j++) {
-            pixelMap[i].data[j].axis += pad;
-            pixelMap[i].data[j].axis = DATA[i].axis;
-            pad+=2;
-        }
-    }
+    return slot;
 }
-function makeEventBarChart() {
-    setPlotAxis();
+
+var pixelMap=[];
+function setPlotAxis(pdata){
+    var subject = pdata[0].SUBJECT;
+    var lineW = (xt[1]-xt[0])/10;
+    var pixel = _.groupBy(pdata, "ID");
+    console.log(pixel);
+    _.map(pixel, function(v, k){
+        var item={};
+        item.data=[];
+        item.id = k;
+        item.name = v[0].NAME;
+        var slot = {};
+        slot.name=[];
+        var pad = 0;
+        for(var i=0;i < v.length;i++){
+            if(i>0 && v[i-1].TIME === v[i].TIME){
+                pad+=3;
+            }
+            slot.axis = getAxis(v[i]) + (lineW * pad);
+            slot.name.push(findClassify(subject, v[i]));
+            item.data.push(slot);
+        }
+        pixelMap.push(item);
+    });
+
+    console.log(pixelMap);
+}
+
+function getXTposition(item) {
+    var axis;
+    for (var i = 0; i < TIME.length; i++) {
+        if (item.TIME === TIME[i]) {
+            axis = xt[(i+1)]*2;
+            // console.log(i, xt[i+1]);
+            // console.log(item);
+            // console.log(axis);
+        }
+    }
+    return axis;
+}
+
+function getAxis(item) {
+   return getXTposition(item);
+}
+
+function makeEventBarChart(json) {
+    if(json.result.length>0) {
+        var data = json.result;
+        setPlotAxis(data);
+    }
     console.log(DATA);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
     plotdrawing(DATA);
 }
-    function getHundreadRatio(){
+
+  function getHundreadRatio(){
         var track = [];
         for(var i=1; i< xt.length;i++){
             var trackUnitPeriod = xt[i]-xt[i-1];
@@ -208,12 +250,15 @@ function makeEventBarChart() {
         return track;
     }
     function getAddRatio(value){
+    console.log(' value ', value);
         var temp = value.toString();
         var seed = "0"+"."+value;
         console.log( ' seed ', seed);
         return Number(seed);
     }
     function getTargetPosition(seed){
+      return seed;
+
         var track = getHundreadRatio();
         console.log(seed);
         var f = seed.substring(0,1);  //prefix
@@ -252,16 +297,19 @@ function makeEventBarChart() {
         return targetPosition;
     }
 
-    function getPixelMap(pixel, item) {
-        //console.log('item ', item);
+    function getPixelMap(pixel, id) {
+        //console.log('getPixelMap ', pixel);
+        //console.log('id ', id);
         var spot = [];
         for(var i=0;i<pixel.length;i++) {
             var pitem = _.map(pixel[i], function (value, key) {
                 //console.log(' key ', key);
                 //console.log('value ', value);
-                if(key=='name' && value==item){
+                //if(key=='name' && value==item){
+                if(key=='id')console.log('====> ',value);
+                if(key=='id' && value==id){
                     find = true;
-                    console.log('find ');
+                    //console.log('find ');
                     spot.push(pixel[i].data);
                 }
             });
@@ -286,17 +334,18 @@ function makeEventBarChart() {
       var yRow = fyRow(row)   +20;
       //var rowindex = 0;
       if(label.leaf==true){
-          var pixeldataV = getPixelMap(pixelMap,label.name.toLowerCase()) || [];
+          //var pixeldataV = getPixelMap(pixelMap,label.name.toLowerCase()) || [];
+          var pixeldataV = getPixelMap(pixelMap, label.id) || [];
           //console.log('pixeldata length =>', pixeldataV);
           _.map(pixeldataV,function(pixeldata,k){
               console.log('k ', k, 'v ', pixeldata.length);
               var idx = 0;
               for(var i=0;i<pixeldata.length;i++){
                   //console.log("  pixeldata[i].axis  ", pixeldata[i]);
-                  var position =  getTargetPosition(pixeldata[i].axis);
+                  var position =  getTargetPosition(pixeldata[i].axis+"");
                   console.log(" position => ", position);
                   var h = pixeldata[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
-                  //console.log(yRow-h);
+                  console.log(yRow-h);
                   pixil = 150;
                   var r = p.rect(position, yRow-h, 3, h);
                   r.attr("fill","#0f0");
@@ -327,6 +376,7 @@ function makeEventBarChart() {
       LASTYPOS = ypos;
       var xgrid = drawLine('170', ypos, 1090+150, ypos, paper, '#ccc', 1);
       xgrid.hide();
+      //console.log(' LASTYPOS ', LASTYPOS);
       XGRIDS.push(xgrid);
     }
 
@@ -370,7 +420,9 @@ function makeEventBarChart() {
                 ++k;
             }
         }
-        paper.setViewBox(0,0,1090+150,LASTYPOS+3,true);
+        //console.log(' LASTYPOS ', LASTYPOS);
+        alert(LASTYPOS);
+        paper.setViewBox(0,0,1090+150, LASTYPOS+3, true);
     }
 
     function addToolTip(node, tip, showDelay, position) {
@@ -388,30 +440,4 @@ function makeEventBarChart() {
         $(node).qtip(param);
 
     }
-
-var pixelMap = [{
-        "name": "BKLPNE",
-        "data": [
-            {"axis": "78", "name": ["SLC27A3: G111D"]},
-            {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
-            {"axis": "249", "name": ["SI: V109I"]},
-            {"axis": "519", "name": ["PRKDC: X133_splice"]},
-            {"axis": "708", "name": ["KMT2D: V5208Wfs*35"]},
-            {"axis": "711", "name": ["KRT85: G85R"]},
-            {"axis": "1056", "name": ["ENOX2: H250Q"]}
-        ]
-    }
-        ,
-        {"name": "DB0064",
-            "data": [
-                {"axis": "18", "name": ["SLC27A3: G111D"]},
-                {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
-                {"axis": "289", "name": ["SI: V109I"]},
-                {"axis": "569", "name": ["PRKDC: X133_splice"]},
-                {"axis": "768", "name": ["KMT2D: V5208Wfs*35"]},
-                {"axis": "761", "name": ["KRT85: G85R"]},
-                {"axis": "1096", "name": ["ENOX2: H250Q"]}
-            ]
-        }]
-;
 

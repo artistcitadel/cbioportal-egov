@@ -55,14 +55,14 @@ private static final Logger logger = LoggerFactory.getLogger(PatientcpmControlle
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/selectPatientView")
+	@RequestMapping(value="/selectList")
 	public Object selectDashBoardMgmt(@RequestBody Map<String,String> paramMap){
-		logger.debug("[--- selectPatientView START ");
+		logger.debug("[--- selectList START ");
 
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 
 		try{
-			resultMap.put("patientView", patientcpmService.selectPatientView(paramMap));
+			resultMap.put("result", patientcpmService.selectPatientView(paramMap));
 
 		}catch(Exception e){
 			resultMap.put("ERR_CD", "-1");
