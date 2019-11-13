@@ -12,21 +12,22 @@ $(document).ready(function () {
   action.selectList(ds_cond);
 
     var scale = 1;
+    var overview = $('#genomicOverviewTracksContainer').children(1);
     $('#zoomin').click(function() {
         scale *= 1.2
         paper.canvas.setAttribute("transform", "scale("+scale+")")
-        var w = $('svg').attr('width');
+        var w = overview.attr('width');
         w*=scale;
-        $('svg').css('width',w);
+        overview.css('width',w);
         LASTYPOS*=scale;
     });
 
     $('#zoomout').click(function() {
         scale *= 0.8
         paper.canvas.setAttribute("transform", "scale("+scale+")")
-        var w = $('svg').attr('width');
+        var w = overview.attr('width');
         w*=scale;
-        $('svg').css('width',w);
+        overview.css('width',w);
         LASTYPOS*=scale;
     });
 

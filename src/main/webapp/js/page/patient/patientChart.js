@@ -13,6 +13,7 @@ var chmName;
 var xt;
 var m;
 var UNIT="D";
+var dig;
 
 function disposer(json) {
    //console.log(result.patientView);
@@ -85,15 +86,18 @@ function setChmName(data){
         temp.push(data[i].time);
     }
     var tmp = _.uniq(temp);
-    TIME = tmp;
     tmp = _.sortBy(tmp);
+    TIME = tmp;
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
     var size = 0;
     //var unit = 'd';
-    if(data[0].unit==='D') size =util.dateDiff(min,max);
+    size =util.dateDiff(min,max);
+    /*if(data[0].unit==='D') size =util.dateDiff(min,max);
     if(data[0].unit==='M') {size =util.monthAndYearDiff(min,max,'m'); unit='m';}
-    if(data[0].unit==='Y') {size =Number(max)-Number(min); unit='y'}
+    if(data[0].unit==='Y') {size =Number(max)-Number(min); unit='y'}*/
+    console.log('min ', min, max, size);
+
 
     for(var k=0;k<size;k++){
         //chmName.push((k+1)+unit);
@@ -185,38 +189,66 @@ function findClassify(subject, data) {
 
 var pixelMap=[];
 function setPlotAxis(pdata){
+    //console.log(pdata);
     var subject = pdata[0].SUBJECT;
     var lineW = (xt[1]-xt[0])/10;
-    var pixel = _.groupBy(pdata, "ID");
-    console.log(pixel);
-    _.map(pixel, function(v, k){
-        var item={};
-        item.data=[];
-        item.id = k;
-        item.name = v[0].NAME;
-        var slot = {};
-        slot.name=[];
-        var pad = 0;
-        for(var i=0;i < v.length;i++){
-            if(i>0 && v[i-1].TIME === v[i].TIME){
-                pad+=3;
-            }
-            slot.axis = getAxis(v[i]) + (lineW * pad);
-            slot.name.push(findClassify(subject, v[i]));
-            item.data.push(slot);
-        }
-        pixelMap.push(item);
+    var group = _.groupBy(pdata, function(o){
+        return o.ID+","+o.TIME;
     });
-
-    console.log(pixelMap);
+    var oid;
+    var pad=0;
+    var item={};
+    item.data = [];
+    console.log('group ', group);
+    console.log(Object.keys(group).length);
+    var len = Object.keys(group).length;
+    var k=0;
+    var temp = [];
+      _.map(group, function(gv, gk){
+          var id = gk.split(",")[0];
+          var time = gk.split(",")[1];
+          var slot={};
+          slot.name=[];
+          slot.axis = getAxis(time) + (lineW + pad);
+          for(var i=0;i < gv.length;i++){
+              slot.name.push(findClassify(subject, gv[i]));
+          }
+          ++pad;
+          if(k>0 && (oid!==id || k === len-1)) {
+              item.data = temp;
+              pixelMap.push(item);
+              item = {};
+              item.data = [];
+              pad=0;
+              temp=[];
+          }
+          item.id = id;
+          //console.log(' slot ', slot);
+          temp.push(slot);
+          oid=id;
+          ++k;
+          if(k===len && id === pixelMap[pixelMap.length-1].id){
+              pixelMap[pixelMap.length-1].data.push(slot);
+          }
+          if(k===len && id !== pixelMap[pixelMap.length-1].id){
+              var tmp = {};
+              tmp.id = id;
+              tmp.data=temp;
+              pixelMap.push(tmp);
+          }
+      });
+    console.log(k);
+    console.log('pixelMap ', pixelMap);
 }
 
-function getXTposition(item) {
+function getXTposition(time) {
     var axis;
+    //console.log('TIME ', TIME);
     for (var i = 0; i < TIME.length; i++) {
-        if (item.TIME === TIME[i]) {
-            axis = xt[(i+1)]*2;
-            // console.log(i, xt[i+1]);
+        if (time === TIME[i]) {
+            //axis = xt[(i+1)]*2;
+            axis = xt[(i+1)];
+             console.log('getXTposition ', i, xt[i+1], time, axis);
             // console.log(item);
             // console.log(axis);
         }
@@ -224,8 +256,8 @@ function getXTposition(item) {
     return axis;
 }
 
-function getAxis(item) {
-   return getXTposition(item);
+function getAxis(time) {
+   return getXTposition(time);
 }
 
 function makeEventBarChart(json) {
@@ -233,10 +265,10 @@ function makeEventBarChart(json) {
         var data = json.result;
         setPlotAxis(data);
     }
-    console.log(DATA);
+    console.log('DATA-> ', DATA);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
-    plotdrawing(DATA);
+    plotdrawing(DATA, true);
 }
 
   function getHundreadRatio(){
@@ -306,14 +338,14 @@ function makeEventBarChart(json) {
                 //console.log(' key ', key);
                 //console.log('value ', value);
                 //if(key=='name' && value==item){
-                if(key=='id')console.log('====> ',value);
                 if(key=='id' && value==id){
                     find = true;
-                    //console.log('find ');
+                    console.log('find ');
                     spot.push(pixel[i].data);
                 }
             });
         }
+        console.log(' spot ', spot);
         return spot;
     }
 
@@ -336,7 +368,7 @@ function makeEventBarChart(json) {
       if(label.leaf==true){
           //var pixeldataV = getPixelMap(pixelMap,label.name.toLowerCase()) || [];
           var pixeldataV = getPixelMap(pixelMap, label.id) || [];
-          //console.log('pixeldata length =>', pixeldataV);
+          console.log('pixeldata length =>', pixeldataV);
           _.map(pixeldataV,function(pixeldata,k){
               console.log('k ', k, 'v ', pixeldata.length);
               var idx = 0;
@@ -344,10 +376,11 @@ function makeEventBarChart(json) {
                   //console.log("  pixeldata[i].axis  ", pixeldata[i]);
                   var position =  getTargetPosition(pixeldata[i].axis+"");
                   console.log(" position => ", position);
+                  console.log(" pixeldata[i].name.length ",pixeldata[i].name.length);
                   var h = pixeldata[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
                   console.log(yRow-h);
                   pixil = 150;
-                  var r = p.rect(position, yRow-h, 3, h);
+                  var r = p.rect(position, yRow-h-6, 3, h);
                   r.attr("fill","#0f0");
                   r.attr("stroke", "#0f0");
                   r.attr("stroke-width", 1);
@@ -366,7 +399,7 @@ function makeEventBarChart(json) {
           });
       }
       var deep = label.level;
-      var lbl = label.name;
+      var lbl = label.id;
       var t = p.text((12+Number(deep)*8), yRow + 7 - (row + 8), lbl).attr({'text-anchor': 'start', 'fill': 'black',  'cursor': 'pointer','font-size':'12' });
       t.click(function (){
           setTreeNode(label.id);
@@ -407,22 +440,45 @@ function makeEventBarChart(json) {
         }
         console.log(dig);
         clearPaperNode();
-        plotdrawing(dig);
+        plotdrawing(dig, false);
     }
 
-    function plotdrawing(diagnosis){
+    function plotdrawing(diagnosis, refine){
+        //console.log(' diagnosis ', diagnosis);
+        if(refine) {
+            var temp = [];
+            for (var i = 0; i < diagnosis.length; i++) {
+                var fdx = _.findIndex(temp, function (o) {
+                    return o.id === diagnosis[i].id;
+                });
+                //console.log(fdx);
+                if (fdx === -1) {
+                    var item = {};
+                    item.id = diagnosis[i].id;
+                    item.pid = diagnosis[i].pid;
+                    item.level = diagnosis[i].level;
+                    item.show = diagnosis[i].show;
+                    item.leaf = diagnosis[i].leaf;
+                    temp.push(item);
+                }
+            }
+
+            temp = util.arrayToTree(temp);
+            orderCategory(temp);
+        }
+        console.log('dig is ', dig);
         var k = 0;
         XGRIDS=[];
-        for(var i=0;i<diagnosis.length;i++) {
+        for(var i=0;i<dig.length;i++) {
             //console.log( ' diagnosis[i] ', diagnosis[i])
-            if(diagnosis[i].show=='1') {
-                plotMuts(paper, k, diagnosis[i]);
+            if(dig[i].show=='1') {
+                plotMuts(paper, k, dig[i]);
                 ++k;
             }
         }
         //console.log(' LASTYPOS ', LASTYPOS);
-        alert(LASTYPOS);
         paper.setViewBox(0,0,1090+150, LASTYPOS+3, true);
+        $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
     }
 
     function addToolTip(node, tip, showDelay, position) {
@@ -441,3 +497,18 @@ function makeEventBarChart(json) {
 
     }
 
+   function orderCategory(dat){
+       for(var i=0;i<dat.length;i++){
+          var item = {};
+          item.id = dat[i].id;
+          item.pid = dat[i].pid;
+          item.level = dat[i].level;
+          item.show = dat[i].show;
+          item.leaf = dat[i].leaf;
+          console.log(' item=>, ', item);
+          dig.push(item);
+          if(dat[i].data.length>0){
+              orderCategory(dat[i].data);
+          }
+       }
+   }
