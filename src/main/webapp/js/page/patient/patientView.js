@@ -13,10 +13,12 @@ $(document).ready(function () {
 
     var scale = 1;
     var overview = $('#genomicOverviewTracksContainer').children(1);
+    //alert(paperWidth);
+    zcnt=1;
+    var w = overview.attr('width');
     $('#zoomin').click(function() {
-        scale *= 1.2;
+        scale = zcnt*1.2;
         //paper.canvas.setAttribute("transform", "scale("+scale+")")
-        var w = overview.attr('width');
         w*=scale;
         overview.css('width',w);
         LASTYPOS*=scale;
@@ -25,20 +27,25 @@ $(document).ready(function () {
         clearPaperPlotNode();
         paperWidth *= scale;
         setTimeLine('R', dig);
+        //alert(paperWidth);
+        ++zcnt;
     });
 
     $('#zoomout').click(function() {
-        scale = 1.2;
+        if(zcnt===1)return;
+        scale=1.2*(zcnt-1);
         //paper.canvas.setAttribute("transform", "scale("+scale+")")
-        var w = overview.attr('width');
         w/=scale;
+        //alert(w);
         overview.css('width',w);
-        LASTYPOS*=scale;
+        LASTYPOS/=scale;
 
         removeLine();
         clearPaperPlotNode();
         paperWidth /= scale;
+        //alert(paperWidth);
         setTimeLine('R', dig);
+        --zcnt;
     });
 
     $('#xgrid').click(function() {
@@ -54,4 +61,6 @@ $(document).ready(function () {
     });
     $('#xgrid').trigger('click');
 
+    // $( "[id^='txt']" ).click(function(){
+    // });
 });

@@ -466,12 +466,17 @@ function plotMuts(p, row, label) {
         });
     }
     var deep = label.level;
+    if(label.leaf)deep+=1;
+    var ar = '❯ ';
+    //if(label.leaf)ar='';
     var lbl = label.name;
     //console.log('label_text length ', lbl.length);
+
     var t = p.text((12+Number(deep)*8), yRow + 7 - (row + 8), lbl).attr({'text-anchor': 'start', 'fill': 'black',  'cursor': 'pointer','font-size':'12' });
     t.click(function (){
         setTreeNode(label.id);
     });
+
     PAPERNODE.push(t);
     var ypos = yRow + 5;
     LASTYPOS = ypos;
@@ -551,7 +556,7 @@ function plotdrawing(diagnosis, refine){
         }
     }
     //console.log(' LASTYPOS ', LASTYPOS);
-    paper.setViewBox(0,0,1090+150, LASTYPOS+3, true);
+    //paper.setViewBox(0,0,1090+150, LASTYPOS+3, true);
     $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
 }
 
