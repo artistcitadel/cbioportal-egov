@@ -7,28 +7,28 @@
 <mapper namespace="patientcpm">
 
     <select id="selectDigClssify" parameterType="map" resultType="hashmap">
-        SELECT DISTINCT A.EXAM_SLIP_CD PID ,
-                          A.EXAM_CD ID,
-                          A.EXAM_ENG_NM NAME,
-                          A.RCEP_DT TIME,
+        SELECT DISTINCT A.EXAM_SLIP_CD pid ,
+                          A.EXAM_CD id,
+                          A.EXAM_ENG_NM name,
+                          A.RCEP_DT time,
                           CASE WHEN LENGTH(A.RCEP_DT)=8 THEN 'D'
                           WHEN LENGTH(A.RCEP_DT)=6 THEN 'M'
                           WHEN LENGTH(A.RCEP_DT)=4 THEN 'Y'
                           ELSE ''
-                          END UNIT
+                          END unit
         FROM CLSPNEXRT A
         WHERE A.RESCH_PAT_ID = #{patientId}
         ORDER BY 1,4
  	</select>
 
     <select id="selectTestSpec" parameterType="map" resultType="hashmap">
-    SELECT    'LAB_TEST' SUBJECT,
-                EXAM_CD ID ,
-                EXAM_ENG_NM NAME,
-                EXAM_RSLT_VAL EXAM,
-                MARK_RSLT_VAL MARK,
-                CRTE_MSR_VAL CRTE,
-                RCEP_DT TIME
+    SELECT    'LAB_TEST' subject,
+                EXAM_CD id ,
+                EXAM_ENG_NM name,
+                EXAM_RSLT_VAL exam,
+                MARK_RSLT_VAL mark,
+                CRTE_MSR_VAL crte,
+                RCEP_DT time
                 FROM CLSPNEXRT
                 WHERE RESCH_PAT_ID = #{patientId}
                 AND LENGTH(EXAM_CD) = '6'

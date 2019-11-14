@@ -14,21 +14,31 @@ $(document).ready(function () {
     var scale = 1;
     var overview = $('#genomicOverviewTracksContainer').children(1);
     $('#zoomin').click(function() {
-        scale *= 1.2
-        paper.canvas.setAttribute("transform", "scale("+scale+")")
+        scale *= 1.2;
+        //paper.canvas.setAttribute("transform", "scale("+scale+")")
         var w = overview.attr('width');
         w*=scale;
         overview.css('width',w);
         LASTYPOS*=scale;
+
+        removeLine();
+        clearPaperPlotNode();
+        paperWidth *= scale;
+        setTimeLine('R', dig);
     });
 
     $('#zoomout').click(function() {
-        scale *= 0.8
-        paper.canvas.setAttribute("transform", "scale("+scale+")")
+        scale = 1.2;
+        //paper.canvas.setAttribute("transform", "scale("+scale+")")
         var w = overview.attr('width');
-        w*=scale;
+        w/=scale;
         overview.css('width',w);
         LASTYPOS*=scale;
+
+        removeLine();
+        clearPaperPlotNode();
+        paperWidth /= scale;
+        setTimeLine('R', dig);
     });
 
     $('#xgrid').click(function() {
