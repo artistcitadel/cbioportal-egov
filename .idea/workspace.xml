@@ -10,12 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f67cda9-a09e-46a0-9e96-904c2b2f401d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bigcen.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bigcen.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +44,7 @@
           <entry key="java" value="9" />
           <entry key="js" value="16" />
           <entry key="jsp" value="17" />
-          <entry key="properties" value="8" />
+          <entry key="properties" value="9" />
           <entry key="xml" value="8" />
         </counts>
       </usages-collector>
@@ -59,7 +54,7 @@
           <entry key="JAVA" value="9" />
           <entry key="JSP" value="17" />
           <entry key="JavaScript" value="16" />
-          <entry key="Properties" value="8" />
+          <entry key="Properties" value="9" />
           <entry key="XML" value="8" />
         </counts>
       </usages-collector>
@@ -97,11 +92,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
               <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/bigcen.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
             </state>
           </provider>
         </entry>
@@ -173,11 +177,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/dao/PatientcpmDAO.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" />
-        <option value="$PROJECT_DIR$/src/main/resources/bigcen.properties" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/bigcen.properties" />
       </list>
     </option>
   </component>
@@ -323,9 +327,10 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="big&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573719072060" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573719511493" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -451,12 +456,12 @@
       <workItem from="1573556582942" duration="6726000" />
       <workItem from="1573602300385" duration="27390000" />
       <workItem from="1573641912804" duration="16832000" />
-      <workItem from="1573687409441" duration="26115000" />
+      <workItem from="1573687409441" duration="26758000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184804000" />
+    <option name="totallyTimeSpent" value="185447000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="786" extended-state="6" />
@@ -679,13 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/bigcen.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
@@ -711,6 +709,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/bigcen.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
         </state>
       </provider>
     </entry>
