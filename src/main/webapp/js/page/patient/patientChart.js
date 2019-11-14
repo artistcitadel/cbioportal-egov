@@ -4,7 +4,6 @@ var paperHeight = 30;
 var paper;
 var yRuler = 15;
 var XGRIDS=[];
-var dig = [];
 var PAPERNODE=[];
 var LASTYPOS=0;
 var TIME;
@@ -13,9 +12,11 @@ var chmName;
 var xt;
 var m;
 var UNIT="D";
-var dig;
+var dig=[];
+var LTEXTLENGTH=[];
 
 function disposer(json) {
+    LTEXTLENGTH=[];
    //console.log(result.patientView);
   if(json.result.length>0){
       var data = json.result;
@@ -30,11 +31,15 @@ function disposer(json) {
             item.show = "1";
             item.order=0;
             var level=1;
-            if(!_.isUndefined(data[i].PID)) level = findLevel(data[i].PID,data,++level);
+            if(!_.isUndefined(item.pid)) {
+                level = findLevel(item.pid, data, ++level);
+                //console.log(' level ', item.pid,  item.id, 'level ',level);
+            }
             item.level = level;
             var leaf = findLeaf(data[i].ID, data);
             item.leaf = leaf;
             crow.push(item);
+            LTEXTLENGTH.push(item.name.length);
       }
       console.log(crow);
       setTimeLine(crow);
@@ -42,10 +47,18 @@ function disposer(json) {
 }
 
 function findLevel(pid, data,lvl){
+    //console.log('&&&&&&&&&&&&&&&&&&&&&&');
+    //console.log( 'data ', data);
+    //console.log('pid ', pid);
     var findindex = _.findIndex(data, function(o) { return o.ID === pid; });
     //console.log(pid, findindex, lvl);
-    if(_.isUndefined(data[findindex].PID)) return lvl;
-    if(findindex!==-1) findLevel(data[findindex].PID, data, ++lvl);
+    if(_.isUndefined(data[findindex].PID)) {
+        //console.log('undefined ',pid, findindex, lvl);
+        return lvl;
+    }
+    if(findindex!==-1) {
+        return findLevel(data[findindex].PID, data, ++lvl);
+    }
     //else return lvl;
 }
 
@@ -56,6 +69,8 @@ function findLeaf(id, data){
 }
 
 function setTimeLine(data){
+  leftpadding += _.max(LTEXTLENGTH);
+  leftpadding*=2;
   var start = 25 + leftpadding;
   chmName = setChmName(data);
   console.log(chmName);
@@ -211,6 +226,11 @@ function setPlotAxis(pdata){
           slot.name=[];
           slot.axis = getAxis(time) + (lineW + pad);
           for(var i=0;i < gv.length;i++){
+              if(i===0){
+                  var tip = "["+subject+"]<br/>";
+                  tip+="["+gv[i].NAME+"]<br/>";
+                  slot.name.push(tip);
+              }
               slot.name.push(findClassify(subject, gv[i]));
           }
           ++pad;
@@ -340,7 +360,7 @@ function makeEventBarChart(json) {
                 //if(key=='name' && value==item){
                 if(key=='id' && value==id){
                     find = true;
-                    console.log('find ');
+                    //console.log('find ');
                     spot.push(pixel[i].data);
                 }
             });
@@ -392,14 +412,31 @@ function makeEventBarChart(json) {
                           this.transform('s1,1');
                       }
                   );
-                  addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
+                  var tip="";
+                  // var tip = "["+label.subject+"]<br/>";
+                  // tip+="["+label.name+"]<br/>";
+
+                  for(var j=0;j<pixeldata[i].name.length;j++){
+                      var item = pixeldata[i].name[j];
+                      if(j===0){
+                          tip+= item;
+                      }else {
+                          _.map(item, function (v, k) {
+                              tip += k + " : " + v + "</br>";
+                          });
+                          tip += "<hr/>";
+                      }
+                  }
+                  //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
+                  addToolTip(r.node, tip, 100, '');
                   ++idx;
                   PAPERNODE.push(r);
               }
           });
       }
       var deep = label.level;
-      var lbl = label.id;
+      var lbl = label.name;
+      //console.log('label_text length ', lbl.length);
       var t = p.text((12+Number(deep)*8), yRow + 7 - (row + 8), lbl).attr({'text-anchor': 'start', 'fill': 'black',  'cursor': 'pointer','font-size':'12' });
       t.click(function (){
           setTreeNode(label.id);
@@ -454,11 +491,13 @@ function makeEventBarChart(json) {
                 //console.log(fdx);
                 if (fdx === -1) {
                     var item = {};
-                    item.id = diagnosis[i].id;
+                    item = setPlotItem(item, diagnosis[i]);
+                    /*item.id = diagnosis[i].id;
                     item.pid = diagnosis[i].pid;
+                    item.name = diagnosis[i].name;
                     item.level = diagnosis[i].level;
                     item.show = diagnosis[i].show;
-                    item.leaf = diagnosis[i].leaf;
+                    item.leaf = diagnosis[i].leaf;*/
                     temp.push(item);
                 }
             }
@@ -500,15 +539,27 @@ function makeEventBarChart(json) {
    function orderCategory(dat){
        for(var i=0;i<dat.length;i++){
           var item = {};
-          item.id = dat[i].id;
+           item = setPlotItem(item, dat[i]);
+          /*item.id = dat[i].id;
           item.pid = dat[i].pid;
+          item.name = dat[i].name;
           item.level = dat[i].level;
           item.show = dat[i].show;
-          item.leaf = dat[i].leaf;
-          console.log(' item=>, ', item);
+          item.leaf = dat[i].leaf;*/
+          //console.log(' item=>, ', item);
           dig.push(item);
           if(dat[i].data.length>0){
               orderCategory(dat[i].data);
           }
        }
    }
+
+   function setPlotItem(item, dat){
+       item.id = dat.id;
+       item.pid = dat.pid;
+       item.name = dat.name;
+       item.level = dat.level;
+       item.show = dat.show;
+       item.leaf = dat.leaf;
+       return item;
+}
