@@ -9,25 +9,32 @@ var LASTYPOS=0;
 var TIME;
 var DATA;
 var chmName;
+var chmDay=[];
 var xt;
 var m;
-var UNIT="D";
+var UNIT="d";
 var dig=[];
 var LTEXTLENGTH=[];
 var PLOTDATA=[];
 var OLINE=[];
 var pixelMap=[];
+var HRC;
 
 function disposer(json) {
     //console.log(result.patientView);
     if(json.result.length>0){
         var data = json.result;
+
+        var temp = _.union(HRC, data);
+        data = _.uniqBy(temp, 'id');
+       console.log(' data ', data);
         var crow = [];
         for(var i=0;i<data.length;i++){
             var item = {};
             item.time = data[i].time;
             item.id   = data[i].id;
             item.name = data[i].name;
+            if(_.isUndefined(item.name))item.name='';
             item.unit = data[i].unit;
             item.pid = data[i].pid;
             item.show = "1";
@@ -44,21 +51,22 @@ function disposer(json) {
             LTEXTLENGTH.push(item.name.length);
         }
         console.log(crow);
+        return;
         setTimeLine('C', crow);
     }
 }
 
-function findLevel(pid, data,lvl){
-    //console.log('&&&&&&&&&&&&&&&&&&&&&&');
+function findLevel(pid, data, lvl){
+    console.log('&&&&&&&&&&&&&&&&&&&&&&');
     //console.log( 'data ', data);
     //console.log('pid ', pid);
     var findindex = _.findIndex(data, function(o) { return o.id === pid; });
-    //console.log(pid, findindex, lvl);
-    if(_.isUndefined(data[findindex].pid)) {
+    console.log(pid, findindex, lvl);
+    if(findindex ==-1 || _.isUndefined(data[findindex].pid)) {
         //console.log('undefined ',pid, findindex, lvl);
         return lvl;
     }
-    if(findindex!==-1) {
+    if(findindex!==-1 && !_.isUndefined(data[findindex].pid)) {
         return findLevel(data[findindex].pid, data, ++lvl);
     }
     //else return lvl;
@@ -91,12 +99,13 @@ function setTimeLine(node, data){
 
 function getSpec(node){
     var ds_cond = {};
-    ds_cond.data = {"qid":"selectTestSpec","patientId":"6128737361" };
+    ds_cond.data = {"qid":"selectTestSpec","patientId":PATIENTID };
     ds_cond.callback = makeEventBarChart;
     (node !=='R') ? action.selectList(ds_cond) : makeEventBarChartCache();
 }
 
 function setChmName(data){
+    //console.log(data);
     var temp = [];
     var chmName=[];
     for(var i=0; i<data.length; i++){
@@ -109,22 +118,50 @@ function setChmName(data){
     var max = _.max(tmp)+"";
     var size = 0;
     //var unit = 'd';
+
+    //min = '20010101';
+    //max = '20040101';
     size =util.dateDiff(min,max);
-    /*if(data[0].unit==='D') size =util.dateDiff(min,max);
-    if(data[0].unit==='M') {size =util.monthAndYearDiff(min,max,'m'); unit='m';}
-    if(data[0].unit==='Y') {size =Number(max)-Number(min); unit='y'}*/
+    size+=1;
+    console.log('size ' , size);
+
+    (size < 32) ? UNIT='d' : ( (size < 32*30-29  && size > 31) ?  UNIT='m' : (size > 32*30-29 ) ? UNIT='y' : '' );
+    console.log(UNIT);
+
     console.log('min ', min, max, size);
 
-
+    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m');}
+    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y');}
+    console.log(' size ', size);
     for(var k=0;k<size;k++){
         //chmName.push((k+1)+unit);
-        chmName.push((k+1));
+        //chmName.push((k+1));
+        //chmDay.push(getChmDay(min,(k+1), UNIT));
+        chmName.push(getChmDay(min,(k+1), UNIT));
     }
+    //console.log(chmDay);
     //DATA = data;
     dig = data;
     return chmName;
 }
 
+function getChmDay(day, k, unit){
+
+    var time = moment('20010101','YYYYMMDD');
+    if(unit==='d'){
+        var next = moment(time).add(k, 'days');
+        //console.log(moment(next).format('YYYYMMDD'));
+        return moment(next).format('YYYYMMDD');
+    }
+    if(unit==='m'){
+        var next = moment(time).add(k, 'M');
+        return moment(next).format('YYYYMM');
+    }
+    if(unit==='y'){
+        var next = moment(time).add(k, 'years');
+        return moment(next).format('YYYY');
+    }
+}
 function setXposition(start, count){
     var xt=[];
     var gap = ((paperWidth-leftpadding)/count)/2;
@@ -141,14 +178,20 @@ function setXposition(start, count){
 
 function setXnamePosition(xt){
     var m=[];
+    var uend;
     for(var i=0; i<xt.length-1; i++){
         //m[i] = xt[i] + ( (xt[i+1]-xt[i]) / 2);
-        m[i] = (xt[i] + xt[i+2]) /2 ;
+        console.log(xt.length, uend = xt[i+1]);
+        if(xt.length<3) uend = xt[i+1];
+        else uend =xt[i+2];
+        console.log(uend);
+            m[i] = (xt[i] + uend) /2 ;
     }
     // console.log(m[m.length-2]);
     // console.log((paperWidth-m[m.length-2]) /2);
     // console.log((m[m.length-2]) + ((paperWidth-m[m.length-2]) /2));
-    m[m.length-1] = (m[m.length-2]) + ((paperWidth-m[m.length-2]) /2);
+    if(xt.length<3)return m;
+    else m[m.length-1] = (m[m.length-2]) + ((paperWidth-m[m.length-2]) /2);
     return m;
 }
 
@@ -308,6 +351,7 @@ function makeEventBarChart(json) {
     }
     setPlotAxis(PLOTDATA);
     makeEventBarChartSub();
+    console.log('makeEventBarChart ', dig);
     plotdrawing(dig, true);
 }
 function makeEventBarChartCache(){
@@ -396,7 +440,7 @@ function getPixelMap(pixel, id) {
             }
         });
     }
-    console.log(' spot ', spot);
+   // console.log(' spot ', spot);
     return spot;
 }
 
@@ -484,6 +528,8 @@ function plotMuts(p, row, label) {
     ////xgrid.hide();
     //console.log(' LASTYPOS ', LASTYPOS);
     ////XGRIDS.push(xgrid);
+
+    $('.spinner').hide();
 }
 
 function getHideId(redrawnonids,dig, id) {
@@ -541,6 +587,7 @@ function plotdrawing(diagnosis, refine){
             }
         }
         //console.log(' temp ', temp);
+        console.log(' temp ', temp);
         temp = util.arrayToTree(temp);
         dig=[];
         orderCategory(temp);
@@ -577,6 +624,7 @@ function addToolTip(node, tip, showDelay, position) {
 }
 
 function orderCategory(dat){
+    console.log(' orderCategory ', dat);
     for(var i=0;i<dat.length;i++){
         var item = {};
         item = setPlotItem(item, dat[i]);

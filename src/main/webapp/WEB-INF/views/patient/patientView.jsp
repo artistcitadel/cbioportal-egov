@@ -217,6 +217,15 @@
             </div>
         </div>
     </div>
+
+    <div class="spinner center">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+
 </section>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientChart.js" />"></script>

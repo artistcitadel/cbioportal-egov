@@ -1,15 +1,28 @@
 var action;
 var util;
+var PATIENTID="6905950076";
+
 $(document).ready(function () {
+  action = new Action();
+  util = new Util();
   paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
   paper.scale({ zoom: true});
 
-  action = new Action();
-  util = new Util();
   var ds_cond = {};
-  ds_cond.data = {"qid":"selectDigClssify","patientId":"6128737361" };
-  ds_cond.callback = disposer;
-  action.selectList(ds_cond);
+  ds_cond.data = {"qid":"selectLabTestHrc","patientId":PATIENTID};
+  ds_cond.callback = setClassifyHrc;
+ action.selectList(ds_cond);
+
+  function setClassifyHrc(json){
+      if(json.result.length>0){
+          HRC = json.result;
+          //console.log("HRC ", HRC);
+          var ds_cond = {};
+          ds_cond.data = {"qid":"selectLabTest","patientId":PATIENTID};
+          ds_cond.callback = disposer;
+          action.selectList(ds_cond);
+      }
+  }
 
     var scale = 1;
     var overview = $('#genomicOverviewTracksContainer').children(1);

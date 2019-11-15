@@ -6,19 +6,24 @@
 
 <mapper namespace="patientcpm">
 
+    <select id="selectDigClssifyHrc" parameterType="map" resultType="hashmap">
+      SELECT DISTINCT EXAM_CD id,
+                EXAM_ENG_NM name
+      FROM CLSPNEXRT
+      <![CDATA[
+        WHERE LENGTH(EXAM_CD) < 6
+      ]]>
+    </select>
+
     <select id="selectDigClssify" parameterType="map" resultType="hashmap">
-        SELECT DISTINCT A.EXAM_SLIP_CD pid ,
+     SELECT DISTINCT A.EXAM_SLIP_CD pid ,
                           A.EXAM_CD id,
                           A.EXAM_ENG_NM name,
-                          A.RCEP_DT time,
-                          CASE WHEN LENGTH(A.RCEP_DT)=8 THEN 'D'
-                          WHEN LENGTH(A.RCEP_DT)=6 THEN 'M'
-                          WHEN LENGTH(A.RCEP_DT)=4 THEN 'Y'
-                          ELSE ''
-                          END unit
+                          A.RCEP_DT time
         FROM CLSPNEXRT A
         WHERE A.RESCH_PAT_ID = #{patientId}
         ORDER BY 1,4
+        LIMIT  10
  	</select>
 
     <select id="selectTestSpec" parameterType="map" resultType="hashmap">
@@ -32,8 +37,9 @@
                 FROM CLSPNEXRT
                 WHERE RESCH_PAT_ID = #{patientId}
                 AND LENGTH(EXAM_CD) = '6'
-                and exam_cd in('BB0013','BC0001')
+                /*and exam_cd in('BB0013','BC0001')*/
                 ORDER BY 2, 6
+                LIMIT  5
     </select>
 </mapper>
 
