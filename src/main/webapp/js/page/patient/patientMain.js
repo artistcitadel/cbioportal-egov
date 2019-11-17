@@ -1,13 +1,16 @@
+var action;
+var util;
 var PDATA;
 var PIDX=0;
 $(document).ready(function () {
     //var url = "/resources/json/patient.json";
     // prepare the data
-    var action = new Action();
+    action = new Action();
+    util = new Util();
     var ds_cond = {};
-    ds_cond.data = {};
+    ds_cond.data = {"qid":"selectPatientChoiceList"};
     ds_cond.callback = setData;
-    action.getPatientList(ds_cond);
+    action.selectList(ds_cond);
 
     $('#patientId, #sampleId, #age, #cancerStudies, #cancerType, #cancerTypeDetails').keyup(function (e) {
         //console.log(this.id, ' ',$(this).val());
@@ -29,57 +32,64 @@ $(document).ready(function () {
         if(event.args.datafield==='patientId'){
             //alert($("#grid").jqxGrid('getcellvalue', event.args.datafield));
             var props={value:$("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId')};
-            $("#patientList").append(getPatientRow(props));
-            ++PIDX;
+            ////$("#patientList").append(getPatientRow(props));
+            ////++PIDX;
+            document.pform.patientId.value=props.value;
+            document.pform.submit();
         }
     });
 
 });
 
-function setData(data){
-    console.log(data);
-    (PDATA == null) ? PDATA = data: PDATA;
-    var source =
-        {
-            localdata: data,
-            datafields: [
-                { name: 'patientId', type: 'string' },
-                { name: 'sampleId', type: 'string' },
-                { name: 'age', type: 'string' },
-                { name: 'cancerStudies', type: 'string' },
-                { name: 'cancerType', type: 'string' },
-                { name: 'cancerTypeDetails', type: 'string' },
-            ],
-            datatype: "array"
-        };
-    var dataAdapter = new $.jqx.dataAdapter(source);
-    // initialize jqxGrid
-    $("#grid").jqxGrid(
-        {
-            width: getWidth('Grid'),
-            source: dataAdapter,
-            // pageable: true,
-            autoheight: true,
-            sortable: true,
-            filterable: true,
-            showfilterrow: true,
-            // altrows: true,
-            // enabletooltips: true,
-            // editable: true,
-             selectionmode: 'singlecell',
-            columns: [
-                { text: 'Patient Id',  datafield: 'patientId', width: 150 },
-                { text: 'Sample Id',  datafield: 'sampleId', width: 150 },
-                { text: 'age',  datafield: 'age', width: 100, cellsalign: 'center' },
-                { text: 'Cancer Studies',  datafield: 'cancerStudies', width: 150 },
-                { text: 'Cancer Type',  datafield: 'cancerType', width: 150 },
-                { text: 'Cancer Type Details',  datafield: 'cancerTypeDetails', width: 150 },
-            ],
-        });
-  /*  $("div").on('click', '[id^=patientremove_]', function(e) {
-        var idx = this.id.split("_")[1];
-          removePatientRow(idx);
-    });*/
+function setData(json){
+    $('.spinner').hide();
+    console.log(json);
+    if(json.result.length>0) {
+        var data = json.result;
+        console.log(data);
+        (PDATA == null) ? PDATA = data : PDATA;
+        var source =
+            {
+                localdata: data,
+                datafields: [
+                    {name: 'patientId', type: 'string'},
+                    {name: 'sampleId', type: 'string'},
+                    {name: 'age', type: 'string'},
+                    {name: 'cancerStudies', type: 'string'},
+                    {name: 'cancerType', type: 'string'},
+                    {name: 'cancerTypeDetails', type: 'string'},
+                ],
+                datatype: "array"
+            };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        // initialize jqxGrid
+        $("#grid").jqxGrid(
+            {
+                width: getWidth('Grid'),
+                source: dataAdapter,
+                // pageable: true,
+                autoheight: true,
+                sortable: true,
+                filterable: true,
+                showfilterrow: true,
+                // altrows: true,
+                // enabletooltips: true,
+                // editable: true,
+                selectionmode: 'singlecell',
+                columns: [
+                    {text: 'Patient Id', datafield: 'patientId', width: 150},
+                    {text: 'Sample Id', datafield: 'sampleId', width: 150},
+                    {text: 'age', datafield: 'age', width: 100, cellsalign: 'center'},
+                    {text: 'Cancer Studies', datafield: 'cancerStudies', width: 150},
+                    {text: 'Cancer Type', datafield: 'cancerType', width: 150},
+                    {text: 'Cancer Type Details', datafield: 'cancerTypeDetails', width: 150},
+                ],
+            });
+        /*  $("div").on('click', '[id^=patientremove_]', function(e) {
+              var idx = this.id.split("_")[1];
+                removePatientRow(idx);
+          });*/
+    }
 }
 
 function getPatientRow(props){

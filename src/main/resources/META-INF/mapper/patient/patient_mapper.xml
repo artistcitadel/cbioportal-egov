@@ -6,9 +6,20 @@
 
 <mapper namespace="patientcpm">
 
+    <select id="selectPatientChoiceList" parameterType="map" resultType="hashmap">
+      SELECT DISTINCT
+                RESCH_PAT_ID patientId,
+                'xxxx' sampleId,
+                '9999' age,
+                'xxxx' cancerStudies,
+                'xxxxx' cancerType,
+                'xxxx' cancerTypeDetails
+     FROM CLSPNEXRT
+    </select>
+
     <select id="selectLabTestHrc" parameterType="map" resultType="hashmap">
       SELECT DISTINCT EXAM_CD id,
-                EXAM_ENG_NM name
+                IFNULL(EXAM_ENG_NM, EXAM_CD) name
                 FROM CLSPNEXRT
       <![CDATA[
         WHERE LENGTH(EXAM_CD) < 6
@@ -27,26 +38,12 @@
                          IFNULL(SUM(CRTE_MSR_VAL),0)  crte
 
         FROM CLSPNEXRT
-        WHERE RESCH_PAT_ID = #{patientId}
+        WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD = 'DA0036'
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
-        LIMIT  10
+        ORDER BY 5
+        LIMIT  300
  	</select>
 
-    <select id="selectLabTestSpec" parameterType="map" resultType="hashmap">
-    SELECT    'LAB_TEST' subject,
-                EXAM_CD id ,
-                EXAM_ENG_NM name,
-                EXAM_RSLT_VAL exam,
-                MARK_RSLT_VAL mark,
-                CRTE_MSR_VAL crte,
-                RCEP_DT time
-                FROM CLSPNEXRT
-                WHERE RESCH_PAT_ID = #{patientId}
-                AND LENGTH(EXAM_CD) = '6'
-                /*and exam_cd in('BB0013','BC0001')*/
-                ORDER BY 2, 6
-                LIMIT  5
-    </select>
 </mapper>
 
 

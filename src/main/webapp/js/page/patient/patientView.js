@@ -1,7 +1,7 @@
 var action;
 var util;
-var PATIENTID="6905950076";
-
+//var PATIENTID="6905950076";
+var overview;
 $(document).ready(function () {
   action = new Action();
   util = new Util();
@@ -14,9 +14,10 @@ $(document).ready(function () {
  action.selectList(ds_cond);
 
   function setClassifyHrc(json){
+      //console.log(json);
       if(json.result.length>0){
-          HRC = json.result;
-          //console.log("HRC ", HRC);
+          HRC_LAB = json.result;
+          console.log("HRC_LAB ", HRC_LAB);
           var ds_cond = {};
           ds_cond.data = {"qid":"selectLabTest","patientId":PATIENTID};
           ds_cond.callback = disposer;
@@ -25,7 +26,7 @@ $(document).ready(function () {
   }
 
     var scale = 1;
-    var overview = $('#genomicOverviewTracksContainer').children(1);
+    overview = $('#genomicOverviewTracksContainer').children(1);
     //alert(paperWidth);
     zcnt=1;
     var w = overview.attr('width');
@@ -74,6 +75,13 @@ $(document).ready(function () {
     });
     $('#xgrid').trigger('click');
 
-    // $( "[id^='txt']" ).click(function(){
-    // });
+    $("#reset").click(function(){
+        MODE='N';
+        removeLine();
+        clearPaperPlotNode();
+        setTimeLine('C', RAW);
+    })
+     /*$('svg').on("click", "[id^='text_']", function(){
+         console.log(this.id);
+     });*/
 });

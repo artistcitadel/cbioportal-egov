@@ -15,16 +15,21 @@ function Util() {
     }
 
     self.monthAndYearDiff = function (_date1, _date2, node) {
-        _date1 = _date1.substring(0,4)+"-"+_date1.substring(4,6)+"-"+_date1.substring(6,8);
+        /*_date1 = _date1.substring(0,4)+"-"+_date1.substring(4,6)+"-"+_date1.substring(6,8);
         _date2 = _date2.substring(0,4)+"-"+_date2.substring(4,6)+"-"+_date2.substring(6,8);
         var da1 = _date1 instanceof Date ? _date1 : new Date(_date1);
         var da2 = _date2 instanceof Date ? _date2 : new Date(_date2);
         var dif = da2 - da1;
         var cDay = 24 * 60 * 60 * 1000;
         var cMonth = cDay * 30;
-        var cYear = cMonth * 12;
-        if(node==='m') return parseInt(dif / cMonth);
-        if(node==='y') return parseInt(dif / cYear);
+        var cYear = cMonth * 12;*/
+        var date1 = moment(_date1);
+        var date2 = moment(_date2);
+        if(node==='m') return date2.diff(date1,'M');
+        if(node==='y') return date2.diff(date1,'years');
+        if(node==='d') return date2.diff(date1,'days');
+        // if(node==='m') return parseInt(dif / cMonth);
+        // if(node==='y') return parseInt(dif / cYear);
     }
 
     self.arrayToTree = function(data, options){

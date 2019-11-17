@@ -6,41 +6,44 @@
 
 <mapper namespace="patientcpm">
 
-    <select id="selectDigClssifyHrc" parameterType="map" resultType="hashmap">
+    <select id="selectPatientChoiceList" parameterType="map" resultType="hashmap">
+      SELECT DISTINCT
+                RESCH_PAT_ID patientId,
+                'xxxx' sampleId,
+                '9999' age,
+                'xxxx' cancerStudies,
+                'xxxxx' cancerType,
+                'xxxx' cancerTypeDetails
+     FROM CLSPNEXRT
+    </select>
+
+    <select id="selectLabTestHrc" parameterType="map" resultType="hashmap">
       SELECT DISTINCT EXAM_CD id,
-                EXAM_ENG_NM name
-      FROM CLSPNEXRT
+                IFNULL(EXAM_ENG_NM, EXAM_CD) name
+                FROM CLSPNEXRT
       <![CDATA[
         WHERE LENGTH(EXAM_CD) < 6
       ]]>
     </select>
 
-    <select id="selectDigClssify" parameterType="map" resultType="hashmap">
-     SELECT DISTINCT A.EXAM_SLIP_CD pid ,
-                          A.EXAM_CD id,
-                          A.EXAM_ENG_NM name,
-                          A.RCEP_DT time
-        FROM CLSPNEXRT A
-        WHERE A.RESCH_PAT_ID = #{patientId}
-        ORDER BY 1,4
-        LIMIT  10
+    <select id="selectLabTest" parameterType="map" resultType="hashmap">
+     SELECT
+     'Lab_test' subject,
+     EXAM_SLIP_CD pid ,
+                         EXAM_CD id,
+                         EXAM_ENG_NM name,
+                         RCEP_DT time,
+                         SUM(EXAM_RSLT_VAL) exam,
+                         SUM(MARK_RSLT_VAL) mark,
+                         IFNULL(SUM(CRTE_MSR_VAL),0)  crte
+
+        FROM CLSPNEXRT
+        WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD = 'DA0036'
+        GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
+        ORDER BY 5
+        LIMIT  300
  	</select>
 
-    <select id="selectTestSpec" parameterType="map" resultType="hashmap">
-    SELECT    'LAB_TEST' subject,
-                EXAM_CD id ,
-                EXAM_ENG_NM name,
-                EXAM_RSLT_VAL exam,
-                MARK_RSLT_VAL mark,
-                CRTE_MSR_VAL crte,
-                RCEP_DT time
-                FROM CLSPNEXRT
-                WHERE RESCH_PAT_ID = #{patientId}
-                AND LENGTH(EXAM_CD) = '6'
-                /*and exam_cd in('BB0013','BC0001')*/
-                ORDER BY 2, 6
-                LIMIT  5
-    </select>
 </mapper>
 
 

@@ -67,16 +67,20 @@
 		    height:25px;
 			margin-top:6px;
 		  }*/
+		.font-small {
+			font-size: xx-small;
+			font-weight: bold;
+		}
         .spinner {
             margin: 100px auto;
-            width: 60px;
-            height: 50px;
+            width: 50px;
+            height: 40px;
             text-align: center;
             font-size: 10px;
         }
 
         .spinner > div {
-            background-color: #7EBB90;
+            background-color: #67989f;
             height: 100%;
             width: 6px;
             display: inline-block;
@@ -121,8 +125,8 @@
         }
         .center {
             position: absolute; /* */
-            left: 40%;
-            top: 40%;
+            left: 5%;
+            top: 20%;
             transform: translate(-50%, -50%);
         }
 

@@ -115,6 +115,7 @@
                                         <div>
                                             <div id="timeline-container">
                                                 <div id="timeline_btn" style="display: flex; margin-bottom: 1px; justify-content: flex-end;">
+                                                    <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning" style="margin-right:3px;">
                                                     <input id="xgrid" type="button" value="Grid off" class="btn btn-sm btn-success">
                                                     <label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>
                                                     <input id="zoomin" type="button" value="+">
@@ -130,7 +131,7 @@
                                             <div>
                                             <div>
 
-                                        <!--------------------- lazy-mobx-table -------------------------------->
+                                        <!--------------------- table -------------------------------->
                                                 <div class="lazy-mobx-table">
                                                     <div>
                                                         <span style="float: left; color: black; font-size: 16px; font-weight: bold;">
@@ -194,7 +195,7 @@
 
                                                     </div>
                                                 </div>
-                                   <!----------------------------lazy-mobx-table------------------------------------------>
+                                   <!----------------------------table------------------------------------------>
 
                                             </div>
 
@@ -227,6 +228,9 @@
     </div>
 
 </section>
+<script>
+    var PATIENTID = '<%=request.getParameter("patientId")%>';
+</script>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientChart.js" />"></script>
 
