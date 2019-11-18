@@ -54,11 +54,10 @@ function exist(data, key){
     }
     return find;
 }
-
 function setData(crow, data) {
     var mdata = _.uniqBy(data, 'id');
     var pdata = util.arrayToTreeParent(mdata);
-    pdata = _.uniq(pdata);
+    //pdata = _.uniq(pdata);
     console.log('parent key ' , pdata);
     for (var i = 0; i < data.length; i++) {
         var item = {};
@@ -80,15 +79,16 @@ function setData(crow, data) {
         if(!_.isUndefined(data[i].exam)) {item.exam = data[i].exam; item.leaf=true;}
         if(!_.isUndefined(data[i].mark)) {item.mark = data[i].mark; item.leaf=true;}
 
-         if(exist(pdata,item.id) || item.leaf){
-             console.log(item.id);
-             item.level = findLevel(item.pid, data, item.level);
-             crow.push(item);
-             LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING);
-         }
+        if(exist(pdata,item.id) || item.leaf){
+            console.log(item.id);
+            item.level = findLevel(item.pid, data, item.level);
+            crow.push(item);
+            LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING);
+        }
     }
     return crow;
 }
+
 
 function disposer(json) {
     var crow = [];
@@ -340,7 +340,7 @@ function getRestPosition(t){
     var t = calcMinuteTime(t);
     for(var i=0;i<pixelMap.length;i++){
         var compare = calcMinuteTime(pixelMap[i].time);
-        if(t===compare)pad+=4;
+        if(t===compare)pad+=5;
     }
   return pad;
 }
@@ -368,10 +368,10 @@ function getXTposition(t) {
     //console.log(' xt', xt);
     for (var i = 0,k=0; i < chmName.length; i++,k++) {
         if (t === chmName[i]) {
-            console.log('time ', t , ' == ', chmName[i])
+            //console.log('time ', t , ' == ', chmName[i])
             if(i==0)axis = xt[i];
             if(i>0) axis=xt[k];
-            console.log('getXTposition ', t, axis);
+            //console.log('getXTposition ', t, axis);
         }
         ++k;
     }
@@ -397,20 +397,36 @@ function makeEventBarChartSub(){
 //  plotdrawing(dig, true);
 }
 
+var ycnt=0;
 function plotdrawing(dig){
     console.log('dig is ', dig);
-    dig = _.groupBy(dig, "id");
-    console.log(dig);
+    ycnt=0
+    dig = _.uniqBy(dig,'id');
+    console.log('uniq dig is ', dig);
+    //if(tdata.length<1)
+     var tdata = util.arrayToTree(dig);
+    console.log('tdata ', tdata);
+    console.log('tdata.data ', tdata[0]['data']);
     XGRIDS=[];
-    var ycnt = 0;
-    _.map(dig, function(v,k){
-        plotMuts(paper, ycnt, v);
-        ++ycnt;
-    });
+
+    plotMuts(paper, ycnt, tdata[0]);
+    if(tdata[0]['data'].length>0)
+      printPlot(paper, tdata[0]['data']);
     //console.log(' LASTYPOS ', LASTYPOS);
     $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
     MODE='N';
     $('.spinner').hide();
+}
+
+function printPlot(paper, tdata){
+    var data = _.uniqBy(tdata, 'id');
+    //console.log('data ', data);
+    for(var i=0;i<data.length;i++) {
+        plotMuts(paper, ycnt, data[i]);
+        if(data[i].data.length>0) {
+            printPlot(paper, data[i].data);
+        }
+    }
 }
 
 function fyRow(row) {
@@ -418,40 +434,44 @@ function fyRow(row) {
 }
 
 function plotMuts(p, row, item) {
+    if(!item.show)return;
+    ++ycnt;
+    console.log('--> ', item.id, row);
+
     var maxCount = 5; // set max height to 5 mutations
     var yRow = fyRow(row) + 20;
 
-    var label = item[0];
-    for(var i=0;i<item.length;i++) {
-        if (item[i].show && item[i].leaf == true) {
-            var pixelAry = _.filter(pixelMap, {'id': label.id});
-            for (var i = 0; i < pixelAry.length; i++) {
-                var position = pixelAry[i].axis;
-                //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
-                var h = maxCount;
-                console.log('yrow ', yRow, h);
-                var r = p.rect(position, yRow - 6, 3, h);
-                r.attr("fill", "#0f0");
-                r.attr("stroke", "#0f0");
-                r.attr("stroke-width", 1);
-                r.attr("opacity", 0.5);
-                r.translate(0.5, 0.5);
-                r.hover(function () {
-                        this.transform('S1.5,1.5');
-                    }, function () {
-                        this.transform('s1,1');
-                    }
-                );
-                //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
-                addToolTip(r.node, pixelMap[i].name, 100, '');
-                PAPERNODE.push(r);
-            }
+    if(item.leaf) {
+        var pixelAry = _.filter(pixelMap, {'id': item.id});
+        for (var i = 0; i < pixelAry.length; i++) {
+            var position = pixelAry[i].axis;
+            //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
+            var h = maxCount;
+            console.log('yrow ', yRow, h);
+            var r = p.rect(position, yRow - 6, 3, h);
+            r.attr("fill", "#0f0");
+            r.attr("stroke", "#0f0");
+            r.attr("stroke-width", 1);
+            r.attr("opacity", 0.5);
+            r.translate(0.5, 0.5);
+            r.hover(function () {
+                    this.transform('S1.5,1.5');
+                }, function () {
+                    this.transform('s1,1');
+                }
+            );
+            //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
+            addToolTip(r.node, pixelMap[i].name, 100, '');
+            PAPERNODE.push(r);
         }
     }
+
+
+    var label = item;
     //~~ for tree  ~~//
     if(label.show) {
         var deep = label.level;
-        if (label.leaf) deep += 1;
+        if (label.leaf) deep += 2;
         console.log('show ', label, label.folder);
         //var ar = '❯ ';
         var ar = "❯ ";
@@ -470,9 +490,12 @@ function plotMuts(p, row, item) {
             'cursor': 'pointer',
             'font-size': '12'
         });
-        t.click(function () {
-            setTreeNode(label);
-        });
+
+        if(!label.leaf) {
+            t.click(function () {
+                setTreeNode(label.id);
+            });
+        }
 
         PAPERNODE.push(t);
         var ypos = yRow + 5;
@@ -500,20 +523,40 @@ function removeLine(){
     }
 }
 
-function setTreeNode(item){
-      var idx = _.findIndex(dig, function (o) {
-          return o.id === item.id;
-      });
-      var folder = !dig[idx].folder;
-      dig[idx].folder = folder;
-      var show =  !folder;
 
-      // var temp = util.arrayToTree(dig);
-      // console.log(temp);
-       var sub = util.findAll(item.id, dig);
-console.log(sub);
-    return;
-    console.log(dig);
+function setTreeNode(id){
+    var idx = _.findIndex(dig, function (o) {
+        return o.id === id;
+    });
+    var folder = !dig[idx].folder;
+    dig[idx].folder = folder;
+    var show =  !folder;
+
+
+
+    var dat = [];
+    var fdata = _.filter(dig, ["pid", id]);
+    console.log('fdata ',fdata);
+       for(var i=0; i<fdata.length;i++){
+           dat.push(fdata[i].id);
+           if(_.isArray(fdata[i].data) && fdata[i].data.length>0) {
+               dat.push(fdata[i].data[0].id);
+               dat = util.find(fdata[i].data[0], dat);
+           }
+       }
+
+
+    dat = _.uniq(dat);
+    console.log(' dat is ', dat);
+
+    for(var i=0;i<dat.length;i++){
+        var x = _.findIndex(dig, function (o) {
+            return o.id === dat[i];
+        });
+        dig[x].folder = folder;
+        dig[x].show = show;
+    }
+
     clearPaperPlotNode();
     plotdrawing(dig);
 }

@@ -88,23 +88,27 @@ function Util() {
         return tree;
     }
 
-    self.findAll = function(id, items) {
-        console.log(id);
-        console.log(items);
-        console.log('result ', result);
+    self.findAll = function(items,id) {
         var i = 0, found, result = [];
         for (; i < items.length; i++) {
             if (items[i].pid === id) {
                 result.push(items[i].id);
+                console.log('result ', result);
             } else if (_.isArray(items[i].data) && items[i].data.length>0) {
-                //console.log('data ', items[i].data);
-                //console.log(' id ', items[i].data[0].id);
                 found = this.findAll(items[i].data[0].id,  items[i].data);
-                // if (found.length) {
-                //     result = result.concat(found);
-                // }
+                 if (found.length) {
+                     result = result.concat(found);
+                 }
             }
         }
         return result;
+    }
+
+    self.find = function(fdata, dat){
+        //dat.push(fdata.id);
+        if(_.isArray(fdata.data) && fdata.data.length>0) {
+            this.find(fdata.data[0], dat);
+        }
+        return dat;
     }
 }
