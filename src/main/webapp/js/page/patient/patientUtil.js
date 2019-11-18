@@ -50,6 +50,7 @@ function Util() {
                 childrenOf[id] = childrenOf[id] || [];
                 // init its children
                 item[CHILDREN_KEY] = childrenOf[id];
+                console.log('item[CHILDREN_KEY] ', parentId);
                 if (parentId != 0) {
                     // init its parent's children object
                     childrenOf[parentId] = childrenOf[parentId] || [];
@@ -61,6 +62,49 @@ function Util() {
             };
 
             return tree;
+    }
 
+    self.arrayToTreeParent = function(data, options){
+        options = options || {};
+        var ID_KEY = options.idKey || 'id';
+        var PARENT_KEY = options.parentKey || 'pid';
+        var CHILDREN_KEY = options.childrenKey || 'data';
+
+        var tree = [],
+            childrenOf = {};
+        var item, id, parentId;
+
+        for (var i = 0, length = data.length; i < length; i++) {
+            item = data[i];
+            id = item[ID_KEY];
+            parentId = item[PARENT_KEY] || 0;
+            childrenOf[id] = childrenOf[id] || [];
+            item[CHILDREN_KEY] = childrenOf[id];
+            console.log('item[CHILDREN_KEY] ', parentId);
+            if(parentId!==0){
+                tree.push(parentId);
+            }
+        };
+        return tree;
+    }
+
+    self.findAll = function(id, items) {
+        console.log(id);
+        console.log(items);
+        console.log('result ', result);
+        var i = 0, found, result = [];
+        for (; i < items.length; i++) {
+            if (items[i].pid === id) {
+                result.push(items[i].id);
+            } else if (_.isArray(items[i].data) && items[i].data.length>0) {
+                //console.log('data ', items[i].data);
+                //console.log(' id ', items[i].data[0].id);
+                found = this.findAll(items[i].data[0].id,  items[i].data);
+                // if (found.length) {
+                //     result = result.concat(found);
+                // }
+            }
+        }
+        return result;
     }
 }

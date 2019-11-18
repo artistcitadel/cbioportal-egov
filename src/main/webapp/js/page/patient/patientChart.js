@@ -14,7 +14,6 @@ var m;
 var UNIT;
 var dig=[];
 var LTEXTLENGTH=[];
-var PLOTDATA=[];
 var OLINE=[];
 var pixelMap=[];
 var HRC_LAB;
@@ -35,49 +34,61 @@ function dunformat(dat){
     if(UNIT==='y')return dat.substring(0,4);
 }
 
-function setData(crow, data){
-    for(var i=0;i<data.length;i++){
-        var pid='1';
-        var item = {};
-        item.time = data[i].time;
-        item.id   = data[i].id;
-        item.name = data[i].name;
-        if(_.isUndefined(item.name))item.name='';
-        item.pid = data[i].pid;
-        //for Lab_test
-        item.crte = data[i].crte;
-        item.exam = data[i].exam;
-        item.mark = data[i].mark;
-        var labTestNotShow = (_.isUndefined(item.crte)  && _.isUndefined(item.exam) && _.isUndefined(item.mark));  //for lab_test
-        //for Lab_test end
-        if(_.isUndefined(item.pid)){
-            pid='0';
-            item.pid=TITLE[data[i].subject];
-        }
-        //item.show = "1";
-        item.order=0;
-        item.level = 1;
-        if(!labTestNotShow) {   //is a lab tet leaf
-            crow = setLevelData(item,data,crow);
-
-            item.subject=data[i].subject;
-            item.leaf = true;
-            item.show='1';
-            if(pid !== '0')
-                item.level = findLevel(item.pid, data, item.level);
-            crow.push(item);
-            LTEXTLENGTH.push(item.name.length+XTREETEXTPADDING);
-            //console.log(' level ', item.pid,  item.id, 'level ',level);
-        }
-
-    }
-    return crow;
-}
-
 var TITLE ={
     "Specimen" : "1",
     "Lab_test" : "2"
 };
+
+function getAsocite(mdata){
+    var udata = util.arrayToTree(mdata);
+
+}
+
+function exist(data, key){
+    var find=false;
+    for(var i=0;i<data.length;i++){
+        if(data[i]===key){
+            find=true;
+            break;
+        }
+    }
+    return find;
+}
+
+function setData(crow, data) {
+    var mdata = _.uniqBy(data, 'id');
+    var pdata = util.arrayToTreeParent(mdata);
+    pdata = _.uniq(pdata);
+    console.log('parent key ' , pdata);
+    for (var i = 0; i < data.length; i++) {
+        var item = {};
+        item.leaf = false;
+        item.time = data[i].time;
+        item.id = data[i].id;
+        item.name = data[i].name;
+        item.show = true;
+        item.level = 1;
+        item.folder = false;
+        item.pid = data[i].pid;
+        item.subject = data[i].subject;
+        if(_.isUndefined(item.pid))
+            item.pid=TITLE[item.subject];
+        if (_.isUndefined(item.name))
+            item.name = '';
+
+        if(!_.isUndefined(data[i].crte)) {item.crte = data[i].crte; item.leaf=true;}
+        if(!_.isUndefined(data[i].exam)) {item.exam = data[i].exam; item.leaf=true;}
+        if(!_.isUndefined(data[i].mark)) {item.mark = data[i].mark; item.leaf=true;}
+
+         if(exist(pdata,item.id) || item.leaf){
+             console.log(item.id);
+             item.level = findLevel(item.pid, data, item.level);
+             crow.push(item);
+             LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING);
+         }
+    }
+    return crow;
+}
 
 function disposer(json) {
     var crow = [];
@@ -90,15 +101,15 @@ function disposer(json) {
             htem.pid="0";
             htem.name='Lab_test';
             htem.level=0;
-            htem.show='1';
-            htem.folder='0';
+            htem.show=true;
+            htem.folder=false;
             htem.always=true;
+            htem.leaf = false;
             crow.push(htem);
         }
-
-        console.log(' data ', data);
-        var temp = _.union(HRC_LAB, data);
-        crow = setData(crow, temp);
+        //console.log(' init data ', data);
+        var raw_lab_text = _.union(HRC_LAB, data);
+        crow = setData(crow, raw_lab_text);
         console.log('crow is ', crow);
         RAW=crow;
         setTimeLine('C', crow);
@@ -107,39 +118,15 @@ function disposer(json) {
 
 function findLevel(pid, data, lvl){
     var id = _.findIndex(data, function(o) { return o.id === pid; });
-
-    if(id ==-1 || _.isUndefined(data[id].pid)) {
+    if(id ==- 1) {
         return lvl;
     }
-    if( id !==-1 && !_.isUndefined(data[id].pid)) {
+    if (id !=- 1 && _.isUndefined(data[id].pid) ) {
+        return ++lvl;
+    }
+    if( id !==-1 && !_.isUndefined(data[id].pid) ) {
         return findLevel(data[id].pid, data, ++lvl);
     }
-}
-
-function setLevelData(item, data, crow) {
-    var findindex = _.findIndex(data, function (o) {
-        return o.id === item.pid;
-    });
-    var pitem = {};
-    //exists pid
-    if (findindex !== -1) {
-        pitem.subject=data[findindex].subject;
-        pitem.id = data[findindex].id;
-        pitem.pid = data[findindex].pid;
-        pitem.level=1;
-        pitem.folder='0';
-        if (_.isUndefined(pitem.pid)) {
-            pitem.pid = TITLE[data[findindex].subject];
-        } else {
-            setLevelData(pitem, data, crow);
-            pitem.level = findLevel(pitem.pid, data, pitem.level);
-        }
-        pitem.name = data[findindex].name;
-        pitem.leaf = false;
-        crow.push(pitem);
-        LTEXTLENGTH.push(pitem.name.length+XTREETEXTPADDING);
-    }
-    return crow;
 }
 
 function setTimeLine(node, data){
@@ -149,7 +136,7 @@ function setTimeLine(node, data){
 
     var start = leftpadding+XTREETEXTPADDING;
     //( node==='C') ? chmName = setChmName(data) : (node==='F')?(chmName = setTrack(data), node='R'):null;
-    ( node==='C') ? chmName = setChmName(data) : null;
+    ( node==='C') ? chmName = setTrack(data) : null;
     console.log(chmName);
     xt = setXposition(start, chmName.length);
     console.log(xt);
@@ -165,13 +152,9 @@ function setTimeLine(node, data){
     (node !=='R') ? makeEventBarChart() : makeEventBarChartCache();
 }
 
-function setChmName(data){
-    dig = data;
-    return setTrack(data);
-}
-
 function setTrack(data){
-    console.log(' data is ',data);
+    dig = data;
+    console.log(' data is ',dig);
     var chmName=[];
     var temp = [];
     for(var i=0; i<data.length; i++){
@@ -180,15 +163,11 @@ function setTrack(data){
     }
     var tmp = _.uniq(temp);
     tmp = _.sortBy(tmp);
-    //temp = _.sortBy(temp);
-    //console.log(' tmp is ', tmp);
-    //TIME = tmp;
     console.log('tmp ', tmp);
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
     var size = 0;
     //var unit = 'd';
-
     //min = '20010101';
     //max = '20040101';
     size =util.monthAndYearDiff(min,max,'d');
@@ -196,7 +175,7 @@ function setTrack(data){
     console.log('size ' , size);
 
     //if(_.isUndefined(UNIT))
-    if(MODE=='N')    (size < 32) ? UNIT = 'd' : ((size < 32 * 30 - 29 && size > 31) ? UNIT = 'm' : (size > 32 * 30 - 29) ? UNIT = 'y' : '');
+    if(MODE=='N') (size < 32) ? UNIT = 'd' : ((size < 32 * 30 - 29 && size > 31) ? UNIT = 'm' : (size > 32 * 30 - 29) ? UNIT = 'y' : '');
     else{
         if(UNIT==='m'){UNIT='d';}
         if(UNIT==='y'){UNIT='m';}
@@ -211,21 +190,14 @@ function setTrack(data){
     console.log(' size ', size);
     size+=2;
     for(var k=0;k<size;k++){
-    //for(var k=0;k<tmp.length;k++){
-        //chmName.push((k+1)+unit);
-        //chmName.push((k+1));
-        //chmDay.push(getChmDay(min,(k+1), UNIT));
         chmName.push(getChmDay(min, k, UNIT));
     }
-    //console.log(chmDay);
-    //DATA = data;
-//    dig = data;
     console.log(chmName);
     return chmName;
 }
 
 function getChmDay(day, k, unit){
-console.log(day , k , unit);
+//console.log(day , k , unit);
     var time = moment(day,'YYYYMMDD');
     if(unit==='d'){
         var next = moment(time).add(k, 'days');
@@ -263,10 +235,10 @@ function setXnamePosition(xt){
     var uend;
     for(var i=0; i<xt.length-1; i++){
         //m[i] = xt[i] + ( (xt[i+1]-xt[i]) / 2);
-        console.log(xt.length, uend = xt[i+1]);
+        //console.log(xt.length, uend = xt[i+1]);
         if(xt.length<3) uend = xt[i+1];
         else uend =xt[i+2];
-        console.log(uend);
+        //console.log(uend);
         m[i] = (xt[i] + uend) /2 ;
     }
     // console.log(m[m.length-2]);
@@ -288,7 +260,7 @@ function drawTimeLine(start, chmName,xt,m, end){
         if(i%2===0) {
             //var mx = xt[i]+rootNodePadding;
             var mx = xt[i];
-            console.log('mx ', xt[i]);
+            //console.log('mx ', xt[i]);
             oline = drawLine(mx, yRuler, mx, 5, paper, '#000', 1);
             OLINE.push(oline);
             var txt = paper.text(m[i], 10, dformat(chmName[txtCnt]));
@@ -335,7 +307,7 @@ function drawTimeLine(start, chmName,xt,m, end){
 }
 
 function drawLine(x1, y1, x2, y2, p, cl, width) {
-    console.log('drawLine ', y1);
+    //console.log('drawLine ', y1);
     width=1;
     var path = "M" + x1 + " " + y1 + " L" + x2 + " " + y2;
     var line = p.path(path);
@@ -347,16 +319,15 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 }
 
 // -- event bar chart -- //
-function findClassify(subject, data, slot) {
-    //var slot={};
-    var tip = "[" + data.subject + "]<br/>";
-        tip += "[" + data.name + "]<br/>";
-        slot.name.push(tip);
-    //console.log('subject is ', subject);
-    if(data.subject=='Lab_test') {
-        slot.name.push({"검사 결과값":data.exam,"표시 결과값":data.mark,"기준 단위값" : data.crte});
-    }
-    return slot;
+
+function classify_labtest(data) {
+    var item = {};
+    var  tip = "<strong>[" + data.id + "]</strong><br/>";
+         tip += "[" + data.name + "]<hr/>";
+         tip+="<span class='font-small'>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
+         tip+="<span class='font-small'>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
+         tip+="<span class='font-small'>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
+    return tip;
 }
 
 function calcMinuteTime(time){
@@ -364,408 +335,158 @@ function calcMinuteTime(time){
     if(UNIT==='m')return time.substring(0,6);
     if(UNIT==='d')return time.substring(0,8);
 }
-function calcRestTime(time){
-    if(UNIT==='y') {
-        var rest = time.substring(4);
-        return Number(rest)*0.01;
-
+function getRestPosition(t){
+    var pad=5;
+    var t = calcMinuteTime(t);
+    for(var i=0;i<pixelMap.length;i++){
+        var compare = calcMinuteTime(pixelMap[i].time);
+        if(t===compare)pad+=4;
     }
-    if(UNIT==='m') {
-        var rest = time.substring(6);
-        return Number(rest)*0.1;
-
-    }if (UNIT=='d') return 0;
+  return pad;
 }
 function setPlotAxis(pdata){
-    console.log(pdata);
-    var subject = pdata[0].name;
-    var lineW = (xt[1]-xt[0])/10;
-    var group = _.groupBy(pdata, function(o){
-        return o.id+","+o.time;
-    });
-    var oid;
-    var pad=0;
-    var item={};
-    item.data = [];
-    console.log('group ', group);
-    console.log(Object.keys(group).length);
-    var len = Object.keys(group).length;
-    var k=0;
-    var temp = [];
-    _.map(group, function(gv, gk) {
-        var id = gk.split(",")[0];
-        var time = gk.split(",")[1];
-        var slot = {};
-        slot.name = [];
-        if(time!=='undefined' ) {
-            var mtime  = calcMinuteTime(time);
-            //slot.axis = getAxis(mtime) + (lineW + pad);
-            var p = getAxis(mtime);
-            var rest = calcRestTime(time);
-            console.log(' rest ',p, ' => ', rest);
-            slot.axis = p + rest+10;
-            slot.show = gv[0].leaf;
-            for (var i = 0; i < gv.length; i++) {
-                if (gv[i].leaf) {
-                    console.log('gv[i] ', gv);
-                    // var tip = "[" + subject + "]<br/>";
-                    // tip += "[" + gv[i].name + "]<br/>";
-                    // slot.name.push(tip);
-
-                    slot = (findClassify(subject, gv[i], slot));
-                }
-            }
-            ++pad;
-            if (k > 0 && (oid !== id || k === len - 1)) {
-                item.data = temp;
-                pixelMap.push(item);
-                item = {};
-                item.data = [];
-                pad = 0;
-                temp = [];
-            }
-            item.id = id;
-            item.time = time;
-            console.log(' slot ', slot);
-            temp.push(slot);
-            oid = id;
-            ++k;
-            console.log('k ', k , ' len ', len, ' id ',id );
-            if(len==2) {   //~for one item
-                var tmp = {};
-                tmp.id = id;
-                tmp.data = temp;
-                pixelMap.push(tmp);
-                console.log(' pixelMap __>', pixelMap);
-                k=0;
-            }
-
-            if (k === len-1 && id === pixelMap[pixelMap.length - 1].id) {
-                pixelMap[pixelMap.length - 1].data.push(slot);
-            }
-            if (k === len-1 && id !== pixelMap[pixelMap.length - 1].id) {
-                var tmp = {};
-                tmp.id = id;
-                tmp.time = time;
-                tmp.data = temp;
-                pixelMap.push(tmp);
-            }
-
-        }
-    });
-    console.log(k);
-    console.log('pixelMap ', pixelMap);
-    //setCalcXsis();
-}
-
-/*function setCalcXsis(){
-    console.log(' setCalcXsis called ');
-    var range = [];
-    for (var i=0;i< pixelMap.length;i ++){
-        var item = pixelMap[i];
-        for(var j=0; j<xt.length; j++);
-        if(xt[j] >= item.axis && xt[j] <= item){
-            range.push(j);
+    console.log('pdata is ' , pdata);
+    for(var i=0;i< pdata.length;i++){
+        if(pdata[i].leaf) {
+            var p = getXTposition(pdata[i].time);
+            var r = getRestPosition(pdata[i].time);
+            var item = {};
+            item.id = pdata[i].id;
+            item.time = pdata[i].time;
+            item.axis = p+r;
+            item.name = classify_labtest(pdata[i]);
+            pixelMap.push(item);
         }
     }
-    console.log(' range is ', range);
-}*/
-
-
+    console.log('pixelMap ', pixelMap);
+}
 
 function getXTposition(t) {
     var axis;
-    console.log('chmName ', chmName, t);
-    console.log(' xt', xt);
+    // console.log('chmName ', chmName, t);
+    t = calcMinuteTime(t);
+    //console.log(' xt', xt);
     for (var i = 0,k=0; i < chmName.length; i++,k++) {
         if (t === chmName[i]) {
-            //axis = xt[(i+1)]*2;
             console.log('time ', t , ' == ', chmName[i])
             if(i==0)axis = xt[i];
             if(i>0) axis=xt[k];
             console.log('getXTposition ', t, axis);
-            // console.log(item);
-            // console.log(axis);
         }
         ++k;
     }
     return axis;
 }
 
-function getAxis(time) {
-    return getXTposition(time);
-}
-
 function makeEventBarChart() {
-    PLOTDATA = dig;
-    setPlotAxis(PLOTDATA);
+    setPlotAxis(dig);
     makeEventBarChartSub();
-    console.log('makeEventBarChart ', dig);
-    plotdrawing(dig, true);
+    //console.log('makeEventBarChart ', dig);
+    plotdrawing(dig);
 }
 function makeEventBarChartCache(){
-    console.log('makeEventBarChartCache ',dig);
-    //PLOTDATA = dig;
-    setPlotAxis(PLOTDATA);
+    //console.log('makeEventBarChartCache ',dig);
+    setPlotAxis(dig);
     makeEventBarChartSub();
-    plotdrawing(dig, false);
+    plotdrawing(dig);
 }
 function makeEventBarChartSub(){
-    console.log('PLOTDATA-> ', PLOTDATA);
+    console.log('dig-> ', dig);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
 //  plotdrawing(dig, true);
 }
 
-function getHundreadRatio(){
-    var track = [];
-    for(var i=1; i< xt.length;i++){
-        var trackUnitPeriod = xt[i]-xt[i-1];
-        track.push(trackUnitPeriod);
-    }
-    console.log(' track period is ', track);
-    //console.log(' average is ' , _.meanBy(track));
-    return track;
-}
-function getAddRatio(value){
-    console.log(' value ', value);
-    var temp = value.toString();
-    var seed = "0"+"."+value;
-    console.log( ' seed ', seed);
-    return Number(seed);
-}
-function getTargetPosition(seed){
-    console.log('seed is ', seed);
-    return seed;
-
-    var track = getHundreadRatio();
-    console.log(seed);
-    var f = seed.substring(0,1);  //prefix
-    var l = seed.substring(1);   //surfix
-    console.log( ' l ', l);
-    var z='';
-    for(var i=0;i<l.length;i++){
-        z+='0';
-    }
-    var t = f+z;
-    var ratio=10;
-    console.log('zero base ', t);   //ex) 78 123 249 519 708 => 0 100 200 500 700
-    console.log(' surfix length is ', l.length);
-    var temp = Number("1"+z);
-    console.log('temp ', temp);
-    var index = t/temp;
-    console.log('index ', index);
-
-    var idx = 0;
-    if(Number(t)<100)idx = 0;
-    if(Number(t)>=100 && Number(t)<1000) {idx = index; ratio=100; }
-    if(Number(t)>=1000 && Number(t)<10000) {idx = index+'0'; ratio=1000;}
-    if(Number(t)>=10000 && Number(t)<100000) {idx = index+'00'; ratio=1000;}
-
-    var holder = getHolderIndex();
-    console.log( 'idx ', idx);
-    var position = holder[idx];
-    console.log('position value ', position);
-    console.log(' the horzantal position is ', xt[position]);
-    var addup = Number(l)*getAddRatio(track[position]);
-    console.log( ' addup ', addup);
-
-    var targetPosition = xt[position] + addup;
-    if(idx===0)targetPosition+=25;
-    console.log(' target position ' , targetPosition);
-    return targetPosition;
-}
-
-function getPixelMap(pixel, id) {
-    console.log('getPixelMap ', pixel);
-    console.log('id ', id);
-    var spot = [];
-    for(var i=0;i<pixel.length;i++) {
-        var pitem = _.map(pixel[i], function (value, key) {
-            //console.log(' key ', key);
-            //console.log('value ', value);
-            //if(key=='name' && value==item){
-            if(key=='id' && value==id){
-                find = true;
-                console.log('find ');
-                if(pixel[i].data[0].show)
-                    spot.push(pixel[i].data);
-            }
-        });
-    }
-    // console.log(' spot ', spot);
-    return spot;
-}
-
-function getHolderIndex() {
-    var positionIndex = [];
-    for (var i = 0; i < chmName.length; i++) {
-        positionIndex.push(i);
-    }
-    return positionIndex;
+function plotdrawing(dig){
+    console.log('dig is ', dig);
+    dig = _.groupBy(dig, "id");
+    console.log(dig);
+    XGRIDS=[];
+    var ycnt = 0;
+    _.map(dig, function(v,k){
+        plotMuts(paper, ycnt, v);
+        ++ycnt;
+    });
+    //console.log(' LASTYPOS ', LASTYPOS);
+    $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
+    MODE='N';
+    $('.spinner').hide();
 }
 
 function fyRow(row) {
     return 2*5+10+row*(20+5);
 }
-// var prevtime='00000001';
-// var yRow;
-var vtime=[];
-function plotMuts(p, row, label) {
-    console.log(' plotMuts called====> ', row, label);
-    console.log('row ', row);
+
+function plotMuts(p, row, item) {
     var maxCount = 5; // set max height to 5 mutations
     var yRow = fyRow(row) + 20;
-    //var rowindex = 0;
-    // var pad=0;
-    // var isdup=false;
-    if(label.leaf==true){
-       /* console.log('plot print ',UNIT, prevtime, label.time);
-        if(UNIT==='y' && prevtime.substring(0,4)===label.time.substring(0,4)){
-            pad+=2;
-            isdup=true;
-        }
-        if(UNIT==='m' && prevtime.substring(0,6)===label.time.substring(0,6)){
-            pad+=2;
-            isdup=true;
-        }
-        if(UNIT==='d' && prevtime.substring(0,8)===label.time.substring(0,8)){
-            pad+=2;
-            isdup=true;
-        }
-        if(!isdup || row===0) {
-            yRow = fyRow(row) + 20;
-            pad=0;
-        }*/
-        var pad=0;
-        console.log(' label.name ->', label.id, label.time, yRow);
-        //var pixeldataV = getPixelMap(pixelMap,label.name.toLowerCase()) || [];
-        var pixeldataV = getPixelMap(pixelMap, label.id) || [];
-        console.log('pixeldata length =>', pixeldataV);
-        _.map(pixeldataV,function(pixeldata,k){
-            console.log('k ', k, 'v ', pixeldata);
-            var idx = 0;
-            for(var i=0;i<pixeldata.length;i++){
-                var y=yRow;
-                var vdx = _.findIndex(vtime, function (v){
-                    v.time = pixeldata[i].time;
-                })
-                if(vdx==-1) {
-                    var v = {};
-                    v.time = pixeldata[i].time;
-                    v.pad = 0;
-                    v.yRow = yRow;
-                    vtime.push(v);
-                }else{
-                  vtime[vdx].pad=+1;
-                  pad+=vtime[vdx].pad;
-                  y=vtime[vdx].yRow;
-                }
 
-                //console.log("  pixeldata[i].axis  ", pixeldata[i]);
-                //var position =  getTargetPosition(pixeldata[i].axis+"");
-                var position = pixeldata[i].axis+pad;
-                console.log(" position => ", position);
-                console.log(" pixeldata[i].name.length ",pixeldata[i].name.length);
-                var h = pixeldata[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
-                console.log(yRow-h);
-                pixil = 150;
-                console.log('y_row ', yRow);
-                //var r = p.rect(position, yRow-h-6, 4, h);
-                var r = p.rect(position, y, 4, h);
-                r.attr("fill","#0f0");
+    var label = item[0];
+    for(var i=0;i<item.length;i++) {
+        if (item[i].show && item[i].leaf == true) {
+            var pixelAry = _.filter(pixelMap, {'id': label.id});
+            for (var i = 0; i < pixelAry.length; i++) {
+                var position = pixelAry[i].axis;
+                //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
+                var h = maxCount;
+                console.log('yrow ', yRow, h);
+                var r = p.rect(position, yRow - 6, 3, h);
+                r.attr("fill", "#0f0");
                 r.attr("stroke", "#0f0");
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
-                r.hover(function(){
+                r.hover(function () {
                         this.transform('S1.5,1.5');
                     }, function () {
                         this.transform('s1,1');
                     }
                 );
-                var tip="";
-                // var tip = "["+label.subject+"]<br/>";
-                // tip+="["+label.name+"]<br/>";
-
-                for(var j=0;j<pixeldata[i].name.length;j++){
-                    var item = pixeldata[i].name[j];
-                    if(j===0){
-                        tip+= "<strong>"+item+"</strong></p>";
-                    }else {
-                        _.map(item, function (v, k) {
-                            tip += "<span class='font-small'>"+k+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp :  &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + v + "</br>";
-                        });
-                        tip += "<hr/>";
-                    }
-                }
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
-                addToolTip(r.node, tip, 100, '');
-                ++idx;
+                addToolTip(r.node, pixelMap[i].name, 100, '');
                 PAPERNODE.push(r);
             }
+        }
+    }
+    //~~ for tree  ~~//
+    if(label.show) {
+        var deep = label.level;
+        if (label.leaf) deep += 1;
+        console.log('show ', label, label.folder);
+        //var ar = '❯ ';
+        var ar = "❯ ";
+        if (label.leaf) ar = '';
+
+        if (!label.leaf) {
+            console.log(label.folder);
+            if (!label.folder) ar = "﹀ ";
+        }
+        var lbl = label.name;
+        lbl = ar + lbl;
+        //console.log('label_text length ', lbl.length);
+        var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
+            'text-anchor': 'start',
+            'fill': 'black',
+            'cursor': 'pointer',
+            'font-size': '12'
         });
+        t.click(function () {
+            setTreeNode(label);
+        });
+
+        PAPERNODE.push(t);
+        var ypos = yRow + 5;
+        LASTYPOS = ypos;
+        //var xgrid = drawLine('170', ypos, 1090+150, ypos, paper, '#ccc', 1);
+        var xgrid = drawLine(xt[0], ypos, LINEEND, ypos, paper, '#ccc', 1);
+        xgrid.hide();
+        //console.log(' LASTYPOS ', LASTYPOS);
+        XGRIDS.push(xgrid);
     }
-    var deep = label.level;
-    if(label.leaf)deep+=1;
-    console.log('show ',label.show );
-    //var ar = '❯ ';
-    var ar = "❯ ";
-    if(label.leaf)ar='';
-
-    if(!label.leaf) {
-        console.log(label.folder);
-        if (label.folder === '0') ar = "﹀ ";
-    }
-    var lbl = label.name;
-    lbl=ar+lbl;
-    //console.log('label_text length ', lbl.length);
-
-    var t = p.text((12+Number(deep)*8), yRow + 7 - (row + 8), lbl).attr({'text-anchor': 'start', 'fill': 'black',  'cursor': 'pointer','font-size':'12' });
-    t.click(function (){
-        setTreeNode(label.id);
-    });
-
-    PAPERNODE.push(t);
-    var ypos = yRow + 5;
-    LASTYPOS = ypos;
-    //var xgrid = drawLine('170', ypos, 1090+150, ypos, paper, '#ccc', 1);
-    var xgrid = drawLine(xt[0], ypos, LINEEND, ypos, paper, '#ccc', 1);
-    xgrid.hide();
-    //console.log(' LASTYPOS ', LASTYPOS);
-    XGRIDS.push(xgrid);
-
-    $('.spinner').hide();
 }
 
-function findDup(ar,id){
-    var dup=false;
-    for(var i=0;i<ar.length;i++){
-        //console.log('ar ', ar[i], id);
-        if(ar[i]===id){
-            dup=true;
-            break;
-        }
-    }
-    return dup;
-}
-function getHideId(redrawnonids, dig, id) {
-    console.log('id is ' , id, dig);
-    for (var i = 0; i < dig.length; i++) {
-        if (dig[i].pid === id) {
-            if(!findDup(redrawnonids,dig[i].id))redrawnonids.push(dig[i].id);
-            getHideId(redrawnonids, dig, dig[i].id);
-        }
-        if(dig[i].id === id && !_.isUndefined(dig[i].folder)){
-            dig[i].folder = (dig[i].folder==='1') ? '0': '1';
-        }
-    }
-    console.log('redrawnonids ids ', redrawnonids);
-    return redrawnonids;
-}
 function clearPaperPlotNode() {
     console.log(' PAPERNODE ', PAPERNODE.length);
-    vtime=[];
     for (var i = 0; i < PAPERNODE.length; i++) {
         PAPERNODE[i].remove();
     }
@@ -779,58 +500,22 @@ function removeLine(){
     }
 }
 
-function setTreeNode(id){
-    var redrawnonids = [];
-    redrawnonids = getHideId(redrawnonids, dig, id);
-    for(var k=0; k < redrawnonids.length;k++){
-        var idx = _.findIndex(dig, function(o) { return o.id===redrawnonids[k]; });
-        console.log(' mark ', idx, dig[idx].id,  dig[idx].show);
-        dig[idx].show = (dig[idx].show=='1') ? '0': '1';
-    }
+function setTreeNode(item){
+      var idx = _.findIndex(dig, function (o) {
+          return o.id === item.id;
+      });
+      var folder = !dig[idx].folder;
+      dig[idx].folder = folder;
+      var show =  !folder;
+
+      // var temp = util.arrayToTree(dig);
+      // console.log(temp);
+       var sub = util.findAll(item.id, dig);
+console.log(sub);
+    return;
     console.log(dig);
     clearPaperPlotNode();
-    plotdrawing(dig, false);
-}
-
-function plotdrawing(diagnosis, refine){
-    //console.log(' diagnosis ', diagnosis);
-    if(refine) {
-        var temp = [];
-        for (var i = 0; i < diagnosis.length; i++) {
-            var fdx = _.findIndex(temp, function (o) {
-                return o.id === diagnosis[i].id;
-            });
-            //console.log(fdx);
-            if (fdx === -1) {
-                var item = {};
-                item = setPlotItem(item, diagnosis[i]);
-                temp.push(item);
-            }
-        }
-        //console.log(' temp ', temp);
-        console.log(' temp ', temp);
-        var ttemp = util.arrayToTree(temp);
-        console.log('tree set ', ttemp);
-        if(ttemp.length>1){
-            temp = ttemp;
-        }
-        dig=[];
-        orderCategory(temp);
-    }
-    console.log('dig is ', dig);
-    var k = 0;
-    XGRIDS=[];
-    for(var i=0;i<dig.length;i++) {
-        //console.log( ' diagnosis[i] ', diagnosis[i])
-        if(dig[i].show=='1') {
-            plotMuts(paper, k, dig[i]);
-            ++k;
-        }
-    }
-    //console.log(' LASTYPOS ', LASTYPOS);
-    //paper.setViewBox(0,0,1090+150, LASTYPOS+3, true);
-    $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
-    MODE='N';
+    plotdrawing(dig);
 }
 
 function addToolTip(node, tip, showDelay, position) {
@@ -849,27 +534,3 @@ function addToolTip(node, tip, showDelay, position) {
 
 }
 
-function orderCategory(dat){
-    console.log(' orderCategory ', dat);
-    for(var i=0;i<dat.length;i++){
-        var item = {};
-        item = setPlotItem(item, dat[i]);
-        //console.log(' item=>, ', item);
-        dig.push(item);
-        if(dat[i].data.length>0){
-            orderCategory(dat[i].data);
-        }
-    }
-}
-
-function setPlotItem(item, dat){
-    item.id = dat.id;
-    item.pid = dat.pid;
-    item.name = dat.name;
-    item.level = dat.level;
-    item.show = dat.show;
-    item.leaf = dat.leaf;
-    item.time = dat.time;
-    item.folder = dat.folder;
-    return item;
-}

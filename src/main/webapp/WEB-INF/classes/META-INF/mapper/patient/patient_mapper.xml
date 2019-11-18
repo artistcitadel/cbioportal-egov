@@ -18,7 +18,9 @@
     </select>
 
     <select id="selectLabTestHrc" parameterType="map" resultType="hashmap">
-      SELECT DISTINCT EXAM_CD id,
+      SELECT DISTINCT
+                'Lab_test' subject,
+                EXAM_CD id,
                 IFNULL(EXAM_ENG_NM, EXAM_CD) name
                 FROM CLSPNEXRT
       <![CDATA[
@@ -38,9 +40,9 @@
                          IFNULL(SUM(CRTE_MSR_VAL),0)  crte
 
         FROM CLSPNEXRT
-        WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD = 'DA0036'
+        WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD = 'DA0036' OR (EXAM_CD='BD0012' AND RCEP_DT='20040427')
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
-        ORDER BY 5
+        ORDER BY 2,3,5
         LIMIT  300
  	</select>
 
