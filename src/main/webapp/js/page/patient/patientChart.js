@@ -19,20 +19,24 @@ var pixelMap=[];
 var HRC_LAB;
 var LINEEND;
 var RAW;
-var XTREETEXTPADDING=24;
+//var XTREETEXTPADDING=24;
+var XTREETEXTPADDING=4;
 var MODE='N';
 
 function dformat(dat){
-    if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
+    /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
     if(UNIT==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
-    if(UNIT==='y')return dat.substring(0,4);
+    if(UNIT==='y')return dat.substring(0,4);*/
+    if(UNIT==='d')return util.subtractzero(dat.substring(6,8))+'일';
+    if(UNIT==='m')return util.subtractzero(dat.substring(4,6))+'월';
+    if(UNIT==='y')return dat.substring(0,4)+'년';
 }
-function dunformat(dat){
+/*function dunformat(dat){
     console.log(UNIT, dat);
     if(UNIT==='d')return dat.split(".")[0]+dat.split(".")[1]+dat.split(".")[2];
     if(UNIT==='m')return dat.split(".")[0]+dat.split(".")[1];
     if(UNIT==='y')return dat.substring(0,4);
-}
+}*/
 
 var TITLE ={
     "Specimen" : "1",
@@ -184,11 +188,11 @@ function setTrack(data){
     console.log(UNIT);
 
     console.log('min ', min, max, size);
-    if(UNIT==='d') {size =util.monthAndYearDiff(min,max,'d');}
-    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m');}
-    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y');}
+    if(UNIT==='d') {size =util.monthAndYearDiff(min,max,'d')+2;}
+    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m')+2;}
+    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y')+2;}
     console.log(' size ', size);
-    size+=2;
+    //size+=2;
     for(var k=0;k<size;k++){
         chmName.push(getChmDay(min, k, UNIT));
     }
@@ -214,10 +218,11 @@ function getChmDay(day, k, unit){
         return moment(next).format('YYYY');
     }
 }
+var gap;
 function setXposition(start, count){
     var xt=[];
     //var gap = ((paperWidth-leftpadding)/count)/2;
-    var gap = (paperWidth-start)/count/2;
+    gap = (paperWidth-start)/count/2;
     console.log('gap ', gap);
     //gap = gap + gap/2;
     //console.log(gap);
@@ -264,22 +269,33 @@ function drawTimeLine(start, chmName,xt,m, end){
             oline = drawLine(mx, yRuler, mx, 5, paper, '#000', 1);
             OLINE.push(oline);
             var txt = paper.text(m[i], 10, dformat(chmName[txtCnt]));
-            //txt.attr({id:"text_"+txtCnt});
+            txt.data({id:chmName[txtCnt]});
             txt.click(function () {
-                var temp = dunformat(this.attr('text'));
-                //console.log(dig);
+                //var temp = dunformat(this.attr('text'));
+                var temp = this.data('id');
+                console.log(temp);
+                //console.log(RAW);
                 var state = RAW;
+                console.log(state);
                 state = _.filter(state, function(o) {
                      var time = o.time;
-                     console.log('click temp is ',time, '=> ', temp);
+                     //console.log('click temp is ',time, '=> ',UNIT,  temp);
                      if(_.isUndefined(time))time="00000000"
                      //console.log(time.substring(0,4));
-                     if(UNIT==='d') {return (o.always || time===temp);}
-                     if(UNIT==='m') {return (o.always || time.substring(0,6)===temp);}
-                     if(UNIT==='y') {return (o.always || time.substring(0,4)===temp);}
+                     if(UNIT==='d') {return (time===temp);}
+                     if(UNIT==='m') {return (time.substring(0,6)===temp);}
+                     if(UNIT==='y') {return (time.substring(0,4)===temp);}
                  });
                 console.log('state is ', state);
-                if(state.length<2)return;
+                if(state.length<1)return;
+                var dat = [];
+                state = util.makeHrc(state, RAW, dat);
+                state = _.reverse(state);
+                var state = _.uniqBy(state, function(o) {
+                    return o.id + this.util.nt(o.time);
+                })
+                console.log('make hrc state ', state);
+                //return;
                 MODE='P';
                 removeLine();
                 clearPaperPlotNode();
@@ -366,11 +382,13 @@ function getXTposition(t) {
     // console.log('chmName ', chmName, t);
     t = calcMinuteTime(t);
     //console.log(' xt', xt);
+    var indent = 0;
+    indent = (UNIT==='d') ? gap : 4;
     for (var i = 0,k=0; i < chmName.length; i++,k++) {
         if (t === chmName[i]) {
             //console.log('time ', t , ' == ', chmName[i])
-            if(i==0)axis = xt[i];
-            if(i>0) axis=xt[k];
+            if(i==0)axis = xt[i]+indent;
+            if(i>0) axis=xt[k]+indent;
             //console.log('getXTposition ', t, axis);
         }
         ++k;
@@ -394,6 +412,11 @@ function makeEventBarChartSub(){
     console.log('dig-> ', dig);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+    var d = chmName[0];
+    d = util.setDateTitle(UNIT, d);
+    d="("+d+")";
+    $("#dhead").html(d);
+    //alert(UNIT + ' ' + chmName[0]);
 //  plotdrawing(dig, true);
 }
 

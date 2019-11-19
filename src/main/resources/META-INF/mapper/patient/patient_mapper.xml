@@ -35,9 +35,9 @@
                          EXAM_CD id,
                          EXAM_ENG_NM name,
                          RCEP_DT time,
-                         SUM(EXAM_RSLT_VAL) exam,
-                         SUM(MARK_RSLT_VAL) mark,
-                         IFNULL(SUM(CRTE_MSR_VAL),0)  crte
+                         ROUND(SUM(EXAM_RSLT_VAL),2) exam,
+                         ROUND(SUM(MARK_RSLT_VAL),2) mark,
+                         ROUND(IFNULL(SUM(CRTE_MSR_VAL),0),2)  crte
 
         FROM CLSPNEXRT
         WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD IN ('DA0036','BD0012') OR (EXAM_CD='BD0012' AND RCEP_DT='20040427')

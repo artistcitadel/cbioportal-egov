@@ -115,6 +115,7 @@
                                         <div>
                                             <div id="timeline-container">
                                                 <div id="timeline_btn" style="display: flex; margin-bottom: 1px; justify-content: flex-end;">
+                                                    <label style="width: auto; text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
                                                     <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning" style="margin-right:3px;">
                                                     <input id="xgrid" type="button" value="Grid off" class="btn btn-sm btn-success">
                                                     <label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>

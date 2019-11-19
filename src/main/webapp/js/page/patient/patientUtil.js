@@ -111,4 +111,38 @@ function Util() {
         }
         return dat;
     }
+
+    self.makeHrc = function(partial, complete, dat){
+        //var partial = _.uniqBy(partial, "id");
+        for(var i=0; i< partial.length;i++) {
+            dat.push(partial[i]);
+            dat = this.concatUp(partial[i], complete, dat);
+        }
+        return dat;
+    }
+
+    self.concatUp = function(partial, complete, dat) {
+        var x = _.findIndex(complete, function (o) {
+            return o.id === partial.pid;
+        });
+        if (x !== -1) {
+            dat.push(complete[x]);
+            this.concatUp(complete[x], complete, dat);
+        }
+        return dat;
+    }
+    self.nt = function(t){
+        if(_.isUndefined(t))return "";
+        else return t;
+    }
+    self.subtractzero = function(dat){
+        if(dat.substring(0,1)==='0')
+            return dat.substring(1);
+        else return dat;
+    }
+
+    self.setDateTitle = function(UNIT, dat){
+       if(UNIT==='d')return dat.substring(0,4)+'년'+dat.substring(4,6)+'월';
+       if(UNIT==='m')return dat.substring(0,4)+'년';
+    }
 }
