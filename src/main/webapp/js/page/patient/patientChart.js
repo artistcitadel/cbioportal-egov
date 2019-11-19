@@ -22,6 +22,9 @@ var RAW;
 //var XTREETEXTPADDING=24;
 var XTREETEXTPADDING=4;
 var MODE='N';
+var XSCALE=1;
+var HMIN;
+var HMAX;
 
 function dformat(dat){
     /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
@@ -143,7 +146,7 @@ function setTimeLine(node, data){
     ( node==='C') ? chmName = setTrack(data) : null;
     console.log(chmName);
     xt = setXposition(start, chmName.length);
-    console.log(xt);
+    console.log('xt is ' , xt);
     m = setXnamePosition(xt);
     console.log(m);
     var end = xt[xt.length-1];
@@ -170,6 +173,8 @@ function setTrack(data){
     console.log('tmp ', tmp);
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
+    HMIN = min;
+    HMAX = max;
     var size = 0;
     //var unit = 'd';
     //min = '20010101';
@@ -352,19 +357,21 @@ function calcMinuteTime(time){
     if(UNIT==='d')return time.substring(0,8);
 }
 function getRestPosition(t){
-    var pad=5;
+    var pad = 2;
     var t = calcMinuteTime(t);
     for(var i=0;i<pixelMap.length;i++){
         var compare = calcMinuteTime(pixelMap[i].time);
-        if(t===compare)pad+=5;
+        if(t===compare)pad+=2;
     }
   return pad;
 }
 function setPlotAxis(pdata){
     console.log('pdata is ' , pdata);
+    var j=0;
     for(var i=0;i< pdata.length;i++){
         if(pdata[i].leaf) {
-            var p = getXTposition(pdata[i].time);
+            var equal=false;
+            var p = getXTposition(pdata[i].time, j);
             var r = getRestPosition(pdata[i].time);
             var item = {};
             item.id = pdata[i].id;
@@ -372,12 +379,47 @@ function setPlotAxis(pdata){
             item.axis = p+r;
             item.name = classify_labtest(pdata[i]);
             pixelMap.push(item);
+            ++j;
         }
     }
     console.log('pixelMap ', pixelMap);
+    makeCenter();
+    console.log('pixelMap_center ', pixelMap);
+
 }
 
-function getXTposition(t) {
+function getDpTime(d){
+    var dptime = (UNIT==='m') ? (d.substring(0,6)) : (UNIT === 'y') ? (d.substring(0,4)) : d;
+    return dptime;
+}
+
+var MOVECENTER=[];
+function makeCenter(){
+    MOVECENTER=[];
+  var pmap = _.groupBy(pixelMap, function(v){
+      return getDpTime(v.time);
+  });
+
+  var width = xt[2]-xt[0];
+  _.map(pmap, function (v,k){
+         var item = {};
+         item.time = getDpTime(v[0].time);
+         item.size = v.length;
+         item.move = width/(item.size+1);
+         MOVECENTER.push(item);
+  });
+  console.log('MOVECENTER', width, MOVECENTER);
+  for(var i=0;i<MOVECENTER;i++){
+      var xs = _.pickBy(pixelMap, function(v){
+          return MOVECENTER[i].time === getDpTime(v.time);
+      });
+      for(var j=0;j<xs.length;j++) {
+          pixelMap[j].axis += MOVECENTER[i].move;
+      }
+  }
+}
+
+function getXTposition(t, r) {
     var axis;
     // console.log('chmName ', chmName, t);
     t = calcMinuteTime(t);
@@ -386,13 +428,14 @@ function getXTposition(t) {
     indent = (UNIT==='d') ? gap : 4;
     for (var i = 0,k=0; i < chmName.length; i++,k++) {
         if (t === chmName[i]) {
-            //console.log('time ', t , ' == ', chmName[i])
-            if(i==0)axis = xt[i]+indent;
-            if(i>0) axis=xt[k]+indent;
+            console.log('i ', i , ' == ', chmName[i])
+            if(r==0)axis = xt[i]+indent;
+            if(r>0) axis=(xt[k]+indent);
             //console.log('getXTposition ', t, axis);
         }
         ++k;
     }
+    console.log(' axis ' , axis);
     return axis;
 }
 
@@ -412,10 +455,17 @@ function makeEventBarChartSub(){
     console.log('dig-> ', dig);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
-    var d = chmName[0];
+    var d = HMIN;
     d = util.setDateTitle(UNIT, d);
     d="("+d+")";
     $("#dhead").html(d);
+    if(UNIT==='m'){
+        var d1 = HMAX;
+        d1 = util.setDateTitle(UNIT, d1);
+        d1="("+d1+")";
+        var head = d+" ~ "+d1;
+        $("#dhead").html(head);
+    }
     //alert(UNIT + ' ' + chmName[0]);
 //  plotdrawing(dig, true);
 }
@@ -456,6 +506,10 @@ function fyRow(row) {
     return 2*5+10+row*(20+5);
 }
 
+function deepCalcPosition(i){
+    return (zcnt>0) ? (i*XSCALE) : 1;
+}
+
 function plotMuts(p, row, item) {
     if(!item.show)return;
     ++ycnt;
@@ -468,6 +522,7 @@ function plotMuts(p, row, item) {
         var pixelAry = _.filter(pixelMap, {'id': item.id});
         for (var i = 0; i < pixelAry.length; i++) {
             var position = pixelAry[i].axis;
+              position = (i>0) ? (position+deepCalcPosition(i)) : position;
             //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
             var h = maxCount;
             console.log('yrow ', yRow, h);
