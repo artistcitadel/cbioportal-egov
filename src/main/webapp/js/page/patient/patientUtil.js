@@ -142,7 +142,8 @@ function Util() {
     }
 
     self.setDateTitle = function(UNIT, dat){
-       if(UNIT==='d')return dat.substring(0,4)+'년'+dat.substring(4,6)+'월';
+       if(UNIT==='d')return dat.substring(0,4)+'년 '+dat.substring(4,6)+'월';
        if(UNIT==='m')return dat.substring(0,4)+'년';
+        if(UNIT==='y')return '';
     }
 }

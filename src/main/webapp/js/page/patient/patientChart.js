@@ -1,5 +1,5 @@
 var leftpadding = 90;
-var paperWidth = 1245;
+var paperWidth = 1645;
 var paperHeight = 30;
 var paper;
 var yRuler = 15;
@@ -193,9 +193,9 @@ function setTrack(data){
     console.log(UNIT);
 
     console.log('min ', min, max, size);
-    if(UNIT==='d') {size =util.monthAndYearDiff(min,max,'d')+2;}
-    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m')+2;}
-    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y')+2;}
+    if(UNIT==='d') {size =util.monthAndYearDiff(min,max,'d')+1;}
+    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m')+1;}
+    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y')+1;}
     console.log(' size ', size);
     //size+=2;
     for(var k=0;k<size;k++){
@@ -343,7 +343,7 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 
 function classify_labtest(data) {
     var item = {};
-    var  tip = "<strong>[" + data.id + "]</strong><br/>";
+    var  tip = "<strong>[" + data.id + "]</strong>";
          tip += "[" + data.name + "]<hr/>";
          tip+="<span class='font-small'>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
          tip+="<span class='font-small'>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
@@ -356,36 +356,29 @@ function calcMinuteTime(time){
     if(UNIT==='m')return time.substring(0,6);
     if(UNIT==='d')return time.substring(0,8);
 }
-function getRestPosition(t){
-    var pad = 2;
-    var t = calcMinuteTime(t);
-    for(var i=0;i<pixelMap.length;i++){
-        var compare = calcMinuteTime(pixelMap[i].time);
-        if(t===compare)pad+=2;
-    }
-  return pad;
-}
+
 function setPlotAxis(pdata){
+    XMARGIN=0;
+    pixelMap=[];
+    pdata = _.sortBy(pdata,['time']);
     console.log('pdata is ' , pdata);
-    var j=0;
     for(var i=0;i< pdata.length;i++){
         if(pdata[i].leaf) {
             var equal=false;
-            var p = getXTposition(pdata[i].time, j);
-            var r = getRestPosition(pdata[i].time);
+            var p = getXTposition(pdata[i].time);
+            //console.log('axis -> ',p, pdata[i].time);
+            //var r = getRestPosition(pdata[i].time);
             var item = {};
             item.id = pdata[i].id;
             item.time = pdata[i].time;
-            item.axis = p+r;
+            item.axis = p;
             item.name = classify_labtest(pdata[i]);
             pixelMap.push(item);
-            ++j;
         }
     }
     console.log('pixelMap ', pixelMap);
-    makeCenter();
-    console.log('pixelMap_center ', pixelMap);
-
+    //makeCenter();
+    //console.log('pixelMap_center ', pixelMap);
 }
 
 function getDpTime(d){
@@ -394,48 +387,50 @@ function getDpTime(d){
 }
 
 var MOVECENTER=[];
-function makeCenter(){
+function makeCenter(pixelary){
     MOVECENTER=[];
-  var pmap = _.groupBy(pixelMap, function(v){
+  var pmap = _.groupBy(pixelary, function(v){
       return getDpTime(v.time);
   });
-
+ console.log('pmap ', pmap);
   var width = xt[2]-xt[0];
-  _.map(pmap, function (v,k){
+  console.log('width ', width);
+  _.map(pmap, function (v){
          var item = {};
          item.time = getDpTime(v[0].time);
          item.size = v.length;
          item.move = width/(item.size+1);
          MOVECENTER.push(item);
   });
-  console.log('MOVECENTER', width, MOVECENTER);
-  for(var i=0;i<MOVECENTER;i++){
-      var xs = _.pickBy(pixelMap, function(v){
-          return MOVECENTER[i].time === getDpTime(v.time);
+  console.log('MOVECENTER', width, MOVECENTER, UNIT);
+  for(var i=0;i<pixelary.length;i++) {
+      var temp = _.find(MOVECENTER, function (o) {
+          return o.time == getDpTime(pixelary[i].time);
       });
-      for(var j=0;j<xs.length;j++) {
-          pixelMap[j].axis += MOVECENTER[i].move;
-      }
+      //console.log('temp ',temp);
+      pixelary[i].axis += temp.move;
   }
+  return pixelary;
 }
 
-function getXTposition(t, r) {
+var pretime='';
+var XMARGIN=0;
+function getXTposition(t) {
+    //console.log(xt);
     var axis;
-    // console.log('chmName ', chmName, t);
+     //console.log('chmName ', chmName, t);
     t = calcMinuteTime(t);
-    //console.log(' xt', xt);
     var indent = 0;
-    indent = (UNIT==='d') ? gap : 4;
-    for (var i = 0,k=0; i < chmName.length; i++,k++) {
-        if (t === chmName[i]) {
-            console.log('i ', i , ' == ', chmName[i])
-            if(r==0)axis = xt[i]+indent;
-            if(r>0) axis=(xt[k]+indent);
-            //console.log('getXTposition ', t, axis);
-        }
-        ++k;
-    }
-    console.log(' axis ' , axis);
+    //indent = (UNIT==='d') ? gap : 4;
+
+    var i = _.findIndex(chmName, function(o) { return o == t; });
+    //console.log('match ', i, t);
+    if(i==0)axis = xt[0];
+    if(i>0) axis = (xt[i*2]);
+    if(pretime===t) {XMARGIN+=1; axis = axis+XMARGIN;}
+
+    //console.log(' axis ' , axis , t);
+    pretime = t;
     return axis;
 }
 
@@ -456,9 +451,12 @@ function makeEventBarChartSub(){
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
     var d = HMIN;
-    d = util.setDateTitle(UNIT, d);
-    d="("+d+")";
-    $("#dhead").html(d);
+    if(UNIT!='y') {
+        console.log(HMIN);
+        d = util.setDateTitle(UNIT, d);
+        d = "(" + d + ")";
+        $("#dhead").html(d);
+    }
     if(UNIT==='m'){
         var d1 = HMAX;
         d1 = util.setDateTitle(UNIT, d1);
@@ -520,6 +518,8 @@ function plotMuts(p, row, item) {
 
     if(item.leaf) {
         var pixelAry = _.filter(pixelMap, {'id': item.id});
+        console.log('pixelAry is ', pixelAry);
+        //pixelAry = makeCenter(pixelAry);
         for (var i = 0; i < pixelAry.length; i++) {
             var position = pixelAry[i].axis;
               position = (i>0) ? (position+deepCalcPosition(i)) : position;
