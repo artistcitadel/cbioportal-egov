@@ -342,8 +342,8 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 
 function classify_labtest(data) {
     var item = {};
-    var  tip = "<strong>[" + data.id + "]</strong>";
-         tip += "[" + data.name + "]<br/>";
+    var  tip = "[" + data.id + "]";
+         tip += "<strong>[" + data.name + "]</strong><br/>";
         tip+="<span class='font-small'>"+ util.dateFormat(UNIT,data.time) +"</br>";
          tip+="<span class='font-small'>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
          tip+="<span class='font-small'>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
