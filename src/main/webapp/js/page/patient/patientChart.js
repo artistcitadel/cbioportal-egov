@@ -1,5 +1,5 @@
 var leftpadding = 90;
-var paperWidth = 2245;
+var paperWidth = 14245;
 var paperHeight = 30;
 var paper;
 var yRuler = 15;
@@ -124,6 +124,7 @@ function setTimeLine(node, data){
     var start = leftpadding+XTREETEXTPADDING;
     //( node==='C') ? chmName = setChmName(data) : (node==='F')?(chmName = setTrack(data), node='R'):null;
     ( node==='C') ? chmName = setTrack(data) : null;
+    //paperWidth = chmName.length * dynamicWidthPartial;
     console.log(chmName);
     xt = setXposition(start, chmName.length);
     console.log('xt is ' , xt);
@@ -150,7 +151,7 @@ function setTrack(data){
     }
     var tmp = _.uniq(temp);
     tmp = _.sortBy(tmp);
-    console.log('tmp ', tmp);
+    //console.log('tmp ', tmp);
     var min = _.min(tmp)+"";
     var max = _.max(tmp)+"";
     HMIN = min;
@@ -174,9 +175,10 @@ function setTrack(data){
 
     console.log('min ', min, max, size);
     if(UNIT==='d') {size =util.monthAndYearDiff(min,max,'d')+1;}
-    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m')+1;}
-    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y')+1;}
+    if(UNIT==='m') {size =util.monthAndYearDiff(min,max,'m')+1; size+=Number(max.substring(0,4))-Number(min.substring(0,4));}
+    if(UNIT==='y') {size =util.monthAndYearDiff(min,max,'y')+1;if(size>1)size+=1;}
     console.log(' size ', size);
+
     //size+=2;
     for(var k=0;k<size;k++){
         chmName.push(getChmDay(min, k, UNIT));
@@ -207,8 +209,14 @@ function getChmDay(day, k, unit){
 function setXposition(start, count){
     var xt=[];
     //var gap = ((paperWidth-leftpadding)/count)/2;
-    var gap = (paperWidth-start)/count/2;
-    console.log('gap ', gap);
+
+    // var temp = chmName.length * dynamicWidthPartial/chmName.length;
+    // var gap = temp;
+    // var gap = 90;
+    // paperWidth = chmName.length*gap+200;
+     var gap = (paperWidth-start)/count/2;
+     console.log('gap ', gap);
+
     //gap = gap + gap/2;
     //console.log(gap);
     //var length = start*count;
@@ -255,7 +263,7 @@ function drawTimeLine(start, chmName,xt,m, end){
             };
         })
     console.log('countTime ', countTime);
-    console.log(yRuler, start);
+    console.log('start ', yRuler, start, end);
     var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
     OLINE.push(oline);
     //drawLine(xt[0], yRuler, xt[0], 5, paper, '#000', 1);
@@ -272,7 +280,7 @@ function drawTimeLine(start, chmName,xt,m, end){
             var cidx = _.findIndex(countTime, function(v){
                 return v.time == chmName[txtCnt];
             })
-            //console.log('countTime[cidx ', countTime[cidx]);
+            console.log('countTime[cidx ', countTime[cidx]);
             if(cidx!==-1){
                 //countTime[cidx].axis = m[i];
                 countTime[cidx].axis = mx;
@@ -399,20 +407,22 @@ function makeEventBarChartSub(){
     console.log('dig-> ', dig);
     var label = "Time since diagnosis";
     var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+
+    $("#dhead").html("");
     var d = HMIN;
+    console.log(HMIN);
+    d = util.setDateTitle(UNIT, d);
+    d = "" + d + "";
     if(UNIT!='y') {
-        console.log(HMIN);
-        d = util.setDateTitle(UNIT, d);
-        d = "" + d + "";
-        $("#dhead").html(d);
-    }
-    if(UNIT==='y'){
         var d1 = HMAX;
         d1 = util.setDateTitle(UNIT, d1);
         d1=""+d1+"";
-        var head = d+" ~ "+d1;
+        //var head = d+" ~ "+d1;
+        var head = d;
         $("#dhead").html(head);
+        //$("#dhead").html(d);
     }
+
     //alert(UNIT + ' ' + chmName[0]);
 //  plotdrawing(dig, true);
 }
@@ -453,36 +463,35 @@ function fyRow(row) {
     return 2*5+10+row*(20+5);
 }
 
-function deepCalcPosition(i){
-    //return (zcnt>0) ? (i*XSCALE) : 1;
-    return (zcnt>0) ? (_.round(Number(XSCALE))) : 1;
-}
-
-function getPositionSpec(p, size, time ){
+function getPositionSpec(p, size, time ) {
     //console.log('xt1 ~ xt0 ', xt[2]-xt[0] , XSCALE);
-    var span = (UNIT==='m') ? 30 : 12;
-    var space = xt[2]-xt[0];
+    /*var x1 = xt[0];
+    var x2 = (xt.length>2) ? xt[2] : xt[1];
+    var space = x2-x1;
     if(UNIT==='d'){
         return space/2 + p;
     }
-    console.log('space ', space, space/span);
+    var span = (UNIT==='m') ? 30 : 12;
+    //console.log('space ', space, space/span);
     var xp = space/span;
-    var t = (UNIT==='m') ? Number(util.subtractzero(time.substring(6,8))) : Number(time.substring(1,4)); xp*=t;
-    return  p+xp;
+    var t = (UNIT==='m') ? Number(util.subtractzero(time.substring(6,8))) : Number(time.substring(4,6));
+    //console.log(time, t);
+    xp*=t;
+    return  p+xp;*/
 
-     /* if(UNIT==='m' && time.substring(6,8) < 16){
-         p -= time.substring(6,8);
-      }
-      if(UNIT==='m' && time.substring(6,8) > 15){
-         p += 16 + time.substring(6,8);
-      }
-    if(UNIT==='y' && time.substring(4,6) < 6){
-        p  -= time.substring(4,6);
+    var x1 = xt[0];
+    var x2 = (xt.length>2) ? xt[2] : xt[1];
+    var space = x2-x1;
+    if(UNIT==='d'){
+        return space/2 + p;
     }
-    if(UNIT==='y' && time.substring(4,6) > 5){
-        p += time.substring(4,6);
-    }
-      return p;*/
+    var span = (UNIT==='m') ? 30 : 12;
+    //console.log('space ', space, space/span);
+    var xp = space/span;
+    var t = (UNIT==='m') ? Number(util.subtractzero(time.substring(6,8))) : Number(time.substring(4,6));
+    //console.log(time, t);
+    xp*=t;
+    return  p+xp;
 }
 
 function plotMuts(p, row, item) {
@@ -496,8 +505,7 @@ function plotMuts(p, row, item) {
     if(item.leaf) {
         var tnumber = _.round(Number(XSCALE));
         var pixelAry = _.filter(pixelMap, {'id': item.id});
-        //console.log('pixelAry is ', pixelAry);
-        //pixelAry = makeCenter(pixelAry);
+        console.log('pixelAry is ', pixelAry);
         for (var i = 0; i < pixelAry.length; i++) {
             var position = pixelAry[i].axis;
             var size = pixelAry[i].count;
@@ -584,6 +592,7 @@ function removeLine(){
 
 
 function setTreeNode(id){
+    $('.spinner').show();
     var idx = _.findIndex(dig, function (o) {
         return o.id === id;
     });

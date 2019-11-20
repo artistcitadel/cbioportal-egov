@@ -77,6 +77,7 @@
             height: 40px;
             text-align: center;
             font-size: 10px;
+			z-index:999;
         }
 
         .spinner > div {

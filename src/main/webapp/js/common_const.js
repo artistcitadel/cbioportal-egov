@@ -1,5 +1,5 @@
 var context = '';
-var gvSERVER 	= 'http://localhost:8080';
+var gvSERVER 	= 'http://localhost:8084';
 var gvCONTEXT 	= 'bigcenmed2';
 var gvPERINX	= {};								/* 사용자정보 */
 var gvAUTINX 	= {};								/* 권한정보 */
@@ -10,7 +10,7 @@ var gvPAT_SBST_NO = '';
 var gvSEARCH_YN = '';
 var gvSplitChar = '##';								/* 멀티 팝업에서 사용할 문자 */
 var gvINSTCD    = '030';
-var gvINSTCDTemp1    = "'031,032'";					//사업장 전체 코드1 
+var gvINSTCDTemp1    = "'031,032'";					//사업장 전체 코드1
 var gvINSTCDTemp2    = "'031','032'";				//사업장 전체 코드2
 var gvPAT_SBST_NO_SIZE = 9;
 var gvBASE_DT_TIMESTAMP_YN = 'Y';
