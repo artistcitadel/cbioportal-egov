@@ -1,5 +1,5 @@
 var leftpadding = 90;
-var paperWidth = 1645;
+var paperWidth = 2245;
 var paperHeight = 30;
 var paper;
 var yRuler = 15;
@@ -20,36 +20,16 @@ var HRC_LAB;
 var LINEEND;
 var RAW;
 //var XTREETEXTPADDING=24;
-var XTREETEXTPADDING=4;
+var XTREETEXTPADDING=0;
 var MODE='N';
 var XSCALE=1;
 var HMIN;
 var HMAX;
 
-function dformat(dat){
-    /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
-    if(UNIT==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
-    if(UNIT==='y')return dat.substring(0,4);*/
-    if(UNIT==='d')return util.subtractzero(dat.substring(6,8))+'일';
-    if(UNIT==='m')return util.subtractzero(dat.substring(4,6))+'월';
-    if(UNIT==='y')return dat.substring(0,4)+'년';
-}
-/*function dunformat(dat){
-    console.log(UNIT, dat);
-    if(UNIT==='d')return dat.split(".")[0]+dat.split(".")[1]+dat.split(".")[2];
-    if(UNIT==='m')return dat.split(".")[0]+dat.split(".")[1];
-    if(UNIT==='y')return dat.substring(0,4);
-}*/
-
 var TITLE ={
     "Specimen" : "1",
     "Lab_test" : "2"
 };
-
-function getAsocite(mdata){
-    var udata = util.arrayToTree(mdata);
-
-}
 
 function exist(data, key){
     var find=false;
@@ -223,11 +203,11 @@ function getChmDay(day, k, unit){
         return moment(next).format('YYYY');
     }
 }
-var gap;
+
 function setXposition(start, count){
     var xt=[];
     //var gap = ((paperWidth-leftpadding)/count)/2;
-    gap = (paperWidth-start)/count/2;
+    var gap = (paperWidth-start)/count/2;
     console.log('gap ', gap);
     //gap = gap + gap/2;
     //console.log(gap);
@@ -259,7 +239,22 @@ function setXnamePosition(xt){
     return m;
 }
 
+var COUNTMAP;
 function drawTimeLine(start, chmName,xt,m, end){
+    COUNTMAP=null;
+    var names = _.countBy(dig, function(v){
+        if(!_.isUndefined(v.time))
+            return getDpTime(v.time);
+    });
+    var countTime =
+        Object.keys(names).map(function(x) {
+            return {
+                time: x,
+                count: names[x],
+                axis:0
+            };
+        })
+    console.log('countTime ', countTime);
     console.log(yRuler, start);
     var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
     OLINE.push(oline);
@@ -271,11 +266,26 @@ function drawTimeLine(start, chmName,xt,m, end){
             //var mx = xt[i]+rootNodePadding;
             var mx = xt[i];
             //console.log('mx ', xt[i]);
+
+            ///->for plot axis/////////////////////////////////
+            //console.log('countTime[txtCnt] ' ,countTime[txtCnt]);
+            var cidx = _.findIndex(countTime, function(v){
+                return v.time == chmName[txtCnt];
+            })
+            //console.log('countTime[cidx ', countTime[cidx]);
+            if(cidx!==-1){
+                //countTime[cidx].axis = m[i];
+                countTime[cidx].axis = mx;
+            }
+            ///->for plot axis/////////////////////////////////
+
             oline = drawLine(mx, yRuler, mx, 5, paper, '#000', 1);
             OLINE.push(oline);
-            var txt = paper.text(m[i], 10, dformat(chmName[txtCnt]));
+            var txt = paper.text(m[i], 10, util.dformat(chmName[txtCnt]));
+            txt.attr("font-family","Malgun Gothic");
             txt.data({id:chmName[txtCnt]});
             txt.click(function () {
+                if(UNIT==='d')return;
                 //var temp = dunformat(this.attr('text'));
                 var temp = this.data('id');
                 console.log(temp);
@@ -305,19 +315,6 @@ function drawTimeLine(start, chmName,xt,m, end){
                 removeLine();
                 clearPaperPlotNode();
                 setTimeLine('C', state);
-                /*if (this.attr('text-anchor') == 'middle') {
-                    this.attr({
-                        'text-anchor': 'start',
-                        'font-size': 13,
-                        'fill': "#62f"
-                    });
-                } else {
-                    this.attr({
-                        'text-anchor': 'middle',
-                        'font-size': 10,
-                        'fill': "#000"
-                    })
-                }*/
             });
             ++txtCnt;
             OLINE.push(txt);
@@ -325,6 +322,8 @@ function drawTimeLine(start, chmName,xt,m, end){
     }
     oline = drawLine(end-1, yRuler, end-1, 5, paper, '#000', 1);
     OLINE.push(oline);
+    COUNTMAP = countTime;
+    console.log(" COUNTMAP ", COUNTMAP);
 }
 
 function drawLine(x1, y1, x2, y2, p, cl, width) {
@@ -344,94 +343,44 @@ function drawLine(x1, y1, x2, y2, p, cl, width) {
 function classify_labtest(data) {
     var item = {};
     var  tip = "<strong>[" + data.id + "]</strong>";
-         tip += "[" + data.name + "]<hr/>";
+         tip += "[" + data.name + "]<br/>";
+        tip+="<span class='font-small'>"+ util.dateFormat(UNIT,data.time) +"</br>";
          tip+="<span class='font-small'>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
          tip+="<span class='font-small'>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
          tip+="<span class='font-small'>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
     return tip;
 }
 
-function calcMinuteTime(time){
-    if(UNIT==='y')return time.substring(0,4);
-    if(UNIT==='m')return time.substring(0,6);
-    if(UNIT==='d')return time.substring(0,8);
-}
-
 function setPlotAxis(pdata){
-    XMARGIN=0;
     pixelMap=[];
-    pdata = _.sortBy(pdata,['time']);
+    //pdata = _.sortBy(pdata,['time']);
     console.log('pdata is ' , pdata);
+    console.log('xt ', xt);
+    console.log('m ', m);
+    console.log('chmName ', chmName);
+    console.log(' COUNTMAP ', COUNTMAP);
     for(var i=0;i< pdata.length;i++){
         if(pdata[i].leaf) {
-            var equal=false;
-            var p = getXTposition(pdata[i].time);
-            //console.log('axis -> ',p, pdata[i].time);
-            //var r = getRestPosition(pdata[i].time);
             var item = {};
+            var p = _.filter(COUNTMAP, function(v){
+                return v.time == getDpTime(pdata[i].time);
+            });
+            // console.log(' position is ', p);
+            // console.log(' position is ', p['0'].axis);
             item.id = pdata[i].id;
             item.time = pdata[i].time;
-            item.axis = p;
+            item.axis = p['0'].axis;
+            item.count = p['0'].count;
             item.name = classify_labtest(pdata[i]);
             pixelMap.push(item);
         }
     }
     console.log('pixelMap ', pixelMap);
-    //makeCenter();
-    //console.log('pixelMap_center ', pixelMap);
 }
 
 function getDpTime(d){
     var dptime = (UNIT==='m') ? (d.substring(0,6)) : (UNIT === 'y') ? (d.substring(0,4)) : d;
     return dptime;
-}
-
-var MOVECENTER=[];
-function makeCenter(pixelary){
-    MOVECENTER=[];
-  var pmap = _.groupBy(pixelary, function(v){
-      return getDpTime(v.time);
-  });
- console.log('pmap ', pmap);
-  var width = xt[2]-xt[0];
-  console.log('width ', width);
-  _.map(pmap, function (v){
-         var item = {};
-         item.time = getDpTime(v[0].time);
-         item.size = v.length;
-         item.move = width/(item.size+1);
-         MOVECENTER.push(item);
-  });
-  console.log('MOVECENTER', width, MOVECENTER, UNIT);
-  for(var i=0;i<pixelary.length;i++) {
-      var temp = _.find(MOVECENTER, function (o) {
-          return o.time == getDpTime(pixelary[i].time);
-      });
-      //console.log('temp ',temp);
-      pixelary[i].axis += temp.move;
-  }
-  return pixelary;
-}
-
-var pretime='';
-var XMARGIN=0;
-function getXTposition(t) {
-    //console.log(xt);
-    var axis;
-     //console.log('chmName ', chmName, t);
-    t = calcMinuteTime(t);
-    var indent = 0;
-    //indent = (UNIT==='d') ? gap : 4;
-
-    var i = _.findIndex(chmName, function(o) { return o == t; });
-    //console.log('match ', i, t);
-    if(i==0)axis = xt[0];
-    if(i>0) axis = (xt[i*2]);
-    if(pretime===t) {XMARGIN+=1; axis = axis+XMARGIN;}
-
-    //console.log(' axis ' , axis , t);
-    pretime = t;
-    return axis;
 }
 
 function makeEventBarChart() {
@@ -454,13 +403,13 @@ function makeEventBarChartSub(){
     if(UNIT!='y') {
         console.log(HMIN);
         d = util.setDateTitle(UNIT, d);
-        d = "(" + d + ")";
+        d = "" + d + "";
         $("#dhead").html(d);
     }
-    if(UNIT==='m'){
+    if(UNIT==='y'){
         var d1 = HMAX;
         d1 = util.setDateTitle(UNIT, d1);
-        d1="("+d1+")";
+        d1=""+d1+"";
         var head = d+" ~ "+d1;
         $("#dhead").html(head);
     }
@@ -505,7 +454,35 @@ function fyRow(row) {
 }
 
 function deepCalcPosition(i){
-    return (zcnt>0) ? (i*XSCALE) : 1;
+    //return (zcnt>0) ? (i*XSCALE) : 1;
+    return (zcnt>0) ? (_.round(Number(XSCALE))) : 1;
+}
+
+function getPositionSpec(p, size, time ){
+    //console.log('xt1 ~ xt0 ', xt[2]-xt[0] , XSCALE);
+    var span = (UNIT==='m') ? 30 : 12;
+    var space = xt[2]-xt[0];
+    if(UNIT==='d'){
+        return space/2 + p;
+    }
+    console.log('space ', space, space/span);
+    var xp = space/span;
+    var t = (UNIT==='m') ? Number(util.subtractzero(time.substring(6,8))) : Number(time.substring(1,4)); xp*=t;
+    return  p+xp;
+
+     /* if(UNIT==='m' && time.substring(6,8) < 16){
+         p -= time.substring(6,8);
+      }
+      if(UNIT==='m' && time.substring(6,8) > 15){
+         p += 16 + time.substring(6,8);
+      }
+    if(UNIT==='y' && time.substring(4,6) < 6){
+        p  -= time.substring(4,6);
+    }
+    if(UNIT==='y' && time.substring(4,6) > 5){
+        p += time.substring(4,6);
+    }
+      return p;*/
 }
 
 function plotMuts(p, row, item) {
@@ -517,12 +494,15 @@ function plotMuts(p, row, item) {
     var yRow = fyRow(row) + 20;
 
     if(item.leaf) {
+        var tnumber = _.round(Number(XSCALE));
         var pixelAry = _.filter(pixelMap, {'id': item.id});
-        console.log('pixelAry is ', pixelAry);
+        //console.log('pixelAry is ', pixelAry);
         //pixelAry = makeCenter(pixelAry);
         for (var i = 0; i < pixelAry.length; i++) {
             var position = pixelAry[i].axis;
-              position = (i>0) ? (position+deepCalcPosition(i)) : position;
+            var size = pixelAry[i].count;
+            position = getPositionSpec(position, size, pixelAry[i].time );
+            //position = (i>0) ? (position+deepCalcPosition(i)) : position;
             //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
             var h = maxCount;
             console.log('yrow ', yRow, h);
@@ -538,6 +518,7 @@ function plotMuts(p, row, item) {
                     this.transform('s1,1');
                 }
             );
+            //r.transform('S'+tnumber,tnumber+'');
             //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
             addToolTip(r.node, pixelMap[i].name, 100, '');
             PAPERNODE.push(r);

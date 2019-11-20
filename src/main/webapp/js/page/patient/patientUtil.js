@@ -146,4 +146,26 @@ function Util() {
        if(UNIT==='m')return dat.substring(0,4)+'년';
         if(UNIT==='y')return '';
     }
+
+    self.dateFormat = function (unit, dat){
+        return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
+        /*if(unit==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
+        if(unit==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
+        if(unit==='y')return dat.substring(0,4);*/
+    }
+
+    self.dformat=function(dat){
+        /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
+        if(UNIT==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
+        if(UNIT==='y')return dat.substring(0,4);*/
+        if(UNIT==='d')return util.subtractzero(dat.substring(6,8))+'일';
+        if(UNIT==='m')return util.subtractzero(dat.substring(4,6))+'월';
+        if(UNIT==='y')return dat.substring(0,4)+'년';
+    }
+    /*function dunformat(dat){
+    console.log(UNIT, dat);
+    if(UNIT==='d')return dat.split(".")[0]+dat.split(".")[1]+dat.split(".")[2];
+    if(UNIT==='m')return dat.split(".")[0]+dat.split(".")[1];
+    if(UNIT==='y')return dat.substring(0,4);
+}*/
 }

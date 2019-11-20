@@ -90,6 +90,7 @@ $(document).ready(function () {
     $('#xgrid').trigger('click');
 
     $("#reset").click(function(){
+        $('.spinner').show();
         MODE='N';
         removeLine();
         clearPaperPlotNode();
