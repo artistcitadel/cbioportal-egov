@@ -32,14 +32,15 @@ $(document).ready(function () {
     //alert(paperWidth);
     //zcnt=0;
     var w = overview.attr('width');
+
     $('#zoomin').click(function() {
         //scale = zcnt*1.2;
-        scale = (1.1*(zcnt+1));
+        scale = (1.1 * (zcnt + 1));
         //paper.canvas.setAttribute("transform", "scale("+scale+")")
-        w*=1.1;
+        w *= 1.1;
         //w = paperWidth * scale;
-        overview.css('width',w);
-        LASTYPOS*=scale;
+        overview.css('width', w);
+        LASTYPOS *= scale;
 
         ++zcnt;
         removeLine();
@@ -47,7 +48,7 @@ $(document).ready(function () {
         //paperWidth *= scale;
         paperWidth = w;
         XSCALE = scale;
-        setTimeLine('R', dig);
+       setTimeLine('R', dig);
         //alert(paperWidth);
 
         //alert(w);
@@ -90,10 +91,10 @@ $(document).ready(function () {
     $('#xgrid').trigger('click');
 
     $("#reset").click(function(){
-        $('.spinner').show();
         MODE='N';
         removeLine();
         clearPaperPlotNode();
+        $('.spinner').show();
         setTimeLine('C', RAW);
     })
      /*$('svg').on("click", "[id^='text_']", function(){

@@ -1,5 +1,5 @@
-var leftpadding = 90;
-var paperWidth = 14245;
+var leftpadding = 90, lvalue=90
+var paperWidth = 1445;
 var paperHeight = 30;
 var paper;
 var yRuler = 15;
@@ -20,7 +20,7 @@ var HRC_LAB;
 var LINEEND;
 var RAW;
 //var XTREETEXTPADDING=24;
-var XTREETEXTPADDING=0;
+var XTREETEXTPADDING=5, xtreevalue=5;
 var MODE='N';
 var XSCALE=1;
 var HMIN;
@@ -50,6 +50,8 @@ function setData(crow, data) {
         var item = {};
         item.leaf = false;
         item.time = data[i].time;
+        if(_.isUndefined(data[i].time))
+            item.time = '00000000';
         item.id = data[i].id;
         item.name = data[i].name;
         item.show = true;
@@ -67,10 +69,10 @@ function setData(crow, data) {
         if(!_.isUndefined(data[i].mark)) {item.mark = data[i].mark; item.leaf=true;}
 
         if(exist(pdata,item.id) || item.leaf){
-            console.log(item.id);
+            // console.log(item.id);
             item.level = findLevel(item.pid, data, item.level);
             crow.push(item);
-            LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING);
+            LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING+item.level);
         }
     }
     return crow;
@@ -92,6 +94,7 @@ function disposer(json) {
             htem.folder=false;
             htem.always=true;
             htem.leaf = false;
+            htem.time='00000000';
             crow.push(htem);
         }
         //console.log(' init data ', data);
@@ -117,7 +120,10 @@ function findLevel(pid, data, lvl){
 }
 
 function setTimeLine(node, data){
-    leftpadding += _.max(LTEXTLENGTH);
+    var longest = data.reduce(function (a, b) { return a.name.length > b.name.length ? a : b; });
+    console.log(' .. longest ', longest.name.length);
+    //XTREETEXTPADDING += _.max(LTEXTLENGTH)+24;
+    XTREETEXTPADDING += longest.name.length;
     leftpadding*=2;
     leftpadding+=XTREETEXTPADDING;
 
@@ -146,7 +152,8 @@ function setTrack(data){
     var chmName=[];
     var temp = [];
     for(var i=0; i<data.length; i++){
-        if(!_.isUndefined(data[i].time))
+        ////if(!_.isUndefined(data[i].time))
+        if(data[i].time!=='00000000')
         temp.push(data[i].time);
     }
     var tmp = _.uniq(temp);
@@ -251,7 +258,8 @@ var COUNTMAP;
 function drawTimeLine(start, chmName,xt,m, end){
     COUNTMAP=null;
     var names = _.countBy(dig, function(v){
-        if(!_.isUndefined(v.time))
+        //if(!_.isUndefined(v.time))
+        if(v.time!=='00000000')
             return getDpTime(v.time);
     });
     var countTime =
@@ -303,7 +311,7 @@ function drawTimeLine(start, chmName,xt,m, end){
                 state = _.filter(state, function(o) {
                      var time = o.time;
                      //console.log('click temp is ',time, '=> ',UNIT,  temp);
-                     if(_.isUndefined(time))time="00000000"
+                     ////if(_.isUndefined(time))time="00000000"
                      //console.log(time.substring(0,4));
                      if(UNIT==='d') {return (time===temp);}
                      if(UNIT==='m') {return (time.substring(0,6)===temp);}
@@ -322,6 +330,7 @@ function drawTimeLine(start, chmName,xt,m, end){
                 MODE='P';
                 removeLine();
                 clearPaperPlotNode();
+                $('.spinner').show();
                 setTimeLine('C', state);
             });
             ++txtCnt;
@@ -445,11 +454,12 @@ function plotdrawing(dig){
     //console.log(' LASTYPOS ', LASTYPOS);
     $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
     MODE='N';
+
     $('.spinner').hide();
 }
 
-function printPlot(paper, tdata){
-    var data = _.uniqBy(tdata, 'id');
+function printPlot(paper, data){
+    // var data = _.uniqBy(tdata, 'id');
     //console.log('data ', data);
     for(var i=0;i<data.length;i++) {
         plotMuts(paper, ycnt, data[i]);
@@ -464,21 +474,6 @@ function fyRow(row) {
 }
 
 function getPositionSpec(p, size, time ) {
-    //console.log('xt1 ~ xt0 ', xt[2]-xt[0] , XSCALE);
-    /*var x1 = xt[0];
-    var x2 = (xt.length>2) ? xt[2] : xt[1];
-    var space = x2-x1;
-    if(UNIT==='d'){
-        return space/2 + p;
-    }
-    var span = (UNIT==='m') ? 30 : 12;
-    //console.log('space ', space, space/span);
-    var xp = space/span;
-    var t = (UNIT==='m') ? Number(util.subtractzero(time.substring(6,8))) : Number(time.substring(4,6));
-    //console.log(time, t);
-    xp*=t;
-    return  p+xp;*/
-
     var x1 = xt[0];
     var x2 = (xt.length>2) ? xt[2] : xt[1];
     var space = x2-x1;
@@ -496,25 +491,34 @@ function getPositionSpec(p, size, time ) {
 
 function plotMuts(p, row, item) {
     if(!item.show)return;
+    //console.log('--> ', item.id, row);
+    var yRow = fyRow(row) + 20-6;
     ++ycnt;
-    console.log('--> ', item.id, row);
-
-    var maxCount = 5; // set max height to 5 mutations
-    var yRow = fyRow(row) + 20;
-
     if(item.leaf) {
+        var maxCount = 5; // set max height to 5 mutations
+        var pw=3;
         var tnumber = _.round(Number(XSCALE));
         var pixelAry = _.filter(pixelMap, {'id': item.id});
-        console.log('pixelAry is ', pixelAry);
+
+        //console.log('pixelAry is ', pixelAry);
+        //var tcnt = 0;
+        var plen = pixelAry.length;
         for (var i = 0; i < pixelAry.length; i++) {
             var position = pixelAry[i].axis;
+            // if(i===0)first = position;
             var size = pixelAry[i].count;
+            //if(UNIT==='y') pw=0.3;
+            //console.log('-->size ', size);
+            if(UNIT==='y') {
+                // pw = (size>20 && size < 41) ? 2 :  (size>40 && size<61) ? 1 : (size>60 && size < 81) ? (0.5) : (0.1);
+                pw = (plen>100) ? 2 : (plen>200) ? 1 : (plen>300) ? 0.5 : 3;
+            }
             position = getPositionSpec(position, size, pixelAry[i].time );
             //position = (i>0) ? (position+deepCalcPosition(i)) : position;
             //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
             var h = maxCount;
-            console.log('yrow ', yRow, h);
-            var r = p.rect(position, yRow - 6, 3, h);
+            // console.log('yrow ', yRow, h);
+            var r = p.rect(position, yRow, pw, h);
             r.attr("fill", "#0f0");
             r.attr("stroke", "#0f0");
             r.attr("stroke-width", 1);
@@ -528,9 +532,11 @@ function plotMuts(p, row, item) {
             );
             //r.transform('S'+tnumber,tnumber+'');
             //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
-            addToolTip(r.node, pixelMap[i].name, 100, '');
+            addToolTip(r.node, pixelAry[i].name, 100, '');
             PAPERNODE.push(r);
+            //++tcnt;
         }
+        //console.log('tcnt ', tcnt, item.name);
     }
 
 
@@ -539,7 +545,7 @@ function plotMuts(p, row, item) {
     if(label.show) {
         var deep = label.level;
         if (label.leaf) deep += 2;
-        console.log('show ', label, label.folder);
+        // console.log('show ', label, label.folder);
         //var ar = '❯ ';
         var ar = "❯ ";
         if (label.leaf) ar = '';
@@ -551,7 +557,8 @@ function plotMuts(p, row, item) {
         var lbl = label.name;
         lbl = ar + lbl;
         //console.log('label_text length ', lbl.length);
-        var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
+        //var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
+        var t = p.text((12 + Number(deep) * 8), yRow , lbl).attr({
             'text-anchor': 'start',
             'fill': 'black',
             'cursor': 'pointer',
@@ -583,7 +590,9 @@ function clearPaperPlotNode() {
 }
 
 function removeLine(){
-    leftpadding=90;
+    XTREETEXTPADDING=xtreevalue;
+    leftpadding=lvalue;
+    LTEXTLENGTH=[];
     pixelMap=[];
     for (var i=0;i<OLINE.length; i++){
         OLINE[i].remove();
@@ -592,7 +601,6 @@ function removeLine(){
 
 
 function setTreeNode(id){
-    $('.spinner').show();
     var idx = _.findIndex(dig, function (o) {
         return o.id === id;
     });
@@ -626,6 +634,7 @@ function setTreeNode(id){
     }
 
     clearPaperPlotNode();
+    $('.spinner').show();
     plotdrawing(dig);
 }
 

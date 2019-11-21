@@ -35,13 +35,14 @@
                          EXAM_CD id,
                          IFNULL(EXAM_ENG_NM, EXAM_CD) name,
                          RCEP_DT time,
-                         ROUND(SUM(EXAM_RSLT_VAL),2) exam,
-                         ROUND(SUM(MARK_RSLT_VAL),2) mark,
+                         ROUND(IFNULL(SUM(EXAM_RSLT_VAL),0),2) exam,
+                         ROUND(IFNULL(SUM(MARK_RSLT_VAL),0),2) mark,
                          ROUND(IFNULL(SUM(CRTE_MSR_VAL),0),2)  crte
 
         FROM CLSPNEXRT
         /*WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD IN ('DA0036','BD0012','BA0094') AND SUBSTRING(RCEP_DT,1,4) = '2017' OR (EXAM_CD='BD0012' AND RCEP_DT='20040427')*/
         WHERE RESCH_PAT_ID = '6905950076' /*AND EXAM_CD = 'AFIN'*/
+        /*AND EXAM_ENG_NM = 'Rh variant Ag,Automation (Semi-Qn)[Agglutination],Blood'*/
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
         ORDER BY 2,3,5
         LIMIT  10000

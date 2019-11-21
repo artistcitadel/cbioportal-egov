@@ -77,17 +77,18 @@
             height: 40px;
             text-align: center;
             font-size: 10px;
-			z-index:999;
+			z-index:99999;
         }
 
         .spinner > div {
             background-color: #67989f;
-            height: 100%;
+            height: 30%;
             width: 6px;
             display: inline-block;
 
             -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
             animation: sk-stretchdelay 1.2s infinite ease-in-out;
+			z-index:99999;
         }
 
         .spinner .rect2 {
