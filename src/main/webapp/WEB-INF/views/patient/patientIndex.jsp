@@ -18,6 +18,8 @@
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles4.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles11.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles16.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/indicator.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/linepulse.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
 	<style>
 		.patient-table {
@@ -71,7 +73,7 @@
 			font-size: xx-small;
 			font-weight: bold;
 		}
-        .spinner {
+        /*.spinner {
             margin: 100px auto;
             width: 50px;
             height: 40px;
@@ -126,12 +128,12 @@
                }
         }
         .center {
-            position: absolute; /* */
+            position: absolute; !* *!
             left: 5%;
             top: 20%;
             transform: translate(-50%, -50%);
         }
-
+*/
 	</style>
 </head>
 <body class="hold-transition skin-black sidebar-mini fixed">
@@ -182,6 +184,8 @@
 <script src="<c:url value="/js/common_const.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientAction.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientUtil.js" />"></script>
+<script src="<c:url value="/js/page/patient/WindowStore.js" />"></script>
+<script src="<c:url value="/js/page/patient/blockUI.js" />"></script>
 <%--<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
 <script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>--%>
 <script type='text/javascript' src="<c:url value="/js/page/patient/moment-with-locales.min.js" />"></script>

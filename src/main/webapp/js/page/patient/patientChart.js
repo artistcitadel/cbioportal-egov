@@ -25,6 +25,7 @@ var MODE='N';
 var XSCALE=1;
 var HMIN;
 var HMAX;
+var INITUNIT;
 
 var TITLE ={
     "Specimen" : "1",
@@ -72,7 +73,7 @@ function setData(crow, data) {
             // console.log(item.id);
             item.level = findLevel(item.pid, data, item.level);
             crow.push(item);
-            LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING+item.level);
+            //LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING+item.level);
         }
     }
     return crow;
@@ -123,7 +124,7 @@ function setTimeLine(node, data){
     var longest = data.reduce(function (a, b) { return a.name.length > b.name.length ? a : b; });
     console.log(' .. longest ', longest.name.length);
     //XTREETEXTPADDING += _.max(LTEXTLENGTH)+24;
-    XTREETEXTPADDING += longest.name.length;
+    XTREETEXTPADDING += longest.name.length+24;
     leftpadding*=2;
     leftpadding+=XTREETEXTPADDING;
 
@@ -191,6 +192,7 @@ function setTrack(data){
         chmName.push(getChmDay(min, k, UNIT));
     }
     console.log(chmName);
+    (INITUNIT==null)?INITUNIT=UNIT:INITUNIT;
     return chmName;
 }
 
@@ -330,8 +332,11 @@ function drawTimeLine(start, chmName,xt,m, end){
                 MODE='P';
                 removeLine();
                 clearPaperPlotNode();
-                $('.spinner').show();
-                setTimeLine('C', state);
+                util.showLoader();
+                _.delay(function() {
+                    setTimeLine('C', state);
+                }, 1000);
+                //setTimeLine('C', state);
             });
             ++txtCnt;
             OLINE.push(txt);
@@ -455,7 +460,7 @@ function plotdrawing(dig){
     $('#genomicOverviewTracksContainer').children(1).css('height',LASTYPOS+3+'px');
     MODE='N';
 
-    $('.spinner').hide();
+    util.hideLoader();
 }
 
 function printPlot(paper, data){
@@ -495,7 +500,7 @@ function plotMuts(p, row, item) {
     var yRow = fyRow(row) + 20-6;
     ++ycnt;
     if(item.leaf) {
-        var maxCount = 5; // set max height to 5 mutations
+        var maxCount = 6;
         var pw=3;
         var tnumber = _.round(Number(XSCALE));
         var pixelAry = _.filter(pixelMap, {'id': item.id});
@@ -567,7 +572,7 @@ function plotMuts(p, row, item) {
 
         if(!label.leaf) {
             t.click(function () {
-                setTreeNode(label.id);
+               setTreeNode(label.id);
             });
         }
 
@@ -592,15 +597,20 @@ function clearPaperPlotNode() {
 function removeLine(){
     XTREETEXTPADDING=xtreevalue;
     leftpadding=lvalue;
-    LTEXTLENGTH=[];
+    //LTEXTLENGTH=[];
     pixelMap=[];
     for (var i=0;i<OLINE.length; i++){
         OLINE[i].remove();
     }
 }
 
-
 function setTreeNode(id){
+    util.showLoader();
+    _.delay(function() {
+        setTreeNodePost(id);
+    }, 1000);
+}
+function setTreeNodePost(id){
     var idx = _.findIndex(dig, function (o) {
         return o.id === id;
     });
@@ -634,7 +644,7 @@ function setTreeNode(id){
     }
 
     clearPaperPlotNode();
-    $('.spinner').show();
+    util.showLoader();
     plotdrawing(dig);
 }
 

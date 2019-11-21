@@ -168,4 +168,16 @@ function Util() {
     if(UNIT==='m')return dat.split(".")[0]+dat.split(".")[1];
     if(UNIT==='y')return dat.substring(0,4);
 }*/
+    self.showLoader = function(){
+        $.blockUI({
+                message: null,
+                overlayCSS: {backgroundColor: '#FFFFFF', opacity: 1.5, cursor: 'wait'}
+            }
+        );
+        $("#spinner").show();
+    }
+    self.hideLoader = function(){
+        $("#spinner").delay(800).hide();
+        $.unblockUI();
+    }
 }

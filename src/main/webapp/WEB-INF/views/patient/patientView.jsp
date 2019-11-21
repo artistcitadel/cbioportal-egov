@@ -220,12 +220,49 @@
         </div>
     </div>
 
-    <div class="spinner center">
+  <%--  <div class="spinner center">
         <div class="rect1"></div>
         <div class="rect2"></div>
         <div class="rect3"></div>
         <div class="rect4"></div>
         <div class="rect5"></div>
+    </div>--%>
+    <%--<div>
+        <div style="position:relative;">
+           <div class="center big" >
+            <div style="color: #9988cd" class="la-line-scale-pulse-out la-3x">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+           </div>
+            <div className="progressUI">
+            <iframe id="ifr"
+                    style="width:100%;position:relative;zIndex:100;border:none;"
+            src=""
+            >
+            </iframe>
+            </div>
+        </div>
+    </div>--%>
+
+    <div id="spinner" style="zIndex:100;position:relative;display:none;">
+        <div class="centered" >
+            <div class="sk-spinner la-line-scale-pulse-out big">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <iframe id="ifr"
+                style="width:100%;position:relative;zIndex:100;border:none;"
+                src=""
+        >
+        </iframe>
     </div>
 
 </section>

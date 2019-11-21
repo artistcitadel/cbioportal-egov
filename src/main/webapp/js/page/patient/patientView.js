@@ -5,8 +5,12 @@ var overview;
 var zcnt=0;
 
 $(document).ready(function () {
+  setWindowSize();
+  $("#ifr").css('height',size.height);
+
   action = new Action();
   util = new Util();
+  util.showLoader();
   paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
   paper.scale({ zoom: true});
 
@@ -91,11 +95,15 @@ $(document).ready(function () {
     $('#xgrid').trigger('click');
 
     $("#reset").click(function(){
+        if(INITUNIT==null || INITUNIT===UNIT)return;
         MODE='N';
         removeLine();
         clearPaperPlotNode();
-        $('.spinner').show();
-        setTimeLine('C', RAW);
+        util.showLoader();
+        _.delay(function() {
+            setTimeLine('C', RAW);
+        }, 1000);
+        //setTimeLine('C', RAW);
     })
      /*$('svg').on("click", "[id^='text_']", function(){
          console.log(this.id);
