@@ -330,13 +330,13 @@ function drawTimeLine(start, chmName,xt,m, end){
                 console.log('make hrc state ', state);
                 //return;
                 MODE='P';
+                _.delay(function() {
+                    util.showLoader();
+                }, 1000);
                 removeLine();
                 clearPaperPlotNode();
                 util.showLoader();
-                _.delay(function() {
-                    setTimeLine('C', state);
-                }, 1000);
-                //setTimeLine('C', state);
+                setTimeLine('C', state);
             });
             ++txtCnt;
             OLINE.push(txt);
@@ -419,8 +419,8 @@ function makeEventBarChartCache(){
 }
 function makeEventBarChartSub(){
     console.log('dig-> ', dig);
-    var label = "Time since diagnosis";
-    var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+    /*var label = "Time since diagnosis";
+    var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});*/
 
     $("#dhead").html("");
     var d = HMIN;
@@ -611,36 +611,19 @@ function setTreeNode(id){
     }, 1000);
 }
 function setTreeNodePost(id){
-    var idx = _.findIndex(dig, function (o) {
-        return o.id === id;
-    });
-    var folder = !dig[idx].folder;
-    dig[idx].folder = folder;
-    var show =  !folder;
-
-
-
-    var dat = [];
-    var fdata = _.filter(dig, ["pid", id]);
-    console.log('fdata ',fdata);
-       for(var i=0; i<fdata.length;i++){
-           dat.push(fdata[i].id);
-           if(_.isArray(fdata[i].data) && fdata[i].data.length>0) {
-               dat.push(fdata[i].data[0].id);
-               dat = util.find(fdata[i].data[0], dat);
-           }
-       }
-
-
-    dat = _.uniq(dat);
-    console.log(' dat is ', dat);
-
-    for(var i=0;i<dat.length;i++){
-        var x = _.findIndex(dig, function (o) {
-            return o.id === dat[i];
-        });
-        dig[x].folder = folder;
-        dig[x].show = show;
+    // var idx = _.findIndex(dig, function(o) { return o.id === id; });
+    // dig[idx].folder = !dig[idx].folder;
+    setShow(dig, id, 'y');
+    function setShow(dig, p) {
+        for (var i=0; i < dig.length; i++) {
+            if (dig[i].pid === id || p==='x') {
+                dig[i].folder = !dig[i].folder;
+                dig[i].show = !dig[i].show;
+                if (_.isArray(dig[i].data) && dig[i].data.length > 0) {
+                    setShow(dig[i].data,'x');
+                }
+            }
+        }
     }
 
     clearPaperPlotNode();

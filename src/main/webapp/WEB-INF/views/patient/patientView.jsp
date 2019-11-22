@@ -50,7 +50,9 @@
                                                 <td>Patient:</td>
                                                 <td>
                                                     <div>
-                                                        <span class="clinical-spans" id="patient-attributes"><a href="javascript:void(0)">patient ID</a></span>
+                                                        <span class="clinical-spans" id="patient-attributes"><%--<a href="javascript:void(0)">patient ID</a>--%>
+
+                                                        </span>
 
 
                                                     </div>
@@ -63,7 +65,7 @@
 
                                                        <!--main content-->
                                                        <span class="clinical-spans">
-                                                          <span>
+                                                          <%--<span>
                                                             <svg height="12" width="12">
                                                                <svg width="12" height="12" class="case-label-header">
                                                                   <g transform="translate(6,6)">
@@ -73,13 +75,14 @@
                                                                   </g>
                                                                 </svg>
                                                              </svg>
-                                                         </span>
+                                                         </span>--%>
                                                        <!--main content-->
                                                        <!--extra content-->
                                                         <span style="display: inline-flex;">
                                                           &nbsp;
-                                                          <a href="https://www.cbioportal.org/patient?sampleId=EV-001-P&amp;studyId=coadread_mskcc" target="_blank">
-                                                              EV-001-P</a>
+                                                            EV-001-P
+                                                          <%--<a href="https://www.cbioportal.org/patient?sampleId=EV-001-P&amp;studyId=coadread_mskcc" target="_blank">
+                                                              EV-001-P</a>--%>
                                                             <span class="clinical-attribute" attr-id="DERIVED_NORMALIZED_CASE_TYPE" attr-value="Primary" study="coadread_mskcc">Primary</span>
                                                             <span class="clinical-attribute" attr-id="DERIVED_SAMPLE_LOCATION" attr-value="Right" study="coadread_mskcc">Right</span>
                                                         </span>
@@ -258,11 +261,12 @@
                 <div></div>
             </div>
         </div>
-        <iframe id="ifr"
-                style="width:100%;position:relative;zIndex:100;border:none;"
-                src=""
-        >
-        </iframe>
+        <%--<iframe id="ifr" class="mdacc-heatmap-iframe"--%>
+                <%--style="position:relative;zIndex:100;border:none;"--%>
+                <%--src="/js/page/patient/loadingdata.html"--%>
+        <%-->--%>
+        <%--</iframe>--%>
+
     </div>
 
 </section>

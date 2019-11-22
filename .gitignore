@@ -5,3 +5,5 @@
 .externalToolBuilders/
 .springBeans
 .target/
+.project
+.classpath

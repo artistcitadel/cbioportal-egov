@@ -171,7 +171,7 @@ function Util() {
     self.showLoader = function(){
         $.blockUI({
                 message: null,
-                overlayCSS: {backgroundColor: '#FFFFFF', opacity: 1.5, cursor: 'wait'}
+                overlayCSS: {backgroundColor: '#FFFFFF', opacity: 1.0, cursor: 'wait'}
             }
         );
         $("#spinner").show();

@@ -14,6 +14,9 @@ $(document).ready(function () {
   paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
   paper.scale({ zoom: true});
 
+  var label = "Time since diagnosis";
+  var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+
   var ds_cond = {};
   ds_cond.data = {"qid":"selectLabTestHrc","patientId":PATIENTID};
   ds_cond.callback = setClassifyHrc;
@@ -47,7 +50,11 @@ $(document).ready(function () {
         LASTYPOS *= scale;
 
         ++zcnt;
-        removeLine();
+        _.delay(function() {
+            util.showLoader();
+        }, 1000);
+
+         removeLine();
         clearPaperPlotNode();
         //paperWidth *= scale;
         paperWidth = w;
@@ -69,7 +76,9 @@ $(document).ready(function () {
         //alert(w);
         overview.css('width',w);
         LASTYPOS/=scale;
-
+        _.delay(function() {
+            util.showLoader();
+        }, 1000);
         --zcnt;
         XSCALE = scale;
         removeLine();

@@ -57,6 +57,12 @@
 			border:1px solid black;
 			width:100%;
 		}
+
+		iframe.mdacc-heatmap-iframe {
+			height: calc(100vh - 200px);
+			min-height: 700px;
+		}
+
 		/*.form-control-inline {
 			width:150px;
 		}*/
