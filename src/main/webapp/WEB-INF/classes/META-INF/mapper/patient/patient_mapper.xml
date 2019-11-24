@@ -6,7 +6,7 @@
 
 <mapper namespace="patientcpm">
 
-    <select id="selectPatientChoiceList" parameterType="map" resultType="hashmap">
+    <select id="selectPatientChoiceList" resultType="com.asan.patient.vo.Patient">
       SELECT DISTINCT
                 RESCH_PAT_ID patientId,
                 'xxxx' sampleId,
@@ -17,7 +17,7 @@
      FROM CLSPNEXRT
     </select>
 
-    <select id="selectLabTestHrc" parameterType="map" resultType="hashmap">
+    <select id="selectLabTestHrc" resultType="com.asan.patient.vo.Patient">
       SELECT DISTINCT
                 'Lab_test' subject,
                 EXAM_CD id,
@@ -28,7 +28,7 @@
       ]]>
     </select>
 
-    <select id="selectLabTest" parameterType="map" resultType="hashmap">
+    <select id="selectLabTest" resultType="com.asan.patient.vo.Patient">
      SELECT
      'Lab_test' subject,
      EXAM_SLIP_CD pid ,
@@ -46,6 +46,34 @@
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
         ORDER BY 2,3,5
         LIMIT  10000
+ 	</select>
+
+    <select id="selectPatientMu" resultType="com.asan.patient.vo.PatientMut">
+    SELECT MTTN_EXAM_RSLT_ID ,
+            RESCH_PAT_ID,
+            GENE_EXAM_SPCN_ID,
+            EXAM_NO,
+            GENE_EXAM_MTH_NM,
+            CHRM_NO,
+            GENE_NM,
+            GENE_VARI_ST_LOC_VAL,
+            GENE_VARI_END_LOC_VAL,
+            DNA_STRND_VAL,
+            GENE_VARI_CLSF_NM,
+            GENE_VARI_TYP_NO,
+            REF_ALLELE_SQNC_VAL,
+            VARI_ALLELE_SQNC_VAL,
+            MTTN_STAT_NO,
+            HGVSC_VAL,
+            HGVSP_VAL,
+            TOT_ALLELE_READ_CNT,
+            REF_ALLELE_READ_CNT,
+            VARI_ALLELE_READ_CNT,
+            VARI_ALLELE_READ_RT,
+            EXON_LOC_VAL,
+            INTRN_LOC_VAL,
+            TRSC_ID
+            FROM PMGERMUEM
  	</select>
 
 </mapper>

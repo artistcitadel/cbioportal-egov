@@ -12,7 +12,7 @@
     display: none !important;
 }
 .centered > .sk-spinner {
-    background: #3786C2;;
+    background: #79bbb5;;
     padding: 15px;
     border-radius: 50%;
     height: 115px;
@@ -33,7 +33,7 @@
     width: 600px;
 }
 .color > div {
-    color: #3786C2; !important;
+    color: #79bbb5; !important;
 }
 .small {
     margin-left: 10px;

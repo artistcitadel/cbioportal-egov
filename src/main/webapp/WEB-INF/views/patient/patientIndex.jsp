@@ -20,6 +20,8 @@
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles16.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/indicator.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/linepulse.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/spinkit.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/lazyTable.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
 	<style>
 		.patient-table {

@@ -180,4 +180,9 @@ function Util() {
         $("#spinner").delay(800).hide();
         $.unblockUI();
     }
+    self._isUndefined = function(data){
+        if(_.isUndefined(data) || data == null){
+            return true;
+        } else return false;
+    }
 }

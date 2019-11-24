@@ -12,10 +12,34 @@
 
     <context:annotation-config/>
 	<context:component-scan base-package="com.softcen"/>
+    <context:component-scan base-package="com.asan"/>
 
 	<bean id="jdbcProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:bigcen.properties" />
 	</bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
+        <property name="configLocation"  value="classpath:/configuration/mybatis-config.xml" />
+        <property name="typeAliasesPackage" value="com.asan"/>
+    </bean>
+    <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+        <property name="url" value="${DB_URL}" />
+        <property name="username" value="${DB_COMMON_USER_ID}"/>
+        <property name="password" value="${DB_COMMON_USER_PWD}"/>
+        <property name="defaultAutoCommit" value="false" />
+    </bean>
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceSpied" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value=""/>
+            </bean>
+        </property>
+    </bean>
 
 
 	<!-- ###################################################-->

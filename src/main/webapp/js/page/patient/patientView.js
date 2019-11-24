@@ -18,48 +18,54 @@ $(document).ready(function () {
   var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
 
   var ds_cond = {};
-  ds_cond.data = {"qid":"selectLabTestHrc","patientId":PATIENTID};
+  ds_cond.data = {"queryId":"selectLabTestHrc","patientId":PATIENTID};
   ds_cond.callback = setClassifyHrc;
  action.selectList(ds_cond);
 
   function setClassifyHrc(json){
       //console.log(json);
-      if(json.result.length>0){
-          HRC_LAB = json.result;
+      //if(json.result.length>0){
+      if(json.length>0){
+          //HRC_LAB = json.result;
+          HRC_LAB = json;
           console.log("HRC_LAB ", HRC_LAB);
           var ds_cond = {};
-          ds_cond.data = {"qid":"selectLabTest","patientId":PATIENTID};
+          ds_cond.data = {"queryId":"selectLabTest","patientId":PATIENTID};
           ds_cond.callback = disposer;
           action.selectList(ds_cond);
       }
   }
 
     var scale = 1;
+    var TFORM=1.5;
     overview = $('#genomicOverviewTracksContainer').children(1);
     //alert(paperWidth);
     //zcnt=0;
     var w = overview.attr('width');
 
     $('#zoomin').click(function() {
+        $("#swave").show();
+
+         _.delay(function() {
+
+
         //scale = zcnt*1.2;
-        scale = (1.1 * (zcnt + 1));
+        scale = (TFORM * (zcnt + 1));
         //paper.canvas.setAttribute("transform", "scale("+scale+")")
-        w *= 1.1;
+        w *= TFORM;
         //w = paperWidth * scale;
         overview.css('width', w);
         LASTYPOS *= scale;
 
         ++zcnt;
-        _.delay(function() {
-            util.showLoader();
-        }, 1000);
 
-         removeLine();
+        removeLine();
         clearPaperPlotNode();
         //paperWidth *= scale;
         paperWidth = w;
         XSCALE = scale;
        setTimeLine('R', dig);
+         }, 1000);
         //alert(paperWidth);
 
         //alert(w);
@@ -67,18 +73,18 @@ $(document).ready(function () {
 
     $('#zoomout').click(function() {
         if(zcnt===0)return;
+        $("#swave").show();
+        _.delay(function() {
 
-        scale=(1*zcnt)+(0.1*zcnt);
+        scale=(1*zcnt)+(0.5*zcnt);
         //paper.canvas.setAttribute("transform", "scale("+scale+")")
         //scale=1.2;
         //alert(scale);
-        w/=1.1;
+        w/=TFORM;
         //alert(w);
         overview.css('width',w);
         LASTYPOS/=scale;
-        _.delay(function() {
-            util.showLoader();
-        }, 1000);
+
         --zcnt;
         XSCALE = scale;
         removeLine();
@@ -88,6 +94,7 @@ $(document).ready(function () {
         //alert(paperWidth);
         setTimeLine('R', dig);
 
+        }, 1000);
     });
 
     $('#xgrid').click(function() {
@@ -105,15 +112,17 @@ $(document).ready(function () {
 
     $("#reset").click(function(){
         if(INITUNIT==null || INITUNIT===UNIT)return;
+        $("#swave").show();
+        _.delay(function() {
+
         MODE='N';
         removeLine();
         clearPaperPlotNode();
-        util.showLoader();
-        _.delay(function() {
-            setTimeLine('C', RAW);
+        setTimeLine('C', RAW);
+
         }, 1000);
-        //setTimeLine('C', RAW);
-    })
+
+    });
      /*$('svg').on("click", "[id^='text_']", function(){
          console.log(this.id);
      });*/

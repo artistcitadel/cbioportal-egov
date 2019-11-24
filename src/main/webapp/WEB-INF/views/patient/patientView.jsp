@@ -114,11 +114,21 @@
                                 </ul>
                                 <br/>
                                 <div class="tab-content">
+
                                     <div class="msk-tab">
                                         <div>
                                             <div id="timeline-container">
                                                 <div id="timeline_btn" style="display: flex; margin-bottom: 1px; justify-content: flex-end;">
+                                                    <div id="swave" style="color: #67989f;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                    </div>
+                                                    &nbsp;&nbsp;
                                                     <label style="width: auto; text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
+                                                    <input id="cate" type="button" value="항목관리" class="btn btn-sm" style="margin-right:3px;">
                                                     <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning" style="margin-right:3px;">
                                                     <input id="xgrid" type="button" value="Grid off" class="btn btn-sm btn-success">
                                                     <label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>
@@ -147,20 +157,22 @@
                                                                 <span class="fa fa-search form-control-feedback" aria-hidden="true" style="z-index: 0;"></span>
                                                             </div>
                                                             <div class="pull-right dropdown btn-group">
-                                                                <button rootcloseevent="click" id="dropdown-custom-1" role="button" aria-haspopup="true" aria-expanded="false" type="button" class="btn-sm dropdown-toggle btn btn-default">Columns
+                                                                <button id="mudrop" role="button" aria-haspopup="true" aria-expanded="false" type="button" class="btn-sm dropdown-toggle btn btn-default">Columns
                                                                     <span class="caret"></span>
                                                                 </button>
                                                                 <ul role="menu" class="dropdown-menu" aria-labelledby="dropdown-custom-1" style="padding-left: 10px; overflow: auto; max-height: 300px; white-space: nowrap;">
                                                                     <ul class="list-unstyled">
-                                                                        <li>
+                                                                        <%--<li>
                                                                             <label class="checkbox-inline" title="">
                                                                                 <input data-id="Samples" type="checkbox" checked="">Samples</label>
                                                                         </li>
                                                                         <li>
                                                                             <label class="checkbox-inline" title=""><input data-id="Gene" type="checkbox" checked="">Gene</label>
-                                                                        </li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="Protein Change" type="checkbox" checked="">Protein Change</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="Annotation" type="checkbox" checked="">Annotation</label></li>
+                                                                        </li>--%>
+                                                                        <li>
+                                                                            <a href="#" class="checkbox-inline" data-value="Protein Change" tabIndex="-1">
+                                                                            <input id="Protein Change" type="checkbox"/>Protein Change</a></li>
+                                                                        <%--<li><label class="checkbox-inline" title=""><input data-id="Annotation" type="checkbox" checked="">Annotation</label></li>
                                                                         <li><label class="checkbox-inline" title=""><input data-id="Functional Impact" type="checkbox">Functional Impact</label></li>
                                                                         <li><label class="checkbox-inline" title=""><input data-id="Chromosome" type="checkbox">Chromosome</label></li>
                                                                         <li><label class="checkbox-inline" title=""><input data-id="Start Pos" type="checkbox">Start Pos</label></li>
@@ -182,7 +194,7 @@
                                                                         <li><label class="checkbox-inline" title=""><input data-id="HGVSc" type="checkbox">HGVSc</label></li>
                                                                         <li><label class="checkbox-inline" title=""><input data-id="gnomAD" type="checkbox">gnomAD</label></li>
                                                                         <li><label class="checkbox-inline" title=""><input data-id="ClinVar ID" type="checkbox">ClinVar ID</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="dbSNP" type="checkbox">dbSNP</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="dbSNP" type="checkbox">dbSNP</label></li>--%>
                                                                     </ul>
                                                                 </ul>
                                                             </div>
@@ -275,4 +287,5 @@
 </script>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientChart.js" />"></script>
+<script src="<c:url value="/js/page/patient/patientViewMutation.js" />"></script>
 

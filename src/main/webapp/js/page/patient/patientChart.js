@@ -51,7 +51,7 @@ function setData(crow, data) {
         var item = {};
         item.leaf = false;
         item.time = data[i].time;
-        if(_.isUndefined(data[i].time))
+        if(util._isUndefined(data[i].time))
             item.time = '00000000';
         item.id = data[i].id;
         item.name = data[i].name;
@@ -60,14 +60,14 @@ function setData(crow, data) {
         item.folder = false;
         item.pid = data[i].pid;
         item.subject = data[i].subject;
-        if(_.isUndefined(item.pid))
+        if(util._isUndefined(item.pid))
             item.pid=TITLE[item.subject];
-        if (_.isUndefined(item.name))
+        if (util._isUndefined(item.name))
             item.name = '';
 
-        if(!_.isUndefined(data[i].crte)) {item.crte = data[i].crte; item.leaf=true;}
-        if(!_.isUndefined(data[i].exam)) {item.exam = data[i].exam; item.leaf=true;}
-        if(!_.isUndefined(data[i].mark)) {item.mark = data[i].mark; item.leaf=true;}
+        if(!util._isUndefined(data[i].crte)) {item.crte = data[i].crte; item.leaf=true;}
+        if(!util._isUndefined(data[i].exam)) {item.exam = data[i].exam; item.leaf=true;}
+        if(!util._isUndefined(data[i].mark)) {item.mark = data[i].mark; item.leaf=true;}
 
         if(exist(pdata,item.id) || item.leaf){
             // console.log(item.id);
@@ -81,11 +81,10 @@ function setData(crow, data) {
 
 
 function disposer(json) {
+    console.log(json);
     var crow = [];
-    if(json.result.length>0){
-        var data = json.result;
-        //console.log(data);
-        if(data[0].subject==='Lab_test'){
+    if(json.length>0){
+        if(json[0].subject==='Lab_test'){
             var htem = {};
             htem.id="2";
             htem.pid="0";
@@ -99,7 +98,7 @@ function disposer(json) {
             crow.push(htem);
         }
         //console.log(' init data ', data);
-        var raw_lab_text = _.union(HRC_LAB, data);
+        var raw_lab_text = _.union(HRC_LAB, json);
         crow = setData(crow, raw_lab_text);
         console.log('crow is ', crow);
         RAW=crow;
@@ -112,10 +111,10 @@ function findLevel(pid, data, lvl){
     if(id ==- 1) {
         return lvl;
     }
-    if (id !=- 1 && _.isUndefined(data[id].pid) ) {
+    if (id !=- 1 && util._isUndefined(data[id].pid) ) {
         return ++lvl;
     }
-    if( id !==-1 && !_.isUndefined(data[id].pid) ) {
+    if( id !==-1 && !util._isUndefined(data[id].pid) ) {
         return findLevel(data[id].pid, data, ++lvl);
     }
 }
@@ -153,7 +152,7 @@ function setTrack(data){
     var chmName=[];
     var temp = [];
     for(var i=0; i<data.length; i++){
-        ////if(!_.isUndefined(data[i].time))
+        ////if(!util._isUndefined(data[i].time))
         if(data[i].time!=='00000000')
         temp.push(data[i].time);
     }
@@ -172,7 +171,7 @@ function setTrack(data){
     size+=1;
     console.log('size ' , size);
 
-    //if(_.isUndefined(UNIT))
+    //if(util._isUndefined(UNIT))
     if(MODE=='N') (size < 32) ? UNIT = 'd' : ((size < 32 * 30 - 29 && size > 31) ? UNIT = 'm' : (size > 32 * 30 - 29) ? UNIT = 'y' : '');
     else{
         if(UNIT==='m'){UNIT='d';}
@@ -260,9 +259,11 @@ var COUNTMAP;
 function drawTimeLine(start, chmName,xt,m, end){
     COUNTMAP=null;
     var names = _.countBy(dig, function(v){
-        //if(!_.isUndefined(v.time))
-        if(v.time!=='00000000')
+        //if(!util._isUndefined(v.time))
+        if(v.time!=='00000000') {
+            console.log(v);
             return getDpTime(v.time);
+        }
     });
     var countTime =
         Object.keys(names).map(function(x) {
@@ -313,7 +314,7 @@ function drawTimeLine(start, chmName,xt,m, end){
                 state = _.filter(state, function(o) {
                      var time = o.time;
                      //console.log('click temp is ',time, '=> ',UNIT,  temp);
-                     ////if(_.isUndefined(time))time="00000000"
+                     ////if(util._isUndefined(time))time="00000000"
                      //console.log(time.substring(0,4));
                      if(UNIT==='d') {return (time===temp);}
                      if(UNIT==='m') {return (time.substring(0,6)===temp);}
@@ -330,13 +331,15 @@ function drawTimeLine(start, chmName,xt,m, end){
                 console.log('make hrc state ', state);
                 //return;
                 MODE='P';
+
+                $("#swave").show();
+
                 _.delay(function() {
-                    util.showLoader();
-                }, 1000);
                 removeLine();
                 clearPaperPlotNode();
-                util.showLoader();
                 setTimeLine('C', state);
+
+                }, 1000);
             });
             ++txtCnt;
             OLINE.push(txt);
@@ -461,6 +464,7 @@ function plotdrawing(dig){
     MODE='N';
 
     util.hideLoader();
+    $("#swave").hide();
 }
 
 function printPlot(paper, data){
@@ -523,7 +527,7 @@ function plotMuts(p, row, item) {
             //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
             var h = maxCount;
             // console.log('yrow ', yRow, h);
-            var r = p.rect(position, yRow, pw, h);
+            var r = p.rect(position, yRow-4, pw, h);
             r.attr("fill", "#0f0");
             r.attr("stroke", "#0f0");
             r.attr("stroke-width", 1);
@@ -553,12 +557,12 @@ function plotMuts(p, row, item) {
         // console.log('show ', label, label.folder);
         //var ar = '❯ ';
         var ar = "❯ ";
-        if (label.leaf) ar = '';
+        //if (label.leaf) ar = '';
 
         if (!label.leaf) {
-            console.log(label.folder);
+            //console.log(label.folder);
             if (!label.folder) ar = "﹀ ";
-        }
+        }else ar='';
         var lbl = label.name;
         lbl = ar + lbl;
         //console.log('label_text length ', lbl.length);
@@ -570,11 +574,10 @@ function plotMuts(p, row, item) {
             'font-size': '12'
         });
 
-        if(!label.leaf) {
-            t.click(function () {
-               setTreeNode(label.id);
-            });
-        }
+           t.click(function () {
+              if(!label.leaf)
+                setTreeNode(label.id);
+           });
 
         PAPERNODE.push(t);
         var ypos = yRow + 5;

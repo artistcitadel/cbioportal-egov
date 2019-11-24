@@ -1,0 +1,60 @@
+th.sort-des:after {
+    content: ' \25BC';
+}
+th.sort-asc:after {
+    content: ' \25B2';
+}
+.cbioportal-frontend .table > thead > tr > th.multilineHeader {
+    vertical-align: top;
+    line-height: 1.1;
+    padding-bottom: 4px;
+}
+.topPagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.topPagination .textBetweenButtons {
+    opacity: 1 !important;
+}
+.tableMainToolbar .form-group {
+    margin-bottom: 5px;
+}
+.cbioportal-frontend .table > tbody > tr > td.columnResizer, .cbioportal-frontend .table > thead > tr > td.columnResizer {
+    width: 2px;
+    border-right: #ccc 1px solid;
+    border-left: #ccc 1px solid;
+    padding: 0 !important;
+}
+
+.simple-table th {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    background-color: #fff;
+}
+.simple-table tbody > tr:nth-of-type(odd).highlighted {
+    background-color: #9fafd1 !important;
+}
+.simple-table tbody > tr:nth-of-type(even) {
+    background-color: #fff;
+}
+.simple-table tbody > tr:nth-of-type(even).highlighted {
+    background-color: #b0bed9;
+}
+.simple-table tbody > tr.clickable {
+    cursor: pointer;
+}
+.simple-table tbody > tr:nth-of-type(even).clickable:hover {
+    background-color: #b6c4df !important;
+}
+.simple-table tbody > tr:nth-of-type(odd).clickable:hover {
+    background-color: #a7b6d8 !important;
+}
+.simple-table td.columnResizer {
+    border-color: transparent !important;
+}
+.simple-table thead td.columnResizer {
+    border-color: transparent !important;
+    background-color: #67989f;
+}
+
