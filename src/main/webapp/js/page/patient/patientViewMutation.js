@@ -1,67 +1,101 @@
 $(document).ready(function () {
+    getMutation();
 
-    var muOptions = {'MTTN_EXAM_RSLT_ID':'돌연변이검사결과ID',
-        'RESCH_PAT_ID':'병원등록번호',
-        'GENE_EXAM_SPCN_ID':'유전자검사검체ID',
-        'EXAM_NO':'검사번호',
-        'GENE_EXAM_MTH_NM':'유전자검사방법명',
-        'CHRM_NO':'염색체번호',
-        'GENE_NM':'유전자명',
-        'GENE_VARI_ST_LOC_VAL':'유전자변이시작위치값',
-        'GENE_VARI_END_LOC_VAL':'유전자변이종료위치값',
-        'DNA_STRND_VAL':'DNA가닥값',
-        'GENE_VARI_CLSF_NM':'유전자변이분류명',
-        'GENE_VARI_TYP_NO':'유전자변이유형번호',
-        'REF_ALLELE_SQNC_VAL':'참조대립유전자염기서열값',
-        'VARI_ALLELE_SQNC_VAL':'변이대립유전자염기서열값',
-        'MTTN_STAT_NO':'돌연변이상태번호',
-        'HGVSC_VAL':'HGVSC값',
-        'HGVSP_VAL':'HGVSP값',
-        'TOT_ALLELE_READ_CNT':'총대립유전자리드수',
-        'REF_ALLELE_READ_CNT':'변이대립유전자리드수',
-        'VARI_ALLELE_READ_CNT':'변이대립유전자리드비율',
-        'VARI_ALLELE_READ_RT':'엑손위치값',
-        'INTRN_LOC_VAL':'인트론위치값',
-        'TSRC_ID':'전사체ID'
-    };
+    function getMutation() {
+        var ds_cond = {};
+        ds_cond.data = {"queryId": "selectPatientMuList", "patientId": '52089167'};
+        ds_cond.callback = setMut;
+        action.selectPatientMuList(ds_cond);
+    }
 
+    function setMut(json) {
+        var data= [];
+        //if(json.length>0){
+           /* _.forEach(json, function(v) {
+                var item = {};
+                item.mttnExamRsltId = v.mttnExamRsltId;
+                item.reschPatId = v.reschPatId;
+                item.geneExamSpcnId = v.geneExamSpcnId;
+                item.examNo = v.examNo;
+                item.geneExamMthNm = v.geneExamMthNm;
+                item.chrnNo = v.chrnNo;
+                item.geneNm = v.geneNm;
+                data.push(item);
+            });*/
+        //}
+        //console.log(data);
+        var source =
+            {
+                localdata: json,
+                dataFields: [
+                    {name: 'mttnExamRsltId', type: 'string'},
+                    {name: 'reschPatId', type: 'string'},
+                    {name: 'geneExamSpcnId', type: 'string'},
+                    {name: 'examNo', type: 'string'},
+                    {name: 'geneExamMthNm', type: 'string'},
+                    {name: 'chrnNo', type: 'string'},
+                    {name: 'geneNm', type: 'string'},
+                    {name: 'geneVariStLocVal', type: 'string'},
+                    {name: 'geneVariEndLocVal', type: 'string'},
+                    {name: 'dnaStandVal', type: 'string'},
+                    {name: 'geneVariClsfNm', type: 'string'},
+                    {name: 'geneVariTypNo', type: 'string'},
+                    {name: 'refAlleleSqncVal', type: 'string'},
+                    {name: 'variAlleleSqncVal', type: 'string'},
+                    {name: 'mttnStatNo', type: 'string'},
+                    {name: 'hgvscVal', type: 'string'},
+                    {name: 'hgvspVal', type: 'string'},
+                    {name: 'totAlleleReadCnt', type: 'string'},
+                    {name: 'refAlleleReadCnt', type: 'string'},
+                    {name: 'variAlleleReadCnt', type: 'string'},
+                    {name: 'variAlleleReadRt', type: 'string'},
+                    {name: 'exonLocVal', type: 'string'},
+                    {name: 'intrnLocVal', type: 'string'},
+                    {name: 'trscId', type: 'string'}
+                ],
+                datatype: "array"
+            };
 
-        $('body').on('click', function(e) {
-            console.log($('#colsmu').is(":visible"));
-              if($('#colsmu').is(":visible"))
-                  $('#colsmu').toggle();
+        var dataAdapter = new $.jqx.dataAdapter(source);
 
-        });
-            /*if(e.target.nodeName == 'DIV') {
-            $('#colsmu').toggle();
-        }*/
-    //});
-    $("#mudrop").on('click', function(e){
-        $('#colsmu').toggle();
+        $("#dataTableMu").jqxDataTable(
+            {
+                width: getWidth("dataTableMu"),
+                source: dataAdapter,
+                pageable: true,
+                sortable: true,
+                pagerButtonsCount: 10,
+                altRows: true,
+                filterable: true,
+                height: 400,
+                filterMode: 'simple',
+                columns: [
+                    { text: '병원등록번호', cellsAlign: 'center', align: 'center', dataField: 'mttnExamRsltId'},
+                    { text: '유전자검사검체ID',  cellsAlign: 'center', align: 'center', dataField: 'geneExamSpcnId'},
+                    { text: '검사번호',  dataField: 'examNo',  cellsAlign: 'center', align: 'center'},
+                    { text: '유전자검사방법명',  dataField: 'geneExamMthNm', align: 'center', cellsAlign: 'center'},
+                    { text: '염색체번호', cellsAlign: 'center', align: 'center', dataField: 'chrnNo'},
+                    { text: '유전자명', cellsAlign: 'center', align: 'center', dataField: 'geneNm' },
+                   /* { text: '유전자변이시작위치값',  cellsAlign: 'center', align: 'center', dataField: 'geneVariStLocVal' },
+                    { text: '유전자변이종료위치값', cellsAlign: 'center', align: 'center', dataField: 'geneVariEndLocVal' },
+                    { text: 'DNA가닥값',  cellsAlign: 'center', align: 'center', dataField: 'dnaStandVal' },
+                    { text: '유전자변이분류명',  cellsAlign: 'center', align: 'center', dataField: 'geneVariClsfNm' },
+                    { text: '유전자변이유형번호',  cellsAlign: 'center', align: 'center', dataField: 'geneVariTypNo' },
+                    { text: '참조대립유전자염기서열값',  cellsAlign: 'center', align: 'center', dataField: 'refAlleleSqncVal' },
+                    { text: '변이대립유전자염기서열값', cellsAlign: 'center', align: 'center', dataField: 'variAlleleSqncVal' },
+                    { text: '돌연변이상태번호',  cellsAlign: 'center', align: 'center', dataField: 'mttnStatNo' },
+                    { text: 'HGVSC값',  cellsAlign: 'center', align: 'center', dataField: 'hgvscVal' },
+                    { text: 'HGVSP값',  cellsAlign: 'center', align: 'center', dataField: 'hgvspVal' },
+                    { text: '총대립유전자리드수',  cellsAlign: 'center', align: 'center', dataField: 'totAlleleReadCnt' },
+                    { text: '참조대립유전자리드수',  cellsAlign: 'center', align: 'center', dataField: 'refAlleleReadCnt' },
+                    { text: '변이대립유전자리드수',  cellsAlign: 'center', align: 'center', dataField: 'variAlleleReadCnt' },
+                    { text: '변이대립유전자리드비율', cellsAlign: 'center', align: 'center', dataField: 'variAlleleReadRt' },
+                    { text: '엑손위치값', cellsAlign: 'center', align: 'center', dataField: 'exonLocVal' },
+                    { text: '인트론위치값',cellsAlign: 'center', align: 'center', dataField: 'intrnLocVal' },
+                    { text: '전사체ID', cellsAlign: 'center', align: 'center', dataField: 'trscId' }*/
+                ]
+            });
+    }
 
-    });
-//
-//     var ds_cond = {};
-//     ds_cond.data = {"queryId":"selectPatientMu","patientId":PATIENTID};
-//     ds_cond.callback = setMu;var muLi = '';
-// //     _.forEach(muOptions, function(value, key) {
-// //        muli+='<li><label class="checkbox-inline" title=""><input id="'+key+'" type="checkbox" checked="">'+value+'</label></li>'
-// //     });
-//     action.selectList(ds_cond);
-// function setMu(json){
-//     if(json.length>0){
-//         var litxt='';
-//         _.forEach(json, function(value) {
-//
-//         });
-//     }
-// }
-// var options=[];
-//     $('#mudrop').on('click', function (event) {
-//         alert('');
-//
-//
-//         return false;
-//     });
-//
- });
+});
+

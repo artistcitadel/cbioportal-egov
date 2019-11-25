@@ -4,6 +4,7 @@ package com.asan.patient.service;
 //import java.util.Map;
 
 import com.asan.patient.dao.PatientDAOImpl;
+import com.asan.patient.dao.PatientMutDAOImpl;
 import com.asan.patient.vo.PatientMut;
 import com.reactkorea.Result;
 import com.reactkorea.ResultFactory;
@@ -22,7 +23,7 @@ import java.util.List;
  * 4.설명 : 환자챠트 Service 클래스다.
  * <pre>
  *
- * @Class  PatientService.java
+ * @Class  PatientMutService.java
  * @author
  * @since  2019. 11. 09.
  * @version 1.0
@@ -40,14 +41,10 @@ import java.util.List;
 
 @Transactional
 @Service
-public class PatientServiceImpl extends RkServiceImpl {
+public class PatientMutServiceImpl extends RkServiceImpl {
 
-	@Autowired
-	public PatientServiceImpl(PatientDAOImpl mapper) {
-		super(mapper);
-	}
-
-	public Result<List> fetchPatientMutation(String mappingName, PatientMut vo) throws Exception {
-		return super.fetch(mappingName, vo);
-	}
+  @Autowired
+  public PatientMutServiceImpl(PatientMutDAOImpl mapper) {
+    super(mapper);
+  }
 }

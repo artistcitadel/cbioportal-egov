@@ -48,32 +48,33 @@
         LIMIT  100
  	</select>
 
-    <select id="selectPatientMu" resultType="com.asan.patient.vo.PatientMut">
-    SELECT MTTN_EXAM_RSLT_ID ,
-            RESCH_PAT_ID,
-            GENE_EXAM_SPCN_ID,
-            EXAM_NO,
-            GENE_EXAM_MTH_NM,
-            CHRM_NO,
-            GENE_NM,
-            GENE_VARI_ST_LOC_VAL,
-            GENE_VARI_END_LOC_VAL,
-            DNA_STRND_VAL,
-            GENE_VARI_CLSF_NM,
-            GENE_VARI_TYP_NO,
-            REF_ALLELE_SQNC_VAL,
-            VARI_ALLELE_SQNC_VAL,
-            MTTN_STAT_NO,
-            HGVSC_VAL,
-            HGVSP_VAL,
-            TOT_ALLELE_READ_CNT,
-            REF_ALLELE_READ_CNT,
-            VARI_ALLELE_READ_CNT,
-            VARI_ALLELE_READ_RT,
-            EXON_LOC_VAL,
-            INTRN_LOC_VAL,
-            TRSC_ID
+    <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
+    SELECT MTTN_EXAM_RSLT_ID mttnExamRsltId,
+            RESCH_PAT_ID reschPatId,
+            GENE_EXAM_SPCN_ID geneExamSpcnId,
+            EXAM_NO examNo,
+            GENE_EXAM_MTH_NM geneExamMthNm,
+            CHRM_NO chrnNo,
+            GENE_NM geneNm,
+            GENE_VARI_ST_LOC_VAL geneVariStLocVal,
+            GENE_VARI_END_LOC_VAL geneVariEndLocVal,
+            DNA_STRND_VAL dnaStandVal,
+            GENE_VARI_CLSF_NM geneVariClsfNm,
+            GENE_VARI_TYP_NO geneVariTypNo,
+            REF_ALLELE_SQNC_VAL refAlleleSqncVal,
+            VARI_ALLELE_SQNC_VAL variAlleleSqncVal,
+            MTTN_STAT_NO mttnStatNo,
+            HGVSC_VAL hgvscVal,
+            HGVSP_VAL hgvspVal,
+            TOT_ALLELE_READ_CNT totAlleleReadCnt,
+            REF_ALLELE_READ_CNT refAlleleReadCnt,
+            VARI_ALLELE_READ_CNT variAlleleReadCnt,
+            VARI_ALLELE_READ_RT variAlleleReadRt,
+            EXON_LOC_VAL exonLocVal,
+            INTRN_LOC_VAL intrnLocVal,
+            TRSC_ID trscId
             FROM PMGERMUEM
+            WHERE RESCH_PAT_ID = #{patientId}
  	</select>
 
 </mapper>

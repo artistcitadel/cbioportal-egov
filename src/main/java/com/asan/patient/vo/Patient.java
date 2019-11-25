@@ -104,14 +104,6 @@ public class Patient extends RkCmmnVO {
         this.recpDt = recpDt;
     }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
     public String getSampleId() {
         return sampleId;
     }
@@ -129,6 +121,5 @@ public class Patient extends RkCmmnVO {
     private String cancerTypeDetails;
     private String subject;
     private String recpDt;
-    private String patientId;
     private String sampleId;
 }

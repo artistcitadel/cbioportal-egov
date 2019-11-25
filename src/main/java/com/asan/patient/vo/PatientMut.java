@@ -3,223 +3,223 @@ package com.asan.patient.vo;
 import com.reactkorea.RkCmmnVO;
 
 public class PatientMut  extends RkCmmnVO {
-    private String MTTN_EXAM_RSLT_ID;
-    private String RESCH_PAT_ID;
-    private String GENE_EXAM_SPCN_ID;
-    private String EXAM_NO;
-    private String GENE_EXAM_MTH_NM;
-    private String CHRM_NO;
-    private String GENE_NM;
-    private String GENE_VARI_ST_LOC_VAL;
-    private String GENE_VARI_END_LOC_VAL;
-    private String DNA_STRND_VAL;
+    private String mttnExamRsltId;
+    private String reschPatId;
 
-    public String getMTTN_EXAM_RSLT_ID() {
-        return MTTN_EXAM_RSLT_ID;
+    public String getMttnExamRsltId() {
+        return mttnExamRsltId;
     }
 
-    public void setMTTN_EXAM_RSLT_ID(String MTTN_EXAM_RSLT_ID) {
-        this.MTTN_EXAM_RSLT_ID = MTTN_EXAM_RSLT_ID;
+    public void setMttnExamRsltId(String mttnExamRsltId) {
+        this.mttnExamRsltId = mttnExamRsltId;
     }
 
-    public String getRESCH_PAT_ID() {
-        return RESCH_PAT_ID;
+    public String getReschPatId() {
+        return reschPatId;
     }
 
-    public void setRESCH_PAT_ID(String RESCH_PAT_ID) {
-        this.RESCH_PAT_ID = RESCH_PAT_ID;
+    public void setReschPatId(String reschPatId) {
+        this.reschPatId = reschPatId;
     }
 
-    public String getGENE_EXAM_SPCN_ID() {
-        return GENE_EXAM_SPCN_ID;
+    public String getGeneExamSpcnId() {
+        return geneExamSpcnId;
     }
 
-    public void setGENE_EXAM_SPCN_ID(String GENE_EXAM_SPCN_ID) {
-        this.GENE_EXAM_SPCN_ID = GENE_EXAM_SPCN_ID;
+    public void setGeneExamSpcnId(String geneExamSpcnId) {
+        this.geneExamSpcnId = geneExamSpcnId;
     }
 
-    public String getEXAM_NO() {
-        return EXAM_NO;
+    public String getExamNo() {
+        return examNo;
     }
 
-    public void setEXAM_NO(String EXAM_NO) {
-        this.EXAM_NO = EXAM_NO;
+    public void setExamNo(String examNo) {
+        this.examNo = examNo;
     }
 
-    public String getGENE_EXAM_MTH_NM() {
-        return GENE_EXAM_MTH_NM;
+    public String getGeneExamMthNm() {
+        return geneExamMthNm;
     }
 
-    public void setGENE_EXAM_MTH_NM(String GENE_EXAM_MTH_NM) {
-        this.GENE_EXAM_MTH_NM = GENE_EXAM_MTH_NM;
+    public void setGeneExamMthNm(String geneExamMthNm) {
+        this.geneExamMthNm = geneExamMthNm;
     }
 
-    public String getCHRM_NO() {
-        return CHRM_NO;
+    public String getChrnNo() {
+        return chrnNo;
     }
 
-    public void setCHRM_NO(String CHRM_NO) {
-        this.CHRM_NO = CHRM_NO;
+    public void setChrnNo(String chrnNo) {
+        this.chrnNo = chrnNo;
     }
 
-    public String getGENE_NM() {
-        return GENE_NM;
+    public String getGeneNm() {
+        return geneNm;
     }
 
-    public void setGENE_NM(String GENE_NM) {
-        this.GENE_NM = GENE_NM;
+    public void setGeneNm(String geneNm) {
+        this.geneNm = geneNm;
     }
 
-    public String getGENE_VARI_ST_LOC_VAL() {
-        return GENE_VARI_ST_LOC_VAL;
+    public String getGeneVariStLocVal() {
+        return geneVariStLocVal;
     }
 
-    public void setGENE_VARI_ST_LOC_VAL(String GENE_VARI_ST_LOC_VAL) {
-        this.GENE_VARI_ST_LOC_VAL = GENE_VARI_ST_LOC_VAL;
+    public void setGeneVariStLocVal(String geneVariStLocVal) {
+        this.geneVariStLocVal = geneVariStLocVal;
     }
 
-    public String getGENE_VARI_END_LOC_VAL() {
-        return GENE_VARI_END_LOC_VAL;
+    public String getGeneVariEndLocVal() {
+        return geneVariEndLocVal;
     }
 
-    public void setGENE_VARI_END_LOC_VAL(String GENE_VARI_END_LOC_VAL) {
-        this.GENE_VARI_END_LOC_VAL = GENE_VARI_END_LOC_VAL;
+    public void setGeneVariEndLocVal(String geneVariEndLocVal) {
+        this.geneVariEndLocVal = geneVariEndLocVal;
     }
 
-    public String getDNA_STRND_VAL() {
-        return DNA_STRND_VAL;
+    public String getDnaStandVal() {
+        return dnaStandVal;
     }
 
-    public void setDNA_STRND_VAL(String DNA_STRND_VAL) {
-        this.DNA_STRND_VAL = DNA_STRND_VAL;
+    public void setDnaStandVal(String dnaStandVal) {
+        this.dnaStandVal = dnaStandVal;
     }
 
-    public String getGENE_VARI_CLSF_NM() {
-        return GENE_VARI_CLSF_NM;
+    public String getGeneVariClsfNm() {
+        return geneVariClsfNm;
     }
 
-    public void setGENE_VARI_CLSF_NM(String GENE_VARI_CLSF_NM) {
-        this.GENE_VARI_CLSF_NM = GENE_VARI_CLSF_NM;
+    public void setGeneVariClsfNm(String geneVariClsfNm) {
+        this.geneVariClsfNm = geneVariClsfNm;
     }
 
-    public String getGENE_VARI_TYP_NO() {
-        return GENE_VARI_TYP_NO;
+    public String getGeneVariTypNo() {
+        return geneVariTypNo;
     }
 
-    public void setGENE_VARI_TYP_NO(String GENE_VARI_TYP_NO) {
-        this.GENE_VARI_TYP_NO = GENE_VARI_TYP_NO;
+    public void setGeneVariTypNo(String geneVariTypNo) {
+        this.geneVariTypNo = geneVariTypNo;
     }
 
-    public String getREF_ALLELE_SQNC_VAL() {
-        return REF_ALLELE_SQNC_VAL;
+    public String getRefAlleleSqncVal() {
+        return refAlleleSqncVal;
     }
 
-    public void setREF_ALLELE_SQNC_VAL(String REF_ALLELE_SQNC_VAL) {
-        this.REF_ALLELE_SQNC_VAL = REF_ALLELE_SQNC_VAL;
+    public void setRefAlleleSqncVal(String refAlleleSqncVal) {
+        this.refAlleleSqncVal = refAlleleSqncVal;
     }
 
-    public String getVARI_ALLELE_SQNC_VAL() {
-        return VARI_ALLELE_SQNC_VAL;
+    public String getVariAlleleSqncVal() {
+        return variAlleleSqncVal;
     }
 
-    public void setVARI_ALLELE_SQNC_VAL(String VARI_ALLELE_SQNC_VAL) {
-        this.VARI_ALLELE_SQNC_VAL = VARI_ALLELE_SQNC_VAL;
+    public void setVariAlleleSqncVal(String variAlleleSqncVal) {
+        this.variAlleleSqncVal = variAlleleSqncVal;
     }
 
-    public String getMTTN_STAT_NO() {
-        return MTTN_STAT_NO;
+    public String getMttnStatNo() {
+        return mttnStatNo;
     }
 
-    public void setMTTN_STAT_NO(String MTTN_STAT_NO) {
-        this.MTTN_STAT_NO = MTTN_STAT_NO;
+    public void setMttnStatNo(String mttnStatNo) {
+        this.mttnStatNo = mttnStatNo;
     }
 
-    public String getHGVSC_VAL() {
-        return HGVSC_VAL;
+    public String getHgvscVal() {
+        return hgvscVal;
     }
 
-    public void setHGVSC_VAL(String HGVSC_VAL) {
-        this.HGVSC_VAL = HGVSC_VAL;
+    public void setHgvscVal(String hgvscVal) {
+        this.hgvscVal = hgvscVal;
     }
 
-    public String getHGVSP_VAL() {
-        return HGVSP_VAL;
+    public String getHgvspVal() {
+        return hgvspVal;
     }
 
-    public void setHGVSP_VAL(String HGVSP_VAL) {
-        this.HGVSP_VAL = HGVSP_VAL;
+    public void setHgvspVal(String hgvspVal) {
+        this.hgvspVal = hgvspVal;
     }
 
-    public String getTOT_ALLELE_READ_CNT() {
-        return TOT_ALLELE_READ_CNT;
+    public String getTotAlleleReadCnt() {
+        return totAlleleReadCnt;
     }
 
-    public void setTOT_ALLELE_READ_CNT(String TOT_ALLELE_READ_CNT) {
-        this.TOT_ALLELE_READ_CNT = TOT_ALLELE_READ_CNT;
+    public void setTotAlleleReadCnt(String totAlleleReadCnt) {
+        this.totAlleleReadCnt = totAlleleReadCnt;
     }
 
-    public String getREF_ALLELE_READ_CNT() {
-        return REF_ALLELE_READ_CNT;
+    public String getRefAlleleReadCnt() {
+        return refAlleleReadCnt;
     }
 
-    public void setREF_ALLELE_READ_CNT(String REF_ALLELE_READ_CNT) {
-        this.REF_ALLELE_READ_CNT = REF_ALLELE_READ_CNT;
+    public void setRefAlleleReadCnt(String refAlleleReadCnt) {
+        this.refAlleleReadCnt = refAlleleReadCnt;
     }
 
-    public String getVARI_ALLELE_READ_CNT() {
-        return VARI_ALLELE_READ_CNT;
+    public String getVariAlleleReadCnt() {
+        return variAlleleReadCnt;
     }
 
-    public void setVARI_ALLELE_READ_CNT(String VARI_ALLELE_READ_CNT) {
-        this.VARI_ALLELE_READ_CNT = VARI_ALLELE_READ_CNT;
+    public void setVariAlleleReadCnt(String variAlleleReadCnt) {
+        this.variAlleleReadCnt = variAlleleReadCnt;
     }
 
-    public String getVARI_ALLELE_READ_RT() {
-        return VARI_ALLELE_READ_RT;
+    public String getVariAlleleReadRt() {
+        return variAlleleReadRt;
     }
 
-    public void setVARI_ALLELE_READ_RT(String VARI_ALLELE_READ_RT) {
-        this.VARI_ALLELE_READ_RT = VARI_ALLELE_READ_RT;
+    public void setVariAlleleReadRt(String variAlleleReadRt) {
+        this.variAlleleReadRt = variAlleleReadRt;
     }
 
-    public String getEXON_LOC_VAL() {
-        return EXON_LOC_VAL;
+    public String getExonLocVal() {
+        return exonLocVal;
     }
 
-    public void setEXON_LOC_VAL(String EXON_LOC_VAL) {
-        this.EXON_LOC_VAL = EXON_LOC_VAL;
+    public void setExonLocVal(String exonLocVal) {
+        this.exonLocVal = exonLocVal;
     }
 
-    public String getINTRN_LOC_VAL() {
-        return INTRN_LOC_VAL;
+    public String getIntrnLocVal() {
+        return intrnLocVal;
     }
 
-    public void setINTRN_LOC_VAL(String INTRN_LOC_VAL) {
-        this.INTRN_LOC_VAL = INTRN_LOC_VAL;
+    public void setIntrnLocVal(String intrnLocVal) {
+        this.intrnLocVal = intrnLocVal;
     }
 
-    public String getTRSC_ID() {
-        return TRSC_ID;
+    public String getTrscId() {
+        return trscId;
     }
 
-    public void setTRSC_ID(String TRSC_ID) {
-        this.TRSC_ID = TRSC_ID;
+    public void setTrscId(String trscId) {
+        this.trscId = trscId;
     }
 
-    private String GENE_VARI_CLSF_NM;
-    private String GENE_VARI_TYP_NO;
-    private String REF_ALLELE_SQNC_VAL;
-    private String VARI_ALLELE_SQNC_VAL;
-    private String MTTN_STAT_NO;
-    private String HGVSC_VAL;
-    private String HGVSP_VAL;
-    private String TOT_ALLELE_READ_CNT;
-    private String REF_ALLELE_READ_CNT;
-    private String VARI_ALLELE_READ_CNT;
-    private String VARI_ALLELE_READ_RT;
-    private String EXON_LOC_VAL;
-    private String INTRN_LOC_VAL;
-    private String TRSC_ID;
+    private String geneExamSpcnId;
+    private String examNo;
+    private String geneExamMthNm;
+    private String chrnNo;
+    private String geneNm;
+    private String geneVariStLocVal;
+    private String geneVariEndLocVal;
+    private String dnaStandVal;
+    private String geneVariClsfNm;
+    private String geneVariTypNo;
+    private String refAlleleSqncVal;
+    private String variAlleleSqncVal;
+    private String mttnStatNo;
+    private String hgvscVal;
+    private String hgvspVal;
+    private String totAlleleReadCnt;
+    private String refAlleleReadCnt;
+    private String variAlleleReadCnt;
+    private String variAlleleReadRt;
+    private String exonLocVal;
+    private String intrnLocVal;
+    private String trscId;
 
 
 }

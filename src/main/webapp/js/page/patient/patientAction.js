@@ -26,6 +26,7 @@ function Action() {
     }
 
     self.selectList = function (props) {
+
         $.ajax({
             type: "post",
             /*headers: {
@@ -34,6 +35,29 @@ function Action() {
             dataType: "json",
             cache: false,
             url: gvSERVER+"/patient/selectList",
+            contentType: "application/json",
+            data: JSON.stringify(props.data),
+            callback: props.disposer,
+            //timeout: 10000,
+            success: function (json) {
+                props.callback(json);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    self.selectPatientMuList = function (props) {
+
+        $.ajax({
+            type: "post",
+            /*headers: {
+                Authorization: apiKey
+            },*/
+            dataType: "json",
+            cache: false,
+            url: gvSERVER+"/patient/selectPatientMuList",
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,
