@@ -15,7 +15,7 @@
 
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
-		<egovframework.rte.version>3.5.0</egovframework.rte.version>
+
 	</properties>
 
 	<repositories>
@@ -56,12 +56,6 @@
 	</repositories>
 
 	<dependencies>
-		<!-- 표준프레임워크 실행환경 -->
-		<dependency>
-			<groupId>egovframework.rte</groupId>
-			<artifactId>egovframework.rte.psl.dataaccess</artifactId>
-			<version>${egovframework.rte.version}</version>
-		</dependency>
 
 		<!-- JACKSON -->
 		<dependency>

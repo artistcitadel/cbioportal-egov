@@ -45,7 +45,7 @@
         /*AND EXAM_ENG_NM = 'Rh variant Ag,Automation (Semi-Qn)[Agglutination],Blood'*/
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
         ORDER BY 2,3,5
-        LIMIT  10000
+        LIMIT  100
  	</select>
 
     <select id="selectPatientMu" resultType="com.asan.patient.vo.PatientMut">

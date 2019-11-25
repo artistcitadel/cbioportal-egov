@@ -29,15 +29,16 @@
     <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="Maven: egovframework.rte:egovframework.rte.psl.dataaccess:3.5.0" level="project" />
-    <orderEntry type="library" name="Maven: egovframework.rte:egovframework.rte.fdl.logging:3.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:log4j-over-slf4j:1.7.7" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.0.9.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ibatis:ibatis-sqlmap:2.3.4.726" level="project" />
-    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: egovframework.rte:egovframework.rte.psl.dataaccess:3.5.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: egovframework.rte:egovframework.rte.fdl.logging:3.5.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.apache.logging.log4j:log4j-core:2.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.apache.logging.log4j:log4j-api:2.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.slf4j:log4j-over-slf4j:1.7.7" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.springframework:spring-orm:4.0.9.RELEASE" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.apache.ibatis:ibatis-sqlmap:2.3.4.726" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.8" level="project" />

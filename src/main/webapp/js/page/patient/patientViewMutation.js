@@ -25,6 +25,21 @@ $(document).ready(function () {
         'TSRC_ID':'전사체ID'
     };
 
+
+        $('body').on('click', function(e) {
+            console.log($('#colsmu').is(":visible"));
+              if($('#colsmu').is(":visible"))
+                  $('#colsmu').toggle();
+
+        });
+            /*if(e.target.nodeName == 'DIV') {
+            $('#colsmu').toggle();
+        }*/
+    //});
+    $("#mudrop").on('click', function(e){
+        $('#colsmu').toggle();
+
+    });
 //
 //     var ds_cond = {};
 //     ds_cond.data = {"queryId":"selectPatientMu","patientId":PATIENTID};
