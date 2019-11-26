@@ -128,7 +128,7 @@
                                                     </div>
                                                     &nbsp;&nbsp;
                                                     <label style="width: auto; text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
-                                                    <input id="cate" type="button" value="항목관리" class="btn btn-sm" style="margin-right:3px;">
+                                                    <%--<input id="cate" type="button" value="항목관리" class="btn btn-sm" style="margin-right:3px;">--%>
                                                     <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning" style="margin-right:3px;">
                                                     <input id="xgrid" type="button" value="Grid off" class="btn btn-sm btn-success">
                                                     <label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>
@@ -146,11 +146,12 @@
                                             <div>
 
                                         <!--------------------- table -------------------------------->
-                                                <div class="lazy-mobx-table">
-                                                    <div>
-                                                        <span style="float: left; color: black; font-size: 16px; font-weight: bold;">
+                                                <%--<div class="lazy-mobx-table">--%>
+                                                <div>
+
+                                                       <%-- <span style="float: left; color: black; font-size: 16px; font-weight: bold;">
                                                             8 Mutations (page 1 of 1)
-                                                        </span>
+                                                        </span>--%>
                                                         <div role="toolbar" class="tableMainToolbar btn-toolbar" style="margin-left: 0px;">
                                                             <div class="pull-right form-group has-feedback input-group-sm tableFilter" style="display: inline-block; margin-left: 5px;">
                                                                 <input placeholder="" type="text" class="form-control tableSearchInput" style="width: 200px;">
@@ -196,16 +197,81 @@
                                                                 </span>
                                                             </span>
                                                         </div>
+                                                              <%--<div id="dataTableMu">
+
+                                                               </div>--%>
+                                                           <div style="overflow-x: visible;">
+                                                               <table class="simple-table table table-striped table-border-top">
+                                                                   <thead>
+                                                                   <tr>
+                                                                       <th class="multilineHeader" role="button"><span style="margin-right: 5px;">Gene</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>methods</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Protein Change</span></th>
+                                                                       <th class="multilineHeader sort-des" role="button"><span>Annotation</span></th>
+                                                                       <th class="multilineHeader sort-des" role="button"><span>Chromosome</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Start Pos</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>End Pos</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Ref</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Var</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>MS</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Mutation Type</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Allele Freq</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Varient Reads(N)</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Ref Reads(N)</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Copy #</span></th>
+                                                                       <th class="multilineHeader" role="button"><span>Cohort</span></th>
+                                                                       <th class="multilineHeader" role="button" style="text-align: right;"><span>COSMIC</span></th>
+                                                                   </tr>
+                                                                   </thead>
+                                                                   <tbody>
+                                                                   <tr>
+                                                                       <td><span data-test="mutation-table-gene-column">NRAS</span></td>
+                                                                       <td><span data-test="mutation-table-gene-column">method</span></td>
+                                                                       <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">Q61K</span></td>
+                                                                       <td><span style="display: flex; min-width: 100px;">
+                                                                           <span class="annotation-module_annotation-item__2EgnB">
+                                                                               <i class="oncokb annotation-icon oncogenic level-3A" data-test="oncogenic-icon-image" data-test2="NRAS">
+                                                                               </i></span><span class="annotation-module__annotation-item__1YzCz">
+                                                                           </span></span>
+                                                                       </td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Chromsome</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">199</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">299</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">ref</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">var</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">ms</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Mutation Type</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Alle Freq</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Varient Reads</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Ref Reads(N)</span></td>
+                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Copy #</span></td>
+                                                                       <td>
+                                                                           <div>
+                                                                               <svg width="71" height="12">
+                                                                                   <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>
+                                                                                   <rect y="2" width="30" height="8" fill="#ccc"></rect>
+                                                                                   <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>
+                                                                                   <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>
+                                                                               </svg>
+                                                                           </div>
+                                                                       </td>
+                                                                       <td>
+                                                                           <div class="styles-module__integer-data__1Bn0H">cosmic</div>
+                                                                       </td>
+                                                                   </tr>
+
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
 
 
-                                                        <div style="overflow-x: visible;">
-
-                                                            <div id="dataTableMu"></div>
-
-                                                        </div>
 
 
-                                                    </div>
+
+
+
+
+
                                                 </div>
                                    <!----------------------------table------------------------------------------>
 
@@ -219,6 +285,9 @@
 
                                     </div>
                                     <hr>
+
+
+
                                     <div>
 
                                     </div>

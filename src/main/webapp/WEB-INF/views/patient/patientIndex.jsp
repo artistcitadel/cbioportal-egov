@@ -188,6 +188,7 @@
 <%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>--%>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdatatable.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
+<script type="text/javascript" src="<%=docRoot%>/jqwidgets/jqxtooltip.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 
 <script src="<%=docRoot%>js/lodash.min.js"></script>
