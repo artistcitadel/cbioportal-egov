@@ -48,7 +48,7 @@
         LIMIT  100
  	</select>
 
-    <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientMuList_temp" resultType="com.asan.patient.vo.PatientMut">
     SELECT MTTN_EXAM_RSLT_ID mttnExamRsltId,
             RESCH_PAT_ID reschPatId,
             GENE_EXAM_SPCN_ID geneExamSpcnId,
@@ -76,6 +76,60 @@
             FROM PMGERMUEM
             WHERE RESCH_PAT_ID = #{patientId}
  	</select>
+
+    <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
+        SELECT GMU.MTTN_EXAM_RSLT_ID mttnExamRsltId        -- 돌연변이검사결과ID (화면표시X)
+     , GMU.GENE_NM geneNm                  -- Gene
+     , GMU.GENE_EXAM_MTH_NM geneExamMthNm         -- Methods
+     , GMU.HGVSP_VAL  hgvspVal               -- Protein Change
+     , GMU.CHRM_NO chrnNo                  -- Chromosome
+     , GMU.GENE_VARI_ST_LOC_VAL  geneVariStLocVal    -- Start Pos
+     , GMU.GENE_VARI_END_LOC_VAL    geneVariEndLocVal -- End Pos
+     , GMU.REF_ALLELE_SQNC_VAL     refAlleleSqncVal  -- Ref
+     , GMU.VARI_ALLELE_SQNC_VAL     variAlleleSqncVal -- Var
+     , MST.MTTN_STAT_NM     ms         -- MS
+     , GMU.GENE_VARI_CLSF_NM  geneVariClsfNm       -- Mutation Type
+     , GMU.VARI_ALLELE_READ_RT  variAlleleReadRt     -- Allele Freq
+     , GMU.TOT_ALLELE_READ_CNT  totAlleleReadCnt     -- 총대립유전자리드수 (화면표시X)
+     , GMU.VARI_ALLELE_READ_CNT  variAlleleReadCnt    -- Variant Reads
+     , GMU.REF_ALLELE_READ_CNT   refAlleleReadCnt    -- Ref Reads
+     , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS copy   -- Copy #
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM) / (SELECT COUNT(*) FROM pmsdev.PMGERMUEM) * 100, 1) AS chort1   -- Cohort (밝은색)
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / (SELECT COUNT(*) FROM pmsdev.PMGERMUEM) * 100, 1) AS chort2   -- Cohort (진한색)
+     , SUM(MCS.GENE_VARI_OCCUR_CNT)  cosmic -- COSMIC
+  FROM pmsdev.PMGERMUEM GMU
+  LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
+    ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
+  LEFT OUTER JOIN pmsdev.PMGEMMUST MST
+    ON GMU.MTTN_STAT_NO = MST.MTTN_STAT_NO
+  LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
+    ON GMU.RESCH_PAT_ID = GCV.RESCH_PAT_ID
+   AND GMU.GENE_NM      = GCV.GENE_NM
+ WHERE GMU.RESCH_PAT_ID = '10510117' -- 연구환자ID (조회조건)
+ GROUP BY
+       GMU.GENE_NM
+     , GMU.GENE_EXAM_MTH_NM
+     , GMU.HGVSP_VAL
+     , GMU.CHRM_NO
+     , GMU.GENE_VARI_ST_LOC_VAL
+     , GMU.GENE_VARI_END_LOC_VAL
+     , GMU.REF_ALLELE_SQNC_VAL
+     , GMU.VARI_ALLELE_SQNC_VAL
+     , MST.MTTN_STAT_NM
+     , GMU.GENE_VARI_CLSF_NM
+     , GMU.VARI_ALLELE_READ_RT
+     , GMU.VARI_ALLELE_READ_CNT
+     , GMU.REF_ALLELE_READ_CNT
+     , GCV.GENE_NM
+    </select>
+
+    <select id="selectPatientMuCosmic" resultType="com.asan.patient.vo.PatientMut">
+       SELECT MCS.CSMC_ID                 -- COSMIC ID
+       , MCS.HGVSP_VAL               -- Protein Change
+       , MCS.GENE_VARI_OCCUR_CNT     -- Occurrence
+       FROM pmsdev.PMGERMUCS MCS
+       WHERE MCS.MTTN_EXAM_RSLT_ID = 'SNM0000039124'      -- 돌연변이검사결과ID (조회조건)
+    </select>
 
 </mapper>
 

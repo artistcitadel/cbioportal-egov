@@ -5,6 +5,52 @@ import com.reactkorea.RkCmmnVO;
 public class PatientMut  extends RkCmmnVO {
     private String mttnExamRsltId;
     private String reschPatId;
+    private String ms;
+    private String copy;
+    private String cosmic;
+
+    public String getMs() {
+        return ms;
+    }
+
+    public void setMs(String ms) {
+        this.ms = ms;
+    }
+
+    public String getCopy() {
+        return copy;
+    }
+
+    public void setCopy(String copy) {
+        this.copy = copy;
+    }
+
+    public String getCosmic() {
+        return cosmic;
+    }
+
+    public void setCosmic(String cosmic) {
+        this.cosmic = cosmic;
+    }
+
+    public String getCsmcId() {
+        return csmcId;
+    }
+
+    public void setCsmcId(String csmcId) {
+        this.csmcId = csmcId;
+    }
+
+    public String getGeneVariOccurCnt() {
+        return geneVariOccurCnt;
+    }
+
+    public void setGeneVariOccurCnt(String geneVariOccurCnt) {
+        this.geneVariOccurCnt = geneVariOccurCnt;
+    }
+
+    private String csmcId;
+    private String geneVariOccurCnt;
 
     public String getMttnExamRsltId() {
         return mttnExamRsltId;

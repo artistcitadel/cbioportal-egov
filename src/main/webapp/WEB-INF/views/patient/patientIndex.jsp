@@ -186,7 +186,6 @@
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.pager.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
 <%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>--%>
-<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdatatable.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
 <script type="text/javascript" src="<%=docRoot%>/jqwidgets/jqxtooltip.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
@@ -197,8 +196,8 @@
 <script src="<c:url value="/js/page/patient/patientUtil.js" />"></script>
 <script src="<c:url value="/js/page/patient/WindowStore.js" />"></script>
 <script src="<c:url value="/js/page/patient/blockUI.js" />"></script>
-<%--<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
-<script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>--%>
+<script src="<c:url value="/js/jquery.tmpl.min.js" />"></script>
+<script src="<c:url value="/js/jquery.tmplPlus.min.js" />"></script>
 <script type='text/javascript' src="<c:url value="/js/page/patient/moment-with-locales.min.js" />"></script>
 <script type='text/javascript' src="<c:url value="/js/raphael/raphael.min.js" />"></script>
 <script type='text/javascript' src="<c:url value="/js/raphael/raphaelscale.js" />"></script>

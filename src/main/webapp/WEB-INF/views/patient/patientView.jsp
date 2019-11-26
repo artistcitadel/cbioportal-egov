@@ -163,27 +163,26 @@
                                                                 </button>
                                                                 <ul role="menu" id="colsmu" class="dropdown-menu" aria-labelledby="dropdown-custom-1" style="padding-left: 10px; overflow: auto; max-height: 300px; white-space: nowrap;">
                                                                     <ul class="list-unstyled">
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="MTTN_EXAM_RSLT_ID" type="checkbox" checked="">돌연변이검사결과ID</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_EXAM_SPCN_ID" type="checkbox" checked="">유전자검사검체ID</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="EXAM_NO" type="checkbox" checked="">검사번호</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_EXAM_MTH_NM" type="checkbox" checked="">유전자검사방법명</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="CHRM_NO" type="checkbox">염색체번호</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_NM" type="checkbox">유전자명</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_VARI_ST_LOC_VAL" type="checkbox">유전자변이시작위치값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_VARI_END_LOC_VAL" type="checkbox">유전자변이종료위치값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="DNA_STRND_VAL" type="checkbox">DNA가닥값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_VARI_CLSF_NM" type="checkbox">유전자변이분류명</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="GENE_VARI_TYP_NO" type="checkbox">유전자변이유형번호</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="REF_ALLELE_SQNC_VAL" type="checkbox">참조대립유전자염기서열값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="VARI_ALLELE_SQNC_VAL" type="checkbox" checked="">변이대립유전자염기서열값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="MTTN_STAT_NO" type="checkbox">돌연변이상태번호</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="HGVSC_VAL" type="checkbox" checked="">HGVSC값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="TOT_ALLELE_READ_CNT" type="checkbox">총대립유전자리드수</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="REF_ALLELE_READ_CNT" type="checkbox">변이대립유전자리드수</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="VARI_ALLELE_READ_CNT" type="checkbox">변이대립유전자리드비율</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="VARI_ALLELE_READ_RT" type="checkbox">엑손위치값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="INTRN_LOC_VAL" type="checkbox" checked="">인트론위치값</label></li>
-                                                                        <li><label class="checkbox-inline" title=""><input data-id="TSRC_ID" type="checkbox" checked="">전사체ID</label></li>
+
+
+
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="geneNm" type="checkbox" checked="">Gene</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="geneExamMthNm" type="checkbox">methods</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="hgvspVal" type="checkbox">Protein Change</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="annotation" type="checkbox">Annotation</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="chrnNo" type="checkbox">Chromosome</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="geneVariStLocVal" type="checkbox">Start Pos</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="geneVariEndLocVal" type="checkbox">End Pos</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="refAlleleSqncVal" type="checkbox">Ref</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="variAlleleSqncVal" type="checkbox">Var</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="ms" type="checkbox" checked="">MS</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="geneVariClsfNm" type="checkbox">Mutation Type</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="variAlleleReadRt" type="checkbox" checked="">Allele Freq</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="variAlleleReadCnt" type="checkbox">Varient Reads(N)</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="refAlleleReadCnt" type="checkbox">Ref Reads(N)</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="copy" type="checkbox">Copy #</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="chort" type="checkbox">Cohort</label></li>
+                                                                        <li><label class="checkbox-inline" title=""><input data-id="cosmic" type="checkbox" checked="">COSMIC</label></li>
                                                                     </ul>
                                                                 </ul>
                                                             </div>
@@ -204,47 +203,48 @@
                                                                <table class="simple-table table table-striped table-border-top">
                                                                    <thead>
                                                                    <tr>
-                                                                       <th class="multilineHeader" role="button"><span style="margin-right: 5px;">Gene</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>methods</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Protein Change</span></th>
+                                                                       <th data-sort='{"key":"geneNm"}' class="multilineHeader" role="button"><span style="margin-right: 5px;">Gene</span></th>
+                                                                       <th data-sort='{"key":"geneExamMthNm"}' role="button"><span>methods</span></th>
+                                                                       <th data-sort='{"key":"hgvspVal"}' class="multilineHeader" role="button"><span>Protein Change</span></th>
                                                                        <th class="multilineHeader sort-des" role="button"><span>Annotation</span></th>
-                                                                       <th class="multilineHeader sort-des" role="button"><span>Chromosome</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Start Pos</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>End Pos</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Ref</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Var</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>MS</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Mutation Type</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Allele Freq</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Varient Reads(N)</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Ref Reads(N)</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Copy #</span></th>
+                                                                       <th data-sort='{"key":"chrnNo"}' class="multilineHeader sort-des" role="button"><span>Chromosome</span></th>
+                                                                       <th data-sort='{"key":"geneVariStLocVal"}' class="multilineHeader" role="button"><span>Start Pos</span></th>
+                                                                       <th data-sort='{"key":"geneVariEndLocVal"}' class="multilineHeader" role="button"><span>End Pos</span></th>
+                                                                       <th data-sort='{"key":"refAlleleSqncVal"}' class="multilineHeader" role="button"><span>Ref</span></th>
+                                                                       <th data-sort='{"key":"variAlleleSqncVal"}' class="multilineHeader" role="button"><span>Var</span></th>
+                                                                       <th data-sort='{"key":"ms"}' class="multilineHeader" role="button"><span>MS</span></th>
+                                                                       <th data-sort='{"key":"geneVariClsfNm"}' class="multilineHeader" role="button"><span>Mutation Type</span></th>
+                                                                       <th data-sort='{"key":"variAlleleReadRt"}' class="multilineHeader" role="button"><span>Allele Freq</span></th>
+                                                                       <th data-sort='{"key":"variAlleleReadCnt"}' class="multilineHeader" role="button"><span>Varient Reads(N)</span></th>
+                                                                       <th data-sort='{"key":"refAlleleReadCnt"}' class="multilineHeader" role="button"><span>Ref Reads(N)</span></th>
+                                                                       <th data-sort='{"key":"copy"}' class="multilineHeader" role="button"><span>Copy #</span></th>
                                                                        <th class="multilineHeader" role="button"><span>Cohort</span></th>
                                                                        <th class="multilineHeader" role="button" style="text-align: right;"><span>COSMIC</span></th>
                                                                    </tr>
                                                                    </thead>
-                                                                   <tbody>
+                                                                   <tbody ic="mutation_con">
+                                                                   <script id="mutation_template" type="text/x-jquery-tmpl">
                                                                    <tr>
-                                                                       <td><span data-test="mutation-table-gene-column">NRAS</span></td>
-                                                                       <td><span data-test="mutation-table-gene-column">method</span></td>
-                                                                       <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">Q61K</span></td>
+                                                                       <td><span data-test="mutation-table-gene-column">${geneNm}</span></td>
+                                                                       <td><span data-test="mutation-table-gene-column">${geneExamMthNm}</span></td>
+                                                                       <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">${hgvspVal}</span></td>
                                                                        <td><span style="display: flex; min-width: 100px;">
                                                                            <span class="annotation-module_annotation-item__2EgnB">
                                                                                <i class="oncokb annotation-icon oncogenic level-3A" data-test="oncogenic-icon-image" data-test2="NRAS">
                                                                                </i></span><span class="annotation-module__annotation-item__1YzCz">
                                                                            </span></span>
                                                                        </td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Chromsome</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">199</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">299</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">ref</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">var</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">ms</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Mutation Type</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Alle Freq</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Varient Reads</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Ref Reads(N)</span></td>
-                                                                       <td><span class="mutationType-module__missense-mutation__2vEO9">Copy #</span></td>
+                                                                       <td><span data-test="mutation-table-gene-column">${chrnNo}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${geneVariStLocVal}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${geneVariEndLocVal}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${refAlleleSqncVal}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${variAlleleSqncVal}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${ms}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${geneVariClsfNm}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${variAlleleReadRt}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${variAlleleReadCnt}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${refAlleleReadCnt}</span></td>
+                                                                       <td><span class="mutation-table-gene-column">${copy}</span></td>
                                                                        <td>
                                                                            <div>
                                                                                <svg width="71" height="12">
@@ -256,9 +256,10 @@
                                                                            </div>
                                                                        </td>
                                                                        <td>
-                                                                           <div class="styles-module__integer-data__1Bn0H">cosmic</div>
+                                                                           <div class="styles-module__integer-data__1Bn0H" onClick="doNoGather(${inv_no})">cosmic</div>
                                                                        </td>
                                                                    </tr>
+                                                                  </script>
 
                                                                    </tbody>
                                                                </table>
