@@ -142,6 +142,10 @@
                                                 </div>
                                             </div>
                                             <hr class="divider"/>
+                                            <div style="overflow-x:auto;">
+                                              <div id="genomicOverviewTracksContainer1" />
+                                            </div>
+                                            <hr class="divider"/>
                                             <div>
                                             <div>
 
@@ -199,15 +203,15 @@
                                                               <%--<div id="dataTableMu">
 
                                                                </div>--%>
-                                                           <div style="overflow-x: visible;">
-                                                               <table class="simple-table table table-striped table-border-top">
+                                                           <div style="overflow-x:auto;">
+                                                               <table id="t-3" class="simple-table table table-striped table-border-top sortable">
                                                                    <thead>
                                                                    <tr>
-                                                                       <th data-sort='{"key":"geneNm"}' class="multilineHeader" role="button"><span style="margin-right: 5px;">Gene</span></th>
-                                                                       <th data-sort='{"key":"geneExamMthNm"}' role="button"><span>methods</span></th>
+                                                                       <th data-sort='{"key":"geneNm"}' class="multilineHeader" role="button"><span>Gene</span></th>
+                                                                       <th data-sort='{"key":"geneExamMthNm"}' class="multilineHeader" role="button"><span>methods</span></th>
                                                                        <th data-sort='{"key":"hgvspVal"}' class="multilineHeader" role="button"><span>Protein Change</span></th>
-                                                                       <th class="multilineHeader sort-des" role="button"><span>Annotation</span></th>
-                                                                       <th data-sort='{"key":"chrnNo"}' class="multilineHeader sort-des" role="button"><span>Chromosome</span></th>
+                                                                       <th data-sort='{"key":"annotation"}' class="multilineHeader"><span>Annotation</span></th>
+                                                                       <th data-sort='{"key":"chrnNo"}' class="multilineHeader"><span>Chromosome</span></th>
                                                                        <th data-sort='{"key":"geneVariStLocVal"}' class="multilineHeader" role="button"><span>Start Pos</span></th>
                                                                        <th data-sort='{"key":"geneVariEndLocVal"}' class="multilineHeader" role="button"><span>End Pos</span></th>
                                                                        <th data-sort='{"key":"refAlleleSqncVal"}' class="multilineHeader" role="button"><span>Ref</span></th>
@@ -218,59 +222,14 @@
                                                                        <th data-sort='{"key":"variAlleleReadCnt"}' class="multilineHeader" role="button"><span>Varient Reads(N)</span></th>
                                                                        <th data-sort='{"key":"refAlleleReadCnt"}' class="multilineHeader" role="button"><span>Ref Reads(N)</span></th>
                                                                        <th data-sort='{"key":"copy"}' class="multilineHeader" role="button"><span>Copy #</span></th>
-                                                                       <th class="multilineHeader" role="button"><span>Cohort</span></th>
-                                                                       <th class="multilineHeader" role="button" style="text-align: right;"><span>COSMIC</span></th>
+                                                                       <th data-sort='{"key":"cohort"}' class="multilineHeader" role="button"><span>Cohort</span></th>
+                                                                       <th data-sort='{"key":"cosmic"}' class="multilineHeader" role="button" style="text-align: right;"><span>COSMIC</span></th>
                                                                    </tr>
                                                                    </thead>
-                                                                   <tbody ic="mutation_con">
-                                                                   <script id="mutation_template" type="text/x-jquery-tmpl">
-                                                                   <tr>
-                                                                       <td><span data-test="mutation-table-gene-column">${geneNm}</span></td>
-                                                                       <td><span data-test="mutation-table-gene-column">${geneExamMthNm}</span></td>
-                                                                       <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">${hgvspVal}</span></td>
-                                                                       <td><span style="display: flex; min-width: 100px;">
-                                                                           <span class="annotation-module_annotation-item__2EgnB">
-                                                                               <i class="oncokb annotation-icon oncogenic level-3A" data-test="oncogenic-icon-image" data-test2="NRAS">
-                                                                               </i></span><span class="annotation-module__annotation-item__1YzCz">
-                                                                           </span></span>
-                                                                       </td>
-                                                                       <td><span data-test="mutation-table-gene-column">${chrnNo}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${geneVariStLocVal}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${geneVariEndLocVal}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${refAlleleSqncVal}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${variAlleleSqncVal}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${ms}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${geneVariClsfNm}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${variAlleleReadRt}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${variAlleleReadCnt}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${refAlleleReadCnt}</span></td>
-                                                                       <td><span class="mutation-table-gene-column">${copy}</span></td>
-                                                                       <td>
-                                                                           <div>
-                                                                               <svg width="71" height="12">
-                                                                                   <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>
-                                                                                   <rect y="2" width="30" height="8" fill="#ccc"></rect>
-                                                                                   <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>
-                                                                                   <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>
-                                                                               </svg>
-                                                                           </div>
-                                                                       </td>
-                                                                       <td>
-                                                                           <div class="styles-module__integer-data__1Bn0H" onClick="doNoGather(${inv_no})">cosmic</div>
-                                                                       </td>
-                                                                   </tr>
-                                                                  </script>
-
+                                                                   <tbody id="mutation_con">
                                                                    </tbody>
                                                                </table>
                                                            </div>
-
-
-
-
-
-
-
 
 
                                                 </div>
@@ -348,10 +307,50 @@
     </div>
 
 </section>
+
+<script id="template_template" type="text/x-jquery-tmpl">
+<tr>
+     <td><span data-test="mutation-table-gene-column">${geneNm}</span></td>
+     <td><span data-test="mutation-table-gene-column">${geneExamMthNm}</span></td>
+     <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">${hgvspVal}</span></td>
+     <td><span style="display: flex; min-width: 100px;">
+         <span class="annotation-module_annotation-item__2EgnB">
+             <i class="oncokb annotation-icon oncogenic level-3A" data-test="oncogenic-icon-image" data-test2="NRAS">
+             </i></span><span class="annotation-module__annotation-item__1YzCz">
+         </span></span>
+     </td>
+     <td><span data-test="mutation-table-gene-column">${chrnNo}</span></td>
+     <td><span class="mutation-table-gene-column">${geneVariStLocVal}</span></td>
+     <td><span class="mutation-table-gene-column">${geneVariEndLocVal}</span></td>
+     <td><span class="mutation-table-gene-column">${refAlleleSqncVal}</span></td>
+     <td><span class="mutation-table-gene-column">${variAlleleSqncVal}</span></td>
+     <td><span class="mutation-table-gene-column">${ms}</span></td>
+     <td><span class="mutation-table-gene-column">${geneVariClsfNm}</span></td>
+     <td><span class="mutation-table-gene-column">${variAlleleReadRt}</span></td>
+     <td><span class="mutation-table-gene-column">${variAlleleReadCnt}</span></td>
+     <td><span class="mutation-table-gene-column">${refAlleleReadCnt}</span></td>
+     <td><span class="mutation-table-gene-column">${copy}</span></td>
+     <td>
+         <div>
+             <svg width="71" height="12">
+                 <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>
+                 <rect y="2" width="30" height="8" fill="#ccc"></rect>
+                 <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>
+                 <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>
+             </svg>
+         </div>
+     </td>
+     <td>
+         <div class="styles-module__integer-data__1Bn0H" onClick="doNoGather(${inv_no})">cosmic</div>
+     </td>
+   </tr>
+ </script>
+
 <script>
     var PATIENTID = '<%=request.getParameter("patientId")%>';
 </script>
 <script src="<c:url value="/js/page/patient/patientView.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientChart.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientViewMutation.js" />"></script>
+<script src="<c:url value="/js/page/patient/genomeChart.js" />"></script>
 

@@ -23,7 +23,44 @@
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/spinkit.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/lazyTable.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/jbox.all.min.css" type="text/css" />
 	<style>
+		table {
+			margin: 1em 0;
+		}
+		tbody td img {
+			width: 76px;
+			height: 93px;
+		}
+		th {
+			text-align: left;
+			white-space: nowrap;
+			background-color: #eee;
+		}
+		th.sort a {
+			text-decoration: none;
+			display: block;
+			background:  url(/images/sort-icons.png) no-repeat 0 3px;
+			padding-left: 20px;
+		}
+		th.sorted-desc a {
+			background-position: 0 -47px;
+		}
+		th.sorted-asc a {
+			background-position: 0 -97px;
+		}
+
+		th.sort a:hover {
+			background-color: #ddd;
+		}
+
+		th.sort a:focus {
+			color: #222;
+		}
+		th, td {
+			padding: 3px 6px;
+		}
+
 		.patient-table {
 			font-family: "Segoe UI", Arial, sans-serif;
 			border: 2px solid #07093D;
@@ -81,6 +118,10 @@
 			font-size: xx-small;
 			font-weight: bold;
 		}
+        .font-msmall {
+            font-size: small;
+            /*font-weight: bold;*/
+        }
         /*.spinner {
             margin: 100px auto;
             width: 50px;
@@ -187,7 +228,7 @@
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
 <%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.edit.js"></script>--%>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
-<script type="text/javascript" src="<%=docRoot%>/jqwidgets/jqxtooltip.js"></script>
+<script type="text/javascript" src="<%=docRoot%>js/jbox.all.min.js"></script>
 <script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 
 <script src="<%=docRoot%>js/lodash.min.js"></script>

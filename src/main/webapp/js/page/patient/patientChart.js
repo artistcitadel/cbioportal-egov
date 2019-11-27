@@ -465,6 +465,9 @@ function plotdrawing(dig){
 
     util.hideLoader();
     $("#swave").hide();
+
+    if(MODE==='N')
+      getMutationCosmic();
 }
 
 function printPlot(paper, data){

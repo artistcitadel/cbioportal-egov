@@ -1,3 +1,7 @@
+"start": "./scripts/env_vars.sh && eval \"$(./scripts/env_vars.sh)\" && cross-env NODE_ENV=development webpack-dev-server",
+export BRANCH_ENV=rc
+export CBIOPORTAL_URL="http://beta.cbioportal.org"
+
 mutated gean
 SELECT x.* FROM pmsdev.PMGERMUEM x
 WHERE x.RESCH_PAT_ID = '48321932'
