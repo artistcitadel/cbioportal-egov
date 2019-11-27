@@ -82,3 +82,20 @@ SELECT MCS.CSMC_ID                 -- COSMIC ID
 ;
 
 
+-- auto-generated definition
+create table PMGEMCHRM
+(
+  CHRM_NO          varchar(2) not null
+  comment '염색체번호'
+    primary key,
+  GENE_ST_LOC_VAL  decimal    null
+  comment '유전자시작위치값',
+  GENE_END_LOC_VAL decimal    null
+  comment '유전자종료위치값',
+  SORT_SEQ         decimal    null
+  comment '정렬순서',
+  SRC_LOAD_DTM     datetime   null
+  comment '원천적재일시',
+  ETL_LOAD_DTM     datetime   null
+  comment 'ETL적재일시'
+);
