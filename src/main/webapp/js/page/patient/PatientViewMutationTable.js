@@ -159,10 +159,16 @@
             });
             //console.log(txt);
             $("#mutation_con").html(txt);
+
             //var gene = new GenomicOverview(LASTYPOS);
             var gene = new GenomicOverview();
             gene.init(self.getMutation());
             ISROUNDMUTATION = true;
+
+            var copytip = "Copy";
+            var downloadtip = 'Download TSV';
+            gene.addToolTip($('#copyButton'),copytip,null,{my:'top right',at:'bottom left'});
+            gene.addToolTip($('#downloadButton'),downloadtip,null,{my:'top right',at:'bottom left'});
         }
 
         self.buildSort = function() {

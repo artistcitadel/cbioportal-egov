@@ -7,18 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f67cda9-a09e-46a0-9e96-904c2b2f401d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asan/patient/vo/PatientMut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asan/patient/vo/PatientMut.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/asan/patient/vo/PatientMut.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/asan/patient/vo/PatientMut.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/genomeChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewMutation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/asan/patient/vo/PatientMut.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/asan/patient/vo/PatientMut.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,13 +36,13 @@
     <session id="662276549">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="29" />
+          <entry key="project.closed" value="30" />
           <entry key="project.open.time.102" value="1" />
           <entry key="project.open.time.104" value="1" />
           <entry key="project.open.time.122" value="1" />
           <entry key="project.open.time.129" value="1" />
           <entry key="project.open.time.14" value="3" />
-          <entry key="project.open.time.15" value="2" />
+          <entry key="project.open.time.15" value="3" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.22" value="1" />
@@ -78,7 +69,7 @@
           <entry key="project.open.time.83" value="1" />
           <entry key="project.open.time.89" value="1" />
           <entry key="project.open.time.90" value="1" />
-          <entry key="project.opened" value="43" />
+          <entry key="project.opened" value="44" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -111,7 +102,7 @@
           <entry key="dummy" value="1" />
           <entry key="html" value="54" />
           <entry key="java" value="2347" />
-          <entry key="js" value="63799" />
+          <entry key="js" value="64263" />
           <entry key="jsp" value="9724" />
           <entry key="properties" value="90" />
           <entry key="txt" value="11" />
@@ -124,7 +115,7 @@
           <entry key="HTML" value="54" />
           <entry key="JAVA" value="2347" />
           <entry key="JSP" value="9724" />
-          <entry key="JavaScript" value="63799" />
+          <entry key="JavaScript" value="64263" />
           <entry key="PLAIN_TEXT" value="12" />
           <entry key="Properties" value="90" />
           <entry key="SQL" value="80" />
@@ -138,8 +129,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="113" column="14" selection-start-line="113" selection-start-column="14" selection-end-line="113" selection-end-column="14" />
+            <state relative-caret-position="432">
+              <caret line="168" column="44" selection-start-line="168" selection-start-column="44" selection-end-line="168" selection-end-column="44" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#td#2;n#tr#0;n#!!top" expanded="true" />
@@ -149,11 +140,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="157" column="31" selection-start-line="157" selection-start-column="21" selection-end-line="157" selection-end-column="31" />
+            <state relative-caret-position="239">
+              <caret line="321" column="9" selection-start-line="321" selection-start-column="9" selection-end-line="321" selection-end-column="9" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -162,18 +153,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/WindowStore.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="8" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1732">
+            <state relative-caret-position="2160">
               <caret line="120" column="20" selection-start-line="120" selection-start-column="9" selection-end-line="120" selection-end-column="20" />
             </state>
           </provider>
@@ -182,18 +164,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="147" column="78" lean-forward="true" selection-start-line="147" selection-start-column="78" selection-end-line="147" selection-end-column="78" />
-              <folding>
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="504">
+              <caret line="200" column="139" selection-start-line="200" selection-start-column="125" selection-end-line="200" selection-end-column="139" />
             </state>
           </provider>
         </entry>
@@ -201,7 +173,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientMain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="626">
+            <state relative-caret-position="1098">
               <caret line="61" column="33" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="33" />
             </state>
           </provider>
@@ -210,7 +182,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
+            <state relative-caret-position="1638">
               <caret line="91" column="25" selection-start-line="91" selection-start-column="19" selection-end-line="91" selection-end-column="25" />
             </state>
           </provider>
@@ -219,8 +191,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/asan/patient/vo/PatientMut.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+            <state relative-caret-position="342">
+              <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
               <folding>
                 <element signature="e#277#278#0" expanded="true" />
                 <element signature="e#300#301#0" expanded="true" />
@@ -234,36 +206,8 @@
                 <element signature="e#602#603#0" expanded="true" />
                 <element signature="e#658#659#0" expanded="true" />
                 <element signature="e#702#703#0" expanded="true" />
-                <element signature="e#275#276#0" expanded="true" />
-                <element signature="e#300#301#0" expanded="true" />
-                <element signature="e#336#337#0" expanded="true" />
-                <element signature="e#364#365#0" expanded="true" />
-                <element signature="e#395#396#0" expanded="true" />
-                <element signature="e#422#423#0" expanded="true" />
-                <element signature="e#462#463#0" expanded="true" />
-                <element signature="e#494#495#0" expanded="true" />
-                <element signature="e#527#528#0" expanded="true" />
-                <element signature="e#556#557#0" expanded="true" />
-                <element signature="e#600#601#0" expanded="true" />
-                <element signature="e#636#637#0" expanded="true" />
-                <element signature="e#669#670#0" expanded="true" />
-                <element signature="e#698#699#0" expanded="true" />
-                <element signature="e#742#743#0" expanded="true" />
-                <element signature="e#778#779#0" expanded="true" />
-                <element signature="e#821#822#0" expanded="true" />
-                <element signature="e#860#861#0" expanded="true" />
-                <element signature="e#924#925#0" expanded="true" />
-                <element signature="e#980#981#0" expanded="true" />
-                <element signature="e#1773#1774#0" expanded="true" />
-                <element signature="e#1809#1810#0" expanded="true" />
+                <element signature="e#1906#1907#0" expanded="true" />
                 <element signature="e#1950#1951#0" expanded="true" />
-                <element signature="e#1979#1980#0" expanded="true" />
-                <element signature="e#2244#2245#0" expanded="true" />
-                <element signature="e#2283#2284#0" expanded="true" />
-                <element signature="e#2921#2922#0" expanded="true" />
-                <element signature="e#2973#2974#0" expanded="true" />
-                <element signature="e#3013#3014#0" expanded="true" />
-                <element signature="e#3049#3050#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -278,11 +222,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="279" column="24" selection-start-line="279" selection-start-column="16" selection-end-line="279" selection-end-column="24" />
+            <state relative-caret-position="302">
+              <caret line="574" column="18" selection-start-line="574" selection-start-column="18" selection-end-line="574" selection-end-column="18" />
               <folding>
                 <element signature="e#32#38#0" expanded="true" />
                 <element signature="e#38#44#0" expanded="true" />
@@ -350,10 +294,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>console</find>
-      <find>draw</find>
-      <find>plotdrawing</find>
-      <find>YPOS</find>
       <find>getTargetPosition</find>
       <find>paperWidth</find>
       <find>start</find>
@@ -361,7 +301,6 @@
       <find>MODE</find>
       <find>timeline</find>
       <find>getMutationCosmic</find>
-      <find>addToolTip</find>
       <find>hide</find>
       <find>getAddRatio</find>
       <find>over</find>
@@ -369,10 +308,8 @@
       <find>end</find>
       <find>moveSanger</find>
       <find>buildRowsMutation</find>
-      <find>getMutationPixelMap</find>
       <find>mutObjData</find>
       <find>total</find>
-      <find>rowMargin</find>
       <find>getChmEndsPerc</find>
       <find>self.drawLine</find>
       <find>loc2perc</find>
@@ -380,6 +317,13 @@
       <find>drawLine</find>
       <find>setMu</find>
       <find>plotChromosomes</find>
+      <find>GenomicOverview</find>
+      <find>translateChm</find>
+      <find>addToolTip</find>
+      <find>rowMargin</find>
+      <find>rowHeight</find>
+      <find>ticHeight</find>
+      <find>getMutationPixelMap</find>
     </findStrings>
     <replaceStrings>
       <replace>util._isUndefined</replace>
@@ -439,10 +383,10 @@
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/genomeChart.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/WindowStore.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" />
       </list>
     </option>
   </component>
@@ -480,8 +424,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -709,6 +651,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -719,7 +663,7 @@
     <property name="SearchEverywhereHistoryKey" value="util&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;util.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;big&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;bigcen&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;action.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;bigce&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;bigc&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574940466869" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574956474945" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/agricolae-1.3-0-b1.jar!/" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -883,16 +827,17 @@
       <workItem from="1574767540576" duration="49000" />
       <workItem from="1574814084424" duration="34867000" />
       <workItem from="1574897477704" duration="31576000" />
+      <workItem from="1574947931979" duration="7333000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="636706000" />
+    <option name="totallyTimeSpent" value="644039000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.28993288" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28993288" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -910,7 +855,7 @@
       <window_info anchor="bottom" id="Application Servers" order="7" />
       <window_info anchor="bottom" id="Spring" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32924962" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32867134" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.42097902" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
@@ -1230,10 +1175,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/WindowStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2160">
+          <caret line="120" column="20" selection-start-line="120" selection-start-column="9" selection-end-line="120" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1098">
+          <caret line="61" column="33" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1638">
+          <caret line="91" column="25" selection-start-line="91" selection-start-column="19" selection-end-line="91" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/asan/patient/vo/PatientMut.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+        <state relative-caret-position="342">
+          <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
           <folding>
             <element signature="e#277#278#0" expanded="true" />
             <element signature="e#300#301#0" expanded="true" />
@@ -1247,75 +1220,9 @@
             <element signature="e#602#603#0" expanded="true" />
             <element signature="e#658#659#0" expanded="true" />
             <element signature="e#702#703#0" expanded="true" />
-            <element signature="e#275#276#0" expanded="true" />
-            <element signature="e#300#301#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#364#365#0" expanded="true" />
-            <element signature="e#395#396#0" expanded="true" />
-            <element signature="e#422#423#0" expanded="true" />
-            <element signature="e#462#463#0" expanded="true" />
-            <element signature="e#494#495#0" expanded="true" />
-            <element signature="e#527#528#0" expanded="true" />
-            <element signature="e#556#557#0" expanded="true" />
-            <element signature="e#600#601#0" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-            <element signature="e#669#670#0" expanded="true" />
-            <element signature="e#698#699#0" expanded="true" />
-            <element signature="e#742#743#0" expanded="true" />
-            <element signature="e#778#779#0" expanded="true" />
-            <element signature="e#821#822#0" expanded="true" />
-            <element signature="e#860#861#0" expanded="true" />
-            <element signature="e#924#925#0" expanded="true" />
-            <element signature="e#980#981#0" expanded="true" />
-            <element signature="e#1773#1774#0" expanded="true" />
-            <element signature="e#1809#1810#0" expanded="true" />
+            <element signature="e#1906#1907#0" expanded="true" />
             <element signature="e#1950#1951#0" expanded="true" />
-            <element signature="e#1979#1980#0" expanded="true" />
-            <element signature="e#2244#2245#0" expanded="true" />
-            <element signature="e#2283#2284#0" expanded="true" />
-            <element signature="e#2921#2922#0" expanded="true" />
-            <element signature="e#2973#2974#0" expanded="true" />
-            <element signature="e#3013#3014#0" expanded="true" />
-            <element signature="e#3049#3050#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="91" column="25" selection-start-line="91" selection-start-column="19" selection-end-line="91" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1732">
-          <caret line="120" column="20" selection-start-line="120" selection-start-column="9" selection-end-line="120" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="147" column="78" lean-forward="true" selection-start-line="147" selection-start-column="78" selection-end-line="147" selection-end-column="78" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="626">
-          <caret line="61" column="33" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -1326,74 +1233,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/WindowStore.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="8" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="8" />
+        <state relative-caret-position="504">
+          <caret line="200" column="139" selection-start-line="200" selection-start-column="125" selection-end-line="200" selection-end-column="139" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="279" column="24" selection-start-line="279" selection-start-column="16" selection-end-line="279" selection-end-column="24" />
+        <state relative-caret-position="239">
+          <caret line="321" column="9" selection-start-line="321" selection-start-column="9" selection-end-line="321" selection-end-column="9" />
           <folding>
-            <element signature="e#32#38#0" expanded="true" />
-            <element signature="e#38#44#0" expanded="true" />
-            <element signature="e#44#50#0" expanded="true" />
-            <element signature="e#50#56#0" expanded="true" />
-            <element signature="e#56#62#0" expanded="true" />
-            <element signature="e#67#73#0" expanded="true" />
-            <element signature="e#73#79#0" expanded="true" />
-            <element signature="e#87#93#0" expanded="true" />
-            <element signature="e#93#99#0" expanded="true" />
-            <element signature="e#104#110#0" expanded="true" />
-            <element signature="e#110#116#0" expanded="true" />
-            <element signature="e#121#127#0" expanded="true" />
-            <element signature="e#127#133#0" expanded="true" />
-            <element signature="e#138#144#0" expanded="true" />
-            <element signature="e#144#150#0" expanded="true" />
-            <element signature="e#150#156#0" expanded="true" />
-            <element signature="e#32#38#0" expanded="true" />
-            <element signature="e#38#44#0" expanded="true" />
-            <element signature="e#44#50#0" expanded="true" />
-            <element signature="e#50#56#0" expanded="true" />
-            <element signature="e#56#62#0" expanded="true" />
-            <element signature="e#67#73#0" expanded="true" />
-            <element signature="e#73#79#0" expanded="true" />
-            <element signature="e#87#93#0" expanded="true" />
-            <element signature="e#93#99#0" expanded="true" />
-            <element signature="e#104#110#0" expanded="true" />
-            <element signature="e#110#116#0" expanded="true" />
-            <element signature="e#121#127#0" expanded="true" />
-            <element signature="e#127#133#0" expanded="true" />
-            <element signature="e#138#144#0" expanded="true" />
-            <element signature="e#144#150#0" expanded="true" />
-            <element signature="e#150#156#0" expanded="true" />
-            <element signature="e#32#38#0" expanded="true" />
-            <element signature="e#38#44#0" expanded="true" />
-            <element signature="e#44#50#0" expanded="true" />
-            <element signature="e#50#56#0" expanded="true" />
-            <element signature="e#56#62#0" expanded="true" />
-            <element signature="e#67#73#0" expanded="true" />
-            <element signature="e#73#79#0" expanded="true" />
-            <element signature="e#87#93#0" expanded="true" />
-            <element signature="e#93#99#0" expanded="true" />
-            <element signature="e#104#110#0" expanded="true" />
-            <element signature="e#110#116#0" expanded="true" />
-            <element signature="e#121#127#0" expanded="true" />
-            <element signature="e#127#133#0" expanded="true" />
-            <element signature="e#138#144#0" expanded="true" />
-            <element signature="e#144#150#0" expanded="true" />
-            <element signature="e#150#156#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="113" column="14" selection-start-line="113" selection-start-column="14" selection-end-line="113" selection-end-column="14" />
+        <state relative-caret-position="432">
+          <caret line="168" column="44" selection-start-line="168" selection-start-column="44" selection-end-line="168" selection-end-column="44" />
           <folding>
             <element signature="n#style#0;n#span#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#td#2;n#tr#0;n#!!top" expanded="true" />
@@ -1402,12 +1262,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="157" column="31" selection-start-line="157" selection-start-column="21" selection-end-line="157" selection-end-column="31" />
+        <state relative-caret-position="302">
+          <caret line="574" column="18" selection-start-line="574" selection-start-column="18" selection-end-line="574" selection-end-column="18" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#32#38#0" expanded="true" />
+            <element signature="e#38#44#0" expanded="true" />
+            <element signature="e#44#50#0" expanded="true" />
+            <element signature="e#50#56#0" expanded="true" />
+            <element signature="e#56#62#0" expanded="true" />
+            <element signature="e#67#73#0" expanded="true" />
+            <element signature="e#73#79#0" expanded="true" />
+            <element signature="e#87#93#0" expanded="true" />
+            <element signature="e#93#99#0" expanded="true" />
+            <element signature="e#104#110#0" expanded="true" />
+            <element signature="e#110#116#0" expanded="true" />
+            <element signature="e#121#127#0" expanded="true" />
+            <element signature="e#127#133#0" expanded="true" />
+            <element signature="e#138#144#0" expanded="true" />
+            <element signature="e#144#150#0" expanded="true" />
+            <element signature="e#150#156#0" expanded="true" />
+            <element signature="e#32#38#0" expanded="true" />
+            <element signature="e#38#44#0" expanded="true" />
+            <element signature="e#44#50#0" expanded="true" />
+            <element signature="e#50#56#0" expanded="true" />
+            <element signature="e#56#62#0" expanded="true" />
+            <element signature="e#67#73#0" expanded="true" />
+            <element signature="e#73#79#0" expanded="true" />
+            <element signature="e#87#93#0" expanded="true" />
+            <element signature="e#93#99#0" expanded="true" />
+            <element signature="e#104#110#0" expanded="true" />
+            <element signature="e#110#116#0" expanded="true" />
+            <element signature="e#121#127#0" expanded="true" />
+            <element signature="e#127#133#0" expanded="true" />
+            <element signature="e#138#144#0" expanded="true" />
+            <element signature="e#144#150#0" expanded="true" />
+            <element signature="e#150#156#0" expanded="true" />
+            <element signature="e#32#38#0" expanded="true" />
+            <element signature="e#38#44#0" expanded="true" />
+            <element signature="e#44#50#0" expanded="true" />
+            <element signature="e#50#56#0" expanded="true" />
+            <element signature="e#56#62#0" expanded="true" />
+            <element signature="e#67#73#0" expanded="true" />
+            <element signature="e#73#79#0" expanded="true" />
+            <element signature="e#87#93#0" expanded="true" />
+            <element signature="e#93#99#0" expanded="true" />
+            <element signature="e#104#110#0" expanded="true" />
+            <element signature="e#110#116#0" expanded="true" />
+            <element signature="e#121#127#0" expanded="true" />
+            <element signature="e#127#133#0" expanded="true" />
+            <element signature="e#138#144#0" expanded="true" />
+            <element signature="e#144#150#0" expanded="true" />
+            <element signature="e#150#156#0" expanded="true" />
           </folding>
         </state>
       </provider>

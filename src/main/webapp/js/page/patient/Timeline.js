@@ -567,12 +567,17 @@ function plotMuts(p, row, item) {
         // console.log('show ', label, label.folder);
         //var ar = '❯ ';
         var ar = "❯ ";
+        //var ar = '閉';
         //if (label.leaf) ar = '';
 
         if (!label.leaf) {
+            //ar = "﹀ ";V
+            ar ='✅';//ar = '開';
             //console.log(label.folder);
-            if (!label.folder) ar = "﹀ ";
+            //if (!label.folder) ar = "﹀ ";
+            if (label.folder) ar = '❯' //ar = "閉";
         }else ar='';
+
         var lbl = label.name;
         lbl = ar + lbl;
         //console.log('label_text length ', lbl.length);
@@ -625,8 +630,8 @@ function setTreeNode(id){
     }, 1000);
 }
 function setTreeNodePost(id){
-    // var idx = _.findIndex(dig, function(o) { return o.id === id; });
-    // dig[idx].folder = !dig[idx].folder;
+    var idx = _.findIndex(dig, function(o) { return o.id === id; });
+    dig[idx].folder = !dig[idx].folder;
     setShow(dig, id, 'y');
     function setShow(dig, p) {
         for (var i=0; i < dig.length; i++) {

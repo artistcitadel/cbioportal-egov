@@ -29,6 +29,7 @@ function GenomicOverview() {
 
         }
        drawLine(self.wideLeftText+self.GenomeWidth,yRuler,self.wideLeftText+self.GenomeWidth,self.rowMargin,p,'#000',1);
+        getMutationPixelMap(p,0);// mut,sv,
     }
     var middle = function(chm, genomeRef) {
         var loc = genomeRef[chm]/2;
@@ -41,9 +42,8 @@ function GenomicOverview() {
     }
 
     var loc2xpixil = function(chm, loc){
-        console.log('chm loc ', chm, loc);
-        console.log('loc2perc(chm,loc ',loc2perc(chm,loc));
-        console.log('self.GenomeWidth ',self.GenomeWidth,self.wideLeftText )
+        console.log('chm is ', chm);
+        console.log('goConfig.GenomeWidth + goConfig.wideLeftText ', self.GenomeWidth , self.wideLeftText);
         return loc2perc(chm,loc) * self.GenomeWidth+self.wideLeftText;
     }
     var loc2perc = function(chm, loc){
@@ -55,15 +55,15 @@ function GenomicOverview() {
     }
 
     var getChmEndsPerc = function(chms, total) {
-        console.log('getChmEnmdsPerc ', chms, total);
-        var ends = [];
-        ends.push(1);
+        //console.log('getChmEnmdsPerc ', chms, total);
+        var ends = [0];
+
         for (var i=1; i<chms.length; i++) {
             ends.push(ends[i-1] + Number(chms[i]) / total);
         }
         // console.log('total ', total);
         // console.log('chms ', chms);
-        console.log('getchmEndsPerc ends ', ends);
+        //console.log('getchmEndsPerc ends ', ends);
         return ends;
     }
 
@@ -83,7 +83,6 @@ function GenomicOverview() {
         self.ticHeight = 10;
         self.cnTh = [0.2,1.5];
         self.cnLengthTh = 50000;
-        self.ticHeight = 10;
         self.canvasWidth = self.width;
         self.wideLeftText = 25;
         self.wideRightText = 35;
@@ -98,14 +97,14 @@ function GenomicOverview() {
         self.paper.scale({zoom: true});
         //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
         self.genomeRef = [];
-        self.genomeRef.push(1);
+        self.genomeRef.push(0);
         for(var i=0;i<xtjson.length-1;i++){
             self.genomeRef.push(Number(xtjson[i].geneEndLocVal));
         }
         self.total = _.sum(self.genomeRef);
 
         plotChromosomes(self.genomeRef,self.paper);
-        return;
+
         /*self.chmName = [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y'
         ];
@@ -115,42 +114,8 @@ function GenomicOverview() {
             self.xt[i] += 145;
             self.m[i] += 145;
         }*/
-        var start = 50;
-        self.xt.push(start);
-        var i=1;
-        console.log(xtjson);
-        _.forEach(xtjson, function (v) {
-            self.chmName.push(v.chrmNo);
-            start = self.xt[i-1];
-            if(xt>1)start= Number(v.geneEndLocVal) * 0.000001;
-            self.xt.push(Number(start) + Number(v.geneEndLocVal)*0.000001);
-            //self.m.push((Number(self.xt[i]) - Number(self.xt[i-1]) ) / 2);
-            ++i;
-        });
 
-        for(var i=1;i<self.xt.length;i++){
-            self.m.push(Number(self.xt[i-1]) + ( (Number(self.xt[i]) - Number(self.xt[i-1]) ) / 2) );
-        }
-        var width = self.xt[self.xt.length-1];
-        self.width = width;
-        $('#genomicOverviewTracksContainer1').children(1).css('width',(width+40)+'px');
-        console.log("genomeoverview xt is ", self.xt);
-        console.log("genomeoverview m is ", self.m);
-        console.log("genomeoverview chmName ", self.chmName);
 
-        self.yRuler = 15;
-        drawLine(self.xt[0], self.yRuler, self.width, self.yRuler, self.paper, '#000', 1);
-        //drawLine('25', yRuler, 1090, yRuler, paper, '#000', 1);
-
-        for (var i = 0; i < self.chmName.length-1; i++) {
-            drawLine(self.xt[i], self.yRuler, self.xt[i], 5, self.paper, '#000', 1);
-            var txt = self.paper.text(self.m[i], 10, self.chmName[i]);
-            //console.log('text ', m[i], 10, chmName[i]);
-        }
-
-        drawLine(self.width-1, self.yRuler, self.width-1, 5, self.paper, '#000', 1);
-
-        self.getMutationPixelMap();
         //self.makeEventBarChart();
     }
 
@@ -295,189 +260,71 @@ function GenomicOverview() {
     //             ]
     //         }]
     // ;
-
-    self.getMutationPixelMap = function(){
+    var translateChm = function(chm) {
+        if (chm.toLowerCase().indexOf("chr")===0) chm=chm.substring(3);
+        if (chm==='X'||chm==='x') chm = 23;
+        if (chm==='Y'||chm==='y') chm = 24;
+        if (isNaN(chm) || chm < 1 || chm > 24) return null;
+        return parseInt(chm);
+    }
+    var getMutationPixelMap = function(p,row){
+        console.log('getMutationPixelMap called');
         var mutObj = self.mutObjData;
         console.log('mutObj ', mutObj);
         for(var i=0; i<mutObj.length; i++){
-            // var x = Math.round(self.loc2xpixil(mutObj[i].chrnNo, (mutObj[i].geneVariStLocVal + mutObj[i].geneVariEndLocVal)/2));
-            // var xBin = x - x%3;
-            // if (self.pixelMap[xBin] == null) self.pixelMap[xBin] = [];
-            var x = Number(mutObj.geneVariEndLocVal) -  Number(mutObj.geneVariStLocVal);
-            if(x===0)x=1;
-            var chm = mutObj.chrnNo;
-            var p = self.xt[chm-1];
-            p+=x;
+            var chm = translateChm(mutObj[i].chrnNo);
+            console.log('start end ',mutObj[i].geneVariStLocVal, mutObj[i].geneVariEndLocVal,  (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal) )/2);
+            var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal) )/2));
+            console.log('x is ',x);
             var xBin = x - x%3;
+            if (self.pixelMap[xBin] == null) self.pixelMap[xBin] = [];
 
-            self.pixelMap[xBin].push(mutObj.geneNm + ": " + mutObj.hgvspVal);
+            self.pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].hgvspVal);
         }
         console.log('GenomicOverview pixelMap ', self.pixelMap);
-    }
 
-
-    //var label = ['ABC','DEF'];
-    // console.log(' dig ', self.dig);
-    // self.label = "Time since diagnosis";
-    // self.t = self.paper.text(55, 10, self.label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
-
-    self.getHundreadRatio = function() {
-        var track = [];
-        for (var i = 1; i < self.xt.length; i++) {
-            var trackUnitPeriod = self.xt[i] - self.xt[i - 1];
-            track.push(trackUnitPeriod);
-        }
-        console.log(' track period is ', track);
-        //console.log(' average is ' , _.meanBy(track));
-        return track;
-    }
-
-    self.getAddRatio = function(value) {
-        var temp = value.toString();
-
-        var seed = "0" + "." + value;
-        console.log(' seed ', seed);
-        return Number(seed);
-    }
-
-    self.getTargetPosition = function(seed) {
-        var track = self.getHundreadRatio();
-        console.log(seed);
-        var f = seed.substring(0, 1);  //prefix
-        var l = seed.substring(1);   //surfix
-        console.log(' l ', l);
-        var z = '';
-        for (var i = 0; i < l.length; i++) {
-            z += '0';
-        }
-        var t = f + z;
-        var ratio = 10;
-        console.log('zero base ', t);   //ex) 78 123 249 519 708 => 0 100 200 500 700
-        console.log(' surfix length is ', l.length);
-        var temp = Number("1" + z);
-        console.log('temp ', temp);
-        var index = t / temp;
-        console.log('index ', index);
-
-        var idx = 0;
-        if (Number(t) < 100) idx = 0;
-        if (Number(t) >= 100 && Number(t) < 1000) {
-            idx = index;
-            ratio = 100;
-        }
-        if (Number(t) >= 1000 && Number(t) < 10000) {
-            idx = index + '0';
-            ratio = 1000;
-        }
-        if (Number(t) >= 10000 && Number(t) < 100000) {
-            idx = index + '00';
-            ratio = 1000;
-        }
-
-        var holder = self.getHolderIndex();
-        console.log('idx ', idx);
-        var position = holder[idx];
-        //if(idx>9){position = holder[idx-(l.length-(l.length-1))];}
-        console.log('position value ', position);
-        console.log(' the horzantal position is ', self.xt[position]);
-        var addup = Number(l) * self.getAddRatio(track[position]);
-        console.log(' addup ', addup);
-
-        //var targetPosition = (xt[position] + (Number(l)/ratio * (ratio/10) ) );
-        var targetPosition = self.xt[position] + addup;
-        if (idx === 0) targetPosition += 25;
-        console.log(' target position ', targetPosition);
-        //console.log(' track is ', track[position-1]);
-        return targetPosition;
-    }
-
-    self.getPixelMap = function(pixel, item) {
-        console.log(pixel);
-        console.log('item ', item);
-        var spot = [];
-        for (var i = 0; i < pixel.length; i++) {
-            var pitem = _.map(pixel[i], function (value, key) {
-                console.log(' key ', key);
-                console.log('value ', value);
-                if (key == 'name' && value == item) {
-                    find = true;
-                    console.log('find ');
-                    spot.push(pixel[i].data);
-                }
-            });
-        }
-        return spot;
-    }
-
-    self.plotMuts = function(p, row, label) {
-        console.log(' plotMuts called====> ', label.pid, ' ', label.name, label.leaf);
         var maxCount = 5; // set max height to 5 mutations
-        var yRow = self.fyRow(row) + 20;
-        //var rowindex = 0;
-        if (label.leaf == true) {
-            var pixeldataV = self.getPixelMap(self.pixelMap, label.name) || [];
-            console.log('pixeldata length =>', pixeldataV);
-            _.map(pixeldataV, function (pixeldata, k) {
-                console.log('k ', k, 'v ', pixeldata.length);
-                var idx = 0;
-                //var pary=[];
-                for (var i = 0; i < pixeldata.length; i++) {
-                    //console.log("  pixeldata[i].axis  ", pixeldata[i]);
-                    var position = self.getTargetPosition(pixeldata[i].axis);
-                    console.log(" position => ", position);
-                    var h = pixeldata[i].name.length > maxCount ? 20 : (20 * pixeldata[i].name.length / maxCount);
-                    //console.log(yRow-h);
-                    pixil = 150;
-                    var r = p.rect(position, yRow - h, 3, h);
-                    r.attr("fill", "#0f0");
-                    r.attr("stroke", "#0f0");
-                    r.attr("stroke-width", 1);
-                    r.attr("opacity", 0.5);
-                    r.translate(0.5, 0.5);
-                    r.hover(function () {
-                            //r.animate({'scale': [1.25, 1.25]}, 750, 'easeOutCubic', callback);
-                            this.transform('S1.5,1.5');
-                        }, function () {
-                            this.transform('s1,1');
-                        }
-                    );
-                    self.addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
-                    ++idx;
 
-                }
-            });
-        }
-        var deep = label.level;
-        var lbl = label.name;
-        //console.log(' LAVEL DEEP ==> ', Number(deep));
-        var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
-            'text-anchor': 'start',
-            'fill': 'black',
-            'cursor': 'pointer',
-            'font-size': '12'
-        });
-        var ypos = yRow + 5;
-        self.LASTYPOS = ypos;
-
-    }
-
-    self.plotdrawing = function(diagnosis) {
-        var k = 0;
-        for (var i = 0; i < diagnosis.length; i++) {
-            //console.log( ' diagnosis[i] ', diagnosis[i])
-            if (diagnosis[i].show == '1') {
-                self.plotMuts(self.paper, k, diagnosis[i]);
-                ++k;
+        var yRow = self.yRow(row)+self.rowHeight;
+        $.each(self.pixelMap, function(i, arr) {
+            var pixil = i;
+            if (arr) {
+                console.log( 'arr ',arr);
+                var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
+                var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h);
+                r.attr("fill","#0f0");
+                r.attr("stroke", "#0f0");
+                r.attr("stroke-width", 1);
+                r.attr("opacity", 0.5);
+                r.translate(0.5, 0.5);
+                self.addToolTip(r.node, arr.join("</br>"), 100, '');
             }
-        }
+        });
+        var label = "MUT";
+        var t = p.text(12,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+        var t = p.text(xRightText(),yRow-self.rowHeight/2,mutObj.length).attr({'text-anchor': 'start','font-weight': 'bold'});
+        underlineText(t,p);
+        var tip = "Number of mutation events.";
+        self.addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});
     }
 
-    self.addToolTip = function (node, tip, showDelay, position) {
+    self.yRow = function(row) {
+        return 2*self.rowMargin+self.ticHeight+row*(self.rowHeight+self.rowMargin);
+    };
+    var xRightText = function() {
+        return self.wideLeftText + self.GenomeWidth+5;
+    };
+    var underlineText = function(textElement,p) {
+        var textBBox = textElement.getBBox();
+        return p.path("M"+textBBox.x+" "+(textBBox.y+textBBox.height)+"L"+(textBBox.x+textBBox.width)+" "+(textBBox.y+textBBox.height));
+    }
+
+    self.addToolTip = function(node, tip, showDelay, position) {
         var param = {
-            content: {text: tip},
+            content: {text:tip},
             show: {event: "mouseover"},
-            hide: {fixed: true, delay: 100, event: "mouseout"},
-            style: {classes: 'qtip-light qtip-rounded'},
+            hide: {fixed: true, delay: 100, event:"mouseout"},
+            style: { classes: 'qtip-light qtip-rounded' },
             position: {
                 my: "bottom right",
                 at: "top left",
