@@ -142,17 +142,19 @@
                                                 </div>
                                             </div>
                                             <hr class="divider"/>
-                                            <div style="overflow-x:auto;">
-                                              <div id="genomicOverviewTracksContainer1" />
-                                            </div>
-                                            <hr class="divider"/>
-                                            <div>
-                                            <div>
 
+
+                                            <div>
+                                                <div style="overflow-x:auto;">
+                                                    <div id="genomicOverviewTracksContainer1" style="overflow-x:auto;"/>
+                                                </div>
+                                                <hr class="divider"/>
                                         <!--------------------- table -------------------------------->
                                                 <%--<div class="lazy-mobx-table">--%>
                                                 <div>
-
+                                                        <span style="float: left; color: black; font-size: 16px; font-weight: bold;">
+                                                             Mutations
+                                                        </span>
                                                        <%-- <span style="float: left; color: black; font-size: 16px; font-weight: bold;">
                                                             8 Mutations (page 1 of 1)
                                                         </span>--%>
@@ -193,8 +195,10 @@
                                                             <span>
                                                                 <span class="pull-right">
                                                                 <div class="pull-right btn-group">
-                                                                    <button class="btn btn-sm btn-default" data-clipboard-text="NA" id="copyButton"> <i class="fa fa-clipboard"></i>
-                                                                    </button><button type="button" class="btn-sm btn btn-default">
+                                                                    <button class="btn btn-sm btn-default" data-clipboard-text="NA" id="copyButton">
+                                                                        <i class="fa fa-clipboard"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn-sm btn btn-default" id="downloadButton">
                                                                     <i class="fa fa-cloud-download"></i></button>
                                                                 </div>
                                                                 </span>
@@ -204,7 +208,7 @@
 
                                                                </div>--%>
                                                            <div style="overflow-x:auto;">
-                                                               <table id="t-3" class="simple-table table table-striped table-border-top sortable">
+                                                               <table id="t-1" class="simple-table table table-striped table-border-top sortable">
                                                                    <thead>
                                                                    <tr>
                                                                        <th data-sort='{"key":"geneNm"}' class="multilineHeader" role="button"><span>Gene</span></th>
@@ -237,7 +241,7 @@
 
                                             </div>
 
-                                        </div>
+
                                         </div>
 
 
@@ -308,49 +312,11 @@
 
 </section>
 
-<script id="template_template" type="text/x-jquery-tmpl">
-<tr>
-     <td><span data-test="mutation-table-gene-column">${geneNm}</span></td>
-     <td><span data-test="mutation-table-gene-column">${geneExamMthNm}</span></td>
-     <td><span class="proteinChange-module__proteinChange__2xJ_V" style="white-space: nowrap;">${hgvspVal}</span></td>
-     <td><span style="display: flex; min-width: 100px;">
-         <span class="annotation-module_annotation-item__2EgnB">
-             <i class="oncokb annotation-icon oncogenic level-3A" data-test="oncogenic-icon-image" data-test2="NRAS">
-             </i></span><span class="annotation-module__annotation-item__1YzCz">
-         </span></span>
-     </td>
-     <td><span data-test="mutation-table-gene-column">${chrnNo}</span></td>
-     <td><span class="mutation-table-gene-column">${geneVariStLocVal}</span></td>
-     <td><span class="mutation-table-gene-column">${geneVariEndLocVal}</span></td>
-     <td><span class="mutation-table-gene-column">${refAlleleSqncVal}</span></td>
-     <td><span class="mutation-table-gene-column">${variAlleleSqncVal}</span></td>
-     <td><span class="mutation-table-gene-column">${ms}</span></td>
-     <td><span class="mutation-table-gene-column">${geneVariClsfNm}</span></td>
-     <td><span class="mutation-table-gene-column">${variAlleleReadRt}</span></td>
-     <td><span class="mutation-table-gene-column">${variAlleleReadCnt}</span></td>
-     <td><span class="mutation-table-gene-column">${refAlleleReadCnt}</span></td>
-     <td><span class="mutation-table-gene-column">${copy}</span></td>
-     <td>
-         <div>
-             <svg width="71" height="12">
-                 <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>
-                 <rect y="2" width="30" height="8" fill="#ccc"></rect>
-                 <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>
-                 <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>
-             </svg>
-         </div>
-     </td>
-     <td>
-         <div class="styles-module__integer-data__1Bn0H" onClick="doNoGather(${inv_no})">cosmic</div>
-     </td>
-   </tr>
- </script>
-
 <script>
     var PATIENTID = '<%=request.getParameter("patientId")%>';
 </script>
-<script src="<c:url value="/js/page/patient/patientView.js" />"></script>
-<script src="<c:url value="/js/page/patient/patientChart.js" />"></script>
-<script src="<c:url value="/js/page/patient/patientViewMutation.js" />"></script>
-<script src="<c:url value="/js/page/patient/genomeChart.js" />"></script>
+<script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
+<script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
+<script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
+<script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 

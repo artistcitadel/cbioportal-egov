@@ -1,16 +1,112 @@
 // $(document).ready(function () {
 // });
-function GenomeOverView(pos) {
+function GenomicOverview() {
     var self = this;
-    self.init = function() {
+
+    self.getXtAxis = function(){
+        console.log("getMutation");
+        var ds_cond = {};
+        ds_cond.data = {"queryId": "selectPatientMutAxis", "patientId": PATIENTID};
+        ds_cond.callback = self.setChromesome;
+        action.selectPatientMuList(ds_cond);
+    }
+    self.init = function(mutation) {
+        self.mutObjData = mutation;
+        self.getXtAxis();
+    }
+
+    var plotChromosomes = function(genomeRef, p) {
+        var yRuler = self.rowMargin+self.ticHeight;
+        drawLine(self.wideLeftText,yRuler,self.wideLeftText+self.GenomeWidth,yRuler,p,'#000',1);
+
+        for (var i=1; i<genomeRef.length; i++) {
+                var xt = loc2xpixil(i,0);
+                console.log(' xt is ', xt);
+                drawLine(xt,yRuler,xt,self.rowMargin,p,'#000',1);
+
+                var m = middle(i,genomeRef);
+                p.text(m,yRuler-self.rowMargin,chmName(i));
+
+        }
+       drawLine(self.wideLeftText+self.GenomeWidth,yRuler,self.wideLeftText+self.GenomeWidth,self.rowMargin,p,'#000',1);
+    }
+    var middle = function(chm, genomeRef) {
+        var loc = genomeRef[chm]/2;
+        return loc2xpixil(chm,loc);
+    };
+    var chmName = function(chm) {
+        if (chm === 23) return "X";
+        if (chm === 24) return "Y";
+        return chm;
+    }
+
+    var loc2xpixil = function(chm, loc){
+        console.log('chm loc ', chm, loc);
+        console.log('loc2perc(chm,loc ',loc2perc(chm,loc));
+        console.log('self.GenomeWidth ',self.GenomeWidth,self.wideLeftText )
+        return loc2perc(chm,loc) * self.GenomeWidth+self.wideLeftText;
+    }
+    var loc2perc = function(chm, loc){
+        //console.log('GenomicOverview.genomeRef ', self.genomeRef);
+        console.log('GenomicOverview.total ', self.total);
+        var perc = getChmEndsPerc(self.genomeRef, self.total);
+        console.log('chm-1 ', chm-1, loc, self.total, perc[chm-1], perc[chm-1] + loc / self.total);
+        return perc[chm-1] + loc / self.total;
+    }
+
+    var getChmEndsPerc = function(chms, total) {
+        console.log('getChmEnmdsPerc ', chms, total);
+        var ends = [];
+        ends.push(1);
+        for (var i=1; i<chms.length; i++) {
+            ends.push(ends[i-1] + Number(chms[i]) / total);
+        }
+        // console.log('total ', total);
+        // console.log('chms ', chms);
+        console.log('getchmEndsPerc ends ', ends);
+        return ends;
+    }
+
+
+    self.setChromesome = function(xtjson){
+
         self.dig = [];
+        self.xt=[];
+        self.m = [];
+        self.chmName = [];
+        self.width = size.width-20;
+        self.wideGenePanelIcon = 20;
+        self.heigthGenePanelIcon = 18;
+        self.pixelsPerBinMut = 3;
+        self.rowHeight = 20;
+        self.rowMargin = 5;
+        self.ticHeight = 10;
+        self.cnTh = [0.2,1.5];
+        self.cnLengthTh = 50000;
+        self.ticHeight = 10;
+        self.canvasWidth = self.width;
+        self.wideLeftText = 25;
+        self.wideRightText = 35;
+        self.pixelMap = [];
+        console.log('self.canvasWidth ',self.canvasWidth , self.wideLeftText, self.wideRightText);
+        self.GenomeWidth = self.canvasWidth-self.wideLeftText-self.wideRightText;
+        console.log(' self.genomewidth ',self.GenomeWidth);
+
         self.LASTYPOS;
-        self.YPOS = pos;
-        self.paper = Raphael("genomicOverviewTracksContainer1", 1245, 415);
+        self.YPOS = 0;
+        self.paper = Raphael("genomicOverviewTracksContainer1", self.width, 115);
         self.paper.scale({zoom: true});
         //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
+        self.genomeRef = [];
+        self.genomeRef.push(1);
+        for(var i=0;i<xtjson.length-1;i++){
+            self.genomeRef.push(Number(xtjson[i].geneEndLocVal));
+        }
+        self.total = _.sum(self.genomeRef);
 
-        self.chmName = [
+        plotChromosomes(self.genomeRef,self.paper);
+        return;
+        /*self.chmName = [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y'
         ];
         self.xt = [25, 110, 193, 261, 326, 388, 447, 501, 552, 600, 646, 693, 738, 778, 815, 850, 881, 908, 935, 955, 977, 993, 1011, 1064];
@@ -18,23 +114,48 @@ function GenomeOverView(pos) {
         for (var i = 0; i < self.xt.length; i++) {
             self.xt[i] += 145;
             self.m[i] += 145;
-        }
+        }*/
+        var start = 50;
+        self.xt.push(start);
+        var i=1;
+        console.log(xtjson);
+        _.forEach(xtjson, function (v) {
+            self.chmName.push(v.chrmNo);
+            start = self.xt[i-1];
+            if(xt>1)start= Number(v.geneEndLocVal) * 0.000001;
+            self.xt.push(Number(start) + Number(v.geneEndLocVal)*0.000001);
+            //self.m.push((Number(self.xt[i]) - Number(self.xt[i-1]) ) / 2);
+            ++i;
+        });
 
-        self.yRuler = self.YPOS;
-        self.drawLine('170', self.yRuler, 1090 + 150, self.yRuler, paper, '#000', 1);
+        for(var i=1;i<self.xt.length;i++){
+            self.m.push(Number(self.xt[i-1]) + ( (Number(self.xt[i]) - Number(self.xt[i-1]) ) / 2) );
+        }
+        var width = self.xt[self.xt.length-1];
+        self.width = width;
+        $('#genomicOverviewTracksContainer1').children(1).css('width',(width+40)+'px');
+        console.log("genomeoverview xt is ", self.xt);
+        console.log("genomeoverview m is ", self.m);
+        console.log("genomeoverview chmName ", self.chmName);
+
+        self.yRuler = 15;
+        drawLine(self.xt[0], self.yRuler, self.width, self.yRuler, self.paper, '#000', 1);
         //drawLine('25', yRuler, 1090, yRuler, paper, '#000', 1);
 
-        for (var i = 0; i < self.chmName.length; i++) {
-            self.drawLine(self.xt[i], self.yRuler, self.xt[i], 5, self.paper, '#000', 1);
+        for (var i = 0; i < self.chmName.length-1; i++) {
+            drawLine(self.xt[i], self.yRuler, self.xt[i], 5, self.paper, '#000', 1);
             var txt = self.paper.text(self.m[i], 10, self.chmName[i]);
             //console.log('text ', m[i], 10, chmName[i]);
         }
 
-        self.drawLine(1090 + 150, self.yRuler, 1090 + 150, 5, self.paper, '#000', 1);
+        drawLine(self.width-1, self.yRuler, self.width-1, 5, self.paper, '#000', 1);
+
+        self.getMutationPixelMap();
+        //self.makeEventBarChart();
     }
 
-    self.drawLine = function(x1, y1, x2, y2, p, cl, width) {
-        console.log("self.YPOS " , self.YPOS);
+    drawLine = function(x1, y1, x2, y2, p, cl, width) {
+        console.log("self.YPOS " , x1, y1, x2, y2);
 
         width = 1;
         //console.log( 'x1 ', x1 , ' y1 ', y1, ' x2 ', x2, ' y2 ',y2, ' p ', p, ' cl ', cl, ' width ', width);
@@ -109,7 +230,7 @@ function GenomeOverView(pos) {
                 item.level = v;
                 self.dig.push(item);
             }
-            if (k == 'data' || _.isNumber(k)) cat(v);
+            if (k == 'data' || _.isNumber(k)) self.cat(v);
         });
 
         self.dig = _.filter(self.dig, function (o) {
@@ -148,32 +269,51 @@ function GenomeOverView(pos) {
      pixelMap[1][761] = ["KRT85: G85R"];
      pixelMap[1][1096] = ["ENOX2: H250Q"];*/
 
-    self.pixelMap = [{
-            "name": "MUT",
-            "data": [
-                {"axis": "78", "name": ["SLC27A3: G111D"]},
-                {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
-                {"axis": "249", "name": ["SI: V109I"]},
-                {"axis": "519", "name": ["PRKDC: X133_splice"]},
-                {"axis": "708", "name": ["KMT2D: V5208Wfs*35"]},
-                {"axis": "711", "name": ["KRT85: G85R"]},
-                {"axis": "1056", "name": ["ENOX2: H250Q"]}
-            ]
+    // self.pixelMap = [{
+    //         "name": "MUT",
+    //         "data": [
+    //             {"axis": "78", "name": ["SLC27A3: G111D"]},
+    //             {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
+    //             {"axis": "249", "name": ["SI: V109I"]},
+    //             {"axis": "519", "name": ["PRKDC: X133_splice"]},
+    //             {"axis": "708", "name": ["KMT2D: V5208Wfs*35"]},
+    //             {"axis": "711", "name": ["KRT85: G85R"]},
+    //             {"axis": "1056", "name": ["ENOX2: H250Q"]}
+    //         ]
+    //     }
+    //         ,
+    //         {
+    //             "name": "CNA",
+    //             "data": [
+    //                 {"axis": "18", "name": ["SLC27A3: G111D"]},
+    //                 {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
+    //                 {"axis": "289", "name": ["SI: V109I"]},
+    //                 {"axis": "569", "name": ["PRKDC: X133_splice"]},
+    //                 {"axis": "768", "name": ["KMT2D: V5208Wfs*35"]},
+    //                 {"axis": "761", "name": ["KRT85: G85R"]},
+    //                 {"axis": "1096", "name": ["ENOX2: H250Q"]}
+    //             ]
+    //         }]
+    // ;
+
+    self.getMutationPixelMap = function(){
+        var mutObj = self.mutObjData;
+        console.log('mutObj ', mutObj);
+        for(var i=0; i<mutObj.length; i++){
+            // var x = Math.round(self.loc2xpixil(mutObj[i].chrnNo, (mutObj[i].geneVariStLocVal + mutObj[i].geneVariEndLocVal)/2));
+            // var xBin = x - x%3;
+            // if (self.pixelMap[xBin] == null) self.pixelMap[xBin] = [];
+            var x = Number(mutObj.geneVariEndLocVal) -  Number(mutObj.geneVariStLocVal);
+            if(x===0)x=1;
+            var chm = mutObj.chrnNo;
+            var p = self.xt[chm-1];
+            p+=x;
+            var xBin = x - x%3;
+
+            self.pixelMap[xBin].push(mutObj.geneNm + ": " + mutObj.hgvspVal);
         }
-            ,
-            {
-                "name": "CNA",
-                "data": [
-                    {"axis": "18", "name": ["SLC27A3: G111D"]},
-                    {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
-                    {"axis": "289", "name": ["SI: V109I"]},
-                    {"axis": "569", "name": ["PRKDC: X133_splice"]},
-                    {"axis": "768", "name": ["KMT2D: V5208Wfs*35"]},
-                    {"axis": "761", "name": ["KRT85: G85R"]},
-                    {"axis": "1096", "name": ["ENOX2: H250Q"]}
-                ]
-            }]
-    ;
+        console.log('GenomicOverview pixelMap ', self.pixelMap);
+    }
 
 
     //var label = ['ABC','DEF'];
@@ -252,16 +392,17 @@ function GenomeOverView(pos) {
     }
 
     self.getPixelMap = function(pixel, item) {
+        console.log(pixel);
         console.log('item ', item);
         var spot = [];
-        for (var i = 0; i < self.pixel.length; i++) {
-            var pitem = _.map(self.pixel[i], function (value, key) {
+        for (var i = 0; i < pixel.length; i++) {
+            var pitem = _.map(pixel[i], function (value, key) {
                 console.log(' key ', key);
                 console.log('value ', value);
                 if (key == 'name' && value == item) {
                     find = true;
                     console.log('find ');
-                    spot.push(self.pixel[i].data);
+                    spot.push(pixel[i].data);
                 }
             });
         }
@@ -269,12 +410,12 @@ function GenomeOverView(pos) {
     }
 
     self.plotMuts = function(p, row, label) {
-        console.log(' plotMuts called====> ', label.pid, ' ', label.name);
+        console.log(' plotMuts called====> ', label.pid, ' ', label.name, label.leaf);
         var maxCount = 5; // set max height to 5 mutations
         var yRow = self.fyRow(row) + 20;
         //var rowindex = 0;
         if (label.leaf == true) {
-            var pixeldataV = self.getPixelMap(self.pixelMap, label.name.toLowerCase()) || [];
+            var pixeldataV = self.getPixelMap(self.pixelMap, label.name) || [];
             console.log('pixeldata length =>', pixeldataV);
             _.map(pixeldataV, function (pixeldata, k) {
                 console.log('k ', k, 'v ', pixeldata.length);
@@ -282,7 +423,7 @@ function GenomeOverView(pos) {
                 //var pary=[];
                 for (var i = 0; i < pixeldata.length; i++) {
                     //console.log("  pixeldata[i].axis  ", pixeldata[i]);
-                    var position = getTargetPosition(pixeldata[i].axis);
+                    var position = self.getTargetPosition(pixeldata[i].axis);
                     console.log(" position => ", position);
                     var h = pixeldata[i].name.length > maxCount ? 20 : (20 * pixeldata[i].name.length / maxCount);
                     //console.log(yRow-h);

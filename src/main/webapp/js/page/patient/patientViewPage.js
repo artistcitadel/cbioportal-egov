@@ -15,7 +15,7 @@ $(document).ready(function () {
   paper.scale({ zoom: true});
 
   var label = "Time since diagnosis";
-  var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+  var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
 
   var ds_cond = {};
   ds_cond.data = {"queryId":"selectLabTestHrc","patientId":PATIENTID};

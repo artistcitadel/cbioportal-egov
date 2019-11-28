@@ -77,6 +77,13 @@
             WHERE RESCH_PAT_ID = #{patientId}
  	</select>
 
+    <select id="selectPatientMutAxis" resultType="com.asan.patient.vo.PatientMut">
+        SELECT CHRM_NO chrmNo,
+        GENE_ST_LOC_VAL geneStLocVal,
+        GENE_END_LOC_VAL geneEndLocVal
+        FROM PMGEMCHRM
+        ORDER BY SORT_SEQ
+    </select>
     <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
        SELECT GMU.MTTN_EXAM_RSLT_ID mttnExamRsltId        -- 돌연변이검사결과ID (화면표시X)
      , GMU.GENE_NM geneNm                  -- Gene

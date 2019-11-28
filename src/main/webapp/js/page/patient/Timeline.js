@@ -1,5 +1,5 @@
-var leftpadding = 90, lvalue=90
-var paperWidth = 1445;
+var leftpadding = 90, lvalue=90;
+var paperWidth = 1435;
 var paperHeight = 30;
 var paper;
 var yRuler = 15;
@@ -26,6 +26,7 @@ var XSCALE=1;
 var HMIN;
 var HMAX;
 var INITUNIT;
+var ISROUNDMUTATION=false;
 
 var TITLE ={
     "Specimen" : "1",
@@ -123,13 +124,14 @@ function setTimeLine(node, data){
     var longest = data.reduce(function (a, b) { return a.name.length > b.name.length ? a : b; });
     console.log(' .. longest ', longest.name.length);
     //XTREETEXTPADDING += _.max(LTEXTLENGTH)+24;
-    XTREETEXTPADDING += longest.name.length+24;
+    //XTREETEXTPADDING = longest.name.length+24;
+    XTREETEXTPADDING = longest.name.length+3;
     leftpadding*=2;
     leftpadding+=XTREETEXTPADDING;
 
     var start = leftpadding+XTREETEXTPADDING;
     //( node==='C') ? chmName = setChmName(data) : (node==='F')?(chmName = setTrack(data), node='R'):null;
-    ( node==='C') ? chmName = setTrack(data) : null;
+    ( node==='C') ? chmName = setTrack(data): null;
     //paperWidth = chmName.length * dynamicWidthPartial;
     console.log(chmName);
     xt = setXposition(start, chmName.length);
@@ -466,8 +468,10 @@ function plotdrawing(dig){
     util.hideLoader();
     $("#swave").hide();
 
-    if(MODE==='N')
-      getMutationCosmic();
+    if(!ISROUNDMUTATION){
+        var pt = new PatientViewMutationTable();
+        pt.init();
+    }
 }
 
 function printPlot(paper, data){
@@ -530,9 +534,12 @@ function plotMuts(p, row, item) {
             //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
             var h = maxCount;
             // console.log('yrow ', yRow, h);
-            var r = p.rect(position, yRow-4, pw, h);
-            r.attr("fill", "#0f0");
-            r.attr("stroke", "#0f0");
+            //var r = p.rect(position, yRow-4, pw, h);
+            var r = p.circle(position, yRow-4, pw);
+            // r.attr("fill", "#0f0");
+            // r.attr("stroke", "#0f0");
+            r.attr("fill", "#ffaf8a");
+            r.attr("stroke", "#ffaf8a");
             r.attr("stroke-width", 1);
             r.attr("opacity", 0.5);
             r.translate(0.5, 0.5);
@@ -578,8 +585,9 @@ function plotMuts(p, row, item) {
         });
 
            t.click(function () {
-              if(!label.leaf)
-                setTreeNode(label.id);
+              if(!label.leaf) {
+                  setTreeNode(label.id);
+              }
            });
 
         PAPERNODE.push(t);
