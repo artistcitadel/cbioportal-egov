@@ -138,6 +138,42 @@
              , GMU.REF_ALLELE_READ_CNT
     </select>
 
+    <select id="selectPatientCNAList" resultType="com.asan.patient.vo.PatientMut">
+      /* Copy Number Alterations */
+        SELECT GCV.CNV_EXAM_RSLT_ID cnvExamRsltid          -- 복제수변이검사결과ID (화면표시X)
+             , GCV.GENE_NM gcvGeneNm                   -- Gene (Annotation OncoKB 사용)
+             , GCV.GENE_EXAM_MTH_NM geneExamMthNm          -- Methods
+             , UPPER(GCV.CNV_STAT_NM) AS CNA  cna -- CNA (Annotation OncoKB 사용)
+             , GCV.CYTB_NM cytbNm                   -- Cytoband
+             , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
+             , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM AND CNV_STAT_NM = GCV.CNV_STAT_NM) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
+             , NULL                           -- 암종 (Annotation OncoKB 사용)
+        ,GCV.RESCH_PAT_ID
+          FROM pmsdev.PMGERCVEM GCV
+             , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수
+                   FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+                           UNION
+                          SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+                           UNION
+                          SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+                           UNION
+                          SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAT_ALL
+               ) PAT
+        WHERE GCV.RESCH_PAT_ID = '51927545'  -- 연구환자ID (조회조건)
+
+    </select>
+
+    <select id="selectPatientEXPList" resultType="com.asan.patient.vo.PatientMut">
+          SELECT GEX.GENE_NM                    -- Gene
+         , GEX.GENE_EXAM_MTH_NM           -- Methods
+         , GEX.PTEG_GENE_READ_RSLT_VAL    -- Expression Result
+         , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS GNEX  -- Expression Value
+         , GEX.GNEX_MSR_VAL               -- Expression Unit
+      FROM pmsdev.PMGERGNEX GEX
+     WHERE GEX.RESCH_PAT_ID = '10510117'  -- 연구환자ID (조회조건)
+
+    </select>
+
     <select id="selectPatientMuCosmic" resultType="com.asan.patient.vo.PatientMut">
        /*SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
        , MCS.MTTN_EXAM_RSLT_ID mttnExamRsltId
