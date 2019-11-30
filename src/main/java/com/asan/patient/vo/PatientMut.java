@@ -9,6 +9,54 @@ public class PatientMut  extends RkCmmnVO {
     private String copy;
     private String cosmic;
 
+    private String svExamRsltId;
+    private String geneNm1;
+
+  public String getSvExamRsltId() {
+    return svExamRsltId;
+  }
+
+  public void setSvExamRsltId(String svExamRsltId) {
+    this.svExamRsltId = svExamRsltId;
+  }
+
+  public String getGeneNm1() {
+    return geneNm1;
+  }
+
+  public void setGeneNm1(String geneNm1) {
+    this.geneNm1 = geneNm1;
+  }
+
+  public String getGeneNm2() {
+    return geneNm2;
+  }
+
+  public void setGeneNm2(String geneNm2) {
+    this.geneNm2 = geneNm2;
+  }
+
+  public String getCytbNm1() {
+    return cytbNm1;
+  }
+
+  public void setCytbNm1(String cytbNm1) {
+    this.cytbNm1 = cytbNm1;
+  }
+
+  public String getCytbNm2() {
+    return cytbNm2;
+  }
+
+  public void setCytbNm2(String cytbNm2) {
+    this.cytbNm2 = cytbNm2;
+  }
+
+  private String geneNm2;
+    private String cytbNm1;
+    private String cytbNm2;
+
+
   public String getCnvExamRsltid() {
     return cnvExamRsltid;
   }

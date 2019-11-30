@@ -164,14 +164,37 @@
     </select>
 
     <select id="selectPatientEXPList" resultType="com.asan.patient.vo.PatientMut">
-          SELECT GEX.GENE_NM                    -- Gene
-         , GEX.GENE_EXAM_MTH_NM           -- Methods
-         , GEX.PTEG_GENE_READ_RSLT_VAL    -- Expression Result
-         , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS GNEX  -- Expression Value
-         , GEX.GNEX_MSR_VAL               -- Expression Unit
+         SELECT GEX.GENE_NM geneNm                 -- Gene
+         , GEX.GENE_EXAM_MTH_NM geneExamMthNm       -- Methods
+         , GEX.PTEG_GENE_READ_RSLT_VAL ptegGeneReadRsltVal   -- Expression Result
+         , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS gnex -- Expression Value
+         , GEX.GNEX_MSR_VAL gnexMsrVal              -- Expression Unit
       FROM pmsdev.PMGERGNEX GEX
-     WHERE GEX.RESCH_PAT_ID = '10510117'  -- 연구환자ID (조회조건)
+    WHERE GEX.RESCH_PAT_ID = '3133581171'
+    </select>
 
+    <select id="selectPatientSTRList" resultType="com.asan.patient.vo.PatientMut">
+/* Structural Variations */
+      SELECT GSV.SV_EXAM_RSLT_ID svExamRsltId     -- 구조변이검사결과ID (화면표시X)
+     , GSV.GENE_NM1 geneNm1                  -- Gene1 (Annotation OncoKB 사용)
+     , GSV.GENE_NM2 geneNm2                  -- Gene2 (Annotation OncoKB 사용)
+     , GSV.GENE_EXAM_MTH_NM geneExamMthNm    -- Methods
+     , GSV.CYTB_NM1 cytbNm1                 -- Cytoband1
+     , GSV.CYTB_NM2 cytbNm2                  -- Cytoband2
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERSVEM WHERE GENE_NM1 = GSV.GENE_NM1) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort1 (밝은색)
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERSVEM WHERE GENE_NM2 = GSV.GENE_NM2) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort2 (밝은색)
+     , NULL                           -- 암종 (Annotation OncoKB 사용)
+  FROM pmsdev.PMGERSVEM GSV
+     , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수
+           FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+                   UNION
+                  SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+                   UNION
+                  SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+                   UNION
+                  SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAT_ALL
+       ) PAT
+ WHERE GSV.RESCH_PAT_ID = '7278840302'  -- 연구환자ID (조회조건)
     </select>
 
     <select id="selectPatientMuCosmic" resultType="com.asan.patient.vo.PatientMut">

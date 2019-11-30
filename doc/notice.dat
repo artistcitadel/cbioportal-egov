@@ -2,6 +2,36 @@
 export BRANCH_ENV=rc
 export CBIOPORTAL_URL="http://beta.cbioportal.org"
 
+
+(annotation.oncoKbIndicator  )
+{query: {・}, geneExist: true, variantExist: false, alleleExist: false, oncogenic: "Likely Oncogenic", ・}
+alleleExist: false
+dataVersion: "v1.23"
+diagnosticImplications: null
+diagnosticSummary: ""
+geneExist: true
+geneSummary: "RECQL4 encodes a DNA helicase that is involved in DNA replication and repair. Germline mutations of RECQL4 are associated with Rothmund-Thomson, RAPADILINO and Baller-Gerold syndromes and predispose to osteosarcomas, among other cancers."
+highestDiagnosticImplicationLevel: null
+highestPrognosticImplicationLevel: null
+highestResistanceLevel: null
+highestSensitiveLevel: null
+hotspot: false
+lastUpdate: "10/17/2018"
+mutationEffect: {knownEffect: "Likely Loss-of-function", description: "", citations: {・}}
+oncogenic: "Likely Oncogenic"
+otherSignificantResistanceLevels: []
+otherSignificantSensitiveLevels: []
+prognosticImplications: null
+prognosticSummary: ""
+query: {id: "9401_Acinar_Cell_Carcinoma_of_the_Pancreas_X822_splice_Splice_Site", type: "web", hugoSymbol: "RECQL4", entrezGeneId: 9401, alteration: "X822_splice", ・}
+treatments: []
+tumorTypeSummary: "There are no FDA-approved or NCCN-compendium listed treatments specifically for patients with RECQL4 X822_splice altered acinar cell carcinoma of the pancreas."
+variantExist: false
+variantSummary: "The RECQL4 X822_splice alteration is likely oncogenic."
+vus: false
+
+
+
 mutated gean
 SELECT x.* FROM pmsdev.PMGERMUEM x
 WHERE x.RESCH_PAT_ID = '48321932'

@@ -538,8 +538,9 @@ function plotMuts(p, row, item) {
             var r = p.circle(position, yRow-4, pw);
             // r.attr("fill", "#0f0");
             // r.attr("stroke", "#0f0");
-            r.attr("fill", "#ffaf8a");
-            r.attr("stroke", "#ffaf8a");
+            //r.attr("fill", "#ffaf8a");
+            r.attr("fill", "#ffa670");
+            r.attr("stroke", "#ffa670");
             r.attr("stroke-width", 1);
             r.attr("opacity", 0.5);
             r.translate(0.5, 0.5);
@@ -566,16 +567,23 @@ function plotMuts(p, row, item) {
         if (label.leaf) deep += 2;
         // console.log('show ', label, label.folder);
         //var ar = '❯ ';
-        var ar = "❯ ";
-        //var ar = '閉';
+        ////var ar = "❯ ";
+        var ar = '開';
         //if (label.leaf) ar = '';
 
         if (!label.leaf) {
-            //ar = "﹀ ";V
-            ar ='✅';//ar = '開';
+          //ar = "﹀ ";V✅
+          /*  var r = p.circle((7 + Number(deep) * 8), yRow, 4);
+            r.attr("fill", "#5918ff");
+            r.attr("stroke", "#5918ff");
+            r.attr("stroke-width", 1);
+            r.attr("opacity", 0.5);
+            r.translate(0.5, 0.5);
+            ar='';*/
+            ar = '閉';//ar ='﹀';//
             //console.log(label.folder);
             //if (!label.folder) ar = "﹀ ";
-            if (label.folder) ar = '❯' //ar = "閉";
+            if (label.folder) ar='開' //ar = '❯' //ar = "閉";
         }else ar='';
 
         var lbl = label.name;
@@ -594,6 +602,8 @@ function plotMuts(p, row, item) {
                   setTreeNode(label.id);
               }
            });
+
+        if(ar!=='')underlineText(t,p);
 
         PAPERNODE.push(t);
         var ypos = yRow + 5;
@@ -624,7 +634,8 @@ function removeLine(){
 }
 
 function setTreeNode(id){
-    util.showLoader();
+    //util.showLoader();
+    $("#spinner1").show();
     _.delay(function() {
         setTreeNodePost(id);
     }, 1000);
@@ -646,8 +657,8 @@ function setTreeNodePost(id){
     }
 
     clearPaperPlotNode();
-    util.showLoader();
     plotdrawing(dig);
+    $("#spinner1").hide();
 }
 
 function addToolTip(node, tip, showDelay, position) {
@@ -663,6 +674,9 @@ function addToolTip(node, tip, showDelay, position) {
         }
     };
     $(node).qtip(param);
-
 }
 
+function underlineText(textElement,p) {
+    var textBBox = textElement.getBBox();
+    return p.path("M"+textBBox.x+" "+(textBBox.y+textBBox.height)+"L"+(textBBox.x+textBBox.width)+" "+(textBBox.y+textBBox.height));
+}

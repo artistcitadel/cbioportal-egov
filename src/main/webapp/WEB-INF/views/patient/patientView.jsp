@@ -119,13 +119,21 @@
                                         <div>
                                             <div id="timeline-container">
                                                 <div id="timeline_btn" style="display: flex; margin-bottom: 1px; justify-content: flex-end;">
-                                                    <div id="swave" style="color: #67989f;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                                    <%--<div id="swave" style="color: #67989f;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
                                                         <div></div>
                                                         <div></div>
                                                         <div></div>
                                                         <div></div>
                                                         <div></div>
-                                                    </div>
+                                                    </div>--%>
+                                                        <div id="swave" class="la-pacman" style="color: #9784ed;display:none;">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
                                                     &nbsp;&nbsp;
                                                     <label style="width: auto; text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
                                                     <%--<input id="cate" type="button" value="항목관리" class="btn btn-sm" style="margin-right:3px;">--%>
@@ -294,13 +302,21 @@
 
     <div id="spinner" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
-            <div class="sk-spinner la-line-scale-pulse-out big">
+            <%--<div class="sk-spinner la-line-scale-pulse-out big">
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
-            </div>
+            </div>--%>
+                <div class="la-pacman la-3x" style="color: #f3f60d">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
         </div>
         <%--<iframe id="ifr" class="mdacc-heatmap-iframe"--%>
                 <%--style="position:relative;zIndex:100;border:none;"--%>
@@ -309,6 +325,16 @@
         <%--</iframe>--%>
 
     </div>
+
+    <div id="spinner1" style="zIndex:100;position:relative;display:none;">
+        <div class="centered" >
+    <div class="la-square-jelly-box la-3x" style="color: #64d6e2">
+        <div></div>
+        <div></div>
+    </div>
+    </div>
+    </div>
+
 
 </section>
 

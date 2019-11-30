@@ -20,10 +20,22 @@
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/styles16.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/indicator.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/linepulse.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/spinkit.css" type="text/css" />
+	<%--<link rel="stylesheet" href="<%//docRoot%>css/page/patient/spinkit.css" type="text/css" />--%>
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/squarejelly.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/packman.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/page/patient/lazyTable.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/raphael/jquery.qtip.min.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>css/jbox.all.min.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/oncob-styles/oncokb.css" type="text/css" />
+	<%--<link rel="stylesheet" href="<%=docRoot%>css/page/patient/cbio-portal-styles.css" type="text/css" />--%>
+
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/main-module.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/tabs-module.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/collapsible-module.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/level-module.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/mutation/oncoKbTreatmentTable.css" type="text/css" />
+
+
 	<style>
 		table {
 			margin: 1em 0;

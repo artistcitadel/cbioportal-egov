@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 1.업무명 : 환자관리시스템
  * 2.단위업무명 : 환자조회
- * 3.프로그램명 : 환자챠트, 체내 돌연변이정보 유사환자
+ * 3.프로그램명 : 환자챠트
  * 4.설명 : 환자정보를 Controller 클래스다.
  *
  * @Class  PatientController.java
@@ -78,6 +78,10 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		return "/patient/raphael.tiles";
 	}
 
+	@RequestMapping(value="/oncokbcard")
+	public String oncokbcard(){
+		return "/patient/oncokbcard.tiles";
+	}
 
 	/**
 	 * 환자 진단진료 타임라인 그래프
