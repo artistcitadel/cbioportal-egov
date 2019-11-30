@@ -203,12 +203,12 @@
 		<tiles:insertAttribute name="top"/>
 	</header>
 	<!-- Left side column. contains the logo and sidebar -->
-	<aside class="main-sidebar">
+<%--	<aside class="main-sidebar">
 		<tiles:insertAttribute name="adminLeft"/>
-	</aside>
+	</aside>--%>
 
 	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper" data-toggle="control-sidebar">
+	<%--<div class="content-wrapper" data-toggle="control-sidebar">--%>
 	<tiles:insertAttribute name="content"/>
 		<div style="position: absolute;left:-999px;">
 				<input type="text" class="">
@@ -222,9 +222,9 @@
 </div>
 <!-- ./wrapper -->
 <script>
-    $(document).ready(function () {
+/*    $(document).ready(function () {
         $(".sidebar-toggle").trigger("click");
-    });
+    });*/
 </script>
 
 <link rel="stylesheet" href="<%=docRoot%>jqwidgets/styles/jqx.base.css" type="text/css" />

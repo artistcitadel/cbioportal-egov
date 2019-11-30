@@ -566,11 +566,11 @@ function plotMuts(p, row, item) {
         var deep = label.level;
         if (label.leaf) deep += 2;
         // console.log('show ', label, label.folder);
-        //var ar = '❯ ';
-        ////var ar = "❯ ";
-        var ar = '開';
+        //var ar = '❯❯ ';
+        var ar = "❯ ";
+        //var ar = '開';
         //if (label.leaf) ar = '';
-
+       //console.log(' label ', label.folder, label.name, label.leaf);
         if (!label.leaf) {
           //ar = "﹀ ";V✅
           /*  var r = p.circle((7 + Number(deep) * 8), yRow, 4);
@@ -580,10 +580,10 @@ function plotMuts(p, row, item) {
             r.attr("opacity", 0.5);
             r.translate(0.5, 0.5);
             ar='';*/
-            ar = '閉';//ar ='﹀';//
+            ar ='﹀';//ar = '閉';//ar ='﹀';//
             //console.log(label.folder);
             //if (!label.folder) ar = "﹀ ";
-            if (label.folder) ar='開' //ar = '❯' //ar = "閉";
+            if (label.folder) ar = '❯' //ar = "閉";
         }else ar='';
 
         var lbl = label.name;
@@ -603,7 +603,7 @@ function plotMuts(p, row, item) {
               }
            });
 
-        if(ar!=='')underlineText(t,p);
+        //if(ar!=='')underlineText(t,p);
 
         PAPERNODE.push(t);
         var ypos = yRow + 5;
