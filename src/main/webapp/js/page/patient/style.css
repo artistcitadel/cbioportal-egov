@@ -1,0 +1,58 @@
+/* unvisited link */
+/*
+a:link {
+    color: white;
+}
+
+!* visited link *!
+a:visited {
+    color: white;
+}
+
+!* mouse over link *!
+a:hover {
+    color: white;
+}
+
+!* selected link *!
+a:active {
+    color: white;
+}*/
+table {
+    margin: 1em 0;
+}
+tbody td img {
+    width: 76px;
+    height: 93px;
+}
+th {
+    text-align: left;
+    white-space: nowrap;
+    background-color: #eee;
+}
+th.sort a {
+    text-decoration: none;
+    display: block;
+    background:  url(images/sort-icons.png) no-repeat 0 3px;
+    padding-left: 20px;
+}
+th.sorted-desc a {
+    background-position: 0 -47px;
+}
+th.sorted-asc a {
+    background-position: 0 -97px;
+}
+
+th.sort a:hover {
+    background-color: #ddd;
+}
+
+th.sort a:focus {
+    color: #222;
+}
+th, td {
+    padding: 3px 6px;
+}
+.pagination {
+    justify-content: center;
+}

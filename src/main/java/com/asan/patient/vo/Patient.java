@@ -6,6 +6,16 @@ public class Patient extends RkCmmnVO {
     private String id;
     private String pid;
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    private String age;
+
     public String getTime() {
         return time;
     }
@@ -64,12 +74,12 @@ public class Patient extends RkCmmnVO {
         this.crte = crte;
     }
 
-    public String getCancerStudies() {
-        return cancerStudies;
+    public String getCancerStudy() {
+        return cancerStudy;
     }
 
-    public void setCancerStudies(String cancerStudies) {
-        this.cancerStudies = cancerStudies;
+    public void setCancerStudy(String cancerStudy) {
+        this.cancerStudy = cancerStudy;
     }
 
     public String getCancerType() {
@@ -80,12 +90,12 @@ public class Patient extends RkCmmnVO {
         this.cancerType = cancerType;
     }
 
-    public String getCancerTypeDetails() {
-        return cancerTypeDetails;
+    public String getCancerTypeDetail() {
+        return cancerTypeDetail;
     }
 
-    public void setCancerTypeDetails(String cancerTypeDetails) {
-        this.cancerTypeDetails = cancerTypeDetails;
+    public void setCancerTypeDetail(String cancerTypeDetails) {
+        this.cancerTypeDetail = cancerTypeDetail;
     }
 
     public String getSubject() {
@@ -116,9 +126,9 @@ public class Patient extends RkCmmnVO {
     private String exam;
     private String mark;
     private String crte;
-    private String cancerStudies;
+    private String cancerStudy;
     private String cancerType;
-    private String cancerTypeDetails;
+    private String cancerTypeDetail;
     private String subject;
     private String recpDt;
     private String sampleId;

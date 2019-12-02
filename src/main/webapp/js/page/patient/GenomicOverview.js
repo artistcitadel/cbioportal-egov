@@ -1,18 +1,18 @@
-// $(document).ready(function () {
-// });
 function GenomicOverview() {
     var self = this;
-
-    self.getXtAxis = function(){
+    var util,action;
+    var getXtAxis = function(){
         console.log("getMutation");
         var ds_cond = {};
         ds_cond.data = {"queryId": "selectPatientMutAxis", "patientId": PATIENTID};
-        ds_cond.callback = self.setChromesome;
+        ds_cond.callback = setChromesome;
         action.selectPatientMuList(ds_cond);
     }
     self.init = function(mutation) {
+        action = new Action();
+        util = new Util();
         self.mutObjData = mutation;
-        self.getXtAxis();
+        getXtAxis();
     }
 
     var plotChromosomes = function(genomeRef, p) {
@@ -29,7 +29,7 @@ function GenomicOverview() {
 
         }
        drawLine(self.wideLeftText+self.GenomeWidth,yRuler,self.wideLeftText+self.GenomeWidth,self.rowMargin,p,'#000',1);
-        getMutationPixelMap(p,0);// mut,sv,
+       getMutationPixelMap(p,0);// mut,sv,
     }
     var middle = function(chm, genomeRef) {
         var loc = genomeRef[chm]/2;
@@ -68,8 +68,7 @@ function GenomicOverview() {
     }
 
 
-    self.setChromesome = function(xtjson){
-
+    var setChromesome = function(xtjson){
         self.dig = [];
         self.xt=[];
         self.m = [];
@@ -105,21 +104,9 @@ function GenomicOverview() {
 
         plotChromosomes(self.genomeRef,self.paper);
 
-        /*self.chmName = [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y'
-        ];
-        self.xt = [25, 110, 193, 261, 326, 388, 447, 501, 552, 600, 646, 693, 738, 778, 815, 850, 881, 908, 935, 955, 977, 993, 1011, 1064];
-        self.m = [67, 151, 227, 294, 357, 418, 474, 526, 572, 623, 669, 715, 758, 796, 832, 865, 894, 922, 945, 966, 985, 1002, 1038, 1074];
-        for (var i = 0; i < self.xt.length; i++) {
-            self.xt[i] += 145;
-            self.m[i] += 145;
-        }*/
-
-
-        //self.makeEventBarChart();
     }
 
-    drawLine = function(x1, y1, x2, y2, p, cl, width) {
+    var drawLine = function(x1, y1, x2, y2, p, cl, width) {
         console.log("self.YPOS " , x1, y1, x2, y2);
 
         width = 1;
@@ -217,49 +204,6 @@ function GenomicOverview() {
         return 2 * 5 + 10 + row * (20 + 5)+self.YPOS;
     }
 
-    /* var pixelMap = [[],[]];
-     pixelMap[0][78] = ["SLC27A3: G111D"];
-     pixelMap[0][123] = ["ZFP36L2: C174Sfs*302"];
-     pixelMap[0][249] = ["SI: V109I"];
-     pixelMap[0][519] = ["PRKDC: X133_splice"];
-     pixelMap[0][708] = ["KMT2D: V5208Wfs*35"];
-     pixelMap[0][711] = ["KRT85: G85R"];
-     pixelMap[0][1056] = ["ENOX2: H250Q"];
-
-     pixelMap[1][18] = ["SLC27A3: G111D"];
-     pixelMap[1][183] = ["ZFP36L2: C174Sfs*302"];
-     pixelMap[1][289] = ["SI: V109I"];
-     pixelMap[1][569] = ["PRKDC: X133_splice"];
-     pixelMap[1][768] = ["KMT2D: V5208Wfs*35"];
-     pixelMap[1][761] = ["KRT85: G85R"];
-     pixelMap[1][1096] = ["ENOX2: H250Q"];*/
-
-    // self.pixelMap = [{
-    //         "name": "MUT",
-    //         "data": [
-    //             {"axis": "78", "name": ["SLC27A3: G111D"]},
-    //             {"axis": "123", "name": ["ZFP36L2: C174Sfs*302"]},
-    //             {"axis": "249", "name": ["SI: V109I"]},
-    //             {"axis": "519", "name": ["PRKDC: X133_splice"]},
-    //             {"axis": "708", "name": ["KMT2D: V5208Wfs*35"]},
-    //             {"axis": "711", "name": ["KRT85: G85R"]},
-    //             {"axis": "1056", "name": ["ENOX2: H250Q"]}
-    //         ]
-    //     }
-    //         ,
-    //         {
-    //             "name": "CNA",
-    //             "data": [
-    //                 {"axis": "18", "name": ["SLC27A3: G111D"]},
-    //                 {"axis": "183", "name": ["ZFP36L2: C174Sfs*302"]},
-    //                 {"axis": "289", "name": ["SI: V109I"]},
-    //                 {"axis": "569", "name": ["PRKDC: X133_splice"]},
-    //                 {"axis": "768", "name": ["KMT2D: V5208Wfs*35"]},
-    //                 {"axis": "761", "name": ["KRT85: G85R"]},
-    //                 {"axis": "1096", "name": ["ENOX2: H250Q"]}
-    //             ]
-    //         }]
-    // ;
     var translateChm = function(chm) {
         if (chm.toLowerCase().indexOf("chr")===0) chm=chm.substring(3);
         if (chm==='X'||chm==='x') chm = 23;

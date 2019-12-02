@@ -11,9 +11,9 @@
                 RESCH_PAT_ID patientId,
                 'xxxx' sampleId,
                 '9999' age,
-                'xxxx' cancerStudies,
+                'xxxx' cancerStudy,
                 'xxxxx' cancerType,
-                'xxxx' cancerTypeDetails
+                'xxxx' cancerTypeDetail
      FROM CLSPNEXRT
     </select>
 

@@ -154,12 +154,12 @@ function Util() {
         if(unit==='y')return dat.substring(0,4);*/
     }
 
-    self.dformat=function(dat){
+    self.dformat=function(UNIT, dat){
         /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
         if(UNIT==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
         if(UNIT==='y')return dat.substring(0,4);*/
-        if(UNIT==='d')return util.subtractzero(dat.substring(6,8))+'일';
-        if(UNIT==='m')return util.subtractzero(dat.substring(4,6))+'월';
+        if(UNIT==='d')return self.subtractzero(dat.substring(6,8))+'일';
+        if(UNIT==='m')return self.subtractzero(dat.substring(4,6))+'월';
         if(UNIT==='y')return dat.substring(0,4)+'년';
     }
     /*function dunformat(dat){
