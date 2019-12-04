@@ -139,10 +139,10 @@ function TimeLine() {
     }
 
     function setTimeLine(node, data) {
-        for(var i=0;i<data.length;i++){
+        /*for(var i=0;i<data.length;i++){
             data[i].fullname=data[i].name;
           if(util._isUndefined(data[i].name) && data[i].name.length>9)data[i].name=data[i].name.substring(0,5);
-        }
+        }*/
         /*var longest = data.reduce(function (a, b) {
             return a.name.length > b.name.length ? a : b;
         });
@@ -648,6 +648,7 @@ function TimeLine() {
             } else ar = '';
 
             var lbl = label.name;
+            if(util._isUndefined(lbl) && lbl.length>14)lbl=lbl.substring(0,14);
             lbl = ar + lbl;
             //console.log('label_text length ', lbl.length);
             //var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
@@ -664,7 +665,7 @@ function TimeLine() {
                     setTreeNode(label.id);
                 }
             });
-            //addToolTip(t.node, label.fullname, 100, '');
+            addToolTip(t.node, label.name, 100, '');
 
             //if(ar!=='')underlineText(t,p);
 

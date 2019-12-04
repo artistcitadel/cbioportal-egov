@@ -5,6 +5,9 @@
         self.ISROUNDMUTATION = false;
         self.NODE = 'MUTATIONS';
         self.TABLE={};
+        self.GOALCNT = 1;
+        self.NODES = ['MUTATIONS','CNV'];
+        self.QID = ['selectPatientMuList','selectPatientCNAList']
 
         self.mutMap = [
            {id:'geneNm',name:'GENE', show:true},
@@ -26,12 +29,18 @@
            {id:'cosmic', name:'COSMIC',show:false}
         ];
         self.cnaMap = [
-           {id:'geneNm',name:'GENE', show:true}
+            {id:'geneNm',name:'GENE', show:true},
+            {id:'geneExamMthNm', name:'METHODS', show:false},
+            {id:'annotation', name:'ANNOTATION',show:false},
+            {id:'cytbNm', name:'Cytoband',show:false},
+            {id:'chort', name:'COHORT',show:false},
         ];
+
         self.TH = {},
 
         self.TH.MUTATIONS = self.mutMap;
         self.TH.CNV = self.cnaMap;
+        self.ROUNDCNT = 0;
 
         self.init = function (){
             action = new Action();
@@ -60,10 +69,12 @@
                 });
             });
         }
-        getMutationList = function() {
-            console.log("getMutation");
+        getMutationList = function(qid) {
+            console.log("getround ", self.ROUNDCNT);
+            //console.log("getMutation ", self.NODE);
             var ds_cond = {};
-            ds_cond.data = {"queryId": "selectPatientMuList", "patientId": PATIENTID};
+            //ds_cond.data = {"queryId": "selectPatientMuList", "patientId": PATIENTID};
+            ds_cond.data = {"queryId": qid, "patientId": PATIENTID};
             ds_cond.callback = mutation_disposer;
             action.selectPatientMuList(ds_cond);
         }
@@ -82,15 +93,20 @@
 
         var setCosmic = function(data){
             self.COSMIC = data;
-            getMutationList();
+            roundRobin();
         }
 
+        var roundRobin = function(){
+            self.NODE = self.NODES[self.ROUNDCNT];
+            getMutationList(self.QID[self.ROUNDCNT]);
+        }
         var mutation_disposer = function(json) {
-            $("#mutation_con").empty();
+            //$("#mutation_con").empty();
             // $("#mutation_template").tmpl(page.model).appendTo($("#mutation_con"));
+            console.log('mutation_disposer ', self.NODE);
             self.TABLE[self.NODE] = json;
               //setMutation(self.TABLE[self.NODE]);
-            setTh();
+             setTh();
         }
         var setTh=function(){
             var ds_cond = {};
@@ -100,7 +116,7 @@
         }
 
         var tableDisposer = function(thdata){
-            //console.log('thdata ', thdata);
+            console.log('thdata ', thdata , self.NODE);
             var data = _.filter(thdata, function(o){
                 console.log(o.subject , self.NODE);
                 return o.subject === self.NODE;
@@ -131,6 +147,8 @@
         }
 
         var setColumn = function (id){
+            self.NODE = id.split("_")[1];
+            id = id.split("_")[0];
             var i = _.findIndex(self.TH[self.NODE], function(o){
                 return o.id === id;
             });
@@ -143,7 +161,7 @@
             var str = '<div class="text-dark font-msmall"><strong>' + count + '</strong> occurrences of <strong>' + geneNm + ' ' + protein + '</strong> missense mutations in COSMIC';
             str += '<table class="table table table-bordered">\n' +
                 ' <thead>\n' +
-                ' <tr class="warning">\n' +
+                ' <tr class="success">\n' +
                 ' <th>COSMIC ID</th>\n' +
                 ' <th>Protein Change</th>\n' +
                 ' <th>Occurence</th>\n' +
@@ -173,6 +191,7 @@
         }
 
         var getMutation = function() {
+            console.log('getMutation ', self.TABLE[self.NODE]);
             return self.TABLE[self.NODE];
         }
 
@@ -182,6 +201,7 @@
             var idx = _.findIndex(data, function(o){
                 return o.id === item;
             });
+            if(idx===-1)return false;
             console.log(item, idx, self.TH[self.NODE][idx]);
             if(self.TH[self.NODE][idx].show)return true;
             else return false;
@@ -228,7 +248,9 @@
                 txt+='</tr>';
             });
             //console.log(txt);
-            $("#mutation_con").html(txt);
+            var targetdiv = self.NODE+"_con";
+            //console.log('targetdiv ',targetdiv);
+            $("#"+targetdiv).html(txt);
 
             //var gene = new GenomicOverview(LASTYPOS);
             if(!self.ISROUNDMUTATION) {
@@ -237,7 +259,10 @@
             }
             self.ISROUNDMUTATION = true;
 
-            buildSort();
+            if(!self.SORT) {
+                //alert(self.ROUNDCNT + ' ' +self.GOALCNT);
+                buildSort();
+            }
             $("[id^='cosmic_']").trigger('hover');
 
             /*var copytip = "Copy";
@@ -245,9 +270,13 @@
             gene.addToolTip($('#copyButton'),copytip,null,{my:'top right',at:'bottom left'});
             gene.addToolTip($('#downloadButton'),downloadtip,null,{my:'top right',at:'bottom left'});*/
         }
-
+        self.SORT = false;
         var buildSort = function() {
-            var $table3 = $('#t-1');
+
+            var targetTable = self.NODE+"_t";
+            //var $table3 = $('#t-1');
+            var $table3 = $('#'+targetTable);
+            console.log('$table3 ', $table3);
             var rows = getMutation();
             var $headers = $table3.find('thead th').slice(0);
             $headers
@@ -256,14 +285,19 @@
 
             $headers.on('click', function (event) {
                 event.preventDefault();
+                self.SORT = true;
                 var $header = $(this),
                     sortKey = $header.data('sort').key,
                     sortDirection = 1;
-
+                //console.log('sortKey ',sortKey);
+                //console.log($header.parents('tr').prop('id'));
+                self.NODE = $header.parents('tr').prop('id');
+                console.log('self.NODE ', self.NODE);
+                rows = getMutation();
                 if ($header.hasClass('sorted-asc')) {
                     sortDirection = -1;
                 }
-
+                console.log('rows ',rows);
                 rows.sort(function (a, b) {
                     var keyA = a[sortKey];
                     var keyB = b[sortKey];
@@ -273,11 +307,17 @@
                     return 0;
                 });
 
+                //$header.parents('tr').children('th').removeClass();
                 $headers.removeClass('sorted-asc sorted-desc');
                 $header.addClass(sortDirection == 1 ? 'sorted-asc' : 'sorted-desc');
-
+                // $table3.children('tbody').empty();
                 $table3.children('tbody').html(buildRowsMutation(rows));
             });
+
+            if(self.ROUNDCNT < self.GOALCNT){
+                ++self.ROUNDCNT;
+                roundRobin();
+            }
         }
 
         var moveSanger = function(id) {

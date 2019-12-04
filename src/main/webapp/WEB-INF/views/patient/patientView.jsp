@@ -183,23 +183,23 @@
                                         <span class="sr-only">Toggle dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
-                                        <li role="presentation"><input id="geneNm" type="checkbox">Gene</li>
-                                        <li role="presentation"><input id="geneExamMthNm" type="checkbox">methods</li>
-                                        <li role="presentation"><input id="hgvspVal" type="checkbox">Protein Change</li>
-                                        <li role="presentation"><input id="annotation" type="checkbox">Annotation</li>
-                                        <li role="presentation"><input id="chrnNo" type="checkbox">Chromosome</li>
-                                        <li role="presentation"><input id="geneVariStLocVal" type="checkbox">Start Pos</li>
-                                        <li role="presentation"><input id="geneVariEndLocVal" type="checkbox">End Pos</li>
-                                        <li role="presentation"><input id="refAlleleSqncVal" type="checkbox">Ref</li>
-                                        <li role="presentation"><input id="variAlleleSqncVal" type="checkbox">Var</li>
-                                        <li role="presentation"><input id="ms" type="checkbox">MS</li>
-                                        <li role="presentation"><input id="geneVariClsfNm" type="checkbox">Mutation Type</li>
-                                        <li role="presentation"><input id="variAlleleReadRt" type="checkbox" >Allele Freq</li>
-                                        <li role="presentation"><input id="variAlleleReadCnt" type="checkbox">Varient Reads(N)</li>
-                                        <li role="presentation"><input id="refAlleleReadCnt" type="checkbox">Ref Reads(N)</li>
-                                        <li role="presentation"><input id="copy" type="checkbox">Copy #</li>
-                                        <li role="presentation"><input id="chort" type="checkbox">Cohort</li>
-                                        <li role="presentation"><input id="cosmic" type="checkbox">COSMIC</li>
+                                        <li role="presentation"><input id="geneNm_MUTATIONS" type="checkbox">Gene</li>
+                                        <li role="presentation"><input id="geneExamMthNm_MUTATIONS" type="checkbox">methods</li>
+                                        <li role="presentation"><input id="hgvspVal_MUTATIONS" type="checkbox">Protein Change</li>
+                                        <li role="presentation"><input id="annotation_MUTATIONS" type="checkbox">Annotation</li>
+                                        <li role="presentation"><input id="chrnNo_MUTATIONS" type="checkbox">Chromosome</li>
+                                        <li role="presentation"><input id="geneVariStLocVal_MUTATIONS" type="checkbox">Start Pos</li>
+                                        <li role="presentation"><input id="geneVariEndLocVal_MUTATIONS" type="checkbox">End Pos</li>
+                                        <li role="presentation"><input id="refAlleleSqncVal_MUTATIONS" type="checkbox">Ref</li>
+                                        <li role="presentation"><input id="variAlleleSqncVal_MUTATIONS" type="checkbox">Var</li>
+                                        <li role="presentation"><input id="ms_MUTATIONS" type="checkbox">MS</li>
+                                        <li role="presentation"><input id="geneVariClsfNm_MUTATIONS" type="checkbox">Mutation Type</li>
+                                        <li role="presentation"><input id="variAlleleReadRt_MUTATIONS" type="checkbox" >Allele Freq</li>
+                                        <li role="presentation"><input id="variAlleleReadCnt_MUTATIONS" type="checkbox">Varient Reads(N)</li>
+                                        <li role="presentation"><input id="refAlleleReadCnt_MUTATIONS" type="checkbox">Ref Reads(N)</li>
+                                        <li role="presentation"><input id="copy_MUTATIONS" type="checkbox">Copy #</li>
+                                        <li role="presentation"><input id="chort_MUTATIONS" type="checkbox">Cohort</li>
+                                        <li role="presentation"><input id="cosmic_MUTATIONS" type="checkbox">COSMIC</li>
                                     </ul>
 
                                         <form id="search" role="search" style="width:400px;">
@@ -227,7 +227,7 @@
 
                             <div style="overflow-x:auto;">
 
-                                <table id="t-1" class="ttable table table-bordered">
+                                <table id="MUTATIONS_t" class="table table-bordered">
                                     <thead>
                                     <tr id='MUTATIONS' class="success">
                                         <%--<th data-sort='{"key":"geneNm"}' role="button"><span>Gene</span></th>
@@ -249,7 +249,7 @@
                                         <th data-sort='{"key":"cosmic"}' role="button" style="text-align: right;"><span>COSMIC</span></th>--%>
                                     </tr>
                                     </thead>
-                                    <tbody id="mutation_con">
+                                    <tbody id="MUTATIONS_con">
 
                                     </tbody>
                                 </table>
@@ -281,7 +281,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">MUT</h3>
+                <h3 class="box-title">CNA</h3>
 
                 <div class="box-tools pull-right">
                 </div>
@@ -300,28 +300,16 @@
                                     <span class="sr-only">Toggle dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
-                                    <li role="presentation"><input id="geneNm" type="checkbox">Gene</li>
-                                    <li role="presentation"><input id="geneExamMthNm" type="checkbox">methods</li>
-                                    <li role="presentation"><input id="cna" type="checkbox">CNA</li>
-                                    <li role="presentation"><input id="cytbNm" type="checkbox">CYTOBAND</li>
-                                    <li role="presentation"><input id="chrnNo" type="checkbox">Chromosome</li>
-                                    <li role="presentation"><input id="geneVariStLocVal" type="checkbox">Start Pos</li>
-                                    <li role="presentation"><input id="geneVariEndLocVal" type="checkbox">End Pos</li>
-                                    <li role="presentation"><input id="refAlleleSqncVal" type="checkbox">Ref</li>
-                                    <li role="presentation"><input id="variAlleleSqncVal" type="checkbox">Var</li>
-                                    <li role="presentation"><input id="ms" type="checkbox">MS</li>
-                                    <li role="presentation"><input id="geneVariClsfNm" type="checkbox">Mutation Type</li>
-                                    <li role="presentation"><input id="variAlleleReadRt" type="checkbox" >Allele Freq</li>
-                                    <li role="presentation"><input id="variAlleleReadCnt" type="checkbox">Varient Reads(N)</li>
-                                    <li role="presentation"><input id="refAlleleReadCnt" type="checkbox">Ref Reads(N)</li>
-                                    <li role="presentation"><input id="copy" type="checkbox">Copy #</li>
-                                    <li role="presentation"><input id="chort" type="checkbox">Cohort</li>
-                                    <li role="presentation"><input id="cosmic" type="checkbox">COSMIC</li>
+                                    <li role="presentation"><input id="geneNm_CNV" type="checkbox">Gene</li>
+                                    <li role="presentation"><input id="geneExamMthNm_CNV" type="checkbox">methods</li>
+                                    <li role="presentation"><input id="annotation_CNV" type="checkbox">Annotation</li>
+                                    <li role="presentation"><input id="cytbNm_CNV" type="checkbox">Cytoband</li>
+                                    <li role="presentation"><input id="cohort_CNV" type="checkbox">cohort</li>
                                 </ul>
 
-                                <form id="search" role="search" style="width:400px;">
+                                <form role="search" style="width:400px;">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                                        <input type="text" id="searchcna" class="form-control" style="margin-left:8px;" placeholder="Search...">
                                         <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
                                     </div>
                                 </form>
@@ -335,12 +323,12 @@
 
                             <div style="overflow-x:auto;">
 
-                                <table id="t-2" class="ttable table table-bordered">
+                                <table id="CNV_t" class="table table-bordered">
                                     <thead>
                                     <tr id='CNV' class="warning">
                                     </tr>
                                     </thead>
-                                    <tbody id="cna_con">
+                                    <tbody id="CNV_con">
 
                                     </tbody>
                                 </table>
