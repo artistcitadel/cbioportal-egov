@@ -5,8 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%--<tiles:insertAttribute name="head_css"/>--%>
-	<%--<tiles:insertAttribute name="js"/>--%>
+	<tiles:insertAttribute name="head_css"/>
+	<tiles:insertAttribute name="js"/>
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/style.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/indicator.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linepulse.css" type="text/css" />
@@ -21,14 +22,27 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/collapsible-module.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/level-module.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncoKbTreatmentTable.css" type="text/css" />
-	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.css" type="text/css" />
+	<%--<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.css" type="text/css" />--%>
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/datatables/datatables.min.css" type="text/css" />
 	<%--<link rel="stylesheet" href="<%//docRoot%>js/page/patient/plugin/bootstrap4/fontawasome5.css" type="text/css" />--%>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/style.css" type="text/css" />
+	<%--<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/style.css" type="text/css" />--%>
 	<link rel="stylesheet" href="<%=docRoot%>jqwidgets/styles/jqx.base.css" type="text/css" />
 
 	<style>
+		.box-header {
+			background-color: #79bbb5;
+			color: #ffffff;
+			display: block;
+			padding: 10px;
+			position: relative;
+		}
+		.box-title {
+			display: inline-block;
+			font-weight:bold;
+			margin: 0;
+			line-height: 1;
+		}
 		.font-small {
 			font-size: xx-small;
 			font-weight: bold;
@@ -39,8 +53,8 @@
 		}
 	</style>
 
-	<script type='text/javascript' src="<%=docRoot%>js/common_const.js"></script>
-	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jquery-3.4.1.min.js"></script>
+<%--	<script type='text/javascript' src="<%=docRoot%>js/common_const.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jquery-3.4.1.min.js"></script>--%>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/popper.min.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcore.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdata.js"></script>
@@ -53,11 +67,12 @@
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.pager.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
+	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcheckbox.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxlistbox.js"></script>
-	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdropdownlist.js"></script>
+	<%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdropdownlist.js"></script>--%>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/scripts/demos.js"></script>
 
-	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.js"></script>
+	<%--<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.js"></script>--%>
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/datatables/datatables.min.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jbox/jbox.all.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jqtip/jquery.qtip.min.js"></script>
@@ -69,13 +84,16 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/moment-with-locales.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphael.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphaelscale.js"></script>
-
+<script>
+	var gvServer = gvSERVER;
+</script>
 </head>
 <body class="hold-transition skin-black sidebar-mini fixed">
+
 <div class="wrapper">
-	<%--<header class="main-header">
+	<header class="main-header">
 		<tiles:insertAttribute name="top"/>
-	</header>--%>
+	</header>
 	<!-- Left side column. contains the logo and sidebar -->
 	<%--	<aside class="main-sidebar">
             <tiles:insertAttribute name="adminLeft"/>
@@ -83,11 +101,13 @@
 
 	<!-- Content Wrapper. Contains page content -->
 	<%--<div class="content-wrapper" data-toggle="control-sidebar">--%>
+
 	<tiles:insertAttribute name="content"/>
 	<div style="position: absolute;left:-999px;">
 		<input type="text" class="">
 	</div>
 </div>
+
 <!-- /.content-wrapper -->
 <!-- Add the sidebar's background. This div must be placed
    immediately after the control sidebar -->
@@ -96,9 +116,9 @@
 </div>
 <!-- ./wrapper -->
 <script>
-    /*    $(document).ready(function () {
+        $(document).ready(function () {
             $(".sidebar-toggle").trigger("click");
-        });*/
+        });
 </script>
 
 </body>

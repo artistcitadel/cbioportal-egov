@@ -139,13 +139,19 @@ function TimeLine() {
     }
 
     function setTimeLine(node, data) {
-        var longest = data.reduce(function (a, b) {
+        for(var i=0;i<data.length;i++){
+            data[i].fullname=data[i].name;
+          if(util._isUndefined(data[i].name) && data[i].name.length>9)data[i].name=data[i].name.substring(0,5);
+        }
+        /*var longest = data.reduce(function (a, b) {
             return a.name.length > b.name.length ? a : b;
         });
-        console.log(' .. longest ', longest.name.length);
+        console.log(' .. longest ', longest.name.length);*/
         //XTREETEXTPADDING += _.max(LTEXTLENGTH)+24;
         //XTREETEXTPADDING = longest.name.length+24;
-        XTREETEXTPADDING = longest.name.length + 3;
+        //XTREETEXTPADDING = longest.name.length + 3;
+
+        XTREETEXTPADDING = 0;
         leftpadding *= 2;
         leftpadding += XTREETEXTPADDING;
 
@@ -335,11 +341,13 @@ function TimeLine() {
                 }
                 ///->for plot axis/////////////////////////////////
 
-                oline = drawLine(mx, yRuler, mx, 5, paper, '#000', 1);
+                oline = drawLine(mx, yRuler+4, mx, 5, paper, '#b2bccc', 1);
                 OLINE.push(oline);
                 var txt = paper.text(m[i], 10, util.dformat(UNIT, chmName[txtCnt]));
                 txt.attr({"cursor": "pointer"});
-                txt.attr("font-family", "Malgun Gothic");
+                //txt.attr("font-family", "Malgun Gothic");
+                txt.attr("font-family", "Nanum Gothic, sans-serif");
+                txt.attr("fill", "#5e586b");
                 txt.data({id: chmName[txtCnt]});
                 txt.click(function () {
                     if (UNIT === 'd') return;
@@ -411,12 +419,15 @@ function TimeLine() {
 
     function classify_labtest(data) {
         var item = {};
-        var tip = "[" + data.id + "]";
+        //var tip = "[" + data.id + "]";
+        var tip='';
+        tip += "<span>" + util.dateFormat(UNIT, data.time) + "</p>";
         tip += "<strong>[" + data.name + "]</strong><br/>";
-        tip += "<span class='font-small'>" + util.dateFormat(UNIT, data.time) + "</br>";
-        tip += "<span class='font-small'>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
-        tip += "<span class='font-small'>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
-        tip += "<span class='font-small'>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
+        tip += "<hr />";
+        //tip += "<span>" + util.dateFormat(UNIT, data.time) + "</br>";
+        tip += "<span>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
+        tip += "<span>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
+        tip += "<span>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
         return tip;
     }
 
@@ -548,7 +559,7 @@ function TimeLine() {
         var xp = space / span;
         var t = (UNIT === 'm') ? Number(util.subtractzero(time.substring(6, 8))) : Number(time.substring(4, 6));
         //console.log(time, t);
-        xp *= t;
+        xp *= (t-1);
         return p + xp;
     }
 
@@ -582,7 +593,8 @@ function TimeLine() {
                 var h = maxCount;
                 // console.log('yrow ', yRow, h);
                 //var r = p.rect(position, yRow-4, pw, h);
-                var r = p.circle(position, yRow - 4, pw);
+                //var r = p.circle(position, yRow - 4, pw);
+                var r = p.circle(leftpadding, yRow - 4, pw);
                 // r.attr("fill", "#0f0");
                 // r.attr("stroke", "#0f0");
                 //r.attr("fill", "#ffaf8a");
@@ -597,6 +609,7 @@ function TimeLine() {
                         this.transform('s1,1');
                     }
                 );
+                r.animate({ cx:position}, 1800);
                 //r.transform('S'+tnumber,tnumber+'');
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
                 addToolTip(r.node, pixelAry[i].name, 100, '');
@@ -627,7 +640,7 @@ function TimeLine() {
                   r.attr("opacity", 0.5);
                   r.translate(0.5, 0.5);
                   ar='';*/
-                ar = '▼';
+                ar = '＋';
                 //ar ='﹀';//ar = '閉';//ar ='﹀';//
                 //console.log(label.folder);
                 //if (!label.folder) ar = "﹀ ";
@@ -642,7 +655,8 @@ function TimeLine() {
                 'text-anchor': 'start',
                 'fill': 'black',
                 'cursor': 'pointer',
-                'font-size': '12'
+                'font-size': '12',
+                'font-family': 'Nanum Gothic, sans-serif'
             });
 
             t.click(function () {
@@ -650,6 +664,7 @@ function TimeLine() {
                     setTreeNode(label.id);
                 }
             });
+            //addToolTip(t.node, label.fullname, 100, '');
 
             //if(ar!=='')underlineText(t,p);
 
@@ -658,7 +673,7 @@ function TimeLine() {
             LASTYPOS = ypos;
             //var xgrid = drawLine('170', ypos, 1090+150, ypos, paper, '#ccc', 1);
             var xgrid = drawLine(xt[0], ypos, LINEEND, ypos, paper, '#ccc', 1);
-            xgrid.hide();
+            ////xgrid.hide();
             //console.log(' LASTYPOS ', LASTYPOS);
             XGRIDS.push(xgrid);
         }
@@ -718,7 +733,7 @@ function TimeLine() {
             content: {text: tip},
             show: {event: "mouseover"},
             hide: {fixed: true, delay: 100, event: "mouseout"},
-            style: {classes: 'qtip-light qtip-rounded'},
+            style: {classes: 'qtip-dark qtip-rounded'},
             position: {
                 my: "bottom right",
                 at: "top left",
@@ -744,7 +759,7 @@ function TimeLine() {
         paper.scale({zoom: true});
 
         var label = "Time since diagnosis";
-        var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});
+        var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
 
         var ds_cond = {};
         ds_cond.data = {"queryId": "selectLabTestHrc", "patientId": PATIENTID};
@@ -781,9 +796,10 @@ function TimeLine() {
         setTimeLine('R', dig);
     }
     self.setxgrid = function(show){
+//        console.log(show);
         for (var i = 0; i < XGRIDS.length; i++) {
-            if (show) that.XGRIDS[i].show();
-            if (!show) that.XGRIDS[i].hide();
+            if (!show) XGRIDS[i].show();
+            else XGRIDS[i].hide();
         }
     }
     self.setreset = function(){
@@ -797,16 +813,15 @@ function TimeLine() {
         }, 1000);
     }
 
-}
-
     var setDom = function(that) {
-        var scale, TFORM, overview, w, zcnt = 0;
+        var scale, TFORM, overview, zcnt = 0;
         scale = 1;
         TFORM = 1.5;
+        var w = paperWidth;
         $('#zoomin').click(function () {
             $("#spinner1").show();
             overview = $('#genomicOverviewTracksContainer').children(1);
-            w = overview.attr('width');
+            //w = overview.attr('width');
             _.delay(function () {
                 scale = (TFORM * (zcnt + 1));
                 w *= TFORM;
@@ -835,11 +850,11 @@ function TimeLine() {
             var show = true;
             if (val === 'Grid on') {
                 $(this).val('Grid off');
-                show = true;
+                show = false;
             }
             if (val === 'Grid off') {
                 $(this).val('Grid on');
-                show = false;
+                show = true;
             }
             that.setxgrid(show);
 
@@ -852,3 +867,4 @@ function TimeLine() {
         });
     }
 
+}

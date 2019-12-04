@@ -87,6 +87,7 @@
 <script src="<c:url value="/js/common_tree.js" />"></script>
 <!-- 공통-top용 js -->
 <script src="<c:url value="/js/common_top.js" />"></script>
+
 <!-- datatables js -->
 <script src="<c:url value="/js/plugins/datatables/jquery.dataTables.js" />"></script>
 <script src="<c:url value="/js/plugins/datatables/dataTables.bootstrap.min.js" />"></script>
@@ -135,7 +136,8 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	//ajax loading bar
+    //ajax loading bar
 	$(document).ajaxStart(function() { Pace.restart(); });
+
 });
 </script>

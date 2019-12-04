@@ -178,7 +178,7 @@
 
 	<definition name="patient" template="/WEB-INF/views/patient/patientIndex.jsp">
 		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" />
-		<!--<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />-->
+		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
 		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
 	</definition>

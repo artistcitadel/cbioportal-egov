@@ -8,9 +8,7 @@ function PatientList() {
     var util;
     var PDATA;
     var PIDX = 0;
-    //$(document).ready(function () {
-        //var url = "/resources/json/patient.json";
-        // prepare the data
+
     self.init = function() {
         action = new Action();
         util = new Util();
@@ -20,33 +18,24 @@ function PatientList() {
         action.selectList(ds_cond);
 
         $('#patientId, #sampleId, #age, #cancerStudie, #cancerType, #cancerTypeDetail').keyup(function (e) {
-            //console.log(this.id, ' ',$(this).val());
-            var id = this.id;
+                var id = this.id;
             var value = $(this).val();
             var temp = _.filter(PDATA, function (data) {
-                //console.log(data[id].indexOf(value));
                 return data[id].indexOf(value) > -1;
             })
-            //console.log(temp);
             setData(temp);
         });
 
         $('#grid').on('cellselect', function (event) {
             var columnheader = $("#grid").jqxGrid('getcolumn', event.args.datafield).text;
-            //alert(event.args.datafield);
-            //alert($("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId'));
-            //alert("Row with bound index: " + event.args.rowindex +" has been clicked.");
             if (event.args.datafield === 'patientId') {
-                //alert($("#grid").jqxGrid('getcellvalue', event.args.datafield));
                 var props = {value: $("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId')};
-                ////$("#patientList").append(getPatientRow(props));
-                ////++PIDX;
                 document.pform.patientId.value = props.value;
                 document.pform.submit();
             }
         });
     }
-    //});
+
 
     var setData = function(json) {
         console.log(json);
@@ -96,8 +85,7 @@ function PatientList() {
                     removePatientRow(idx);
               });*/
         }
-        var patientView = new TimeLine();
-        patientView.init();
+
     }
 
     function getPatientRow(props) {

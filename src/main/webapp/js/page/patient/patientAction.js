@@ -2,7 +2,7 @@
 
 function Action() {
     var self = this;
-
+    var gvSERVER  = gvServer;
     self.getPatientList = function (props) {
         $.ajax({
             type: "get",
@@ -26,7 +26,6 @@ function Action() {
     }
 
     self.selectList = function (props) {
-
         $.ajax({
             type: "post",
             /*headers: {
