@@ -19,9 +19,37 @@ function Pathlogy() {
     var setClassifyHrc = function (json) {
         if (json.length > 0) {
             self.HRC = json;
-            console.log("PATHLOGY ", self.HRC);
+            //console.log("PATHLOGY ", self.HRC);
+
+            //~~~category filter query
+            var digcategory=[];
+            if(!_.isUndefined(localStorage["digcategory"]))
+                digcategory = JSON.parse(localStorage.getItem("digcategory"));
+            var itemsub = _.filter(digcategory, function(v){
+                return v.pid === subject.pathlogy;
+            });
+            //console.log('itemsub ', itemsub);
+            var temp=[];
+            for(var i=0;i<itemsub.length;i++){
+                temp.push(itemsub[i].idd);
+            }
+
             var ds_cond = {};
             ds_cond.data = {"queryId": "selectPathList", "patientId": PATIENTID};
+            if(temp.length>0){
+                var qtr = '';
+                // console.log('temp.join(",") ', temp);
+                // console.log('temp.join(",") ', temp[0]);
+                if(temp.length>1)
+                    qtr = temp.join(",");
+                else
+                    qtr = temp[0];
+                ds_cond.data.inParam = qtr;
+            }
+            //console.log('temp.join(",") ', ds_cond.data.inParam);
+            //~~~category filter query
+
+
             ds_cond.callback = disposer;
             action.selectList(ds_cond);
         }
@@ -48,6 +76,8 @@ function Pathlogy() {
             crow = setData(crow, raw);
             console.log('pathlogy crow is ', crow);
             self.callback(crow);
+        }else{
+            self.callback([]);
         }
     }
 

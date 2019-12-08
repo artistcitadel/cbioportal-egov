@@ -2,9 +2,10 @@ function Event() {
     var self = this;
     var util = new Util();
 
-    self.getPlotColor = function(subject){
-        return (subject==='PATHOLOGY_EXAM') ? '#3941FF':
-               (subject==='Lab_test') ? '#ffa670' :
+    self.getPlotColor = function(sub){
+        //console.log('pdata[i].subject ', sub, subject.pathlogy);
+        return (sub===subject.pathlogy) ? '#3941FF':
+               (sub===subject.lab_test) ? '#ff9361' :
                '';
     }
     self.classify_labtest = function(data, UNIT) {

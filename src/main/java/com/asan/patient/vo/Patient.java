@@ -112,7 +112,7 @@ public class Patient extends RkCmmnVO {
         return cancerTypeDetail;
     }
 
-    public void setCancerTypeDetail(String cancerTypeDetails) {
+    public void setCancerTypeDetail(String cancerTypeDetail) {
         this.cancerTypeDetail = cancerTypeDetail;
     }
 

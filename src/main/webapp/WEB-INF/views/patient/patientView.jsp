@@ -26,6 +26,7 @@
 
 
 
+
     <section class="content">
         <!-- Default box -->
         <div class="box">
@@ -37,7 +38,7 @@
                     <div class="team">
                         <div class="member">
                             <img class="avatar" src="/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
-                            <div class="name">Hong kil dong</div>
+                            <div class="name" id="patientname">Hong kil dong</div>
                             <div class="location">Seoul</div>
                             <p class="bio">
                                 kil dong is consultant in south seoul , specializing in bio application devlopmemnt Known for his passin for ....
@@ -48,23 +49,25 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer text-align-center">
-                <ul class="pagination">
-                    <div id="patient_pageview" class="com-paging">
-                    <%--<li><a href="#">First</a></li>--%>
-                    <%--<li><a href="#">&laquo</a></li>--%>
+                <div id="summary_pageview" class="com-paging">
+                    <%--<ul class="pagination">
+                        <li><a href="#">First</a></li>
+                        <li><a href="#">&laquo</a></li>
 
-                        <%--<li><a href="#"><</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                        <li><a href="#"> > </a></li>--%>
+                            <li><a href="#"><</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                            <li><a href="#"> > </a></li>
 
-                    <%--<li><a href="#">&raquo</a></li>--%>
-                    <%--<li class="disabled"><a href="#">Last</a></li>--%>
-                </ul>
+                        <li><a href="#">&raquo</a></li>
+                        <li class="disabled"><a href="#">Last</a></li>
+                    </ul>--%>
+                </div>
+                <!-- /.box-footer-->
             </div>
-            <!-- /.box-footer-->
         </div>
         <!-- /.box -->
     </section>
+
 
 
     <section class="content">
@@ -504,6 +507,7 @@
             </div>
             <!-- /.box-footer-->
         </div>
+        </div>
         <!-- /.box -->
     </section>
 
@@ -580,6 +584,12 @@
     </div>
 </div>
 
+<form name="pform" id="pform" method="post" action="/patient/patientView">
+<input type="hidden" name="patient" id="patient" value=""/>
+<input type="hidden" name="pages" id="pages" value="1" />
+<input type="hidden" name="patientId" id="patientId" value="" />
+</form>
+
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
 <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
@@ -590,10 +600,22 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
-    /*var PATIENTID = '//request.getParameter("patientId")';*/
     var PATIENTID;
-    var patientView = new TimeLine();
-    patientView.init();
+    var patients = '<%=request.getParameter("patient")%>';
+    var pages = '<%=request.getParameter("pages")%>';
+    var patientId = '<%=request.getParameter("patientId")%>';
+    PATIENTID = patientId;
+
+    if(pages==='null')pages='1';
+    document.pform.patient.value = patients;
+    document.pform.pages.value = pages;
+
+    if(patientId==="null") {
+        PATIENTID = patients;
+        if (patients.indexOf(",") !== -1)
+            PATIENTID = patients.split(",")[0];
+        document.pform.patientId.value = PATIENTID;
+    }
 
     $(document).ready(function () {
         $(window).keydown(function(event){
@@ -602,10 +624,6 @@
                 return false;
             }
         });
-
-        //var pager = new Pager();
-        //var el = $("#patient_pageview");
-        //pager.buildPage(1, Math.ceil(getMutation().length/10), el, self, getMutation(), self.NODE);
 
         //console.log('localStorage["digcategory"]) ',localStorage["digcategory"]);
         var digcategory=[];
@@ -620,7 +638,7 @@
         ds_cond.callback = setCategory;
         action.selectList(ds_cond);
 
-        function setShow(data) {
+        /*function setShow(data) {
             var c=0;
             var temp=[];
             for (var i = 0; i < data.length; i++) {
@@ -658,7 +676,7 @@
             console.log('before ', temp);
             console.log('cindex ', cindex);
             return temp;
-        }
+        }*/
 
         function setCategory(json){
 
@@ -710,6 +728,7 @@
             if(idx!==-1)return;
             var item = {};
             item.idd=event.args.row.idd;
+            item.pid = event.args.row.pid;
             digcategory.push(item);
         });
         $("#treegrid").on("rowUncheck", function (event) {
@@ -724,6 +743,9 @@
             $("#contactModal .close").click();
             location.reload();
         });
+
+        var patientView = new TimeLine();
+        patientView.init();
     });
 </script>
 

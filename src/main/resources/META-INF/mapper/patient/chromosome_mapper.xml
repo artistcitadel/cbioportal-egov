@@ -108,19 +108,19 @@
                        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
                     FROM ( SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERMUEM
-                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERCVEM
-                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERSVEM
-                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERGNEX
-                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
                        , ( SELECT @ROWNUM := 0 ) RNM
                 ) SEQ
@@ -133,7 +133,7 @@
                             UNION
                            SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
                 ) PAT
-          WHERE GMU.RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+          WHERE GMU.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
             AND GMU.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
           GROUP BY
                 GMU.MTTN_EXAM_RSLT_ID
@@ -210,19 +210,19 @@
         , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
         FROM ( SELECT GENE_EXAM_SPCN_ID
         FROM pmsdev.PMGERMUEM
-        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
         SELECT GENE_EXAM_SPCN_ID
         FROM pmsdev.PMGERCVEM
-        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
         SELECT GENE_EXAM_SPCN_ID
         FROM pmsdev.PMGERSVEM
-        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
         SELECT GENE_EXAM_SPCN_ID
         FROM pmsdev.PMGERGNEX
-        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
@@ -235,7 +235,7 @@
         UNION
         SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
         ) PAT
-        WHERE GCV.RESCH_PAT_ID = '51927545'  -- 연구환자ID (조회조건)
+        WHERE GCV.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         AND GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
         ) BAS
         GROUP BY
@@ -271,19 +271,19 @@
                        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
                     FROM ( SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERMUEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERCVEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERSVEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERGNEX
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
                         , ( SELECT @ROWNUM := 0 ) RNM
                 ) SEQ
@@ -329,19 +329,19 @@
                        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
                     FROM ( SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERMUEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERCVEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERSVEM
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             UNION
                            SELECT GENE_EXAM_SPCN_ID
                              FROM pmsdev.PMGERGNEX
-                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
                             ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
                        , ( SELECT @ROWNUM := 0 ) RNM
                 ) SEQ
@@ -354,7 +354,7 @@
                             UNION
                            SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
                 ) PAT
-          WHERE GSV.RESCH_PAT_ID = '4176755120'  -- 연구환자ID (조회조건)
+          WHERE GSV.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
             AND GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
        ) BAS
  GROUP BY
@@ -419,7 +419,7 @@
         UNION
         SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAT_ALL
         ) PAT
-        /* WHERE GMU.RESCH_PAT_ID = '10510117' -- 연구환자ID (조회조건)*/
+         WHERE GMU.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         GROUP BY
         GMU.MTTN_EXAM_RSLT_ID
         , GMU.GENE_NM

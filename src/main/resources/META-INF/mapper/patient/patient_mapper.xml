@@ -42,12 +42,56 @@
     <select id="selectPatientChoiceList" resultType="com.asan.patient.vo.Patient">
       SELECT DISTINCT
                 RESCH_PAT_ID patientId,
-                'xxxx' sampleId,
-                '9999' age,
-                'xxxx' cancerStudy,
-                'xxxxx' cancerType,
-                'xxxx' cancerTypeDetail
+                'LABTEST' sampleId,
+                '999' age,
+                'LABTEST' cancerStudy,
+                'LABTEST' cancerType,
+                'LABTEST' cancerTypeDetail
      FROM CLSPNEXRT
+    WHERE RESCH_PAT_ID = '6905950076'
+    UNION
+    select RESCH_PAT_ID patientId,
+                    'PATHLOGY' sampleId,
+                    '999' age,
+                    'PATHLOGY' cancerStudy,
+                    'PATHLOGY' cancerType,
+                    'PATHLOGY' cancerTypeDetail
+           from pmsdev.OOODMEXAM a join pmsdev.PMGEMEMTH b on a.ORDR_CD = b.EXAM_CD
+            WHERE b.GENE_EXAM_MTH_NM != ' '
+            AND a.RESCH_PAT_ID = '9984190521'
+        union
+    SELECT
+                     '48321932' patientId,
+                    'MUT' sampleId,
+                    '999' age,
+                    'MUT' cancerStudy,
+                    'MUT' cancerType,
+                    'MUT' cancerTypeDetail
+
+        union
+    SELECT
+                     '51927545' patientId,
+                    'CNA' sampleId,
+                    '999' age,
+                    'CNA' cancerStudy,
+                    'CNA' cancerType,
+                    'CNA' cancerTypeDetail
+     union
+    SELECT
+                     '4176755120' patientId,
+                    'EXP' sampleId,
+                    '999' age,
+                    'EXP' cancerStudy,
+                    'EXP' cancerType,
+                    'EXP' cancerTypeDetail
+     union
+    SELECT
+                     '4176755120' patientId,
+                    'EXP' sampleId,
+                    '999' age,
+                    'EXP' cancerStudy,
+                    'EXP' cancerType,
+                    'EXP' cancerTypeDetail
     </select>
 
     <select id="selectLabTestHrc" resultType="com.asan.patient.vo.Patient">
@@ -58,6 +102,7 @@
                 FROM CLSPNEXRT
       <![CDATA[
         WHERE LENGTH(EXAM_CD) < 6
+        AND RESCH_PAT_ID = #{patientId}
       ]]>
     </select>
 
@@ -74,11 +119,11 @@
 
         FROM CLSPNEXRT
         /*WHERE RESCH_PAT_ID = '6905950076' AND EXAM_CD IN ('DA0036','BD0012','BA0094') AND SUBSTRING(RCEP_DT,1,4) = '2017' OR (EXAM_CD='BD0012' AND RCEP_DT='20040427')*/
-        WHERE RESCH_PAT_ID = '6905950076' /*AND EXAM_CD = 'AFIN'*/
+        WHERE RESCH_PAT_ID = #{patientId} /*AND EXAM_CD = 'AFIN'*/
         /*AND EXAM_ENG_NM = 'Rh variant Ag,Automation (Semi-Qn)[Agglutination],Blood'*/
         GROUP BY EXAM_SLIP_CD, EXAM_CD, EXAM_ENG_NM, RCEP_DT
         ORDER BY 2,3,5
-        LIMIT  100
+        /*LIMIT  100*/
  	</select>
 
 

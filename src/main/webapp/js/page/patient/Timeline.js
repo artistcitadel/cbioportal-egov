@@ -34,13 +34,9 @@ function TimeLine() {
 
     function exist(data, key) {
         var digcategory=[];
-        if(!_.isUndefined(localStorage["digcategory"]))
-        digcategory = JSON.parse(localStorage.getItem("digcategory"));
-
         var find = false;
         for (var i = 0; i < data.length; i++) {
-          var idx = _.findIndex(digcategory, key);
-            if (data[i] === key && idx===-1) {
+            if (data[i] === key) {
                 find = true;
                 break;
             }
@@ -139,6 +135,11 @@ function TimeLine() {
     }
 
     function setTimeLine(node, data) {
+        if(data.length<1){
+            util.hideLoader();
+            $('div.member').find('img').trigger('click');
+            return;
+        }
         XTREETEXTPADDING = 0;
         leftpadding *= 2;
         leftpadding += XTREETEXTPADDING;
@@ -441,12 +442,13 @@ function TimeLine() {
                 //console.log(getDpTime(pdata[i].time));
                 // console.log(' position is ', p);
                 // console.log(' position is ', p['0'].axis);
+                //console.log('pdata[i].subject ', pdata[i].subject);
                 item.id = pdata[i].id;
                 item.time = pdata[i].time;
                 item.axis = p['0'].axis;
                 item.count = p['0'].count;
-                item.name = (pdata[i].subject==='subject.lab_test') ? ( event.classify_labtest(pdata[i],UNIT) ) :
-                            (pdata[i].subject==='subject.pathlogy') ? ( event.classify_pathlogy(pdata[i], UNIT) ) : '';
+                item.name = (pdata[i].subject===subject.lab_test) ? ( event.classify_labtest(pdata[i],UNIT) ) :
+                            (pdata[i].subject===subject.pathlogy) ? ( event.classify_pathlogy(pdata[i], UNIT) ) : '';
                 pixelMap.push(item);
             }
         }
@@ -603,7 +605,7 @@ function TimeLine() {
                 r.attr("stroke", "#ffa670");*/
                 r.attr("fill", event.getPlotColor(item.subject));
                 r.attr("stroke", event.getPlotColor(item.subject));
-                r.attr("stroke-width", 2);
+                r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
                 r.hover(function () {
@@ -629,8 +631,7 @@ function TimeLine() {
             var deep = label.level;
             if (label.leaf) deep += 2;
             // console.log('show ', label, label.folder);
-            //var ar = "❯ ";
-            var ar = "- ";
+            var ar = "❯ ";
             //var ar = '開';
             //if (label.leaf) ar = '';
             //console.log(' label ', label.folder, label.name, label.leaf);
@@ -647,7 +648,7 @@ function TimeLine() {
                 //ar ='﹀';//ar = '閉';//ar ='﹀';//
                 //console.log(label.folder);
                 //if (!label.folder) ar = "﹀ ";
-                if (label.folder) ar = '-'; //ar = '❯ ' //ar = "閉";
+                if (label.folder) ar = '❯ ' //ar = "閉";
             } else ar = '';
 
             var lbl = label.name;
@@ -684,10 +685,15 @@ function TimeLine() {
     }
 
     function clearPaperPlotNode() {
-        console.log(' PAPERNODE ', PAPERNODE.length);
+        //console.log(' PAPERNODE ', PAPERNODE.length);
         for (var i = 0; i < PAPERNODE.length; i++) {
             PAPERNODE[i].remove();
         }
+
+        for (var i = 0; i < XGRIDS.length; i++) {
+            XGRIDS[i].remove();
+        }
+
     }
 
     function removeLine() {
@@ -762,6 +768,8 @@ function TimeLine() {
         setDom(self);
         action = new Action();
         util = new Util();
+        event = new Event();
+
         util.showLoader();
         event = new Event();
         paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
@@ -773,41 +781,41 @@ function TimeLine() {
 
         var labtest = new Labtest();
         var pathlogy = new Pathlogy();
-        var pathlogyD=[],labtestD=[];
+        //var pathlogyD=[],labtestD=[];
 
 
         var digcategory=[];
         if(!_.isUndefined(localStorage["digcategory"]))
             digcategory = JSON.parse(localStorage.getItem("digcategory"));
-        //console.log(digcategory, subject.pathlogy, _.findIndex(digcategory, function(o) {return o.idd === subject.pathlogy;}));
-        if( _.findIndex(digcategory, function(o) {return o.idd === subject.pathlogy;} ) === -1){
-            pathlogy.init(findLevel, exist, setPathlogyData);
+        console.log('digcategory ',digcategory);
+        var pids = [];
+        pids = _.filter(digcategory, function(v){
+            return v.pid==="";
+        });
+        if(pids.length<1)return;
+        var run=0;
+        for(var i=0;i<pids.length;i++,run++){
+            (pids[i].idd===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
+            (pids[i].idd===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
         }
-        if( _.findIndex(digcategory, function(o) {return o.idd === subject.lab_test;} ) === -1){
-            labtest.init(findLevel, exist, setLabtestData);
-        }
-
-
+        console.log(run, pids.length);
         function setPathlogyData(data){
             console.log('pathlogy data ', data);
-            pathlogyD = data;
-            // RAW =data;
-            // setTimeLine('C', pathlogyD);
+            RAW = _.union(RAW, data);
+            if(run===pids.length) {
+                console.log('RAW ', RAW);
+                setTimeLine('C', RAW);
+            }
         }
 
         function setLabtestData(data){
             console.log('labtest data ', data);
-            labtestD = data;
-
-            union_data();
+            RAW = _.union(RAW, data);
+            if(run===pids.length) {
+                console.log('RAW ', RAW);
+                setTimeLine('C', RAW);
+            }
         }
-
-        function union_data(){
-            RAW = _.union(pathlogyD, labtestD);
-            console.log('RAW ', RAW);
-            setTimeLine('C', RAW);
-        }
-
 
 
         /*var ds_cond = {};

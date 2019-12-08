@@ -55,15 +55,22 @@ function Pager() {
     }
 
     var showProgress = function(page){
+        if(self.node==='simple'){
+            self.callback.movePage(page);
+            return;
+        }
       self.callback.showPageBuild(self.data, page, self.node);
       generate(page);
     }
 
     var buildCount = function (totalPage, page) {
-        var sidx = page / 10;
-        sidx = Math.floor(sidx) * 10 + 1;
-        var eidx = sidx + 9;
+        console.log(totalPage, page);
+        var sidx = 1, eidx = 10, track=10;
+        sidx = page / track;
+        sidx = Math.floor(sidx) * track + 1;
+        eidx = sidx + track-1;
         eidx = (eidx < totalPage) ? eidx : totalPage;
+
         //console.log("sidx ", sidx);
         //console.log("edix " , eidx);
         var str = '';

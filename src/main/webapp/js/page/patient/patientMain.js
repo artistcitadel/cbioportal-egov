@@ -6,107 +6,106 @@ function PatientList() {
     var self = this;
     var action;
     var util;
-    var PDATA;
-    var PIDX = 0;
+    self.PS = [];
 
     self.init = function() {
+
+        $("#search_pat").keyup(function (event) {
+            event.preventDefault();
+            var value = $(this).val();
+            var temp=[];
+                for (var i = 0; i < self.TABLE.length; i++) {
+                    _.map(self.TABLE[i],function(v){
+                        if(v===value){
+                            temp.push(self.TABLE[i]);
+                        }
+                    });
+                }
+                console.log('includes', temp, value);
+            if($.trim(temp).length===0)temp=self.TABLE;
+            setData(temp,1);
+        });
+
         action = new Action();
         util = new Util();
+        util.showLoader();
+
         var ds_cond = {};
         ds_cond.data = {"queryId": "selectPatientChoiceList"};
         ds_cond.callback = setData;
         action.selectList(ds_cond);
 
-        $('#patientId, #sampleId, #age, #cancerStudie, #cancerType, #cancerTypeDetail').keyup(function (e) {
-                var id = this.id;
-            var value = $(this).val();
-            var temp = _.filter(PDATA, function (data) {
-                return data[id].indexOf(value) > -1;
-            })
-            setData(temp);
-        });
 
-        $('#grid').on('cellselect', function (event) {
-            var columnheader = $("#grid").jqxGrid('getcolumn', event.args.datafield).text;
-            if (event.args.datafield === 'patientId') {
-                var props = {value: $("#grid").jqxGrid('getcellvalue', event.args.rowindex, 'patientId')};
-                document.pform.patientId.value = props.value;
-                document.pform.submit();
-            }
+        $("#pat_con").on("click", "[id^='patientTr_']",function (e) {
+            var pid = this.id.split("_")[1];
+            var idx = _.findIndex(self.PS, pid);
+            console.log(self.PS, pid);
+            if(!_.includes(self.PS, pid))
+              self.setPatientList(pid);
         });
+        $("#patientList").on("click", "[id^='remove_']",function (e) {
+            var pid = this.id.split("_")[1];
+            self.PS.splice(idx,1);
+            self.removePatientId(this);
+        })
+
+        $("#movePatientView").on("click", function(){
+            console.log(self.PS);
+            var q = '';
+            if(self.PS.length<1)return;
+            if(self.PS.length===0)q = self.PS[0];
+            if(self.PS.length>0)var q = self.PS.join(",");
+            //location.href='/patient/patientView?patient='+q;
+            document.pform.patient.value = q;
+            document.pform.submit();
+        })
+
     }
 
 
-    var setData = function(json) {
+    var setData = function(json,dirty) {
+        json = _.uniq(json);
         console.log(json);
         if (json.length > 0) {
-            var data = json;
-            console.log(data);
-            (PDATA == null) ? PDATA = data : PDATA;
-            var source =
-                {
-                    localdata: data,
-                    datafields: [
-                        {name: 'patientId', type: 'string'},
-                        {name: 'sampleId', type: 'string'},
-                        {name: 'age', type: 'string'},
-                        {name: 'cancerStudy', type: 'string'},
-                        {name: 'cancerType', type: 'string'},
-                        {name: 'cancerTypeDetail', type: 'string'},
-                    ],
-                    datatype: "array"
-                };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-            // initialize jqxGrid
-            $("#grid").jqxGrid(
-                {
-                    width: getWidth('Grid'),
-                    source: dataAdapter,
-                    pageable: true,
-                    autoheight: true,
-                    sortable: true,
-                    filterable: true,
-                    showfilterrow: true,
-                    // altrows: true,
-                    // enabletooltips: true,
-                    // editable: true,
-                    //selectionmode: 'singlecell',
-                    columns: [
-                        {text: 'Patient Id', datafield: 'patientId', width: 150},
-                        {text: 'Sample Id', datafield: 'sampleId', width: 150},
-                        {text: 'age', datafield: 'age', width: 100, cellsalign: 'center'},
-                        {text: 'Cancer Study', datafield: 'cancerStudie', width: 150},
-                        {text: 'Cancer Type', datafield: 'cancerType', width: 150},
-                        {text: 'Cancer Type Detail', datafield: 'cancerTypeDetail', width: 150},
-                    ],
-                });
-            /*  $("div").on('click', '[id^=patientremove_]', function(e) {
-                  var idx = this.id.split("_")[1];
-                    removePatientRow(idx);
-              });*/
+          var txt = '';
+          for(var i=0;i<json.length;i++){
+            txt+='<tr id="patientTr_'+json[i].patientId+'" style="cursor:pointer">\n' +
+                '  <td>'+json[i].patientId+'</td>\n' +
+                '  <td>'+json[i].sampleId+'</td>\n' +
+                '  <td>'+json[i].age+'</td>\n' +
+                '  <td>'+json[i].cancerStudy+'</td>\n' +
+                '  <td>'+json[i].cancerType+'</td>\n' +
+                '  <td>'+json[i].cancerTypeDetail+'</td>\n' +
+                '  </tr>'
+          }
         }
+        //console.log(txt);
+        $("#pat_con").empty();
+        $("#pat_con").append(txt);
+        var pager = new Pager();
+        var el = $("#pat_pageview");
+        var tpage = Math.ceil(json.length/10);
+        pager.buildPage(1, tpage, el, self, json, null);
 
+        if(_.isUndefined(dirty)){
+            self.TABLE = json;
+        }
+        util.hideLoader();
     }
 
-    function getPatientRow(props) {
-        var txt =
-            ' <div id= "patient_' + (PIDX) + '"  class="col-xs-2 col" style="background-color: white; height:34px;padding:0px;width:min-content;"> \
-          <div class="input-group" style="width:min-content"> \
-            <input type="text" class="form-control input-sm" value="' + props.value + '" style="width:110px"> \
-              <span class="input-group-btn"> \
-                <button type="button" class="btn btn-default btn-sm" onClick="removePatientRow()"> \
-                  <span class="glyphicon glyphicon-remove"></span> \
-               </button> \
-              </span> \
-           </div> \
-         </div> ';
+    self.setPatientList = function(patientId) {
+        console.log(patientId);
+        self.PS.push(patientId);
+        var txt ='<li id="patientli_"'+patientId+' role="presentation"><a id="remove_'+patientId+'" href="#">'+patientId+' <span class="badge">X</span></a></li>'
         console.log(txt);
+        $("#patientList").append(txt);
         return txt;
     }
 
-    function removePatientRow() {
-        console.log('ddd');
-        $("#patient_" + (--PIDX)).remove();
+    self.removePatientId = function(el) {
+        //console.log("patientli_"+patientId);
+        //$("#patientli_"+patientId+"").remove();
+        $(el).parents('li').remove();
     }
 
-}
+ }
