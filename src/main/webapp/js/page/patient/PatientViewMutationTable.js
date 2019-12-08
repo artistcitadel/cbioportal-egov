@@ -5,11 +5,14 @@
         self.ISROUNDMUTATION = false;
         self.NODE = 'MUTATIONS';
         self.TABLE={};
-        self.GOALCNT = 1;
-        self.NODES = ['MUTATIONS','CNV'];
-        self.QID = ['selectPatientMuList','selectPatientCNAList']
+        self.NODES = ['MUTATIONS','CNV','EXPRESSION','SV'];
+        //self.PAGE = [{'MUTATIONS':1},{'CNV':1},{'EXPRESSION':1},{'SV':1}];
+        self.GOALCNT = self.NODES.length-1;
+        //self.GOALCNT = 2;
+        self.QID = ['selectPatientMuList','selectPatientCNAList','selectPatientEXPRESSIONList','selectPatientSVList']
 
         self.mutMap = [
+           {id:'geneExamSpcnSeq', name:'TUMORS', show:false},
            {id:'geneNm',name:'GENE', show:true},
            {id:'geneExamMthNm', name:'METHODS', show:false},
            {id:'hgvspVal', name:'PROTEIN_CHANGE', show:false},
@@ -25,21 +28,43 @@
            {id:'variAlleleReadCnt', name:'VARIANT_READS',show:false},
            {id:'refAlleleReadCnt',name:'REF_READS', show:false},
            {id :'copy',name:'COPY#', show:false},
-           {id:'chort', name:'COHORT',show:false},
+           {id:'cohort', name:'COHORT',show:false},
            {id:'cosmic', name:'COSMIC',show:false}
         ];
         self.cnaMap = [
+            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
             {id:'geneNm',name:'GENE', show:true},
             {id:'geneExamMthNm', name:'METHODS', show:false},
             {id:'annotation', name:'ANNOTATION',show:false},
             {id:'cytbNm', name:'Cytoband',show:false},
-            {id:'chort', name:'COHORT',show:false},
+            {id:'cohort', name:'COHORT',show:false},
+        ];
+
+        self.expMap = [
+            {id:'geneNm', name:'GENE', show:true},
+            {id:'annotation', name:'ANNOTATION',show:false},
+            {id:'geneExamMthNm', name:'METHODS',show:false},
+            {id:'ptegGeneReadRsltVal', name:'EXP_RESULT',show:false},
+            {id:'gnex', name:'EXP_VALUE',show:false},
+            {id:'gnexMsrVal', name:'EXP_UNIT',show:false},
+        ];
+        self.svMap = [
+            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
+            {id:'geneNm', name:'GENE1', show:true},
+            {id:'geneNm1', name:'GENE2', show:true},
+            {id:'geneExamMthNm', name:'METHODS',show:false},
+            {id:'annotation', name:'ANNOTATION',show:false},
+            {id:'cytbNm', name:'Cytoband1',show:false},
+            {id:'cytbNm1', name:'Cytoband2',show:false},
+            {id:'cohort', name:'Cohort',show:false},
         ];
 
         self.TH = {},
 
         self.TH.MUTATIONS = self.mutMap;
         self.TH.CNV = self.cnaMap;
+        self.TH.EXPRESSION = self.expMap;
+        self.TH.SV = self.svMap;
         self.ROUNDCNT = 0;
 
         self.init = function (){
@@ -50,8 +75,38 @@
             $('input[type="checkbox"]').change(function() {
                 setColumn(this.id);
             });
+            $("[id^='search_']").keyup(function (event) {
+                event.preventDefault();
+                var id = this.id;
+                var value = $(this).val();
+                self.NODE = this.id.split("_")[1];
+                var temp=[];
+                if($.trim(value).length>0) {
+                    //console.log(self.TABLE[self.NODE]);
+                    /*for (var i = 0; i < self.TABLE[self.NODE].length; i++) {
+                        console.log(self.TABLE[self.NODE][i]);
+                        var fi = _.includes(self.TABLE[self.NODE][i], value);
+                        console.log('includes', fi, value);
+                        if (fi) {
+                            temp.push(self.TABLE[self.NODE][i]);
+                        }
+                    }*/
+                    for (var i = 0; i < self.TABLE[self.NODE].length; i++) {
+                       _.map(self.TABLE[self.NODE][i],function(v){
+                            if(v===value){
+                                temp.push(self.TABLE[self.NODE][i]);
+                            }
+                        });
+                    }
+                    console.log('includes', temp, value);
+                }
+                if($.trim(temp).length===0)temp=self.TABLE[self.NODE];
+                self.SORT = true;
+                buildRowsMutation(temp,'1');
+                });
 
-            $("table").on("hover", "[id^='cosmic_']",function (e) {
+            $("#MUTATIONS_con").on("hover", "[id^='cosmic_']",function (e) {
+            //$("#MUTATIONS_con td").last().on("hover", "td:eq(last)",function (e) {
                 var id = e.target.id;
                 var count = $(this).text();
                 var geneNm = $(this).data("geneNm");
@@ -118,7 +173,7 @@
         var tableDisposer = function(thdata){
             console.log('thdata ', thdata , self.NODE);
             var data = _.filter(thdata, function(o){
-                console.log(o.subject , self.NODE);
+                //console.log(o.subject , self.NODE);
                 return o.subject === self.NODE;
             })
             console.log('subject data ', data);
@@ -128,7 +183,7 @@
                 });
                 if(idx !==-1){
                     self.TH[self.NODE][idx].show=true;
-                    $("#"+self.TH[self.NODE][idx].id).prop('checked',"true");
+                    $("#"+self.TH[self.NODE][idx].id+"_"+self.NODE).prop('checked',"true");
                 }
             }
             buildTh();
@@ -136,6 +191,7 @@
 
         var buildTh = function() {
             var txt = '';
+            // console.log('self.TH[self.NODE]', self.TH[self.NODE],self.NODE);
             for(var i=0;i<self.TH[self.NODE].length;i++) {
                 if(self.TH[self.NODE][i].show) {
                     txt += '<th data-sort=\'{"key":"' + self.TH[self.NODE][i].id + '"}\' role="button"><span>' + self.TH[self.NODE][i].name + '</span></th>'
@@ -190,9 +246,11 @@
             return item;
         }
 
-        var getMutation = function() {
+        var getMutation = function(temp) {
             console.log('getMutation ', self.TABLE[self.NODE]);
+            if(_.isUndefined(temp))
             return self.TABLE[self.NODE];
+            else return temp;
         }
 
 
@@ -206,23 +264,55 @@
             if(self.TH[self.NODE][idx].show)return true;
             else return false;
         }
-        var buildRowsMutation = function(json) {
-            console.log('buildRowMutation called ',json);
+        var setRange = function(data,page){
+            // var t = Math.ceil(data.length/10);
+            // console.log('setRange ',t, page, data.length);
+            var start = page*10-10;
+            var end = start+10;
+            if(end>data.length)end = data.length;
+            console.log('data slice ',start, end);
+            return data.slice(start, end);
+        }
+        self.showPageBuild = function(data, page, node){
+
+            //self.PAGE[node] = page;
+            //console.log('pageNode ', self.PAGE[node]);
+            self.NODE = node;
+            buildTd(data,page);
+        }
+
+        var buildTd = function (json,page){
+            if(util._isUndefined(page)) page = 1;
+            json = setRange(json, page);
+            console.log('page is ', page,  json);
+
+
             var txt = '';
-            _.forEach(json, function (v) {
+            _.forEach(json, function (v,i) {
 
                 txt += '<tr>';
+                (_includes(self.TH[self.NODE], 'geneExamSpcnSeq'))? (txt+='<td align="center"><span font-msmall">' + v.geneExamSpcnSeq + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'geneNm'))? (txt+='<td align="center"><span font-msmall">' + v.geneNm + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'geneNm1'))? (txt+='<td align="center"><span font-msmall">' + v.geneNm1 + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'geneExamMthNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneExamMthNm + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="center"><span class="font-msmall" style="white-space: nowrap;">' + v.hgvspVal + '</span></td>') : '';
                 if(_includes(self.TH[self.NODE], 'annotation')){
                     txt+='<td><span style="display: flex; min-width: 100px;">\n' +
-                    ' <span>\n' +
-                    ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
-                    ' </i></span></span></td>';
+                        // ' <span>\n' +
+                        // ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
+                        // ' </i></span></span>' +
+                        '</td>';
                 }
 
                 (_includes(self.TH[self.NODE], 'chrnNo'))? (txt+='<td align="center"><span class="font-msmall">' + v.chrnNo + '</span></td>') : '';
+
+                (_includes(self.TH[self.NODE], 'cytbNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.cytbNm + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'cytbNm1'))? (txt+='<td align="center"><span class="font-msmall">' + v.cytbNm1 + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'ptegGeneReadRsltVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.ptegGeneReadRsltVal + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'gnex'))? (txt+='<td align="center"><span class="font-msmall">' + v.gnex + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'gnexMsrVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.gnexMsrVal + '</span></td>') : '';
+
+
                 (_includes(self.TH[self.NODE], 'geneVariStLocVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneVariStLocVal + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'geneVariEndLocVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneVariEndLocVal + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'refAlleleSqncVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleSqncVal + '</span></td>') : '';
@@ -233,24 +323,30 @@
                 (_includes(self.TH[self.NODE], 'variAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'refAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'copy'))? (txt+='<td align="center"><span class="font-msmall">' + v.copy + '</span></td>') : '';
-                if(_includes(self.TH[self.NODE], 'chort')){ txt+='<td>\n' +
-                                                ' <div>\n' +
-                                                ' <svg width="71" height="12">\n' +
-                                                ' <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>\n' +
-                                                ' <rect y="2" width="30" height="8" fill="#ccc"></rect>\n' +
-                                                ' <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>\n' +
-                                                ' <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>\n' + '' +
-                                                ' </svg>\n' +
-                                                ' </div>\n' +
-                                                '</td>';
+                if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td>\n' +
+                    // ' <div>\n' +
+                    // ' <svg width="71" height="12">\n' +
+                    // ' <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>\n' +
+                    // ' <rect y="2" width="30" height="8" fill="#ccc"></rect>\n' +
+                    // ' <rect y="2" width="3.1578947368421053" height="8" fill="lightgreen"></rect>\n' +
+                    // ' <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>\n' + '' +
+                    // ' </svg>\n' +
+                    // ' </div>\n' +
+                    '</td>';
                 }
-                (_includes(self.TH[self.NODE], 'cosmic'))? (txt+='<td align="center"><div id="cosmic_' + v.mttnExamRsltId + '" data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '">' + null2str(v.cosmic) + '</div></td>'):'';
+                (_includes(self.TH[self.NODE], 'cosmic'))? (txt+='<td align="center"><div id="cosmic_' + v.geneExamSpcnId + '"  data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '">' + null2str(v.cosmic) + '</div></td>'):'';
                 txt+='</tr>';
             });
             //console.log(txt);
             var targetdiv = self.NODE+"_con";
             //console.log('targetdiv ',targetdiv);
             $("#"+targetdiv).html(txt);
+        }
+
+
+        var buildRowsMutation = function(json, dirty) {
+            console.log('buildRowMutation called ',self.NODE);
+            buildTd(json);
 
             //var gene = new GenomicOverview(LASTYPOS);
             if(!self.ISROUNDMUTATION) {
@@ -259,20 +355,31 @@
             }
             self.ISROUNDMUTATION = true;
 
+            //console.log('self.TABLE[self.NODE].length ', self.NODE);
+            var pager = new Pager();
+            var el = $("#"+self.NODE+"_pageview");
+            var tpage = Math.ceil(getMutation().length/10);
+            if(!_.isUndefined(dirty)){
+                tpage = Math.ceil(getMutation(json).length/10);
+            }
+            pager.buildPage(1, tpage, el, self, getMutation(), self.NODE);
+
             if(!self.SORT) {
                 //alert(self.ROUNDCNT + ' ' +self.GOALCNT);
                 buildSort();
             }
-            $("[id^='cosmic_']").trigger('hover');
+             $("[id^='cosmic_']").trigger('hover');
+
+            //alert($("#MUTATIONS_con td").last().find('div').prop('id'));
 
             /*var copytip = "Copy";
             var downloadtip = 'Download TSV';
             gene.addToolTip($('#copyButton'),copytip,null,{my:'top right',at:'bottom left'});
             gene.addToolTip($('#downloadButton'),downloadtip,null,{my:'top right',at:'bottom left'});*/
         }
+
         self.SORT = false;
         var buildSort = function() {
-
             var targetTable = self.NODE+"_t";
             //var $table3 = $('#t-1');
             var $table3 = $('#'+targetTable);
@@ -311,7 +418,8 @@
                 $headers.removeClass('sorted-asc sorted-desc');
                 $header.addClass(sortDirection == 1 ? 'sorted-asc' : 'sorted-desc');
                 // $table3.children('tbody').empty();
-                $table3.children('tbody').html(buildRowsMutation(rows));
+                //$table3.children('tbody').html(buildRowsMutation(rows));
+                $table3.children('tbody').html(buildTd(rows));
             });
 
             if(self.ROUNDCNT < self.GOALCNT){

@@ -30,17 +30,17 @@ function TimeLine() {
     var INITUNIT;
     var ISROUNDMUTATION = false;
 
-    var util, action;
-
-    var TITLE = {
-        "Specimen": "1",
-        "Lab_test": "2"
-    };
+    var util, action, event;
 
     function exist(data, key) {
+        var digcategory=[];
+        if(!_.isUndefined(localStorage["digcategory"]))
+        digcategory = JSON.parse(localStorage.getItem("digcategory"));
+
         var find = false;
         for (var i = 0; i < data.length; i++) {
-            if (data[i] === key) {
+          var idx = _.findIndex(digcategory, key);
+            if (data[i] === key && idx===-1) {
                 find = true;
                 break;
             }
@@ -48,7 +48,7 @@ function TimeLine() {
         return find;
     }
 
-    function setData(crow, data) {
+    /*function setData(crow, data) {
         var mdata = _.uniqBy(data, 'id');
         console.log('mdata ', mdata);
         var pdata = util.arrayToTreeParent(mdata);
@@ -121,7 +121,7 @@ function TimeLine() {
             RAW = crow;
             setTimeLine('C', crow);
         }
-    }
+    }*/
 
     function findLevel(pid, data, lvl) {
         var id = _.findIndex(data, function (o) {
@@ -139,18 +139,6 @@ function TimeLine() {
     }
 
     function setTimeLine(node, data) {
-        /*for(var i=0;i<data.length;i++){
-            data[i].fullname=data[i].name;
-          if(util._isUndefined(data[i].name) && data[i].name.length>9)data[i].name=data[i].name.substring(0,5);
-        }*/
-        /*var longest = data.reduce(function (a, b) {
-            return a.name.length > b.name.length ? a : b;
-        });
-        console.log(' .. longest ', longest.name.length);*/
-        //XTREETEXTPADDING += _.max(LTEXTLENGTH)+24;
-        //XTREETEXTPADDING = longest.name.length+24;
-        //XTREETEXTPADDING = longest.name.length + 3;
-
         XTREETEXTPADDING = 0;
         leftpadding *= 2;
         leftpadding += XTREETEXTPADDING;
@@ -170,7 +158,7 @@ function TimeLine() {
         LINEEND = end;
         console.log('xt[xt.length-1] ', end);
         drawTimeLine(start, chmName, xt, m, end);
-
+        //console.log('dig ', dig);
         (node !== 'R') ? makeEventBarChart() : makeEventBarChartCache();
     }
 
@@ -301,6 +289,7 @@ function TimeLine() {
 
     function drawTimeLine(start, chmName, xt, m, end) {
         COUNTMAP = null;
+        //console.log('dig ', dig);
         var names = _.countBy(dig, function (v) {
             //if(!util._isUndefined(v.time))
             if (v.time !== '00000000') {
@@ -316,6 +305,9 @@ function TimeLine() {
                     axis: 0
                 };
             })
+        countTime = _.filter(countTime, function(o){
+            return o.time != 'undefined';
+        });
         console.log('countTime ', countTime);
         console.log('start ', yRuler, start, end);
         var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
@@ -349,6 +341,7 @@ function TimeLine() {
                 txt.attr("font-family", "Nanum Gothic, sans-serif");
                 txt.attr("fill", "#5e586b");
                 txt.data({id: chmName[txtCnt]});
+                //addToolTip(txt.node, '클릭하여 확대', 100, '');
                 txt.click(function () {
                     if (UNIT === 'd') return;
                     //var temp = dunformat(this.attr('text'));
@@ -417,7 +410,7 @@ function TimeLine() {
 
 // -- event bar chart -- //
 
-    function classify_labtest(data) {
+ /*   function classify_labtest(data) {
         var item = {};
         //var tip = "[" + data.id + "]";
         var tip='';
@@ -429,7 +422,7 @@ function TimeLine() {
         tip += "<span>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
         tip += "<span>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
         return tip;
-    }
+    }*/
 
     function setPlotAxis(pdata) {
         pixelMap = [];
@@ -445,13 +438,15 @@ function TimeLine() {
                 var p = _.filter(COUNTMAP, function (v) {
                     return v.time == getDpTime(pdata[i].time);
                 });
+                //console.log(getDpTime(pdata[i].time));
                 // console.log(' position is ', p);
                 // console.log(' position is ', p['0'].axis);
                 item.id = pdata[i].id;
                 item.time = pdata[i].time;
                 item.axis = p['0'].axis;
                 item.count = p['0'].count;
-                item.name = classify_labtest(pdata[i]);
+                item.name = (pdata[i].subject==='subject.lab_test') ? ( event.classify_labtest(pdata[i],UNIT) ) :
+                            (pdata[i].subject==='subject.pathlogy') ? ( event.classify_pathlogy(pdata[i], UNIT) ) : '';
                 pixelMap.push(item);
             }
         }
@@ -504,7 +499,7 @@ function TimeLine() {
     var ycnt = 0;
 
     function plotdrawing(dig) {
-        console.log('dig is ', dig);
+        //console.log('dig is ', dig);
         ycnt = 0
         dig = _.uniqBy(dig, 'id');
         console.log('uniq dig is ', dig);
@@ -514,15 +509,20 @@ function TimeLine() {
         console.log('tdata.data ', tdata[0]['data']);
         XGRIDS = [];
 
-        plotMuts(paper, ycnt, tdata[0]);
-        if (tdata[0]['data'].length > 0)
-            printPlot(paper, tdata[0]['data']);
+        for(var i=0;i<tdata.length;i++) {
+            plotMuts(paper, ycnt, tdata[i]);
+            if (tdata[i]['data'].length > 0)
+                printPlot(paper, tdata[i]['data']);
+        }
+
         //console.log(' LASTYPOS ', LASTYPOS);
         $('#genomicOverviewTracksContainer').children(1).css('height', LASTYPOS + 3 + 'px');
         MODE = 'N';
 
         util.hideLoader();
         $("#spinner1").hide();
+        $('div.member').find('img').trigger('click');
+        $('#timeline').scrollLeft(0);
 
         //console.log('last dig is ', dig);
         if (!ISROUNDMUTATION) {
@@ -598,9 +598,12 @@ function TimeLine() {
                 // r.attr("fill", "#0f0");
                 // r.attr("stroke", "#0f0");
                 //r.attr("fill", "#ffaf8a");
-                r.attr("fill", "#ffa670");
-                r.attr("stroke", "#ffa670");
-                r.attr("stroke-width", 1);
+
+                /*r.attr("fill", "#ffa670");
+                r.attr("stroke", "#ffa670");*/
+                r.attr("fill", event.getPlotColor(item.subject));
+                r.attr("stroke", event.getPlotColor(item.subject));
+                r.attr("stroke-width", 2);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
                 r.hover(function () {
@@ -609,7 +612,7 @@ function TimeLine() {
                         this.transform('s1,1');
                     }
                 );
-                r.animate({ cx:position}, 1800);
+                r.animate({ cx:position}, 1500);
                 //r.transform('S'+tnumber,tnumber+'');
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
                 addToolTip(r.node, pixelAry[i].name, 100, '');
@@ -626,8 +629,8 @@ function TimeLine() {
             var deep = label.level;
             if (label.leaf) deep += 2;
             // console.log('show ', label, label.folder);
-            //var ar = '❯❯ ';
-            var ar = "❯ ";
+            //var ar = "❯ ";
+            var ar = "- ";
             //var ar = '開';
             //if (label.leaf) ar = '';
             //console.log(' label ', label.folder, label.name, label.leaf);
@@ -644,11 +647,11 @@ function TimeLine() {
                 //ar ='﹀';//ar = '閉';//ar ='﹀';//
                 //console.log(label.folder);
                 //if (!label.folder) ar = "﹀ ";
-                if (label.folder) ar = '❯ ' //ar = "閉";
+                if (label.folder) ar = '-'; //ar = '❯ ' //ar = "閉";
             } else ar = '';
 
             var lbl = label.name;
-            if(util._isUndefined(lbl) && lbl.length>14)lbl=lbl.substring(0,14);
+            if(lbl.length>10)lbl=lbl.substring(0,10)+'...';
             lbl = ar + lbl;
             //console.log('label_text length ', lbl.length);
             //var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
@@ -665,7 +668,7 @@ function TimeLine() {
                     setTreeNode(label.id);
                 }
             });
-            addToolTip(t.node, label.name, 100, '');
+            if(lbl.length>10)addToolTip(t.node, label.name, 100, '','qtip-light');
 
             //if(ar!=='')underlineText(t,p);
 
@@ -726,15 +729,19 @@ function TimeLine() {
 
         clearPaperPlotNode();
         plotdrawing(dig);
+        //$('#genomicOverviewTracksContainer').children(1).scrollLeft(0);
         $("#spinner1").hide();
     }
 
-    function addToolTip(node, tip, showDelay, position) {
+    function addToolTip(node, tip, showDelay, position, theme) {
+        var theme = theme;
+        if(_.isUndefined(theme)) theme = 'qtip-dark';
         var param = {
             content: {text: tip},
             show: {event: "mouseover"},
             hide: {fixed: true, delay: 100, event: "mouseout"},
-            style: {classes: 'qtip-dark qtip-rounded'},
+            //style: {classes: ''+theme+' qtip-rounded'},
+            style: {classes: ''+theme+' qtip-bootstrap'},
             position: {
                 my: "bottom right",
                 at: "top left",
@@ -756,19 +763,60 @@ function TimeLine() {
         action = new Action();
         util = new Util();
         util.showLoader();
+        event = new Event();
         paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
         paper.scale({zoom: true});
 
         var label = "Time since diagnosis";
         var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
 
-        var ds_cond = {};
+
+        var labtest = new Labtest();
+        var pathlogy = new Pathlogy();
+        var pathlogyD=[],labtestD=[];
+
+
+        var digcategory=[];
+        if(!_.isUndefined(localStorage["digcategory"]))
+            digcategory = JSON.parse(localStorage.getItem("digcategory"));
+        //console.log(digcategory, subject.pathlogy, _.findIndex(digcategory, function(o) {return o.idd === subject.pathlogy;}));
+        if( _.findIndex(digcategory, function(o) {return o.idd === subject.pathlogy;} ) === -1){
+            pathlogy.init(findLevel, exist, setPathlogyData);
+        }
+        if( _.findIndex(digcategory, function(o) {return o.idd === subject.lab_test;} ) === -1){
+            labtest.init(findLevel, exist, setLabtestData);
+        }
+
+
+        function setPathlogyData(data){
+            console.log('pathlogy data ', data);
+            pathlogyD = data;
+            // RAW =data;
+            // setTimeLine('C', pathlogyD);
+        }
+
+        function setLabtestData(data){
+            console.log('labtest data ', data);
+            labtestD = data;
+
+            union_data();
+        }
+
+        function union_data(){
+            RAW = _.union(pathlogyD, labtestD);
+            console.log('RAW ', RAW);
+            setTimeLine('C', RAW);
+        }
+
+
+
+        /*var ds_cond = {};
         ds_cond.data = {"queryId": "selectLabTestHrc", "patientId": PATIENTID};
         ds_cond.callback = setClassifyHrc;
-        action.selectList(ds_cond);
+        action.selectList(ds_cond);*/
     }
 
-    var setClassifyHrc = function (json) {
+/*    var setClassifyHrc = function (json) {
         if (json.length > 0) {
             HRC_LAB = json;
             console.log("HRC_LAB ", HRC_LAB);
@@ -777,15 +825,8 @@ function TimeLine() {
             ds_cond.callback = disposer;
             action.selectList(ds_cond);
         }
-    }
+    }*/
 
-    // var scale, TFORM, overview, w;
-    // var setScale = function () {
-    //     scale = 1;
-    //     TFORM = 1.5;
-    //     overview = $('#genomicOverviewTracksContainer').children(1);
-    //     var w = overview.attr('width');
-    // }
 
     self.setZoom = function(scale,w, node){
         (node===1) ? LASTYPOS *= scale : LASTYPOS /= scale;
@@ -861,6 +902,7 @@ function TimeLine() {
 
         });
         $('#xgrid').trigger('click');
+        $('#xgrid').hide();
 
         $("#reset").click(function () {
 

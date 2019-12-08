@@ -56,3 +56,103 @@ th, td {
 .pagination {
     justify-content: center;
 }
+
+#container {
+    margin: 10px 2em;
+}
+.team {
+    width: 365px;
+    float: left;
+}
+
+
+.member {
+    position: relative;
+    overflow: hidden;
+    height: 85px;
+}
+.member img {
+    position: relative;
+    z-index: 10;
+    display: block;
+    width: 75px;
+    height: 75px;
+    padding: 5px 0 5px 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.member div {
+    position: absolute;
+    left: -300px;
+    top: 0;
+    line-height: 25px;
+    margin-top: 5px;
+    padding: 0 10px 0 100px;
+    width: 250px;
+
+    color: #888;
+}
+.member .name {
+    z-index: 8;
+    color: #fff;
+    background-color: #888;
+    font-weight: bold;
+}
+.member .location {
+    z-index: 6;
+    font-size: 0.9em;
+}
+.member .position {
+    z-index: 4;
+    font-size: 0.9em;
+}
+
+.bio {
+    position: absolute;
+    left: -370px;
+    width: 600px;
+    height:85px;
+    margin: 0;
+    font-size: 0.9em;
+    color: #fff;
+}
+.bio a {
+    color: #fff;
+}
+#movable {
+    z-index: 0;
+    padding: 10px;
+    background-color: #888;
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    visibility: visible;
+    position: absolute;
+    overflow: hidden;
+    top: -1000em;
+    left: 0;
+    width: 75px;
+    height: 75px;
+}
+#movable .bio {
+    position: static;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #090;
+}
+
+
+
+.com-paging {margin-top:30px;text-align:center;}
+.com-paging a, em {display:inline-block;vertical-align:middle;}
+.com-paging [class^="btn_"] {overflow:hidden;width:36px;height:36px;background-image:url("/js/page/patient/images/btn_paging.png");background-repeat:no-repeat;white-space:nowrap;text-indent:100%;}
+.com-paging .btn_first {background-position:0 0;}
+.com-paging .btn_prev {margin-right:10px;background-position:-36px 0;}
+.com-paging .btn_next {margin-left:10px;background-position:-72px 0;}
+.com-paging .btn_last {background-position:-108px 0;}
+.com-paging a:not([class^="btn_"]), .com-paging em {margin:0 5px;padding:0 5px;font-size:15px;}
+.com-paging em {position:relative;color:#16365c;}
+.com-paging em:before {content:'';position:absolute;left:50%;bottom:-2px;width:100%;height:2px;background-color:#16365c;-ms-transform:translateX(-50%);-webkit-transform:translateX(-50%);transform:translateX(-50%);}

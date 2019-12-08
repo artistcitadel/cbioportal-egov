@@ -4,9 +4,27 @@ import com.reactkorea.RkCmmnVO;
 
 public class Patient extends RkCmmnVO {
     private String id;
+    private String idd;
     private String pid;
+    private String check;
 
-    public String getAge() {
+  public String getIdd() {
+    return idd;
+  }
+
+  public String getCheck() {
+    return check;
+  }
+
+  public void setCheck(String check) {
+    this.check = check;
+  }
+
+  public void setIdd(String idd) {
+    this.idd = idd;
+  }
+
+  public String getAge() {
         return age;
     }
 

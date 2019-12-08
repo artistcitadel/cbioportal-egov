@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patient">
+
+    <select id="selectPatientMuList_temp" resultType="com.asan.patient.vo.PatientMut">
+        SELECT MTTN_EXAM_RSLT_ID mttnExamRsltId,
+        RESCH_PAT_ID reschPatId,
+        GENE_EXAM_SPCN_ID geneExamSpcnId,
+        EXAM_NO examNo,
+        GENE_EXAM_MTH_NM geneExamMthNm,
+        CHRM_NO chrnNo,
+        GENE_NM geneNm,
+        GENE_VARI_ST_LOC_VAL geneVariStLocVal,
+        GENE_VARI_END_LOC_VAL geneVariEndLocVal,
+        DNA_STRND_VAL dnaStandVal,
+        GENE_VARI_CLSF_NM geneVariClsfNm,
+        GENE_VARI_TYP_NO geneVariTypNo,
+        REF_ALLELE_SQNC_VAL refAlleleSqncVal,
+        VARI_ALLELE_SQNC_VAL variAlleleSqncVal,
+        MTTN_STAT_NO mttnStatNo,
+        HGVSC_VAL hgvscVal,
+        HGVSP_VAL hgvspVal,
+        TOT_ALLELE_READ_CNT totAlleleReadCnt,
+        REF_ALLELE_READ_CNT refAlleleReadCnt,
+        VARI_ALLELE_READ_CNT variAlleleReadCnt,
+        VARI_ALLELE_READ_RT variAlleleReadRt,
+        EXON_LOC_VAL exonLocVal,
+        INTRN_LOC_VAL intrnLocVal,
+        TRSC_ID trscId
+        FROM PMGERMUEM
+        WHERE RESCH_PAT_ID = #{patientId}
+    </select>
+
+    <select id="selectPatientMutAxis" resultType="com.asan.patient.vo.PatientMut">
+        SELECT CHRM_NO chrmNo,
+        GENE_ST_LOC_VAL geneStLocVal,
+        GENE_END_LOC_VAL geneEndLocVal
+        FROM PMGEMCHRM
+        ORDER BY SORT_SEQ
+    </select>
+
+    <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
+       SELECT LEFT(GROUP_CONCAT(BAS.MTTN_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)  AS geneExamSpcnId  -- 돌연변이검사결과ID (화면표시X)
+     , BAS.TUMOR_NM               -- 암종 (화면표시X Annotation OncoKB 사용)
+     , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq  -- Tumors
+     , BAS.GENE_NM geneNm              -- Gene (Annotation OncoKB 사용)
+     , BAS.GENE_EXAM_MTH_NM geneExamMthNm       -- Methods
+     , BAS.HGVSP_VAL hgvspVal             -- Protein Change (Annotation OncoKB 사용)
+     ,' ' annotation
+     , BAS.CHRM_NO  chrnNo              -- Chromosome
+     , BAS.GENE_VARI_ST_LOC_VAL geneVariStLocVal  -- Start Pos
+     , BAS.GENE_VARI_END_LOC_VAL  geneVariEndLocVal -- End Pos
+     , BAS.REF_ALLELE_SQNC_VAL refAlleleSqncVal   -- Ref
+     , BAS.VARI_ALLELE_SQNC_VAL  variAlleleSqncVal -- Var
+     , BAS.MTTN_STAT_NM  ms         -- MS
+     , BAS.GENE_VARI_CLSF_NM  geneVariClsfNm    -- Mutation Type
+     , GROUP_CONCAT(FORMAT(BAS.VARI_ALLELE_READ_RT, 2) ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS  variAlleleReadRt  -- Allele Freq
+     , GROUP_CONCAT(BAS.TOT_ALLELE_READ_CNT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS  totAlleleReadCnt  -- 총대립유전자리드수 (화면표시X Allele Freq 마우스 오버 사용)
+     , GROUP_CONCAT(BAS.VARI_ALLELE_READ_CNT           ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS  variAlleleReadCnt -- Variant Reads
+     , GROUP_CONCAT(BAS.REF_ALLELE_READ_CNT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS  refAlleleReadCnt  -- Ref Reads
+     , BAS.COPY  copy                -- Copy #
+     , BAS.COHORT_1               -- Cohort (밝은색)
+     , BAS.COHORT_2               -- Cohort (진한색)
+     ,' ' cohort
+     , BAS.OCCUR_CNT cosmic            -- COSMIC
+  FROM ( SELECT GMU.MTTN_EXAM_RSLT_ID              -- 돌연변이검사결과ID (화면표시X)
+              , NULL AS TUMOR_NM                   -- 암종 (Annotation OncoKB 사용)
+              , GMU.GENE_EXAM_SPCN_ID              -- 유전자검사검체ID
+              , RS1.RSLT_CNFM_DT AS SPCN_DT        -- 유전자검사검체일자
+              , GMU.EXAM_NO                        -- 검사번호
+              , RS2.RSLT_CNFM_DT AS EXAM_DT        -- 검사일자
+              , SEQ.GENE_EXAM_SPCN_SEQ             -- Tumors
+              , GMU.GENE_NM                        -- Gene (Annotation OncoKB 사용)
+              , GMU.GENE_EXAM_MTH_NM               -- Methods
+              , UPPER(GMU.HGVSP_VAL) AS HGVSP_VAL  -- Protein Change (Annotation OncoKB 사용)
+              , GMU.CHRM_NO                        -- Chromosome
+              , GMU.GENE_VARI_ST_LOC_VAL           -- Start Pos
+              , GMU.GENE_VARI_END_LOC_VAL          -- End Pos
+              , GMU.REF_ALLELE_SQNC_VAL            -- Ref
+              , GMU.VARI_ALLELE_SQNC_VAL           -- Var
+              , MST.MTTN_STAT_NM                   -- MS
+              , GMU.GENE_VARI_CLSF_NM              -- Mutation Type
+              , GMU.VARI_ALLELE_READ_RT            -- Allele Freq
+              , GMU.TOT_ALLELE_READ_CNT            -- 총대립유전자리드수 (화면표시X Allele Freq 마우스 오버 사용)
+              , GMU.VARI_ALLELE_READ_CNT           -- Variant Reads
+              , GMU.REF_ALLELE_READ_CNT            -- Ref Reads
+              , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS COPY   -- Copy #
+              , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM                              ) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
+              , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
+              , SUM(MCS.GENE_VARI_OCCUR_CNT) AS OCCUR_CNT  -- COSMIC
+           FROM pmsdev.PMGERMUEM GMU
+           LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
+             ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
+           LEFT OUTER JOIN pmsdev.PMGEMMUST MST
+             ON GMU.MTTN_STAT_NO = MST.MTTN_STAT_NO
+           LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
+             ON GMU.RESCH_PAT_ID = GCV.RESCH_PAT_ID
+            AND GMU.GENE_NM      = GCV.GENE_NM
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
+             ON GMU.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
+             ON GMU.EXAM_NO = RS2.EXAM_RSLT_NO
+              , ( SELECT SPC.GENE_EXAM_SPCN_ID
+                       , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
+                    FROM ( SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERMUEM
+                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERCVEM
+                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERSVEM
+                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERGNEX
+                            WHERE RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+                            ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+                       , ( SELECT @ROWNUM := 0 ) RNM
+                ) SEQ
+              , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수 (암환자리스트 테이블로 교체 예정)
+                    FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
+                ) PAT
+          WHERE GMU.RESCH_PAT_ID = '48321932' -- 연구환자ID (조회조건)
+            AND GMU.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+          GROUP BY
+                GMU.MTTN_EXAM_RSLT_ID
+              , GMU.GENE_EXAM_SPCN_ID
+              , RS1.RSLT_CNFM_DT
+              , GMU.EXAM_NO
+              , RS2.RSLT_CNFM_DT
+              , SEQ.GENE_EXAM_SPCN_SEQ
+              , GMU.GENE_NM
+              , GMU.GENE_EXAM_MTH_NM
+              , GMU.HGVSP_VAL
+              , GMU.CHRM_NO
+              , GMU.GENE_VARI_ST_LOC_VAL
+              , GMU.GENE_VARI_END_LOC_VAL
+              , GMU.REF_ALLELE_SQNC_VAL
+              , GMU.VARI_ALLELE_SQNC_VAL
+              , MST.MTTN_STAT_NM
+              , GMU.GENE_VARI_CLSF_NM
+              , GMU.VARI_ALLELE_READ_RT
+              , GMU.TOT_ALLELE_READ_CNT
+              , GMU.VARI_ALLELE_READ_CNT
+              , GMU.REF_ALLELE_READ_CNT
+       ) BAS
+       GROUP BY
+       BAS.GENE_NM
+     , BAS.GENE_EXAM_MTH_NM
+     , BAS.HGVSP_VAL
+    </select>
+
+    <select id="selectPatientCNAList" resultType="com.asan.patient.vo.PatientMut">
+        /* Copy Number Alterations */
+        SELECT LEFT(GROUP_CONCAT(BAS.CNV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)  AS geneExamSpcnId    -- 돌연변이검사결과ID (화면표시X)
+        , BAS.TUMOR_NM          -- 암종 (화면표시X Annotation OncoKB 사용)
+        , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnSeq  -- Tumors
+        -- , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID  ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_ID   -- 유전자검사검체ID   (화면표시X)
+        -- , GROUP_CONCAT(BAS.SPCN_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_DT   -- 유전자검사검체일자 (화면표시X)
+        -- , GROUP_CONCAT(BAS.EXAM_NO            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_NO             -- 검사번호 (화면표시X)
+        -- , GROUP_CONCAT(BAS.EXAM_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_DT             -- 검사일자 (화면표시X)
+        , BAS.GENE_NM  geneNm       -- Gene (Annotation OncoKB 사용)
+        , BAS.GENE_EXAM_MTH_NM  geneExamMthNm -- Methods
+        ,' ' annotation
+        , BAS.CNA     annotation          -- CNA  (Annotation OncoKB 사용)
+        , BAS.CYTB_NM   cytbNm        -- Cytoband
+        , BAS.CHRM_NO    chrnNo       -- Chromosome (화면표시X)
+        , BAS.ST_POS   geneVariStLocVal         -- Start Pos  (화면표시X)
+        , BAS.END_POS  geneVariEndLocVal         -- End Pos    (화면표시X)
+        , BAS.BNLG_RT  log2         -- Log2       (화면표시X)
+        , BAS.COHORT_1          -- Cohort (밝은색)
+        , BAS.COHORT_2          -- Cohort (진한색)
+        , ' ' chort
+        FROM ( SELECT GCV.CNV_EXAM_RSLT_ID                  -- 복제수변이검사결과ID (화면표시X)
+        , NULL AS TUMOR_NM                      -- 암종 (화면표시X Annotation OncoKB 사용)
+        , GCV.GENE_EXAM_SPCN_ID                 -- 유전자검사검체ID
+        , RS1.RSLT_CNFM_DT AS SPCN_DT           -- 유전자검사검체일자
+        , GCV.EXAM_NO                           -- 검사번호
+        , RS2.RSLT_CNFM_DT AS EXAM_DT           -- 검사일자
+        , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        , GCV.GENE_NM                           -- Gene (Annotation OncoKB 사용)
+        , GCV.GENE_EXAM_MTH_NM                  -- Methods
+        , UPPER(GCV.CNV_STAT_NM) AS CNA         -- CNA  (Annotation OncoKB 사용)
+        , GCV.CYTB_NM                           -- Cytoband
+        , GCV.CHRM_NO                           -- Chromosome (화면표시X)
+        , GCV.CHRM_SGMN_ST_LOC_VAL  AS ST_POS   -- Start Pos  (화면표시X)
+        , GCV.CHRM_SGMN_END_LOC_VAL AS END_POS  -- End Pos    (화면표시X)
+        , GCV.BNLG_RT                           -- Log2       (화면표시X)
+        , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM                                  ) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
+        , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM AND CNV_STAT_NM = GCV.CNV_STAT_NM) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
+        FROM pmsdev.PMGERCVEM GCV
+        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
+        ON GCV.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
+        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
+        ON GCV.EXAM_NO = RS2.EXAM_RSLT_NO
+        , ( SELECT SPC.GENE_EXAM_SPCN_ID
+        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
+        FROM ( SELECT GENE_EXAM_SPCN_ID
+        FROM pmsdev.PMGERMUEM
+        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        UNION
+        SELECT GENE_EXAM_SPCN_ID
+        FROM pmsdev.PMGERCVEM
+        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        UNION
+        SELECT GENE_EXAM_SPCN_ID
+        FROM pmsdev.PMGERSVEM
+        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        UNION
+        SELECT GENE_EXAM_SPCN_ID
+        FROM pmsdev.PMGERGNEX
+        WHERE RESCH_PAT_ID = '51927545' -- 연구환자ID (조회조건)
+        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        , ( SELECT @ROWNUM := 0 ) RNM
+        ) SEQ
+        , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수 (암환자리스트 테이블로 교체 예정)
+        FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
+        ) PAT
+        WHERE GCV.RESCH_PAT_ID = '51927545'  -- 연구환자ID (조회조건)
+        AND GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        ) BAS
+        GROUP BY
+        BAS.GENE_NM
+        , BAS.GENE_EXAM_MTH_NM
+        , BAS.CNA
+
+    </select>
+
+    <select id="selectPatientEXPRESSIONList" resultType="com.asan.patient.vo.PatientMut">
+       SELECT GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq -- Tumors
+     , BAS.GENE_NM  geneNm               -- Gene
+     , BAS.GENE_EXAM_MTH_NM geneExamMthNm        -- Methods
+     , BAS.PTEG_GENE_READ_RSLT_VAL  ptegGeneReadRsltVal -- Expression Result
+     , BAS.GNEX gnex                    -- Expression Value
+     , BAS.GNEX_MSR_VAL gnexMsrVal            -- Expression Unit
+  FROM ( SELECT GEX.GENE_EXAM_SPCN_ID          -- 유전자검사검체ID
+              , RS1.RSLT_CNFM_DT AS SPCN_DT    -- 유전자검사검체일자
+              , GEX.EXAM_NO                    -- 검사번호
+              , RS2.RSLT_CNFM_DT AS EXAM_DT    -- 검사일자
+              , CASE WHEN GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+              , GEX.GENE_NM                    -- Gene
+              , GEX.GENE_EXAM_MTH_NM           -- Methods
+              , GEX.PTEG_GENE_READ_RSLT_VAL    -- Expression Result
+              , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS GNEX  -- Expression Value
+              , GEX.GNEX_MSR_VAL               -- Expression Unit
+           FROM pmsdev.PMGERGNEX GEX
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
+             ON GEX.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
+             ON GEX.EXAM_NO = RS2.EXAM_RSLT_NO
+              , ( SELECT SPC.GENE_EXAM_SPCN_ID
+                       , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
+                    FROM ( SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERMUEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERCVEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERSVEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERGNEX
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+                        , ( SELECT @ROWNUM := 0 ) RNM
+                ) SEQ
+          WHERE GEX.RESCH_PAT_ID = '4176755120'  -- 연구환자ID (조회조건)
+            AND GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+       ) BAS
+ GROUP BY
+       BAS.GENE_NM
+     , BAS.GENE_EXAM_MTH_NM
+    </select>
+
+    <select id="selectPatientSVList" resultType="com.asan.patient.vo.PatientMut">
+        /* Structural Variations */
+        SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)       AS GENE_EXAM_SPCN_ID   -- 돌연변이검사결과ID (화면표시X)
+     , BAS.TUMOR_NM          -- 암종 (화면표시X Annotation OncoKB 사용)
+     , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq  -- Tumors
+     , BAS.GENE_NM1  geneNm        -- Gene (Annotation OncoKB 사용)
+     , BAS.GENE_NM2  geneNm1        -- Gene (Annotation OncoKB 사용)
+     , BAS.GENE_EXAM_MTH_NM geneExamMthNm -- Methods
+     , ' ' annotation
+     , BAS.CYTB_NM1  cytbNm        -- Cytoband
+     , BAS.CYTB_NM2  cytbNm1        -- Cytoband
+     , BAS.COHORT_1          -- Cohort (밝은색)
+  FROM ( SELECT GSV.SV_EXAM_RSLT_ID          -- 구조변이검사결과ID (화면표시X)
+              , NULL AS TUMOR_NM             -- 암종 (화면표시X Annotation OncoKB 사용)
+              , GSV.GENE_EXAM_SPCN_ID        -- 유전자검사검체ID
+              , RS1.RSLT_CNFM_DT AS SPCN_DT  -- 유전자검사검체일자
+              , GSV.EXAM_NO                  -- 검사번호
+              , RS2.RSLT_CNFM_DT AS EXAM_DT  -- 검사일자
+              , CASE WHEN GSV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+              , GSV.GENE_NM1                 -- Gene1 (Annotation OncoKB 사용)
+              , GSV.GENE_NM2                 -- Gene2 (Annotation OncoKB 사용)
+              , GSV.GENE_EXAM_MTH_NM         -- Methods
+              , GSV.CYTB_NM1                 -- Cytoband1
+              , GSV.CYTB_NM2                 -- Cytoband2
+              , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERSVEM WHERE GENE_NM1 = GSV.GENE_NM1 AND GENE_NM2 = GSV.GENE_NM2) / PAT.PAT_CNT * 100, 1) AS COHORT_1  -- Cohort1 (밝은색)
+           FROM pmsdev.PMGERSVEM GSV
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
+             ON GSV.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
+           LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
+             ON GSV.EXAM_NO = RS2.EXAM_RSLT_NO
+              , ( SELECT SPC.GENE_EXAM_SPCN_ID
+                       , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
+                    FROM ( SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERMUEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERCVEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERSVEM
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            UNION
+                           SELECT GENE_EXAM_SPCN_ID
+                             FROM pmsdev.PMGERGNEX
+                            WHERE RESCH_PAT_ID = '4176755120' -- 연구환자ID (조회조건)
+                            ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+                       , ( SELECT @ROWNUM := 0 ) RNM
+                ) SEQ
+              , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수 (암환자리스트 테이블로 교체 예정)
+                    FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+                            UNION
+                           SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAL
+                ) PAT
+          WHERE GSV.RESCH_PAT_ID = '4176755120'  -- 연구환자ID (조회조건)
+            AND GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+       ) BAS
+ GROUP BY
+       BAS.GENE_NM1
+     , BAS.GENE_NM2
+     , BAS.GENE_EXAM_MTH_NM
+        </select>
+
+        <select id="selectPatientMuCosmic" resultType="com.asan.patient.vo.PatientMut">
+        /*SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
+        , MCS.MTTN_EXAM_RSLT_ID mttnExamRsltId
+        , MCS.HGVSP_VAL hgvspVal               -- Protein Change
+        , MCS.GENE_VARI_OCCUR_CNT geneVariOccurCnt     -- Occurrence
+        FROM pmsdev.PMGERMUCS MCS
+        WHERE MCS.MTTN_EXAM_RSLT_ID = 'SNM0000039124'      -- 돌연변이검사결과ID (조회조건)*/
+
+        WITH
+        T1
+        AS (
+        SELECT MCS.CSMC_ID,
+        MCS.MTTN_EXAM_RSLT_ID,
+        MCS.HGVSP_VAL,
+        MCS.GENE_VARI_OCCUR_CNT
+        FROM pmsdev.PMGERMUCS MCS
+        )
+        ,
+        T2 AS (
+        SELECT GMU.MTTN_EXAM_RSLT_ID         -- 돌연변이검사결과ID (화면표시X)
+        , GMU.GENE_NM                   -- Gene (Annotation OncoKB 사용)
+        , GMU.GENE_EXAM_MTH_NM          -- Methods
+        , UPPER(GMU.HGVSP_VAL) AS HGVSP -- Protein Change (Annotation OncoKB 사용)
+        , GMU.CHRM_NO                   -- Chromosome
+        , GMU.GENE_VARI_ST_LOC_VAL      -- Start Pos
+        , GMU.GENE_VARI_END_LOC_VAL     -- End Pos
+        , GMU.REF_ALLELE_SQNC_VAL       -- Ref
+        , GMU.VARI_ALLELE_SQNC_VAL      -- Var
+        , MST.MTTN_STAT_NM              -- MS
+        , GMU.GENE_VARI_CLSF_NM         -- Mutation Type
+        , GMU.VARI_ALLELE_READ_RT       -- Allele Freq
+        , GMU.TOT_ALLELE_READ_CNT       -- 총대립유전자리드수 (화면표시X Allele Freq 마우스 오버 사용)
+        , GMU.VARI_ALLELE_READ_CNT      -- Variant Reads
+        , GMU.REF_ALLELE_READ_CNT       -- Ref Reads
+        , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS COPY   -- Copy #
+        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM) / ANY_VALUE(PAT.PAT_CNT) * 100, 1) AS COHORT_1   -- Cohort (밝은색)
+        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / ANY_VALUE(PAT.PAT_CNT) * 100, 1) AS COHORT_2   -- Cohort (진한색)
+        , SUM(MCS.GENE_VARI_OCCUR_CNT)  -- COSMIC
+        , NULL                          -- 암종 (화면표시X Annotation OncoKB 사용)
+        FROM pmsdev.PMGERMUEM GMU
+        LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
+        ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
+        LEFT OUTER JOIN pmsdev.PMGEMMUST MST
+        ON GMU.MTTN_STAT_NO = MST.MTTN_STAT_NO
+        LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
+        ON GMU.RESCH_PAT_ID = GCV.RESCH_PAT_ID
+        AND GMU.GENE_NM      = GCV.GENE_NM
+        , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수
+        FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
+        UNION
+        SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAT_ALL
+        ) PAT
+        /* WHERE GMU.RESCH_PAT_ID = '10510117' -- 연구환자ID (조회조건)*/
+        GROUP BY
+        GMU.MTTN_EXAM_RSLT_ID
+        , GMU.GENE_NM
+        , GMU.GENE_EXAM_MTH_NM
+        , GMU.HGVSP_VAL
+        , GMU.CHRM_NO
+        , GMU.GENE_VARI_ST_LOC_VAL
+        , GMU.GENE_VARI_END_LOC_VAL
+        , GMU.REF_ALLELE_SQNC_VAL
+        , GMU.VARI_ALLELE_SQNC_VAL
+        , MST.MTTN_STAT_NM
+        , GMU.GENE_VARI_CLSF_NM
+        , GMU.VARI_ALLELE_READ_RT
+        , GMU.VARI_ALLELE_READ_CNT
+        , GMU.REF_ALLELE_READ_CNT
+        )
+        SELECT T1.CSMC_ID  csmcId,
+        T1.MTTN_EXAM_RSLT_ID  mttnExamRsltId,
+        T1.HGVSP_VAL hgvspVal,
+        T1.GENE_VARI_OCCUR_CNT geneVariOccurCnt
+        FROM T1, T2
+        WHERE T1.MTTN_EXAM_RSLT_ID = T2.MTTN_EXAM_RSLT_ID
+
+    </select>
+</mapper>

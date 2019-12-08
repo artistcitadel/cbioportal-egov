@@ -51,10 +51,14 @@
 			font-size: small;
 			/*font-weight: bold;*/
 		}
+		.qtip-content {
+			font-size:14px;
+		}
 	</style>
 
 <%--	<script type='text/javascript' src="<%=docRoot%>js/common_const.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jquery-3.4.1.min.js"></script>--%>
+	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jquery-ui-1.8.13.custom.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/popper.min.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcore.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdata.js"></script>
@@ -67,6 +71,8 @@
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.pager.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.sort.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxgrid.filter.js"></script>
+	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdatatable.js"></script>
+	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxtreegrid.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxcheckbox.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxlistbox.js"></script>
 	<%--<script type="text/javascript" src="<%=docRoot%>jqwidgets/jqxdropdownlist.js"></script>--%>
