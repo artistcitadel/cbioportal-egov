@@ -18,7 +18,7 @@
             <%--<small>Patient Description</small>--%>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li><a href="#">Patient</a></li>
             <li class="active">Patient View</li>
         </ol>
@@ -39,9 +39,9 @@
                         <div class="member">
                             <img class="avatar" src="/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
                             <div class="name" id="patientname">Hong kil dong</div>
-                            <div class="location">Seoul</div>
+                            <div class="location"><%--Seoul--%></div>
                             <p class="bio">
-                                kil dong is consultant in south seoul , specializing in bio application devlopmemnt Known for his passin for ....
+                                <%--kil dong is consultant in south seoul , specializing in bio application devlopmemnt Known for his passin for ....--%>
                             </p>
                         </div>
                     </div>

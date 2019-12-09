@@ -22,6 +22,9 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/collapsible-module.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/level-module.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncoKbTreatmentTable.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/annotationStyles.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncokb.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/listGroupItem.css" type="text/css" />
 	<%--<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.css" type="text/css" />--%>
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/datatables/datatables.min.css" type="text/css" />
 	<%--<link rel="stylesheet" href="<%//docRoot%>js/page/patient/plugin/bootstrap4/fontawasome5.css" type="text/css" />--%>
@@ -101,9 +104,9 @@
 		<tiles:insertAttribute name="top"/>
 	</header>
 	<!-- Left side column. contains the logo and sidebar -->
-	<%--	<aside class="main-sidebar">
+		<aside class="main-sidebar">
             <tiles:insertAttribute name="adminLeft"/>
-        </aside>--%>
+        </aside>
 
 	<!-- Content Wrapper. Contains page content -->
 	<%--<div class="content-wrapper" data-toggle="control-sidebar">--%>

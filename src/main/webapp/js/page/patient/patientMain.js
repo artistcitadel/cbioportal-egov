@@ -45,6 +45,7 @@ function PatientList() {
         });
         $("#patientList").on("click", "[id^='remove_']",function (e) {
             var pid = this.id.split("_")[1];
+            var idx = _.findIndex(self.PS, pid);
             self.PS.splice(idx,1);
             self.removePatientId(this);
         })

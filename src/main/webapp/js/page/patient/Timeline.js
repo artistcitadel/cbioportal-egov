@@ -44,80 +44,6 @@ function TimeLine() {
         return find;
     }
 
-    /*function setData(crow, data) {
-        var mdata = _.uniqBy(data, 'id');
-        console.log('mdata ', mdata);
-        var pdata = util.arrayToTreeParent(mdata);
-        //pdata = _.uniq(pdata);
-        console.log('parent key ', pdata);
-        for (var i = 0; i < data.length; i++) {
-            var item = {};
-            item.leaf = false;
-            item.time = data[i].time;
-            if (util._isUndefined(data[i].time))
-                item.time = '00000000';
-            item.id = data[i].id;
-            item.name = data[i].name;
-            item.show = true;
-            item.level = 1;
-            item.folder = false;
-            item.pid = data[i].pid;
-            item.subject = data[i].subject;
-            if (util._isUndefined(item.pid))
-                item.pid = TITLE[item.subject];
-            if (util._isUndefined(item.name))
-                item.name = '';
-
-            if (!util._isUndefined(data[i].crte)) {
-                item.crte = data[i].crte;
-                item.leaf = true;
-            }
-            if (!util._isUndefined(data[i].exam)) {
-                item.exam = data[i].exam;
-                item.leaf = true;
-            }
-            if (!util._isUndefined(data[i].mark)) {
-                item.mark = data[i].mark;
-                item.leaf = true;
-            }
-
-            if (exist(pdata, item.id) || item.leaf) {
-                // console.log(item.id);
-                item.level = findLevel(item.pid, data, item.level);
-                crow.push(item);
-                //LTEXTLENGTH.push(item.name.length + XTREETEXTPADDING+item.level);
-            }
-        }
-        return crow;
-    }
-
-
-    function disposer(json) {
-        console.log(json);
-        var crow = [];
-        if (json.length > 0) {
-            if (json[0].subject === 'Lab_test') {
-                var htem = {};
-                htem.id = "2";
-                htem.pid = "0";
-                htem.name = 'Lab_test';
-                htem.level = 0;
-                htem.show = true;
-                htem.folder = false;
-                htem.always = true;
-                htem.leaf = false;
-                htem.time = '00000000';
-                crow.push(htem);
-            }
-            //console.log(' init data ', data);
-            var raw_lab_text = _.union(HRC_LAB, json);
-            console.log('raw_lab_text ', raw_lab_text);
-            crow = setData(crow, raw_lab_text);
-            console.log('crow is ', crow);
-            RAW = crow;
-            setTimeLine('C', crow);
-        }
-    }*/
 
     function findLevel(pid, data, lvl) {
         var id = _.findIndex(data, function (o) {
@@ -138,6 +64,11 @@ function TimeLine() {
         if(data.length<1){
             util.hideLoader();
             $('div.member').find('img').trigger('click');
+            if (!ISROUNDMUTATION) {
+                var pt = new PatientViewMutationTable();
+                pt.init();
+                ISROUNDMUTATION=true;
+            }
             return;
         }
         XTREETEXTPADDING = 0;
@@ -145,7 +76,6 @@ function TimeLine() {
         leftpadding += XTREETEXTPADDING;
 
         var start = leftpadding + XTREETEXTPADDING;
-        //( node==='C') ? chmName = setChmName(data) : (node==='F')?(chmName = setTrack(data), node='R'):null;
         (node === 'C') ? chmName = setTrack(data) : null;
         //paperWidth = chmName.length * dynamicWidthPartial;
         console.log(chmName);
@@ -159,7 +89,6 @@ function TimeLine() {
         LINEEND = end;
         console.log('xt[xt.length-1] ', end);
         drawTimeLine(start, chmName, xt, m, end);
-        //console.log('dig ', dig);
         (node !== 'R') ? makeEventBarChart() : makeEventBarChartCache();
     }
 
@@ -219,7 +148,7 @@ function TimeLine() {
         for (var k = 0; k < size; k++) {
             chmName.push(getChmDay(min, k, UNIT));
         }
-        console.log(chmName);
+        console.log('chmName is ' , chmName);
         (INITUNIT == null) ? INITUNIT = UNIT : INITUNIT;
         return chmName;
     }
@@ -244,21 +173,12 @@ function TimeLine() {
     }
 
     function setXposition(start, count) {
-        //console.log('start is ', start);
+        console.log('setXposition is ', start, count);
         var xt = [];
-        //var gap = ((paperWidth-leftpadding)/count)/2;
 
-        // var temp = chmName.length * dynamicWidthPartial/chmName.length;
-        // var gap = temp;
-        // var gap = 90;
-        // paperWidth = chmName.length*gap+200;
-        //alert(paperWidth);
         var gap = (paperWidth - start) / count / 2;
         console.log('gap ', gap);
 
-        //gap = gap + gap/2;
-        //console.log(gap);
-        //var length = start*count;
         for (var i = 0; i < count * 2; i++) {
             if (i > 0) xt[i] = xt[i - 1] + gap;
             if (i == 0) xt[i] = start;
@@ -278,9 +198,7 @@ function TimeLine() {
             //console.log(uend);
             m[i] = (xt[i] + uend) / 2;
         }
-        // console.log(m[m.length-2]);
-        // console.log((paperWidth-m[m.length-2]) /2);
-        // console.log((m[m.length-2]) + ((paperWidth-m[m.length-2]) /2));
+
         if (xt.length < 3) return m;
         else m[m.length - 1] = (m[m.length - 2]) + ((paperWidth - m[m.length - 2]) / 2);
         return m;
@@ -311,10 +229,12 @@ function TimeLine() {
         });
         console.log('countTime ', countTime);
         console.log('start ', yRuler, start, end);
+
+        var startXruler = end;
         var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
         OLINE.push(oline);
         //drawLine(xt[0], yRuler, xt[0], 5, paper, '#000', 1);
-        console.log('start ', start);
+        console.log('start ', start, xt);
         var txtCnt = 0;
         for (var i = 0; i < xt.length; i++) {
             if (i % 2 === 0) {
@@ -795,7 +715,7 @@ function TimeLine() {
         if(pids.length<1)return;
         var run=0;
         for(var i=0;i<pids.length;i++,run++){
-            (pids[i].idd===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
+            (pids[i].idd===subject.lab_test) ? pathlogy.init(findLevel, exist, setLabtestData) : null;
             (pids[i].idd===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
         }
         console.log(run, pids.length);
@@ -824,16 +744,7 @@ function TimeLine() {
         action.selectList(ds_cond);*/
     }
 
-/*    var setClassifyHrc = function (json) {
-        if (json.length > 0) {
-            HRC_LAB = json;
-            console.log("HRC_LAB ", HRC_LAB);
-            var ds_cond = {};
-            ds_cond.data = {"queryId": "selectLabTest", "patientId": PATIENTID};
-            ds_cond.callback = disposer;
-            action.selectList(ds_cond);
-        }
-    }*/
+
 
 
     self.setZoom = function(scale,w, node){

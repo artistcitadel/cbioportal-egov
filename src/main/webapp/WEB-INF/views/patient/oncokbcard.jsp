@@ -1,319 +1,136 @@
-<%--
-<div class="oncokb-card" data-test='oncokb-card'>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Patient List
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Patient</a></li>
+            <li class="active">Patient select</li>
+        </ol>
+    </section>
+
+   <section class="content">
+
+
+       <%--<div class="rc-tooltip oncokb-tooltip rc-tooltip-placement-right">
+    <div class="rc-tooltip-content">--%>
+
+           <div class="rc-tooltip-inner" role="tooltip">
+               <div class="oncokb-card">
+                   <div>
+                       <span>
+                           <div class="tabs-wrapper">
+                               <div class="title">KMT2A KMT2A-ATP5L Fusion in adrenocortical carcinoma</div>
+                               <div class="tabs">
+                                   <div class="tab enable-hover">
+                                       <a class="oncogenicity tab-title-a enable-hover-a enable-hover-active">
+                                           <span class="tab-title">clinical implications</span>
+                                           <span class="tab-subtitle">Likely Oncogenic</span>
+                                       </a>
+        </div>
+        <div class="tab enable-hover">
+            <a class="mutation-effect tab-title-a enable-hover-a">
+                <span class="tab-title">Biological Effect</span>
+                <span class="tab-subtitle">Likely Gain-of-function</span>
+            </a>
+        </div>
+        <div class="indicator"></div>
+    </div>
     <div>
-        &lt;%&ndash;{!this.props.geneNotExist && (&ndash;%&gt;
-        <span>
-          <div class="tabs-wrapper">
-            <div class="title" data-test="oncokb-card-title">
-              title
-            </div>
-            <div class="tabs">
-              <div key="oncogenicity" class="tab enable-hover">
-                <a class="oncogenicity tab-title-a enable-hover-a enable-hover-active" onClick="handleOncogenicityTabSelect()">
-                  <span class="tab-title">clinical implications</span>
-                  <span class="tab-subtitle">
-                        Likely Oncogenic
-                  </span>
-                </a>
-              </div>
-              <div key="mutationEffect" class="tab enable-hover">
-                  <a class="mutation-effect tab-title-a enable-hover-a"
-                     &lt;%&ndash;this.activeTab === "mutationEffect" ? mainStyles["enable-hover-active"] : '')&ndash;%&gt;
-                  onClick="handleMutationEffectTabSelect()" >
-                      <span class="tab-title">Biological Effect</span>
-                      <span class="tab-subtitle">
-                          Likely Gain-of-function
-                      </span>
-                  </a>
-              </div>
-              <div class="indicator"/>
-            </div>
-
-
-
-
-
-         </div>
-        </span>
-     </div>
-  </div>--%>
-
-
-<%--<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-          crossorigin="anonymous">
-    &lt;%&ndash;<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" />&ndash;%&gt;
-
-</head>--%>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-      crossorigin="anonymous">
-<body>
-<div class="container">
-    <header id="main-header">
-        <div class="row no-gutters">
-            <div class="col-lg-8 col-md-7">
-                <div class="d-flex flex-column">
-
-
-                    <div class="p-4 bg-black">
-
-                    </div>
-
-                    <div>
-                        <p class="p-2 mb-3 bg-dark text-white" style="width:425px;-webkit-margin-after-collapse: discard">
-                            GENE NAME * PROTEIN Change
-                        </p>
-                        <div class="d-flex flex-row text-white align-items-stretch text-center">
-                            <div class="port-item p-4 bg-primary" data-toggle="collapse" data-target="#home">
-                                <span class="d-none d-sm-block">CLINICAL IMPLCATIONS</span>
-                                <span class="d-none d-sm-block">LIkely Oncogenic</span>
-                            </div>
-                            <div class="port-item p-4 bg-success" data-toggle="collapse" data-target="#resume">
-                                <span class="d-none d-sm-block">BIOLOGICAL EFFECT</span>
-                                <span class="d-none d-sm-block">Likely Loss-of-function</span>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="tab-pane" style="background-color: white;">
+            <p>KMT2A, a histone methyltransferase, is altered by mutation or deletion in various solid tumors, and by chromosomal rearrangement in various hematologic malignancies.</p>
+            <p>The KMT2A-ATP5L fusion is likely oncogenic.</p>
+            <p style="margin-bottom: 0px;">There are no FDA-approved or NCCN-compendium listed treatments specifically for patients with KMT2A-ATP5L fusion positive adrenocortical carcinoma.</p>
         </div>
-    </header>
 
-    <!-- HOME -->
-    <div id="home" class="collapse show" style="width:425px;">
-        <div class="card-deck">
-        <div class="card">
-            <div class="card-body">
-                <%--<h4 class="card-title">Devmasters</h4>--%>
-                <p class="card-text">gene desc</p>
-
-            </div>
-            <div class="card-footer">
-                <%--<h6 class="text-muted">
-                  Levels
-                </h6>--%>
-                <%--<h6 class="text-muted">
-
-                </h6>--%>
-                <div id="accordion">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <div href="#collapse1" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fas fa-arrow-circle-down"></i> Levels
-                                </div>
-                            </h5>
-                        </div>
-
-                        <div id="collapse1" class="collapse hide">
-                            <div class="card-body">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit odit laborum qui, debitis, sequi dolores nobis mollitia
-                                labore quasi earum laboriosam nihil cupiditate magnam iusto nostrum doloremque accusantium repudiandae
-                                expedita autem et, repellendus suscipit consequatur! Alias, maiores amet sunt ab inventore illo, deleniti
-                                facilis consequatur tenetur nam pariatur fuga nisi!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-        </div>
+        <%--<div class="tab-pane" style="max-height: 200px; overflow-y: auto;background-color: white;">
+        <ul class="no-style-ul">
+        <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/23628958" target="_blank"><b>The MLL recombinome of acute leukemias in 2013.</b></a>
+            <div class="list-group-item-content"><span>Meyer C et al. Leukemia. 2013</span><span>PMID: 23628958</span></div>
+        </li>
+        <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/8681380" target="_blank"><b>An Mll-AF9 fusion gene made by homologous recombination causes acute leukemia in chimeric mice: a method to create fusion oncogenes.</b></a>
+            <div class="list-group-item-content"><span>Corral J et al. Cell. 1996</span><span>PMID: 8681380</span></div>
+        </li>
+        <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/25998713" target="_blank"><b>Hijacked in cancer: the KMT2 (MLL) family of methyltransferases.</b></a>
+            <div class="list-group-item-content"><span>Rao RC et al. Nat Rev Cancer. 2015</span><span>PMID: 25998713</span></div>
+        </li>
+        <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/11265751" target="_blank"><b>Inter-chromosomal recombination of Mll and Af9 genes mediated by cre-loxP in mouse development.</b></a>
+            <div class="list-group-item-content"><span>Collins EC et al. EMBO Rep. 2000</span><span>PMID: 11265751</span></div>
+            </li>
+            <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/18455126" target="_blank"><b>Malignant transformation initiated by Mll-AF9: gene dosage and critical target cells.</b></a>
+                <div class="list-group-item-content"><span>Chen W et al. Cancer Cell. 2008</span><span>PMID: 18455126</span></div>
+            </li>
+        </ul>
+        </div>--%>
 
 
     </div>
-
-    <!-- RESUME -->
-    <div id="resume" class="collapse">
-        <div class="card-deck">
-            <div class="card">
-                <div class="card-body">
-                    <%--<h4 class="card-title">Devmasters</h4>--%>
-                    <p class="card-text">PMID</p>
-
-                </div>
-                <div class="card-footer">
-                    <%--<h6 class="text-muted">
-                      Levels
-                    </h6>--%>
-                    <%--<h6 class="text-muted">
-
-                    </h6>--%>
-                    <div id="accordion">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">
-                                    <div href="#collapse2" data-toggle="collapse" data-parent="#accordion">
-                                        <i class="fas fa-arrow-circle-down"></i> Levels
-                                    </div>
-                                </h5>
-                            </div>
-
-                            <div id="collapse2" class="collapse show">
-                                <div class="card-body">
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit odit laborum qui, debitis, sequi dolores nobis mollitia
-                                    labore quasi earum laboriosam nihil cupiditate magnam iusto nostrum doloremque accusantium repudiandae
-                                    expedita autem et, repellendus suscipit consequatur! Alias, maiores amet sunt ab inventore illo, deleniti
-                                    facilis consequatur tenetur nam pariatur fuga nisi!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- WORK -->
-    <div id="work" class="collapse">
-        <div class="card card-body bg-warning text-white py-5">
-            <h2>My Work</h2>
-            <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil, ut!</p>
-        </div>
-
-        <div class="card card-body py-5">
-            <h3>What Have I Built?</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum nostrum repudiandae debitis, nam iste amet.</p>
-            <div class="row no-gutters">
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=252" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=252" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=253" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=253" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=254" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=254" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=255" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=255" alt="" class="img-fluid">
-                    </a>
-                </div>
-            </div>
-
-            <div class="row no-gutters">
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=256" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=256" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=257" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=257" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=258" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=258" alt="" class="img-fluid">
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="https://unsplash.it/1200/768.jpg?image=259" data-toggle="lightbox">
-                        <img src="https://unsplash.it/600.jpg?image=259" alt="" class="img-fluid">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CONTACT -->
-    <div id="contact" class="collapse">
-        <div class="card card-body bg-danger text-white py-5">
-            <h2>Contact</h2>
-            <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil, ut!</p>
-        </div>
-
-        <div class="card card-body py-5">
-            <h3>Get In Touch</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quos illo, dicta id voluptates enim.</p>
-            <form>
-                <div class="form-group">
-                    <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                <span class="input-group-text bg-danger text-white">
-                  <i class="fas fa-user"></i>
-                </span>
-                        </div>
-                        <input type="text" class="form-control bg-dark text-white" placeholder="Name">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                <span class="input-group-text bg-danger text-white">
-                  <i class="fas fa-envelope"></i>
-                </span>
-                        </div>
-                        <input type="email" class="form-control bg-dark text-white" placeholder="Email">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                <span class="input-group-text bg-danger text-white">
-                  <i class="fas fa-pencil-alt"></i>
-                </span>
-                        </div>
-                        <textarea class="form-control bg-dark text-white" placeholder="Name"></textarea>
-                    </div>
-                </div>
-
-                <input type="submit" value="Submit" class="btn btn-danger btn-block btn-lg">
-            </form>
-        </div>
-    </div>
-
-
-    <!-- FOOTER -->
-    <footer id="main-footer" class="p-5 text-black" style="width:425px;">
-        <div class="row">
-            <div class="col-md-6">
-             <img src="/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" />
-            </div>
-        </div>
-    </footer>
 </div>
+<div class="disclaimer" style="background-color: white;"><span>The information above is intended for research purposes only and should not be used as a substitute for professional diagnosis and treatment.</span></div>
 
 
-<%--<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>--%>
+   <%-- <div data-toggle="collapse" data-target="#secret1" class="collapsible-header">Levels<span style="float: right;">
+        <i class="fa fa-chevron-down orange-icon"></i></span></div>
+    <div id="secret1"  style="overflow: hidden; height: 0px;">
+        &lt;%&ndash;<div class="ReactCollapse--content">&ndash;%&gt;
+            &lt;%&ndash;<div id="secret1" class="levels levels-collapse">&ndash;%&gt;
+            <div class="levels">
+                <ul style="line-height: 8; padding: 0px;">
+                    <li class="levels-li"><i class="oncokb level-icon level-1"></i><span><b>FDA-recognized</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-2A"></i><span><b>Standard care</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-2B"></i><span><b>Standard care</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in another indication</b>, but not standard care for this indication</span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-3A"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of response to a drug <b>in this indication</b></span></li>
+                    <li class="evels-li"><i class="oncokb level-icon level-3B"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of response to a drug <b>in another indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-4"></i><span><b>Compelling biological evidence</b> supports the biomarker as being predictive of response to a drug</span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-R1"></i><span><b>Standard care</b> biomarker predictive of <b>resistance</b> to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-R2"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of <b>resistance</b> to a drug</span></li>
+                </ul>
+            </div>
+        &lt;%&ndash;</div>&ndash;%&gt;
+    </div>--%>
 
-<script>
-    $('.port-item').click(function () {
-        $('.collapse').collapse('hide');
-    });
+    <div>
+    <div data-toggle="collapse" data-target="#secret1" class="collapsible-header">Levels<span style="float: right;">
+        <i class="fa fa-chevron-down orange-icon"></i></span></div>
+    <div id="secret1" data-toggle="collapse" data-target="#topDives" class="ReactCollapse--collapse" style="overflow: hidden; height: 0px;">
+        <div id="topDives" class="ReactCollapse--content" style="background-color: white;">
+            <div class="levels levels-collapse">
+                <ul style="line-height: 8; padding: 0px;">
+                    <li class="levels-li"><i class="oncokb level-icon level-1"></i><span><b>FDA-recognized</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-2A"></i><span><b>Standard care</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-2B"></i><span><b>Standard care</b> biomarker predictive of response to an <b>FDA-approved</b> drug <b>in another indication</b>, but not standard care for this indication</span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-3A"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of response to a drug <b>in this indication</b></span></li>
+                    <li class="evels-li"><i class="oncokb level-icon level-3B"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of response to a drug <b>in another indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-4"></i><span><b>Compelling biological evidence</b> supports the biomarker as being predictive of response to a drug</span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-R1"></i><span><b>Standard care</b> biomarker predictive of <b>resistance</b> to an <b>FDA-approved</b> drug <b>in this indication</b></span></li>
+                    <li class="levels-li"><i class="oncokb level-icon level-R2"></i><span><b>Compelling clinical evidence</b> supports the biomarker as being predictive of <b>resistance</b> to a drug</span></li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // $(document).on('click', '[data-toggle="lightbox"]', function (e) {
-    //     e.preventDefault();
-    //     $(this).ekkoLightbox();
-    // });
-</script>
-</body>
+    </span>
+      <div class="footer" style="background-color: white;">
+        <a href="https://oncokb.org/gene/TSC2/KCTD5-TSC2 Fusion" target="_blank">
+          <img src="/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">
+       </a>
+       <span class="pull-right feedback">
+       <%--<button class="btn btn-default btn-sm btn-xs">Feedback</button>--%>
+      </span>
+    </div>
+   </div>
+   </div>
+  </div>
+<%--</div>
+</div>--%>
 
-<%--
-</html>--%>
+
+</section>
+</div>
