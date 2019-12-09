@@ -34,6 +34,11 @@ public class DashboardController extends BigcenMedAbstractController{
 	@Autowired
 	private IDashboardService dashboardService;
 	
+	@RequestMapping(value="/main2")
+	public String cohortMain(){
+		return "/dashboard.tiles";
+	}
+	
 	@RequestMapping(value="/main")
 	public String dashboardMain(Model model){
 		logger.debug(">>> dashboardMain START ...");
@@ -54,6 +59,9 @@ public class DashboardController extends BigcenMedAbstractController{
 		
 		
 		try{
+			//resultMap.put("selStateBox", dashboardService.selectDashboardState(paramMap));
+			
+			/*
 		//	1.dashboard 정보 가져오기	
 			resultMap 			= (HashMap)dashboardService.selectDashboard(new HashMap<Object,Object>());
 			resultCharList 		= (ArrayList)dashboardService.selectDashboardChart(paramMap);
@@ -78,7 +86,7 @@ public class DashboardController extends BigcenMedAbstractController{
 			Map resultMap3 = new HashMap();
 			
 		//	3.CHART
-			/*for (Object object : resultCharList) {
+			for (Object object : resultCharList) {
 				Map paramMap2 = (HashMap)object;
 				
 				String sql2 = paramMap2.get("DATA_SQL").toString();
@@ -96,7 +104,7 @@ public class DashboardController extends BigcenMedAbstractController{
 				
 				resultMap2.put("CHART_DATA", chartList2);
 				
-			}*/
+			}
 			
 			//4.BOARD
 			for (Object object : resultBoardList) {
@@ -124,7 +132,7 @@ public class DashboardController extends BigcenMedAbstractController{
 			model.addAttribute("SUMMARY", resultMap);
 			
 			model.addAttribute("PWD_PATTERN", PropertiesUtils.getTargetString("PWD.PATTERN"));
-			
+			*/
 			
 		}catch(Exception e){
 			throw new RuntimeException(e);
@@ -132,7 +140,317 @@ public class DashboardController extends BigcenMedAbstractController{
 	
 		
 		
-		return "/dashboard.tiles";	
+		return "/dashboardTree.tiles";	
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selPatnoResultCheck")
+	public Object selPatnoResultCheck(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selPatnoResultCheck START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		List tmpArr = (ArrayList)paramMap.get("TXTARR");
+		String patno = "''";
+		for(int i=0; i<tmpArr.size(); i++) {
+			patno += ",'"+tmpArr.get(i).toString()+"'";
+		}
+		paramMap.put("PATNO", patno);
+		try{
+			if("patnoA".equals(paramMap.get("KIND"))) {
+				resultMap.put("selPatnoResultCheck", dashboardService.selectPatnoResultCheck(paramMap));
+			}
+			else {
+				resultMap.put("selPatnoResultCheck", dashboardService.selectReschPatnoResultCheck(paramMap));
+			}
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/selCateOncotreeList")
+	public Object selCateOncotreeList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCateOncotreeList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selCateOncotreeList", dashboardService.selectCateOncotreeList(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/selMainPatientChart")
+	public Object selMainPatientChart(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selMainPatientChart START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selMainPatientChart", dashboardService.selectMainPatientChart(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * Filtering 적용
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/filterApply")
+	public Object filterApply(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- filterApply START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("filterApply", dashboardService.selectfilterApply(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * State Box
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getStatebox")
+	public Object getStatebox(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- getStatebox START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selStateBox", dashboardService.selectDashboardState(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * filtering chart
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/loadselectedChartFilter")
+	public Object loadselectedChartFilter(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- loadselectedChartFilter START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+
+			resultMap.put("loadselectedChartFilter", dashboardService.loadselectedChartFilter(paramMap));			
+
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * chart 추가 목록
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/loadselectedChart")
+	public Object loadselectedChart(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- loadselectedChart START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("loadselectedChart", dashboardService.loadselectedChart(paramMap));			
+
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * chart 추가 목록
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectChartList")
+	public Object selectChartList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selectChartList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			
+			for(Object key : paramMap.keySet()) {
+				paramMap.put("ITEM_CATE_ID", paramMap.get(key));
+				resultMap.put(key, dashboardService.selectDashboardChartList(paramMap));
+			}
+			
+
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	/**
+	 * cohort 목록
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectCohortList")
+	public Object selectCohortList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selectCohortList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selectCohortList", dashboardService.selectDashboardCohortList(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * cohort 상세 목록
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectCohortDetlList")
+	public Object selectCohortDetlList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selectCohortDetlList START ");
+		System.out.println(paramMap);
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selectCohortDetlList", dashboardService.selectDashboardCohortDetlList(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * chart filtering
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/chartDashboardFilter")
+	public Object chartDashboardFilter(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selectCohortList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("chartDashboardFilter", "");
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * cohort save
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/insertCohortItemCont")
+	public Object insertItemCont(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- insertCohortItemCont START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("insertCohortItemCont", dashboardService.insertCohortItemCont(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
 	}
 	
 	@ResponseBody

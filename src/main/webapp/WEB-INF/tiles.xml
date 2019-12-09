@@ -167,15 +167,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/cohort/{1}.jsp" />
 	</definition>
 
-<!--	<definition name="patient" template="/WEB-INF/views/patient/patientIndex.jsp">
-		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" />
-		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />
-		<put-attribute name="js" value="/WEB-INF/layouts/js.jsp" />
-		&lt;!&ndash;<put-attribute name="patient_top" value="/WEB-INF/layouts/patient_top.jsp" />&ndash;&gt;
-		<put-attribute name="adminLeft" value="/WEB-INF/views/patient/patientLeft.jsp" />
-		&lt;!&ndash;<put-attribute name="modal" value="/WEB-INF/layouts/modal.jsp" />&ndash;&gt;
-	</definition>-->
-
 	<definition name="patient" template="/WEB-INF/views/patient/patientIndex.jsp">
 		<put-attribute name="head_css" value="/WEB-INF/layouts/head_css.jsp" />
 		<put-attribute name="top" value="/WEB-INF/layouts/topForPage.jsp" />

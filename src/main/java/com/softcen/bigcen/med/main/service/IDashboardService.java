@@ -5,6 +5,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface IDashboardService {
+	
+	public Object selectPatnoResultCheck(Map<Object, Object> paramMap);
+	public Object selectReschPatnoResultCheck(Map<Object, Object> paramMap);
+	
+	public Object selectMainPatientChart(Map<Object, Object> paramMap);
+	
+	public Object selectCateOncotreeList(Map<Object, Object> paramMap);
+	public Object insertCohortItemCont(Map<Object, Object> paramMap);
+	
+	public Object selectfilterApply(Map<Object, Object> paramMap);
+
+	
+	public Object selectDashboardState(Map<Object, Object> paramMap);
+	
+	public Object loadselectedChartFilter(Map<Object, Object> paramMap);
+	
+	public Object loadselectedChart(Map<Object, Object> paramMap);
 	/**
 	 * 
 	 * @param paramMap
@@ -38,10 +55,13 @@ public interface IDashboardService {
 	 * @param paramMap
 	 * @return
 	 */
+	public Object selectDashboardCohortDetlList(Map<Object, Object> paramMap);
+	
 	public Object selectResearchTargetStat(Map<Object, Object> paramMap);
 	
+	public Object selectDashboardCohortList(Map<Object, Object> paramMap);
 	
-	public Object selectDashboardChartList(Map<Object, Object> paramMap) throws SQLException;
+	public Object selectDashboardChartList(Map<Object, Object> paramMap);
 	
 	public Object selectDashboardBoardList(Map<Object, Object> paramMap) throws SQLException;
 	

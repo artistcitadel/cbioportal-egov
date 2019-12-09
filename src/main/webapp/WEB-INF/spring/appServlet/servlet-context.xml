@@ -18,7 +18,7 @@
 	<annotation-driven />
 	<context:annotation-config/>
 	<context:component-scan base-package="com.softcen"/>
-	<context:component-scan base-package="com.asan"/>
+    <context:component-scan base-package="com.asan"/>
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
@@ -81,7 +81,7 @@
 		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
 	</beans:bean>
 	<!-- use tiles -->
-	<beans:bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" id="jsonView" />
+
 
 
 	<!-- MESSAGE 추가 -->
@@ -124,23 +124,6 @@
 		<beans:property name="dataSource" ref="dataSource-VerticaA" />
 	</beans:bean>
 
-
-
-	<beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<beans:property name="dataSource" ref="dataSource" />
-	</beans:bean>
-	<tx:advice id="txAdvice1" transaction-manager="txManager">
-		<tx:attributes>
-			<tx:method name="*" rollback-for="Exception"/>
-		</tx:attributes>
-	</tx:advice>
-
-
-	<aop:config>
-		<aop:pointcut id="requiredTx" expression="execution(* com.asan..impl.*Impl.*(..))"/>
-		<aop:advisor advice-ref="txAdvice1" pointcut-ref="requiredTx" />
-	</aop:config>
-
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
@@ -149,6 +132,19 @@
 
 		</tx:attributes>
 	</tx:advice>
+	
+	<beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	<tx:advice id="txAdvice1" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="requiredTx" expression="execution(* com.asan..impl.*Impl.*(..))"/>
+		<aop:advisor advice-ref="txAdvice1" pointcut-ref="requiredTx" />
+	</aop:config>
 
 	<tx:advice id="txAdvice-verticaA" transaction-manager="transactionManager">
 		<tx:attributes>

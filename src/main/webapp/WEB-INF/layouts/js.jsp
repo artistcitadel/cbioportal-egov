@@ -61,7 +61,7 @@
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.sort.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.selection.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.storage.js" />"></script>
-<script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.pager.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.pager.js" />"></script> 
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.edit.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.export.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxgrid.columnsresize.js" />"></script>
@@ -87,7 +87,6 @@
 <script src="<c:url value="/js/common_tree.js" />"></script>
 <!-- 공통-top용 js -->
 <script src="<c:url value="/js/common_top.js" />"></script>
-
 <!-- datatables js -->
 <script src="<c:url value="/js/plugins/datatables/jquery.dataTables.js" />"></script>
 <script src="<c:url value="/js/plugins/datatables/dataTables.bootstrap.min.js" />"></script>
@@ -130,14 +129,14 @@
 <script type="text/javascript" src="<c:url value="/js/plugins/jspdf/png_support.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jspdf/libs/png.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jspdf/libs/zlib.js" />"></script>
+
 <!-- word export -->
 <script type="text/javascript" src="<c:url value="/js/plugins/filesaver-word/FileSaver.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value="/js/plugins/jQuery-Word-Export-master/jquery.wordexport.js" />"></script> --%>
 
 <script type="text/javascript">
 $(document).ready(function(){
-    //ajax loading bar
+	//ajax loading bar
 	$(document).ajaxStart(function() { Pace.restart(); });
-
 });
 </script>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="cohort">
+ 	
+ 	<select id="selectCohortContList" parameterType="map" resultType="hashmap"> 		
+		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT
+		FROM pmsportal.CC_ITEM_CONT
+ 	</select>
+ 	
+</mapper>
+ 
+ 
+ 

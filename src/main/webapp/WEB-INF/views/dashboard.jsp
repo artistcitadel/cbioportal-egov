@@ -17,6 +17,13 @@
 		/* .dataTables_scrollHeadInner {width : 100% !important;}
 		.dataTables_scrollHeadInner > table {width : 100% !important;} */
 
+	.chartspinning.pie{
+		height: 150px;
+	}
+	.chartspinning{
+		height: 340px;
+	}
+	
 	.connectedSortable {
 	    min-height: 340px;
 	    padding-bottom: 50px;
@@ -25,62 +32,101 @@
 	    padding: 0;
 		/* border:solid 1px black; */
 	}
+
 	.box {
 		min-height: 100px;
 		border: 1px solid #d3d3d3;
 	    border-radius: 4px;
+	    margin-bottom: 0px;
+        height: inherit;
+	}
+	.box.pie{
+		min-height: 100px;
+		border: 1px solid #d3d3d3;
+	    border-radius: 4px;
+	    margin-bottom: 0px;
+	    height: inherit;
 	}
 	.list {
-	    /* font-size: 30px;*/
+		height : 380px;
+	    width: 410px;
 	    text-align: center; 
 	    cursor: pointer;
 	    font-family: Geneva,Arial,Helvetica,sans-serif;
-	    padding-left: 5px;
-  		padding-right: 5px;
+		margin : 2px;
+	}
+	.list.pie{
+	    /* font-size: 30px;*/
+	    height : 188px;
+	    width: 203px;
+	    text-align: center; 
+	    cursor: pointer;
+	    font-family: Geneva,Arial,Helvetica,sans-serif;
+		margin : 2px;
+		display : inline-block;
+		
+	}
+	.list.bar{
+	    /* font-size: 30px;*/
+	    height : 188px;
+	    width: 410px;
+	    text-align: center; 
+	    cursor: pointer;
+	    font-family: Geneva,Arial,Helvetica,sans-serif;
+		margin : 2px;
+	}
+	.list.scatter , .list.grd {
+	    /* font-size: 30px;*/
+	    height : 380px;
+	    width: 410px;
+	    text-align: center; 
+	    cursor: pointer;
+	    font-family: Geneva,Arial,Helvetica,sans-serif;
+		margin : 2px;
 	}
 	#items .ui-selected {
 	    background: red;
 	    color: white;
 	    font-weight: bold;
 	}
-/* 	#item_1 {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
+	#items {
+		margins-bottom : 100px;
+		
 	}
-	#item_2 {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	}
-	#item_3 {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	} 
-	#item_4 {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	} */
-	
-	.sort-highlight{
-		height: 360px;
+	.ui-sortable-helper : {
+		/* display: none; */
 	}
 	.highlight {
-	    font-weight: bold;
-	    font-size: 45px;
 	    background: #f4f4f4;
- 		border: 1px dashed #ddd;
-	    height: 360px;
-	    margin-bottom: 10px;
+ 		border: 1px dashed #401515;
+ 	  	height : 380px;
+	    width: 410px;
+	    margin-bottom: 2px;
+	}
+	
+	.highlight.pie {
+	    background: #f4f4f4;
+ 		border: 1px dashed #401515;
+		height : 188px;
+	    width: 203px;
+	    margin : 2px;
+	    display : inline-block;
+	}
+	
+	.highlight.bar {
+	    background: #f4f4f4;
+ 		border: 1px dashed #401515;
+ 	    height : 188px;
+	    width: 410px;
+	    margin-bottom: 2px;
+	    display : block;
 	}
 	.box-header{
-		background-color:#f5f5f5;
+/* 		background-color:#f5f5f5;
 		color: #1b1b1b;
-		font-weight: bold;
-		padding-top: 5px;
-	  	padding-bottom: 5px;
+		font-weight: bold; */
+/* 		padding-top: 5px;
+	  	padding-bottom: 5px; */
 	}
 	.box-title{
 		flex-grow: 1;
@@ -100,6 +146,12 @@
 		top: -1px;
 		right: -1px;
     }
+    .down-right-side{
+    	display:none;
+		position:absolute;
+		bottom: 2px;
+   		right: 2px;
+    }
     .up-right-side-2{
     	position:absolute;
 		top: -1px;
@@ -112,10 +164,27 @@
 	    border-radius: 5px;
 	    margin: 2px 5px 2px 0;
 	    padding: 5px;
+        float: left;
+    }
+    .chart-body-pie {
+    	padding : 1px;
+    }
+    .chart-body-bar {
+    	padding : 1px;
+
+    }
+    .chart-body-grd {
+    	padding : 1px;
+    	
+    }
+    .and-group {
+	    position: relative;
+	    display: inline-block;
+	    vertical-align: middle;
     }
 	</style>
 </head>
-<body class="hold-transition skin-black sidebar-mini fixed" style="padding-right:0px !important">
+<body class="hold-transition skin-black sidebar-mini fixed" style="padding-right:0px !important; min-width: 1800px; overflow-x:auto;">
 <div class="wrapper">
 	<header class="main-header">
 		<input type="hidden" id="pageType" value="index">
@@ -126,7 +195,7 @@
 	<div class="content-wrapper margin-left-0" data-toggle="control-sidebar" style="padding-left: 40px; padding-right: 40px;">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-			<h1 style="margin-bottom:15px;">
+			<h1 style="margin-bottom:15px;     font-weight: bold;">
 				<i class="ion ion-ios-speedometer-outline"></i>&nbsp;
 				<spring:message code="dashboard.summary.title_kor" />
 			</h1>
@@ -175,80 +244,96 @@
 			</ol>
 		</section>
 
-		<div class="row">
-			<div class="col-lg-3 col-xs-6">
-	          <!-- small box -->
-	          <div class="small-box bg-aqua">
-	            <div class="inner">
-	              <h3>환자수</h3>
-	              <h3>45,325</h3>
-	
-	              <p>New Orders</p>
-	            </div>
-	            <div class="icon">
-	              <i class="ion ion-bag"></i>
-	            </div>
-	            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-	          </div>
-	        </div>
-			<div class="col-lg-3 col-xs-6">
-	          <!-- small box -->
-	          <div class="small-box bg-aqua">
-	            <div class="inner">
-	              <h3>샘플수</h3>
-	
-	              <p>New Orders</p>
-	            </div>
-	            <div class="icon">
-	              <i class="ion ion-bag"></i>
-	            </div>
-	            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-	          </div>
-	        </div>
-	        <div class="col-lg-3 col-xs-6">
-	          <!-- small box -->
-	          <div class="small-box bg-aqua">
-	            <div class="inner">
-	              <h3>Mutation 수</h3>
-	
-	              <p>New Orders</p>
-	            </div>
-	            <div class="progress" style="height: 2px;">
-				      <div class="progress-bar" style="width: 70%"></div>
-				  </div>
-				  <span class="progress-description">
-				    70% Increase in 30 Days
-				  </span>
-	            <div class="icon">
-	              <i class="ion ion-bag"></i>
-	            </div>
-	            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-	          </div>
-	        </div>
-	        <div class="col-lg-3 col-xs-6">
-	           <div class="info-box bg-red">
-	        	   <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
-				   <div class="info-box-content">
-				    <h3 class="">CNV 수</h3>
-				    <h3 class="">41,410</h3>
-				    
-				    <!-- The progress section is optional -->
-				    <div class="progress">
-				      <div class="progress-bar" style="width: 70%"></div>
-				    </div>
-				    <span class="progress-description">
-				      70% Increase in 30 Days
-				    </span>
-				  </div>
-				  <!-- /.info-box-content -->
-				</div>
-	        </div>
+		<div class="row" id="stateBoxList">
+			
 		</div>
-
-		<section class="box">
+		<div class="box-body">
+			<div class="btn-group pull-right open">
+				
+					<button type="button" class="btn bg-navy btn-sm" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
+					<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainChartAdd" id="divmainChartAdd" style="width:600px; z-index:-1;"> 
+				     	<div class="box-body">
+				     		<nav class="navbar navbar-light navbar-background-color margin-top-10" >
+								<div class="row" >
+									<div class="col-lg-12">
+										<div class="nav-tabs-custom">
+											<ul class="nav nav-tabs" id="myTab">
+												<li class="active">
+													<a href="#subClinical" id="clinical-subtab" class="patientViewTab" pageNum="1" page="tabClinical" data-toggle="tab" aria-controls="subClinical" aria-selected="true"><b>Clinical</b></a>
+												</li>
+												<li>
+													<a href="#subGenomic" id="genomic-subtab" class="patientViewTab" pageNum="2" page="tabGenomic" data-toggle="tab" aria-controls="subGenomic" aria-selected="false"><b>Genomic</b></a>
+												</li>
+												<li>
+													<a href="#subETC" id="etc-tab" class="patientViewTab" pageNum="3" page="tabETC" data-toggle="tab"><b>ETC</b></a>
+												</li>
+												
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane active" id="subClinical" role="tabpanel" aria-labelledby="clinical-subtab">
+													
+												</div>
+												<div class="tab-pane" id="subGenomic" role="tabpanel" aria-labelledby="genomic-subtab">
+													
+												</div>
+												<div class="tab-pane" id="subETC" role="tabpanel" aria-labelledby="etc-subtab">
+													
+												</div>	
+											</div>
+										</div>
+									</div>	
+								</div>
+							</nav>
+				     	</div>
+				    </div>
+				    
+			    </div>
+			    <div class="btn-group pull-right open">
+					<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
+					<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainSaveAdd" id="divmainSaveAdd" style="width:800px; z-index:-1;">
+						<div class="box-body">
+							<div class="col-lg-5 panel"  data-widget="tree" id="divDashboardCohortList" style="height:500px; overflow:auto;">
+								
+							</div>
+							<div class="col-lg-7">
+								<div class="form-group">
+									<label> 상세 분류 </label>
+									<select class="form-control" id="selDashboardCohortList" disabled>
+					                  <option value="">없음</option>
+					                </select>
+								</div>
+								<div class="form-group">
+									<label> 코호트 명 </label>
+									<input type="text" class="form-control" placeholder="Enter ..." id="txtDashboardCohortNM">
+								</div>
+								<div class="form-group">
+									<label> 설명 </label>
+									<textarea class="form-control" rows="3" placeholder="Enter ..." id="txtDashboardCohortSub" style="margin: 0px 59.5px 0px 0px; height: 300px;"></textarea>
+								</div>
+							</div>
+						</div>
+					
+						<div class="text-center">
+							<button type="button" class="btn btn-danger btn-sm" style="margin-bottom: 20px;" id="btnDashboardCohortAdd"> 저장 </button>
+						</div>
+				     </div>
+			     </div>
+		</div>
+		<section class="box" style="margin-bottom: 5px; border: none;">
+			<div class="box-header with-border">
+				<h3 class="box-title"><i class="ion ion-ios-speedometer-outline"></i>&nbsp;Filter</h3>
+				<div class="btn-group pull-right" style="margin-left:10px; display:none;" id="filterApplyAfter">
+					
+					<small class="label bg-yellow">적용 완료</small>
+				</div>
+				<div class="btn-group pull-right" style="margin-left:10px;" id="filterApplyBefore">
+					<small class="label bg-maroon">적용 전</small>
+				</div>
+				
+			</div>
 			<div class="box-body">
-					<div id="filter-group" style="    display: flex;">
-						<div class="filter-box" id="filter_cancer">
+					<div id="filter-group" style="">
+						<!-- <div class="filter-box" id="filter_cancer">
 							<span>
 								Cancer : 
 							</span>
@@ -270,62 +355,24 @@
 								</button>
 								
 							</div>
-						</div>
+						</div> -->
 						
 						
 					</div>
 				
-				<div class="btn-group pull-right">
 				
-					<button type="button" class="btn btn-warning btn-sm" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
-					<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainChartAdd" id="" style="width:600px;height:600px; z-index:1"> 
-				     	<nav class="navbar navbar-light navbar-background-color margin-top-10" >
-							<div class="row" >
-								<div class="col-lg-12">
-								
-									<ul class="nav nav-tabs" id="myTab">
-										<li class="active">
-											<a href="#subSummary" id="summary-subtab" class="patientViewTab" pageNum="1" page="tabSummary" data-toggle="tab" aria-controls="subSummary" aria-selected="true"><b>Summary</b></a>
-										</li>
-										<li>
-											<a href="#subClinical" id="clinical-subtab" class="patientViewTab" pageNum="2" page="tabClinicalData" data-toggle="tab" aria-controls="subClinical" aria-selected="false"><b>Clinical Data</b></a>
-										</li>
-										<li>
-											<a href="#tab_3" id="3-tab" class="patientViewTab" pageNum="3" page="tabMutatedGenes" data-toggle="tab"><b>Mutated Genes</b></a>
-										</li>
-										
-									</ul>
-									<div class="tab-content">
-										<div class="tab-pane active" id="subSummary" role="tabpanel" aria-labelledby="summary-subtab">
-											bbbbbbbbbb
-										</div>
-										<div class="tab-pane" id="subClinical" role="tabpanel" aria-labelledby="clinical-subtab">
-											ccccccc
-										</div>		
-									</div>
-								</div>	
-							</div>
-						</nav>
-				    </div>
-				    
-			    </div>
-			    <div class="btn-group pull-right">
-					<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
-					<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainSaveAdd" id="" style="width:400px;height:800px; z-index:1">
-						dddddddddddddddddddddddddddddddddd
-						<div class="text-center">
-							<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
-						</div>
-				     </div>
-			     </div>
 			     <div class="btn-group pull-right">
-				 	<button type="button" class="btn btn-default btn-sm pull-right" style="margin-left:10px;"> 초기화 </button>
+				 	<button type="button" class="btn btn-default btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
 				 </div>
-				
+				 <div class="btn-group pull-right">
+				 	<button type="button" class="btn btn-indigo btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
+				 </div>
 			</div>
 		</section>
 		
-		<nav class="navbar navbar-light navbar-background-color margin-top-10" >
+		<jsp:include page="asantab/summary.jsp" flush="true"></jsp:include>
+		
+<%-- 		<nav class="navbar navbar-light navbar-background-color margin-top-10" >
 			<div class="row" >
 				<div class="col-lg-12">
 				
@@ -362,7 +409,7 @@
 				
 				
 			</div>
-		</nav>
+		</nav> --%>
 		
 		
 		
@@ -601,7 +648,7 @@
 	<tiles:insertAttribute name="modal"/>
 </div>
 <!-- ./wrapper -->
-<script src="<c:url value="/js/plugins/plotly-latest.min.js" />"></script>
+<script src="<c:url value="/js/plugins/plotly-latest-1.51.min.js" />"></script>
 <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js" /> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>

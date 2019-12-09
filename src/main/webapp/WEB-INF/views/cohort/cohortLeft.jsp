@@ -4,7 +4,47 @@
 
 
 <script type="text/javascript">
+
+$(document).ready(function(){
 	
+	var dataSet = {};
+	var promise = http('dashboard/selectCohortList', 'post', true , dataSet);
+	promise.then(function(result){
+		
+		
+		var dataView = result.selectCohortList;
+		var html = '';
+		//console.log(dataView);
+		for(var i=0; i<dataView.length; i++){
+			html = '';
+			var tmpMap = dataView[i];
+			if($('#itemCateCohort_'+tmpMap.CATE_SEQ).length == 0){
+				html += '<li class="treeview" id="itemCateCohort_'+tmpMap.CATE_SEQ+'">';
+				html += 	'<a href="#itemCate_treeCohort'+tmpMap.CATE_SEQ+'">'+tmpMap.CATE_NM+'<span class="pull-right-container">';
+				html += 		'<i class="fa fa-angle-left pull-right"></i></span>'
+				html +=		'</a>';
+				html += 	'<ul class="treeview-menu" id="itemCate_treeCohort'+tmpMap.CATE_SEQ+'" style="">';
+				
+				html += 		'<li class="treeview itemCateCohort"><a class="radio" href="#"><div class="itemCateCohortDetl" for="itemCateDetl_tree_Cohort'+i+'" style="white-space: normal;">';
+				html += 		'<input type="hidden" name="itemCate_treeCohort" seq="'+tmpMap.CATE_SEQ+'" value="'+tmpMap.MID_SEQ+'" id="itemCateDetl_tree_Cohort'+i+'">';
+				html += 		tmpMap.CATE+'</div></a></li>';
+				
+				html += 	'</ul>';
+				html += '</li>';
+				$('#liCohortMainList').append(html);
+			}
+			else{
+				html += '<li class="treeview itemCateCohort"><a class="radio" href="#"><div class="itemCateCohortDetl" for="itemCateDetl_tree_Cohort'+i+'" style="white-space: normal;">';
+				html += '<input type="hidden" name="itemCate_treeCohort" seq="'+tmpMap.CATE_SEQ+'" value="'+tmpMap.MID_SEQ+'" id="itemCateDetl_tree_Cohort'+i+'">';
+				html += tmpMap.CATE+'</div></a></li>';
+				$('#itemCate_treeCohort'+tmpMap.CATE_SEQ).append(html);
+			}
+				
+		}
+		
+	});
+	
+});
 
 </script>
 
@@ -18,17 +58,9 @@
 		</div>
 	</div>
 		
-	<ul class="sidebar-menu">
+	<ul class="sidebar-menu" id="liCohortMainList">
 		<li class="header">MAIN NAVIGATION</li>
-		<li class="treeview">
-			<a href="#">					
-				<i class="ion ion-erlenmeyer-flask"></i>
-				<span>Breast</span>
-				<span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-				</span>
-			</a>
-		</li>
+		
 		
 
 	</ul>

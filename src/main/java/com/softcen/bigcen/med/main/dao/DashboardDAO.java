@@ -12,6 +12,96 @@ import com.softcen.bigcen.cmm.dao.BigcenMedAbstractMapperDAO;
 public class DashboardDAO extends BigcenMedAbstractMapperDAO{
 	
 	
+	public Object selectPatnoResultCheck(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectPatnoResultCheck",paramMap);
+	}
+	public Object selectReschPatnoResultCheck(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectReschPatnoResultCheck",paramMap);
+	}
+	
+	
+	public Object selectMainPatientChart(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectMainPatientChart",paramMap);
+	}
+	public Object selectCateOncotreeList(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectCateOncotreeList",paramMap);
+	}
+	public Object insertCohortItemCont(Map<Object, Object> paramMap) {
+		int ret = sqlSession.insert("dashboard.insertCohortItemCont", paramMap);
+		return ret;
+	}
+	public Object insertCohortItemContChart(Map<Object, Object> paramMap) {
+		int ret = sqlSession.insert("dashboard.insertCohortItemContChart", paramMap);
+		return ret;
+	}
+	public Object insertCohortItemContFilter(Map<Object, Object> paramMap) {
+		int ret = sqlSession.insert("dashboard.insertCohortItemContFilter", paramMap);
+		return ret;
+	}
+	public Object insertCohortItemContFilterDetl(Map<Object, Object> paramMap) {
+		int ret = sqlSession.insert("dashboard.insertCohortItemContFilterDetl", paramMap);
+		return ret;
+	}
+	/**
+	 * 선택된 차트 chart
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectDashboardChartDetl(Map<Object, Object> paramMap){
+		return sqlSession.selectOne("dashboard.selectDashboardChartDetl",paramMap);
+	}
+	/**
+	 * filterApply
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectfilterApply(Map<String, String> paramMap){
+		return sqlSession.selectList("dashboard.selectfilterApply",paramMap);
+	}
+	
+	/**
+	 * cohortdelt 목록
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectDashboardCohortDetlList(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectDashboardCohortDetlList",paramMap);
+	}
+	/**
+	 * cohort 목록
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectDashboardCohortList(Map<Object, Object> paramMap){
+
+		return sqlSession.selectList("dashboard.selectDashboardCohortList",paramMap);
+	}
+	
+	/**
+	 * chart 추가
+	 * @param paramMap
+	 * @return
+	 */
+	public Object loadselectedChart(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.loadselectedChart",paramMap);
+	}
+	/**
+	 * chart 추가 목록
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectDashboardChartList(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectDashboardChartList",paramMap);
+	}
+	/**
+	 * state box 목록
+	 * @param paramMap
+	 * @return
+	 */
+	public Object selectDashboardState(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectDashboardState");
+	}
+	
 	/**
 	 * 대시보드정보 조회
 	 * @param paramMap
@@ -58,10 +148,10 @@ public class DashboardDAO extends BigcenMedAbstractMapperDAO{
 	}
 	
 	
-	public Object selectDashboardChartList(Map<Object, Object> paramMap) throws SQLException{
+/*	public Object selectDashboardChartList(Map<Object, Object> paramMap) throws SQLException{
 		return sqlSessionVerticaA.selectList("dashboard.selectDashboardChartList", paramMap);
 	}
-	
+	*/
 	public Object selectDashboardBoardList(Map<Object, Object> paramMap) throws SQLException{
 		return sqlSession.selectList("dashboard.selectDashboardBoardList", paramMap);
 	}

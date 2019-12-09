@@ -241,13 +241,13 @@ public class LoginController {
 				logger.debug(manuList.toString());
 				
 				//정형보고서 권한 받아오기 - topForPage 링크설정 용
-				reportList = authService.selectReportMenuAuthList(manuMap);
+				/*reportList = authService.selectReportMenuAuthList(manuMap);*/
 				
 			}
 			
 			//승인알람 받아오기
-			int approveCount = (Integer) approveService.selectApproveCount();
-			List approveList = (List) approveService.selectApproveList();
+			/*int approveCount = (Integer) approveService.selectApproveCount();
+			List approveList = (List) approveService.selectApproveList();*/
 			
 			
 		//	2. Log
@@ -263,7 +263,7 @@ public class LoginController {
 			String jsonData = new ObjectMapper().writeValueAsString(perinxMap);
 			String jsonDataMenu = new ObjectMapper().writeValueAsString(manuList);
 			String jsonDataReport = new ObjectMapper().writeValueAsString(reportList);
-			String jsonApprove = new ObjectMapper().writeValueAsString(approveList);
+//			String jsonApprove = new ObjectMapper().writeValueAsString(approveList);
 			String jsonAuth = new ObjectMapper().writeValueAsString(authList);
 			
 			logger.debug("-------------------------------------");
@@ -297,8 +297,8 @@ public class LoginController {
 			request.getSession().setAttribute("REPTMNUINK"      , reportList);
 			
 			//승인알림
-			request.getSession().setAttribute("APVCOUT"			,approveCount);
-			request.getSession().setAttribute("APVLIST"			,jsonApprove);
+			/*request.getSession().setAttribute("APVCOUT"			,approveCount);
+			request.getSession().setAttribute("APVLIST"			,jsonApprove);*/
 			
 			//메뉴권한 용 json변환 
 			request.getSession().setAttribute("jsonMNUINX"		,jsonDataMenu);

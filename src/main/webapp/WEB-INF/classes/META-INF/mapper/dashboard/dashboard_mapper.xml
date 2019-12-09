@@ -6,6 +6,176 @@
  
  <mapper namespace="dashboard">
  	
+ 	
+<!--  	<select id="selectCohortContList" parameterType="map" resultType="hashmap"> 		
+		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT
+		FROM pmsportal.CC_ITEM_CONT
+		WHERE CATE_DETL_SEQ = {CATE_DETL_SEQ}
+ 	</select> -->
+ 	<select id="selectPatnoResultCheck" parameterType="map" resultType="java.lang.String">
+ 		SELECT PATNO
+		FROM pmsdev.CLPIMRPID
+		WHERE PATNO in ( ${PATNO} ) 
+ 	</select>
+ 	<select id="selectReschPatnoResultCheck" parameterType="map" resultType="java.lang.String">
+ 		SELECT RESCH_PAT_ID
+		FROM pmsdev.CLPIMRPID
+		WHERE RESCH_PAT_ID in ( ${PATNO} ) 
+ 	</select>
+ 	
+ 	<select id="selectMainPatientChart" parameterType="map" resultType="hashmap"> 		
+		SELECT a.CRCN_CD, b.COMM_CD_NM, a.CNT  
+		FROM (SELECT CRCN_CD, count(distinct RESCH_PAT_ID) AS CNT FROM pmsdev.MSMAMCAMN group by CRCN_CD) a
+		 join (select * from pmsportal.CC_COMMON_CODE where COMM_GRP_SEQ = 75) b on a.CRCN_CD = b.COMM_CD_ID
+		order by 3 desc
+ 	</select> 
+ 	
+ 	<insert id="insertCohortItemCont" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ">
+ 		INSERT INTO CC_ITEM_CONT
+		(
+			CATE_DETL_SEQ,
+			CONT_NM,
+			CONT_DESC,
+			CRT_ID,
+			CRT_DT,
+			UDT_ID,
+			UDT_DT
+		)
+		VALUES
+		(
+			#{CATE_DETL_SEQ},
+			#{CONT_NM},
+			#{CONT_DESC},
+			#{CRT_ID},
+			NOW(),
+			#{UDT_ID},
+			NOW()
+		)
+ 	</insert>
+ 
+ 	<insert id="insertCohortItemContChart" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ">
+ 		INSERT INTO CC_ITEM_CONT_CHART
+		(
+			CONT_SEQ,
+			CHART_SEQ,
+			CRT_ID,
+			CRT_DT,
+			UDT_ID,
+			UDT_DT
+		)
+		VALUES
+		(
+			#{CONT_SEQ},
+			#{CHART_SEQ},
+			#{CRT_ID},
+			NOW(),
+			#{UDT_ID},
+			NOW()
+		)
+ 	</insert>
+ 
+ 	<insert id="insertCohortItemContFilter" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ">
+ 		INSERT INTO CC_ITEM_CONT_FILTER
+		(
+			CONT_SEQ,
+			CHART_SEQ,
+			BASE_TABLE,
+			CHART_ID,
+			CRT_ID,
+			CRT_DT,
+			UDT_ID,
+			UDT_DT
+		)
+		VALUES
+		(
+			#{CONT_SEQ},
+			#{CHART_SEQ},
+			#{BASE_TABLE},
+			#{CHART_ID},
+			#{CRT_ID},
+			NOW(),
+			#{UDT_ID},
+			NOW()
+		)
+ 	</insert>
+ 	
+ 	<insert id="insertCohortItemContFilterDetl" parameterType="map" >
+ 		INSERT INTO CC_ITEM_CONT_FILTER_DETL
+		(
+			CONT_FILTER_SEQ,
+			CHART_SEQ,
+			FILTER_KEY,
+			FILTER_VALUE,
+			CRT_ID,
+			CRT_DT,
+			UDT_ID,
+			UDT_DT
+		)
+		VALUES
+		(
+			#{CONT_FILTER_SEQ},
+			#{CHART_SEQ},
+			#{FILTER_KEY},
+			#{FILTER_VALUE},
+			#{CRT_ID},
+			NOW(),
+			#{UDT_ID},
+			NOW()
+		)
+ 	</insert>
+ 	<select id="selectfilterApply" parameterType="map" resultType="java.lang.String">
+ 		${FILTER_QUERY}
+ 	</select>
+ 
+ 
+ 	<select id="selectDashboardState" parameterType="map" resultType="hashmap"> 		
+		SELECT '환자 수' as NM,count(DISTINCT PATIENT_ID) AS CNT FROM pmsdev.GLIS_CI
+		UNION
+		SELECT '샘플 수', count(DISTINCT SAMPLE_ID) FROM pmsdev.GLIS_CI
+		UNION
+		SELECT 'SV 수', count(DISTINCT ID)  FROM pmsdev.GLIS_SV
+		UNION
+		SELECT 'SNV 수', count(DISTINCT ID)  FROM pmsdev.GLIS_SNV
+		UNION
+		SELECT 'CNV 수', count(DISTINCT ID)  FROM pmsdev.GLIS_CNV
+ 	</select>
+
+	<select id="selectCateOncotreeList" parameterType="map" resultType="hashmap"> 		
+		SELECT *
+		FROM pmsportal.CC_ITEM_CATE_ONCOTREE
+ 	</select>
+
+	<select id="loadselectedChart" parameterType="map" resultType="hashmap"> 		
+		${DATAQUERY}
+ 	</select>
+
+	<select id="selectDashboardChartDetl" parameterType="map" resultType="hashmap"> 		
+		SELECT *
+		FROM CC_ITEM_MGMT
+		WHERE SEQ = #{SEQ}
+ 	</select>
+
+	<select id="selectDashboardChartList" parameterType="map" resultType="hashmap"> 		
+		SELECT *
+		FROM CC_ITEM_MGMT
+		WHERE ITEM_CATE_ID = #{ITEM_CATE_ID}
+		ORDER BY "ORDER"
+ 	</select>
+ 	
+ 	<select id="selectDashboardCohortList" parameterType="map" resultType="hashmap"> 		
+		SELECT *
+		FROM CC_ITEM_CATE AS T1
+		INNER JOIN
+		(SELECT CATE_SEQ, CATE_MID_NM AS CATE, CATE_MID_SEQ AS MID_SEQ
+		FROM CC_ITEM_CATE_MID) AS T2
+		ON T1.CATE_SEQ = T2.CATE_SEQ
+ 	</select>
+ 	
+ 	<select id="selectDashboardCohortDetlList" parameterType="map" resultType="hashmap"> 	
+ 		SELECT *
+		FROM CC_ITEM_CATE_DETL
+ 	</select>
+ 	
  	<select id="selectDashboardSummary" parameterType="map" resultType="hashmap">
  		SELECT 	* 
 		FROM 	CC_DASHBOARD 
@@ -175,12 +345,13 @@
  		resultType="hashmap">
  		${RESEARCH_TARGET_STAT_SQL}
  	</select>
- 	
+
+	<!--  	
  	<select id="selectDashboardChartList" parameterType="map"
  		resultType="hashmap">
  		${CHART_SQL}
  	</select>
- 	
+ 	 -->
  	<!-- 게시글 등록  -->
 	<insert id="insertBoardData" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ" >
 		INSERT INTO CC_BOARD

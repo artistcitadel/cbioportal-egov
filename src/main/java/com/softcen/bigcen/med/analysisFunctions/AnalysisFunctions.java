@@ -105,8 +105,7 @@ public class AnalysisFunctions {
 			}
 			else
 			{
-				//d = (double) o;
-				d =  (double) ((Long) o).longValue();
+				d = (double) o;
 			}
 			
 			ret[i] = d;
@@ -204,8 +203,7 @@ public class AnalysisFunctions {
 				}
 				else
 				{
-					//d = (double) v;
-					d =  (double) ((Long) v).longValue();
+					d = (double) v;
 				}
 				
 				if(ret.containsKey(k))
@@ -276,8 +274,7 @@ public class AnalysisFunctions {
 				else
 				{
 					valueName = k;
-					//value = (double) v;
-					value = (double) ((Long) v).longValue();
+					value = (double) v;
 				}
 				
 				if(key == null)

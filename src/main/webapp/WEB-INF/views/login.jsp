@@ -115,7 +115,7 @@
 	<div class="margin-top-7p">
 		<div class="login-logo">
 			<c:set var="title"><spring:message code="login.title" /></c:set> 
-			<img src="<c:url value='${title}' />" width="205" />
+			<img src="<c:url value='/images/logo2.jpg' />" width="205" />
 		</div>
 	</div>
 <div class="padding-top-10 padding-bottom-10 bg-black">
@@ -150,7 +150,7 @@
 				</div>
 				
 				
-				<!-- 2017-09-05추가 -->
+<%-- 				<!-- 2017-09-05추가 -->
 				<c:if test="${INSTCD_YN == 'Y' }">
 					<div class="form-group has-feedback">
 						<select class="form-control" id="instcd" name="instcd" placeholder="연구데이터선택" >
@@ -159,7 +159,7 @@
 							<option value="032">칠곡 데이터</option>
 						</select>
 					</div>
-				</c:if>
+				</c:if> --%>
 			</form>
 			<div class="social-auth-links text-center">
 				<button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-flat btn-lg">Sign In</button>

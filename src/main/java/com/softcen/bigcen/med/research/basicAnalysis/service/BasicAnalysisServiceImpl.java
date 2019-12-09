@@ -53,8 +53,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_mid = (Map<Object, Object>) mid_val.get(j);
 					System.out.println(dsMap_mid.toString());
 					if(dsMap.get("COL1").equals(dsMap_mid.get("B"))){
-						//double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
-						double dsMap_mid_val = Math.round( ((Long) dsMap_mid.get("A")).longValue() * 10000 ) / (double) 10000;
+						double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
 						list.get(i).put("COL4", dsMap_mid_val);
 					}
 				}
@@ -64,7 +63,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_sd0 = (Map<Object, Object>) sd0_val.get(j);
 					System.out.println(dsMap_sd0.toString());
 					if(dsMap.get("COL1").equals(dsMap_sd0.get("B"))){
-						double dsMap_sd0_val = Math.round(( (Double) dsMap_sd0.get("A")) * 100000) / (double) 100000;
+						double dsMap_sd0_val = Math.round((double) dsMap_sd0.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL5", dsMap_sd0_val);
 					}
 				}
@@ -209,7 +208,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 			List sd0_val1 = AnalysisFunctions.sd0(list_sub001);
 			System.out.println(sd0_val1);
 			Map<Object,Object> dsMap_sd01 = (Map<Object, Object>) sd0_val1.get(0);
-			double sd0_val_dub1 = Math.round((Double) dsMap_sd01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double sd0_val_dub1 = Math.round((double) dsMap_sd01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map001.put("COL5", sd0_val_dub1);
 					
 			resultList.add(map001);
@@ -243,7 +242,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 			List sd0_val2 = AnalysisFunctions.sd0(list_sub002);
 			System.out.println(sd0_val2);
 			Map<Object,Object> dsMap_sd02 = (Map<Object, Object>) sd0_val2.get(0);
-			double sd0_val_dub2 = Math.round((Double) dsMap_sd02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double sd0_val_dub2 = Math.round((double) dsMap_sd02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map002.put("COL5", sd0_val_dub2);
 			
 			resultList.add(map002);
@@ -404,7 +403,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_mid = (Map<Object, Object>) mid_val.get(j);
 					System.out.println(dsMap_mid.toString());
 					if(dsMap.get("COL1").equals(dsMap_mid.get("B"))){
-						double dsMap_mid_val = Math.round((Double) dsMap_mid.get("A") * 10000) / (double) 10000;
+						double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
 						list.get(i).put("COL4", dsMap_mid_val);
 					}
 				}
@@ -414,7 +413,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_sd0 = (Map<Object, Object>) sd0_val.get(j);
 					System.out.println(dsMap_sd0.toString());
 					if(dsMap.get("COL1").equals(dsMap_sd0.get("B"))){
-						double dsMap_sd0_val = Math.round((Double) dsMap_sd0.get("A") * 100000) / (double) 100000;
+						double dsMap_sd0_val = Math.round((double) dsMap_sd0.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL5", dsMap_sd0_val);
 					}
 				}
@@ -424,7 +423,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_iqr = (Map<Object, Object>) iqr_val.get(j);
 					System.out.println(dsMap_iqr.toString());
 					if(dsMap.get("COL1").equals(dsMap_iqr.get("B"))){
-						double dsMap_iqr_val = Math.round((Double) dsMap_iqr.get("A") * 100000) / (double) 100000;
+						double dsMap_iqr_val = Math.round((double) dsMap_iqr.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL6", dsMap_iqr_val);
 					}
 				}
@@ -531,22 +530,22 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 							//자리수 계산
 							int n = 5;
 							double n2 = Math.pow(10.0, n);
-							resultMap.put("COL2",  Math.round((Double) tukey_tmp.get(key) * n2 ) / n2 );
+							resultMap.put("COL2",  Math.round((double) tukey_tmp.get(key) * n2 ) / n2 );
 						}else if(key == "p_value") {
 							//자리수 계산
 							int n = 3;
 							double n2 = Math.pow(10.0, n);
-							resultMap.put("COL3", Math.round((Double) tukey_tmp.get(key) * n2 ) / n2 );
+							resultMap.put("COL3", Math.round((double) tukey_tmp.get(key) * n2 ) / n2 );
 						}else if(key == "LCL") {
 							//자리수 계산
 							int n = 4;
 							double n2 = Math.pow(10.0, n);
-							resultMap.put("COL4", Math.round((Double) tukey_tmp.get(key) * n2 ) / n2 );
+							resultMap.put("COL4", Math.round((double) tukey_tmp.get(key) * n2 ) / n2 );
 						}else if(key == "UCL") {
 							//자리수 계산
 							int n = 4;
 							double n2 = Math.pow(10.0, n);
-							resultMap.put("COL5", Math.round((Double) tukey_tmp.get(key) * n2 ) / n2 );
+							resultMap.put("COL5", Math.round((double) tukey_tmp.get(key) * n2 ) / n2 );
 						}
 					}
 					resultListTukey.add(resultMap);
@@ -571,7 +570,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 							//자리수 계산
 							int n = 4;
 							double n2 = Math.pow(10.0, n);
-							resultMap.put("COL2",  Math.round((Double) tukey_g_tmp.get(key) * n2 ) / n2 );
+							resultMap.put("COL2",  Math.round((double) tukey_g_tmp.get(key) * n2 ) / n2 );
 						}else if(key == "Groups") {
 							resultMap.put("COL3", tukey_g_tmp.get(key));
 						}
@@ -655,8 +654,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_mid = (Map<Object, Object>) mid_val.get(j);
 					System.out.println(dsMap_mid.toString());
 					if(dsMap.get("COL1").equals(dsMap_mid.get("B"))){
-						//double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
-						double dsMap_mid_val = Math.round((Double) dsMap_mid.get("A") * 10000) / (double) 10000;
+						double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
 						list.get(i).put("COL4", dsMap_mid_val);
 					}
 				}
@@ -666,7 +664,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_sd0 = (Map<Object, Object>) sd0_val.get(j);
 					System.out.println(dsMap_sd0.toString());
 					if(dsMap.get("COL1").equals(dsMap_sd0.get("B"))){
-						double dsMap_sd0_val = Math.round((Double) dsMap_sd0.get("A") * 100000) / (double) 100000;
+						double dsMap_sd0_val = Math.round((double) dsMap_sd0.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL5", dsMap_sd0_val);
 					}
 				}
@@ -676,7 +674,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_iqr = (Map<Object, Object>) iqr_val.get(j);
 					System.out.println(dsMap_iqr.toString());
 					if(dsMap.get("COL1").equals(dsMap_iqr.get("B"))){
-						double dsMap_iqr_val = Math.round((Double) dsMap_iqr.get("A") * 100000) / (double) 100000;
+						double dsMap_iqr_val = Math.round((double) dsMap_iqr.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL6", dsMap_iqr_val);
 					}
 				}
@@ -816,7 +814,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_mid = (Map<Object, Object>) mid_val.get(j);
 					System.out.println(dsMap_mid.toString());
 					if(dsMap.get("COL1").equals(dsMap_mid.get("B"))){
-						double dsMap_mid_val = Math.round((Double) dsMap_mid.get("A") * 10000) / (double) 10000;
+						double dsMap_mid_val = Math.round((double) dsMap_mid.get("A") * 10000) / (double) 10000;
 						list.get(i).put("COL4", dsMap_mid_val);
 					}
 				}
@@ -826,7 +824,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_sd0 = (Map<Object, Object>) sd0_val.get(j);
 					System.out.println(dsMap_sd0.toString());
 					if(dsMap.get("COL1").equals(dsMap_sd0.get("B"))){
-						double dsMap_sd0_val = Math.round((Double) dsMap_sd0.get("A") * 100000) / (double) 100000;
+						double dsMap_sd0_val = Math.round((double) dsMap_sd0.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL5", dsMap_sd0_val);
 					}
 				}
@@ -836,7 +834,7 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 					Map<Object,Object> dsMap_iqr = (Map<Object, Object>) iqr_val.get(j);
 					System.out.println(dsMap_iqr.toString());
 					if(dsMap.get("COL1").equals(dsMap_iqr.get("B"))){
-						double dsMap_iqr_val = Math.round((Double) dsMap_iqr.get("A") * 100000) / (double) 100000;
+						double dsMap_iqr_val = Math.round((double) dsMap_iqr.get("A") * 100000) / (double) 100000;
 						list.get(i).put("COL6", dsMap_iqr_val);
 					}
 				}
@@ -1233,14 +1231,14 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 			List sd0_val1 = AnalysisFunctions.sd0(list_sub001);
 			System.out.println(sd0_val1);
 			Map<Object,Object> dsMap_sd01 = (Map<Object, Object>) sd0_val1.get(0);
-			double sd0_val_dub1 = Math.round((Double) dsMap_sd01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double sd0_val_dub1 = Math.round((double) dsMap_sd01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map001.put("COL5", sd0_val_dub1);
 			
 			//iqr
 			List iqr_val1 = AnalysisFunctions.iqr(list_sub001);
 			System.out.println(iqr_val1);
 			Map<Object,Object> dsMap_iqr01 = (Map<Object, Object>) iqr_val1.get(0);
-			double iqr_val_dub1 = Math.round((Double) dsMap_iqr01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double iqr_val_dub1 = Math.round((double) dsMap_iqr01.get(paramMap.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map001.put("COL6", iqr_val_dub1);
 					
 			resultList.add(map001);
@@ -1274,14 +1272,14 @@ public class BasicAnalysisServiceImpl  implements IBasicAnalysisService {
 			List sd0_val2 = AnalysisFunctions.sd0(list_sub002);
 			System.out.println(sd0_val2);
 			Map<Object,Object> dsMap_sd02 = (Map<Object, Object>) sd0_val2.get(0);
-			double sd0_val_dub2 = Math.round((Double) dsMap_sd02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double sd0_val_dub2 = Math.round((double) dsMap_sd02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map002.put("COL5", sd0_val_dub2);
 			
 			//iqr
 			List iqr_val2 = AnalysisFunctions.iqr(list_sub002);
 			System.out.println(iqr_val2);
 			Map<Object,Object> dsMap_iqr02 = (Map<Object, Object>) iqr_val2.get(0);
-			double iqr_val_dub2 = Math.round((Double) dsMap_iqr02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
+			double iqr_val_dub2 = Math.round((double) dsMap_iqr02.get(paramMap2.get("VARIABLE_001")) * 1000) / (double) 1000;
 			map002.put("COL6", iqr_val_dub2);
 			
 			resultList.add(map002);

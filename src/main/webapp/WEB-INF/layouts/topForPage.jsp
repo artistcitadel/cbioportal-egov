@@ -60,7 +60,8 @@
 	$.session.set('DEPT_NAME'	,gvPERINX.DEPT_NAME);
 	$.session.set('PER_PASS'	,gvPERINX.PER_PASS);
 	$.session.set('INSTCD'		,gvINSTCD);
-
+	
+	
 	//메뉴 권한용
 	var vMNUINX = '<%= session.getAttribute("jsonMNUINX") %>';
 	var vREPINX = '<%= session.getAttribute("jsonREPINX") %>'; 
@@ -141,7 +142,6 @@
 			}
 		}
 	
-		console.log('bb');
 		console.log(vREPINX);
 		//정형보고서 권한별 접속 첫페이지 세팅
 		if(vREPINX.length > 0){
@@ -178,7 +178,7 @@
 		clearTimer();
 	    initTimer();
 		
-
+		
 	});
 		
 	
@@ -212,16 +212,17 @@
 <!-- Logo -->
 <%-- <a href="<c:url value="/index.do" />" class="logo"> --%>
 <a href="<c:url value="/dashboard/main" />" class="logo">
-	<!-- mini logo for sidebar mini 50x50 pixels -->
+<%-- 	<!-- mini logo for sidebar mini 50x50 pixels -->
 	<span class="logo-mini">
 		<c:set var="slogo"><spring:message code="main.slogo" /></c:set> 
-		<img src="<c:url value='${slogo}' />" width="36px" height="auto"/>
+		<img src="<c:url value="/images/logo2.jpg" />" width="36px" height="auto"/>
 	</span>
 	<!-- logo for regular state and mobile devices -->
 	<span class="logo-lg">
 		<c:set var="logo"><spring:message code="main.logo" /></c:set> 
-		<img src="<c:url value='${logo}' />" width="150px" height="auto"/>
-	</span>
+		<img src="<c:url value="/images/logo.jpg" />" alt="서울아산병원 로고"/>
+	</span> --%>
+	<img src="<c:url value="/images/logo2.jpg" />" alt="건국대학교병원 로고"/>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">
