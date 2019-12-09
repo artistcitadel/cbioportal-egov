@@ -1,0 +1,135 @@
+"start": "./scripts/env_vars.sh && eval \"$(./scripts/env_vars.sh)\" && cross-env NODE_ENV=development webpack-dev-server",
+export BRANCH_ENV=rc
+export CBIOPORTAL_URL="http://beta.cbioportal.org"
+
+
+(annotation.oncoKbIndicator  )
+{query: {…}, geneExist: true, variantExist: false, alleleExist: false, oncogenic: "Likely Oncogenic", …}
+alleleExist: false
+dataVersion: "v1.23"
+diagnosticImplications: null
+diagnosticSummary: ""
+geneExist: true
+geneSummary: "RECQL4 encodes a DNA helicase that is involved in DNA replication and repair. Germline mutations of RECQL4 are associated with Rothmund-Thomson, RAPADILINO and Baller-Gerold syndromes and predispose to osteosarcomas, among other cancers."
+highestDiagnosticImplicationLevel: null
+highestPrognosticImplicationLevel: null
+highestResistanceLevel: null
+highestSensitiveLevel: null
+hotspot: false
+lastUpdate: "10/17/2018"
+mutationEffect: {knownEffect: "Likely Loss-of-function", description: "", citations: {…}}
+oncogenic: "Likely Oncogenic"
+otherSignificantResistanceLevels: []
+otherSignificantSensitiveLevels: []
+prognosticImplications: null
+prognosticSummary: ""
+query: {id: "9401_Acinar_Cell_Carcinoma_of_the_Pancreas_X822_splice_Splice_Site", type: "web", hugoSymbol: "RECQL4", entrezGeneId: 9401, alteration: "X822_splice", …}
+treatments: []
+tumorTypeSummary: "There are no FDA-approved or NCCN-compendium listed treatments specifically for patients with RECQL4 X822_splice altered acinar cell carcinoma of the pancreas."
+variantExist: false
+variantSummary: "The RECQL4 X822_splice alteration is likely oncogenic."
+vus: false
+
+
+
+mutated gean
+SELECT x.* FROM pmsdev.PMGERMUEM x
+WHERE x.RESCH_PAT_ID = '48321932'
+
+cnv
+pmsdev.PMGERCVEM x
+WHERE x.RESCH_PAT_ID = '48321932'
+SELECT x.* FROM pmsdev.PMGERCVEM x
+WHERE x.RESCH_PAT_ID = '52089167'
+
+sv 
+SELECT x.* FROM pmsdev.PMGERSVEM x
+WHERE x.RESCH_PAT_ID = '52089167'
+
+ create table CATEGORY (
+  ID VARCHAR(100),
+  PID VARCHAR(100),
+  NAME VARCHAR(200)
+)
+
+
+
+SELECT * FROM PMGEMCHRM  염색체좌표
+https://github.com/cBioPortal/clinical-timeline
+
+
+
+/* MUTATIONS */
+SELECT GMU.MTTN_EXAM_RSLT_ID         -- 돌연변이검사결과ID (화면표시X)
+     , GMU.GENE_NM                   -- Gene
+     , GMU.GENE_EXAM_MTH_NM          -- Methods
+     , GMU.HGVSP_VAL                 -- Protein Change
+     , GMU.CHRM_NO                   -- Chromosome
+     , GMU.GENE_VARI_ST_LOC_VAL      -- Start Pos
+     , GMU.GENE_VARI_END_LOC_VAL     -- End Pos
+     , GMU.REF_ALLELE_SQNC_VAL       -- Ref
+     , GMU.VARI_ALLELE_SQNC_VAL      -- Var
+     , MST.MTTN_STAT_NM              -- MS
+     , GMU.GENE_VARI_CLSF_NM         -- Mutation Type
+     , GMU.VARI_ALLELE_READ_RT       -- Allele Freq
+     , GMU.TOT_ALLELE_READ_CNT       -- 총대립유전자리드수 (화면표시X)
+     , GMU.VARI_ALLELE_READ_CNT      -- Variant Reads
+     , GMU.REF_ALLELE_READ_CNT       -- Ref Reads
+     , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS COPY   -- Copy #
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM) / (SELECT COUNT(*) FROM pmsdev.PMGERMUEM) * 100, 1) AS COHORT_1   -- Cohort (밝은색)
+     , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / (SELECT COUNT(*) FROM pmsdev.PMGERMUEM) * 100, 1) AS COHORT_2   -- Cohort (진한색)
+     , SUM(MCS.GENE_VARI_OCCUR_CNT)  -- COSMIC
+  FROM pmsdev.PMGERMUEM GMU
+  LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
+    ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
+  LEFT OUTER JOIN pmsdev.PMGEMMUST MST
+    ON GMU.MTTN_STAT_NO = MST.MTTN_STAT_NO
+  LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
+    ON GMU.RESCH_PAT_ID = GCV.RESCH_PAT_ID
+   AND GMU.GENE_NM      = GCV.GENE_NM
+ WHERE GMU.RESCH_PAT_ID = '10510117' -- 연구환자ID (조회조건)
+ GROUP BY
+       GMU.GENE_NM
+     , GMU.GENE_EXAM_MTH_NM
+     , GMU.HGVSP_VAL
+     , GMU.CHRM_NO
+     , GMU.GENE_VARI_ST_LOC_VAL
+     , GMU.GENE_VARI_END_LOC_VAL
+     , GMU.REF_ALLELE_SQNC_VAL
+     , GMU.VARI_ALLELE_SQNC_VAL
+     , MST.MTTN_STAT_NM
+     , GMU.GENE_VARI_CLSF_NM
+     , GMU.VARI_ALLELE_READ_RT
+     , GMU.VARI_ALLELE_READ_CNT
+     , GMU.REF_ALLELE_READ_CNT
+     , GCV.GENE_NM
+;
+
+
+
+/* MUTATIONS - COSMIC */
+SELECT MCS.CSMC_ID                 -- COSMIC ID
+     , MCS.HGVSP_VAL               -- Protein Change
+     , MCS.GENE_VARI_OCCUR_CNT     -- Occurrence
+  FROM pmsdev.PMGERMUCS MCS
+ WHERE MCS.MTTN_EXAM_RSLT_ID = 'SNM0000039124'      -- 돌연변이검사결과ID (조회조건)
+;
+
+
+-- auto-generated definition
+create table PMGEMCHRM
+(
+  CHRM_NO          varchar(2) not null
+  comment '염색체번호'
+    primary key,
+  GENE_ST_LOC_VAL  decimal    null
+  comment '유전자시작위치값',
+  GENE_END_LOC_VAL decimal    null
+  comment '유전자종료위치값',
+  SORT_SEQ         decimal    null
+  comment '정렬순서',
+  SRC_LOAD_DTM     datetime   null
+  comment '원천적재일시',
+  ETL_LOAD_DTM     datetime   null
+  comment 'ETL적재일시'
+);
