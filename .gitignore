@@ -7,3 +7,4 @@
 .target/
 .project
 .classpath
+src/main/resources/bigcen.properties
