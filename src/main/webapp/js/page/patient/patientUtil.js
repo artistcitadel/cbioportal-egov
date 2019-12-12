@@ -1,3 +1,6 @@
+/**
+ * @return {string}
+ */
 function Util() {
     var self = this;
 
@@ -12,7 +15,7 @@ function Util() {
         var diff = Math.abs(diffDate_2.getTime() - diffDate_1.getTime());
         diff = Math.ceil(diff / (1000 * 3600 * 24));
         return diff;
-    }
+    };
 
     self.monthAndYearDiff = function (_date1, _date2, node) {
         /*_date1 = _date1.substring(0,4)+"-"+_date1.substring(4,6)+"-"+_date1.substring(6,8);
@@ -30,7 +33,7 @@ function Util() {
         if(node==='d') return date2.diff(date1,'days');
         // if(node==='m') return parseInt(dif / cMonth);
         // if(node==='y') return parseInt(dif / cYear);
-    }
+    };
 
     self.arrayToTree = function(data, options){
             options = options || {};
@@ -42,16 +45,17 @@ function Util() {
                 childrenOf = {};
             var item, id, parentId;
 
-            for (var i = 0, length = data.length; i < length; i++) {
+            for (var i = 0; i< data.length; i++) {
                 item = data[i];
+                //console.log(item);
                 id = item[ID_KEY];
                 parentId = item[PARENT_KEY] || 0;
                 // every item may have children
                 childrenOf[id] = childrenOf[id] || [];
                 // init its children
                 item[CHILDREN_KEY] = childrenOf[id];
-                console.log('item[CHILDREN_KEY] ', parentId);
-                if (parentId != 0) {
+                //console.log('patentId ', parentId);
+                if (parseInt(parentId) !== 0) {
                     // init its parent's children object
                     childrenOf[parentId] = childrenOf[parentId] || [];
                     // push it into its parent's children object
@@ -59,10 +63,10 @@ function Util() {
                 } else {
                     tree.push(item);
                 }
-            };
+            }
 
             return tree;
-    }
+    };
 
     self.arrayToTreeParent = function(data, options){
         options = options || {};
@@ -84,9 +88,9 @@ function Util() {
             if(parentId!==0){
                 tree.push(parentId);
             }
-        };
+        }
         return tree;
-    }
+    };
 
     self.findAll = function(items,id) {
         var i = 0, found, result = [];
@@ -102,7 +106,7 @@ function Util() {
             }
         }
         return result;
-    }
+    };
 
     self.find = function(fdata, dat){
         //dat.push(fdata.id);
@@ -110,7 +114,7 @@ function Util() {
             this.find(fdata.data[0], dat);
         }
         return dat;
-    }
+    };
 
     self.makeHrc = function(partial, complete, dat){
         //var partial = _.uniqBy(partial, "id");
@@ -119,7 +123,7 @@ function Util() {
             dat = this.concatUp(partial[i], complete, dat);
         }
         return dat;
-    }
+    };
 
     self.concatUp = function(partial, complete, dat) {
         var x = _.findIndex(complete, function (o) {
@@ -130,29 +134,29 @@ function Util() {
             this.concatUp(complete[x], complete, dat);
         }
         return dat;
-    }
+    };
     self.nt = function(t){
         if(_.isUndefined(t))return "";
         else return t;
-    }
+    };
     self.subtractzero = function(dat){
         if(dat.substring(0,1)==='0')
             return dat.substring(1);
         else return dat;
-    }
+    };
 
     self.setDateTitle = function(UNIT, dat){
        if(UNIT==='d')return dat.substring(0,4)+'년 '+dat.substring(4,6)+'월';
        if(UNIT==='m')return dat.substring(0,4)+'년';
         if(UNIT==='y')return '';
-    }
+    };
 
     self.dateFormat = function (unit, dat){
         return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
         /*if(unit==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
         if(unit==='m')return dat.substring(0,4)+'.'+dat.substring(4,6);
         if(unit==='y')return dat.substring(0,4);*/
-    }
+    };
 
     self.dformat=function(UNIT, dat){
         /*if(UNIT==='d')return dat.substring(0,4)+'.'+dat.substring(4,6)+'.'+dat.substring(6,8);
@@ -161,7 +165,7 @@ function Util() {
         if(UNIT==='d')return self.subtractzero(dat.substring(6,8))+'일';
         if(UNIT==='m')return self.subtractzero(dat.substring(4,6))+'월';
         if(UNIT==='y')return dat.substring(0,4)+'년';
-    }
+    };
     /*function dunformat(dat){
     console.log(UNIT, dat);
     if(UNIT==='d')return dat.split(".")[0]+dat.split(".")[1]+dat.split(".")[2];
@@ -175,14 +179,59 @@ function Util() {
             }
         );
         $("#spinner").show();
-    }
+    };
     self.hideLoader = function(){
         $("#spinner").delay(800).hide();
         $.unblockUI();
-    }
+    };
     self._isUndefined = function(data){
-        if(_.isUndefined(data) || data == null){
-            return true;
-        } else return false;
-    }
+        return !!(_.isUndefined(data) || data == null);
+    };
+
+    self.generateQueryVariant = function(entrezGeneId,
+        tumorType,
+        alteration,
+        mutationType,
+        proteinPosStart,
+        proteinPosEnd,
+        alterationType)
+    {
+        var query = {
+            id: self.generateQueryVariantId(entrezGeneId, tumorType, alteration, mutationType),
+            hugoSymbol:'',
+            tumorType:'', // generated api typings are wrong, it can accept null
+            alterationType: alterationType || AlterationTypes[AlterationTypes.Mutation],
+            entrezGeneId: entrezGeneId,
+            alteration: alteration || "",
+            consequence: mutationType || "any",
+            proteinStart: proteinPosStart === undefined ? -1 : proteinPosStart,
+            proteinEnd: proteinPosEnd === undefined ? -1 : proteinPosEnd,
+            type: "web",
+            hgvs: "",
+            svType: "DELETION" // TODO: hack because svType is not optional
+        };
+
+        // Use proper parameters for Intragenic variant
+        if(query.alteration.toLowerCase().indexOf("intragenic") !== -1) {
+            query.alterationType = 'structural_variant';
+            query.svType = 'DELETION';
+            query.consequence = '';
+        }
+        return query;
+    };
+
+    self.generateQueryVariantId = function(entrezGeneId,
+        tumorType,
+        alteration,
+        mutationType)
+    {
+        var id = (tumorType) ? entrezGeneId+'_'+tumorType : entrezGeneId;
+        if (alteration) {
+            id = id+'_'+alteration;
+        }
+        if (mutationType) {
+            id = id+'_'+mutationType;
+        }
+        return id.trim().replace(/\s/g, "_");
+    };
 }

@@ -5,7 +5,7 @@
 
 
 <mapper namespace="patient">
-    <select id="selectPathHrc" resultType="com.asan.patient.vo.Patient">
+    <select id="selectPathHrc" resultType="com.softcen.bigcen.med.patient.vo.Patient">
       SELECT
       'PATHOLOGY_EXAM' subject,
       GENE_EXAM_MTH_NM id,
@@ -13,7 +13,7 @@
       from PMGEMEMTH
       WHERE LENGTH(GENE_EXAM_MTH_NM)>0 GROUP BY GENE_EXAM_MTH_NM
     </select>
-    <select id="selectPathList" resultType="com.asan.patient.vo.Patient">
+    <select id="selectPathList" resultType="com.softcen.bigcen.med.patient.vo.Patient">
       SELECT DISTINCT
        'PATHOLOGY_EXAM' subject,
        b.GENE_EXAM_MTH_NM pid,

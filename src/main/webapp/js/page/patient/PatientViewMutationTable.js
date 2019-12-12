@@ -66,11 +66,19 @@
         self.TH.EXPRESSION = self.expMap;
         self.TH.SV = self.svMap;
         self.ROUNDCNT = 0;
+        self.gean = [];
 
         self.init = function (){
             action = new Action();
             util = new Util();
-            getMutationCosmic();
+
+            var ds_cond = {};
+            ds_cond.queryId = "/utils/cancerGeneList";
+            ds_cond.callback = setcancerGean;
+            action.cancerGeanList(ds_cond);
+
+            //getMutationCosmic();
+
             //$("[id^='cosmic_']").on('hover', function (e) {
             $('input[type="checkbox"]').change(function() {
                 setColumn(this.id);
@@ -124,11 +132,38 @@
                 });
             });
         }
+
+        setcancerGean = function(json){
+            self.gean = json;
+            getMutationCosmic();
+        }
+        search = function(entrezGeneId,
+                          tumorType,
+                          alteration,
+                          mutationType,
+                          proteinPosStart,
+                          proteinPosEnd,
+                          alterationType){
+            var query = util.generateQueryVariant(entrezGeneId,
+                tumorType,
+                alteration,
+                mutationType,
+                proteinPosStart,
+                proteinPosEnd,
+                alterationType);
+
+            var ds_cond = {};
+            ds_cond.queryId = "/search";
+            ds_cond.callback = setIndicator;
+            action.cancerGeanList(ds_cond);
+        }
+        setIndicator = function(json){
+            console.log(json)
+        }
         getMutationList = function(qid) {
             console.log("getround ", self.ROUNDCNT);
             //console.log("getMutation ", self.NODE);
             var ds_cond = {};
-            //ds_cond.data = {"queryId": "selectPatientMuList", "patientId": PATIENTID};
             ds_cond.data = {"queryId": qid, "patientId": PATIENTID};
             ds_cond.callback = mutation_disposer;
             action.selectPatientMuList(ds_cond);

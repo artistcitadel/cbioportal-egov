@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
    var patientList = new PatientList();
    patientList.init();
 });
@@ -12,16 +18,18 @@ function PatientList() {
 
         $("#search_pat").keyup(function (event) {
             event.preventDefault();
+
             var value = $(this).val();
             var temp=[];
-                for (var i = 0; i < self.TABLE.length; i++) {
+             for (var i = 0; i < self.TABLE.length; i++) {
                     _.map(self.TABLE[i],function(v){
+                        //console.log(v, '==> ',value);
                         if(v===value){
                             temp.push(self.TABLE[i]);
                         }
                     });
                 }
-                console.log('includes', temp, value);
+                // console.log('includes', temp, value);
             if($.trim(temp).length===0)temp=self.TABLE;
             setData(temp,1);
         });

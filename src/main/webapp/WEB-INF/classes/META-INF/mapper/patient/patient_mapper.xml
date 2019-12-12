@@ -6,8 +6,26 @@
 
 <mapper namespace="patient">
 
-    <select id="selectPatientCategory" resultType="com.asan.patient.vo.Patient">
-      SELECT
+    <select id="selectPatientCategory" resultType="com.softcen.bigcen.med.patient.vo.Patient">
+        SELECT
+        '1' checked,
+        ITEM_ID id,
+        ITEM_NM name,
+        ITEM_CATE_ID pid
+        FROM
+             PMSPORTAL.CC_ITEM_MGMT
+        WHERE PROGRM_ID = 'PATIENT_TIME'
+        AND length(ITEM_ID)>0
+        UNION
+        SELECT
+                '1' checked,
+               ITEM_CATE_ID id,
+               ITEM_CATE_ID name,
+                '0' pid
+        FROM
+             PMSPORTAL.CC_ITEM_MGMT
+        WHERE PROGRM_ID = 'PATIENT_TIME'
+      /*SELECT
         '1' checked,
         ITEM_CATE_ID idd,
         ITEM_CATE_NM name,
@@ -31,15 +49,15 @@
         WHERE PROGRM_ID = 'PATIENT_TIME'
         and ITEM_ID != ''
         and DEFAULT_YN = 'Y'
-        group by ITEM_CATE_ID, DEFAULT_YN, ITEM_CATE_ID
+        group by ITEM_CATE_ID, DEFAULT_YN, ITEM_CATE_ID*/
     </select>
 
-    <select id="selectPatientMutCol" resultType="com.asan.patient.vo.Patient">
+    <select id="selectPatientMutCol" resultType="com.softcen.bigcen.med.patient.vo.Patient">
         SELECT DISTINCT ITEM_CATE_ID subject, ITEM_ID id , ITEM_NM name FROM PMSPORTAL.CC_ITEM_MGMT
         WHERE PROGRM_ID = 'PATIENT_MUTATION' AND LENGTH(ITEM_ID)>0 AND DEFAULT_YN = 'Y'
     </select>
 
-    <select id="selectPatientChoiceList" resultType="com.asan.patient.vo.Patient">
+    <select id="selectPatientChoiceList" resultType="com.softcen.bigcen.med.patient.vo.Patient">
       SELECT DISTINCT
                 RESCH_PAT_ID patientId,
                 'LABTEST' sampleId,
@@ -94,7 +112,7 @@
                     'EXP' cancerTypeDetail
     </select>
 
-    <select id="selectLabTestHrc" resultType="com.asan.patient.vo.Patient">
+    <select id="selectLabTestHrc" resultType="com.softcen.bigcen.med.patient.vo.Patient">
       SELECT DISTINCT
                 'Lab_test' subject,
                 EXAM_CD id,
@@ -106,7 +124,7 @@
       ]]>
     </select>
 
-    <select id="selectLabTest" resultType="com.asan.patient.vo.Patient">
+    <select id="selectLabTest" resultType="com.softcen.bigcen.med.patient.vo.Patient">
      SELECT
      'Lab_test' subject,
      EXAM_SLIP_CD pid ,

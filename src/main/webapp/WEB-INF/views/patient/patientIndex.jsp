@@ -97,16 +97,17 @@
 	var gvServer = gvSERVER;
 </script>
 </head>
-<body class="hold-transition skin-black sidebar-mini fixed">
+<%--<body class="hold-transition skin-black sidebar-mini fixed ">--%>
+<body>
 
 <div class="wrapper">
 	<header class="main-header">
 		<tiles:insertAttribute name="top"/>
 	</header>
 	<!-- Left side column. contains the logo and sidebar -->
-		<aside class="main-sidebar">
+		<%--<aside class="main-sidebar">
             <tiles:insertAttribute name="adminLeft"/>
-        </aside>
+        </aside>--%>
 
 	<!-- Content Wrapper. Contains page content -->
 	<%--<div class="content-wrapper" data-toggle="control-sidebar">--%>
@@ -125,9 +126,10 @@
 </div>
 <!-- ./wrapper -->
 <script>
-        $(document).ready(function () {
+       /* $(document).ready(function () {
             $(".sidebar-toggle").trigger("click");
-        });
+        });*/
+       $("body").addClass("sidebar-collapse");
 </script>
 
 </body>

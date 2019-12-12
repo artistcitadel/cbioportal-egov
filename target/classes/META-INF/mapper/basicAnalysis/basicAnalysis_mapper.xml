@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+<mapper namespace="basicAnalysis">
+ 	<!-- CODE 카운트 체크 -->
+ 	<select id="selectGroupVariableCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM(
+			SELECT
+		    	DISTINCT ${VARIABLE_002}
+			FROM ${TABLE_ID }		
+		) A
+	</select>
+	
+	<!-- 독립표본 T검정 - 집단통계량 -->
+	<select id="selectIndeSampleTTestDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    A.${VARIABLE_002} AS COL1,
+			    A.CNT AS COL2,
+			    ROUND( B.AVG, 4 ) AS COL3
+			FROM
+			    (
+			        SELECT
+			            ${VARIABLE_002},
+			            COUNT(${VARIABLE_001}) AS CNT
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) A LEFT OUTER JOIN(
+			        SELECT
+			            ${VARIABLE_002},
+			            AVG(${VARIABLE_001}) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) B
+			    ON A.${VARIABLE_002} = B.${VARIABLE_002}
+			ORDER BY 1			
+		]]>
+	</select>
+	
+	<!-- 독립표본 T검정 - 독립표본검정 -->
+	<select id="selectIndeSampleTTestDataGrid2" parameterType="map" resultType="hashmap" >
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    CAST(ROUND( a.T, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            tt_stat_2(
+			                ${VARIABLE_001},
+			                ${VARIABLE_002}
+			            ) OVER() AS T
+			        FROM
+			           ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    CAST(ROUND( a.DF, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            tt_df_2(
+			                ${VARIABLE_001},
+			                ${VARIABLE_002}
+			            ) OVER() AS DF
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL3' AS SV,
+			    CASE WHEN ROUND( a.PV, 3 ) = 0 THEN '< 0.001' ELSE CAST(ROUND( a.PV, 3 ) AS VARCHAR) END AS VAL
+			FROM
+			    (
+			        SELECT
+			            tt_pv_21(
+			                ${VARIABLE_001},
+			                ${VARIABLE_002}
+			            ) OVER() AS PV
+			        FROM
+			           ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 대응표본 T검정 - 대응표본통계량 -->
+	<select id="selectActionSampleTTestDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL2' AS SV,
+			    A.CNT AS VAL
+			FROM
+			    (
+			        SELECT
+			            COUNT(${VARIABLE_001}) AS CNT
+			        FROM
+			             ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL3' AS SV,
+			    ROUND( A.AVG, 2 ) AS VAL
+			FROM
+			    (
+			        SELECT
+			            AVG(${VARIABLE_001}) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 대응표본 T검정 - 대응표본검정(t_test_pvalue_p > tt_pv_p) -->
+	<select id="selectActionSampleTTestDataGrid2" parameterType="map" resultType="hashmap">
+		
+	</select>
+	
+	<!-- 일원분산분석 > 분산분석 > 기술통계 -->
+	<select id="selectOneWayAnalysisDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    A.${VARIABLE_002} AS COL1,
+			    A.CNT AS COL2,
+			    ROUND( B.AVG, 4 ) AS COL3
+			FROM
+			    (
+			        SELECT
+			            ${VARIABLE_002},
+			            COUNT(${VARIABLE_001}) AS CNT
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) A LEFT OUTER JOIN(
+			        SELECT
+			            ${VARIABLE_002},
+			            AVG(${VARIABLE_001}) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) B
+			        ON A.${VARIABLE_002} = B.${VARIABLE_002}
+			ORDER BY 1
+		]]>
+	</select>
+	
+	<!-- 일원분산분석 > 분산분석 > 분산분석 -->
+	<select id="selectOneWayAnalysisDataGrid2" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    A."SUM SQ" AS COL2,
+			    A."DF" AS COL3,
+			    A."MEAN SQ" AS COL4,
+			    A."F VALUE" AS COL5,
+			    A."P_VALUE" AS COL6
+			FROM
+			    (
+			        SELECT
+			            anova(
+			                ${VARIABLE_001},
+							${VARIABLE_002}
+			            ) OVER()
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 일원분산분석 > 사후분석(Tukey) > 다중비교 -->
+	<select id="selectOneWayAnalysisDataGrid3" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    "I-J" AS COL1,
+			    ROUND( Diff, 5 ) AS COL2,
+			    ROUND( p_value, 3 ) AS COL3,
+			    ROUND( LCL, 4 ) AS COL4,
+			    ROUND( UCL, 4 ) AS COL5
+			FROM
+			    (
+			        SELECT
+			            tukey(
+			                ${VARIABLE_001},
+			                ${VARIABLE_002}
+			            ) OVER()
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 일원분산분석 > 사후분석(Tukey) > 동일집단군 -->
+	<select id="selectOneWayAnalysisDataGrid4" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    Code AS COL1,
+			    ROUND( Means, 4 ) AS COL2,
+			    Groups AS COL3
+			FROM
+			    (
+			        SELECT
+			            tukey_g(
+			                ${VARIABLE_001},
+			                ${VARIABLE_002}
+			            ) OVER()
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 비모수 독립 2 > 비모수검정 > 집단통계량 -->
+	<select id="selectIndeSample2DataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    A.${VARIABLE_002} AS COL1,
+			    A.CNT AS COL2,
+			    ROUND( B.AVG, 4 ) AS COL3
+			FROM
+			    (
+			        SELECT
+			            ${VARIABLE_002},
+			            COUNT(${VARIABLE_001}) AS CNT
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) A LEFT OUTER JOIN(
+			        SELECT
+			            ${VARIABLE_002},
+			            AVG(${VARIABLE_001}) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002} IS NOT NULL
+			            AND ${VARIABLE_002} <> ''
+			        GROUP BY
+			            ${VARIABLE_002}
+			    ) B
+			        ON A.${VARIABLE_002} = B.${VARIABLE_002}
+			ORDER BY 1
+		]]>
+	</select>
+	
+	<!-- 비모수 독립 2 > 비모수검정 > 검정통계량 -->
+	<select id="selectIndeSample2DataGrid2" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    CAST(ROUND( a.U, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            ut_stat(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS U
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    CASE WHEN ROUND( a.PV, 3 ) = 0 THEN '< 0.001' ELSE CAST(ROUND( a.PV, 3 ) AS VARCHAR) END AS VAL
+			FROM
+			    (
+			        SELECT
+			            ut_pv(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS PV
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 비모수 독립 K > 비모수검정 > 집단통계량 -->
+	<select id="selectIndeSampleKDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    A.${VARIABLE_002 } AS COL1,
+			    A.CNT AS COL2,
+			    ROUND( B.AVG, 4 ) AS COL3
+			FROM
+			    (
+			        SELECT
+			            ${VARIABLE_002 },
+			            COUNT(${VARIABLE_001 }) AS CNT
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002 } IS NOT NULL
+			            AND ${VARIABLE_002 } <> ''
+			        GROUP BY
+			            ${VARIABLE_002 }
+			    ) A LEFT OUTER JOIN(
+			        SELECT
+			            ${VARIABLE_002 },
+			            AVG(${VARIABLE_001 }) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			        WHERE
+			            ${VARIABLE_002 } IS NOT NULL
+			            AND ${VARIABLE_002 } <> ''
+			        GROUP BY
+			            ${VARIABLE_002 }
+			    ) B
+			        ON A.${VARIABLE_002} = B.${VARIABLE_002}
+			ORDER BY 1
+		]]>
+	</select>
+	
+	<!-- 비모수 독립 K > 비모수검정 > 검정통계량  -->
+	<select id="selectIndeSampleKDataGrid2" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    CAST(ROUND( A.X2, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            kt_stat1(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS X2
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    CAST(ROUND( A.DF, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            kt_df(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS DF
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL3' AS SV,
+			    CASE WHEN ROUND( a.PV, 3 ) = 0 THEN '< 0.001' ELSE CAST(ROUND( A.PV, 3 ) AS VARCHAR) END AS VAL
+			FROM
+			    (
+			        SELECT
+			            kt_pv(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS PV
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 교차표 Data -->
+	<select id="selectCrossAnalysisTableDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			WITH T1 AS(
+			    SELECT
+			        ${VARIABLE_002 } AS INPUT2,
+			        COUNT(1) AS INPUT2_CNT
+			    FROM
+			        ${TABLE_ID }
+			    WHERE
+			        ${VARIABLE_002 } IS NOT NULL
+			        AND ${VARIABLE_002 } <> ''
+			    GROUP BY
+			        ${VARIABLE_002 }
+			    ORDER BY
+			        1
+			),
+			T2 AS(
+			    SELECT
+			        ${VARIABLE_001 } AS INPUT1,
+			        COUNT(1) AS INPUT1_CNT
+			    FROM
+			        ${TABLE_ID }
+			    WHERE
+			        ${VARIABLE_001 } IS NOT NULL
+			        AND ${VARIABLE_001 } <> ''
+			    GROUP BY
+			        ${VARIABLE_001 }
+			    ORDER BY
+			        1
+			),
+			T3 AS(
+			    SELECT
+			        ${VARIABLE_002 } AS INPUT2,
+			        ${VARIABLE_001 } AS INPUT1,
+			        COUNT(*) AS CNT
+			    FROM
+			        ${TABLE_ID }
+			    WHERE
+			        ${VARIABLE_001 } IS NOT NULL
+			        AND ${VARIABLE_001 } <> ''
+			        AND ${VARIABLE_002 } IS NOT NULL
+			        AND ${VARIABLE_002 } <> ''
+			    GROUP BY
+			        ${VARIABLE_002 },
+			        ${VARIABLE_001 }
+			    ORDER BY
+			        1,
+			        2
+			) SELECT
+			    T3.INPUT2 AS COL1,
+			    T3.INPUT1 AS COL2,
+			    T3.CNT AS COL_3,
+			    ROUND( T3.CNT / INPUT2_CNT*100, 1 ) AS COL_4,
+			    ROUND( T3.CNT / INPUT1_CNT*100, 1 ) AS COL_5
+			FROM
+			    T3 LEFT OUTER JOIN T1
+			        ON T3.INPUT2 = T1.INPUT2 LEFT OUTER JOIN T2
+			        ON T3.INPUT1 = T2.INPUT1
+			ORDER BY
+			    1,
+			    2
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 교차표 (열:CODE 리스트) -->
+	<select id="selectCol1ListOfCrossAnalysisTableDataGrid1" parameterType="map" resultType="String">
+		<![CDATA[
+		    SELECT
+		        ${VARIABLE_002 } AS INPUT2
+		    FROM
+		        ${TABLE_ID }
+		    WHERE
+		        ${VARIABLE_001 } IS NOT NULL
+		        AND ${VARIABLE_001 } <> ''
+		        AND ${VARIABLE_002 } IS NOT NULL
+		        AND ${VARIABLE_002 } <> ''
+		    GROUP BY
+		        ${VARIABLE_002 }
+		    ORDER BY
+		        1
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 교차표  jqxGrid Datafield-->
+	<select id="selectDatafieldsOfCrossAnalysisTableDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+		     SELECT
+			    'COL1' AS name
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL2' AS name
+			FROM
+			    DUAL
+			UNION ALL
+			SELECT
+			    'COL_3_' || ${VARIABLE_001 } AS name
+			FROM
+			    ${TABLE_ID }
+			WHERE
+			    ${VARIABLE_001 } IS NOT NULL
+			    AND ${VARIABLE_001 } <> ''
+			GROUP BY
+			    ${VARIABLE_001 }
+			ORDER BY
+			    1
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 교차표  jqxGrid columns -->
+	<select id="selectColumnsOfCrossAnalysisTableDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+		    SELECT
+			    '${VARIABLE_002_NAME }' AS text,
+			    'COL1' AS datafield,
+			    '15%' AS width,
+			    'center' AS align,
+			    'center' AS cellsalign
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    '구분' AS text,
+			    'COL2' AS datafield,
+			    '15%' AS width,
+			    'center' AS align,
+			    'center' AS cellsalign
+			FROM
+			    DUAL
+			UNION ALL
+			SELECT
+			    ${VARIABLE_001 } AS text,
+			    'COL_3_' || ${VARIABLE_001 } AS datafield,
+			    '15%' AS width,
+			    'center' AS align,
+			    'right' AS cellsalign
+			FROM
+			    ${TABLE_ID }
+			WHERE
+			    ${VARIABLE_001 } IS NOT NULL
+			    AND ${VARIABLE_001 } <> ''
+			GROUP BY
+			    ${VARIABLE_001 }
+			ORDER BY
+			    2
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 교차표 004  jqxGrid columngroups -->
+	<!-- <select id="selectColumngroupsOfCrossAnalysisTableDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+		    SELECT
+			    A.ITEM_NM AS TEXT,
+			    'center' AS ALIGN,
+			    '${VARIABLE_001 }' AS NAME
+			FROM
+			    CRDW.CC_ITEM_MGMT A
+			WHERE
+			    A.TABLE || '__' || A.COLUMN = '${VARIABLE_001 }'
+		]]>
+	</select> -->
+	
+	<!-- 교차분석표 > 카이제곱검정 > Pearson X2 -->
+	<select id="selectCrossAnalysisTableDataGrid2_1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    'Pearson X²' AS VAL
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL5' AS SV,
+			    null AS VAL
+			FROM DUAL
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 카이제곱검증 > 연속성보정 -->
+	<select id="selectCrossAnalysisTableDataGrid2_2" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    '연속성보정' AS VAL
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL5' AS SV,
+			    null AS VAL
+			FROM DUAL
+		]]>
+	</select>
+	
+	<!-- 교차분석표 > 카이제곱검증 > Fisher의 정확검증 -->
+	<select id="selectCrossAnalysisTableDataGrid2_3" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    'Fisher의 정확검증' AS VAL
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    null AS VAL
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL3' AS SV,
+			    null AS VAL
+			FROM
+			    DUAL
+			UNION ALL SELECT
+			    'COL4' AS SV,
+			    null AS VAL
+			FROM DUAL
+		]]>
+	</select>
+	
+	<!-- 상관분석 > 통계량 -->
+	<select id="selectCareCalculationDataGrid1" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL2' AS SV,
+			    A.CNT AS VAL
+			FROM
+			    (
+			        SELECT
+			            COUNT(${VARIABLE_001 }) AS CNT
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL3' AS SV,
+			    ROUND( A.AVG, 2 ) AS VAL
+			FROM
+			    (
+			        SELECT
+			            AVG(${VARIABLE_001 }) AS AVG
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 상관분석 > Pearson 상관계수 -->
+	<select id="selectCareCalculationDataGrid2" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    CAST(ROUND( A.PR, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            ct_p_esti(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS PR
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    CASE WHEN ROUND( A.PPV, 3 ) = 0 THEN '< 0.001' ELSE CAST(ROUND( A.PPV, 3 ) AS VARCHAR) END AS VAL
+			FROM
+			    (
+			        SELECT
+			            ct_p_esti_pv0(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS PPV
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 상관분석 > Spearman 순위상관계수 -->
+	<select id="selectCareCalculationDataGrid3" parameterType="map" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    'COL1' AS SV,
+			    CAST(ROUND( A.SR, 3 ) AS VARCHAR) AS VAL
+			FROM
+			    (
+			        SELECT
+			            ct_s_esti(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS SR
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+			UNION ALL SELECT
+			    'COL2' AS SV,
+			    CASE WHEN ROUND( A.SPV, 3 ) = 0 THEN '< 0.001' ELSE CAST(ROUND( A.SPV, 3 ) AS VARCHAR) END AS VAL
+			FROM
+			    (
+			        SELECT
+			            ct_s_esti_pv(
+			                ${VARIABLE_001 },
+			                ${VARIABLE_002 }
+			            ) OVER() AS SPV
+			        FROM
+			            ${TABLE_ID }
+			    ) A
+		]]>
+	</select>
+	
+	<!-- 분석에 필요한 데이터 검색 (first column) -->
+	<select id="selectAnalysisDataFirst" parameterType="map" resultType="hashmap">
+		SELECT
+			${VARIABLE_001 }
+		FROM
+           ${TABLE_ID }
+	</select>
+	
+	<!-- 분석에 필요한 데이터 검색 (second column) -->
+	<select id="selectAnalysisDataSecond" parameterType="map" resultType="hashmap">
+		SELECT
+			${VARIABLE_002 }
+		FROM
+           ${TABLE_ID }
+	</select>
+	
+	<!-- 분석에 필요한 데이터 검색 (2 column) -->
+	<select id="selectAnalysisData2" parameterType="map" resultType="hashmap">
+		SELECT
+			${VARIABLE_001 } AS A,
+			${VARIABLE_002 } AS B
+		FROM
+           ${TABLE_ID }
+	</select>
+	
+	<!-- 분석에 필요한 데이터 검색 (2 column) where not null -->
+	<select id="selectAnalysisData2NotNull" parameterType="map" resultType="hashmap">
+		SELECT
+			${VARIABLE_001 } AS A,
+			${VARIABLE_002 } AS B
+		FROM
+           ${TABLE_ID }
+        WHERE
+            ${VARIABLE_002 } IS NOT NULL
+            AND ${VARIABLE_002 } != ''
+	</select>
+
+</mapper>

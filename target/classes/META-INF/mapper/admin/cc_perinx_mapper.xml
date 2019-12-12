@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="cc_perinx">
+ 	<!-- 사용자정보 조회 -->
+	<select id="selectPerinx" parameterType="map" resultType="hashmap">
+		SELECT   CONVERT(A.PER_CODE USING utf8) AS 'PER_CODE'          /* 사용자 ID 경북대추가 */
+				,A.PER_PASS         /* 사용자 비밀번호 */
+				,A.PER_NAME         /* 사용자 이름 */
+				,A.DEPT_CODE        /* 부서 코드 */
+				,A.LOCT_CODE        /*  */
+				<choose>
+					<when test="SITE_CODE == 'KUH'">
+						,CONCAT(C.COMM_CD_NM,' > ',B.DEPT_NAME) AS  DEPT_NAME        /* 부서명 */
+					</when>
+					
+					<otherwise>
+						,B.DEPT_NAME        /* 부서명 */
+					</otherwise>
+				</choose>
+				,B.DEPT_MAST        /* 부서MAST */
+				,A.FIRST_FLAG        /* 첫로그인 여부 N:처음 Y:처음아님 */
+				,A.INSTCD /* 병원코드 */
+				<if test="SITE_CODE == 'KUH'">
+				,A.OATHYN /* 서약서 유무 */
+				</if>
+		FROM CC_PERINX A
+		LEFT OUTER JOIN CC_DEPINX B ON (A.DEPT_CODE = B.DEPT_CODE)
+		<if test="SITE_CODE == 'KUH'">
+			LEFT OUTER JOIN CC_COMMON_CODE C ON (C.COMM_CD_ID = A.INSTCD)
+		</if>
+		WHERE 1=1
+		AND PER_CODE = #{PER_CODE}
+		
+			<!--	경북대 추가
+		<if test="HOSPITAL_CODE != null and HOSPITAL_CODE != ''">
+		AND INSTCD = #{HOSPITAL_CODE} 
+		</if> -->
+	</select>
+	
+	<!-- 비밀번호변경 -->
+	<update id="updatePerinx" parameterType="map">
+		UPDATE CC_PERINX
+		SET 	 PER_PASS=#{PER_PASS},
+				 UDT_ID=#{PER_CODE},
+				 UDT_DT=NOW(),
+				 FIRST_FLAG='Y'
+		WHERE	 1=1
+		AND 	 PER_CODE=#{PER_CODE}
+		<!-- 경북대 추가
+		<if test="HOSPITAL_CODE != null and HOSPITAL_CODE != ''">
+		AND INSTCD = #{HOSPITAL_CODE} 
+		</if>
+		 -->
+	</update>
+	
+	<update id="updateUserPassword" parameterType="map">
+		UPDATE CC_PERINX
+		   SET PER_PASS = #{perPass}
+		 WHERE PER_CODE = #{perCode}
+		 <!-- 경북대 추가
+		 <if test="HOSPITAL_CODE != null and HOSPITAL_CODE != ''">
+		 AND INSTCD = #{HOSPITAL_CODE}
+		 </if>
+		  -->
+	</update>
+	
+	
+	<!-- 경북대 - 최초 로그인 체크 FLAG 없데이트 -->
+	<update id="firstFlagUpdate" parameterType="map">
+		UPDATE CC_PERINX
+		SET	 UDT_ID=#{PER_CODE},
+				 UDT_DT=NOW(),
+				 FIRST_FLAG='Y'
+		WHERE	 1=1
+		AND 	 PER_CODE=#{PER_CODE}
+		<!-- 경북대 추가
+		<if test="HOSPITAL_CODE != null and HOSPITAL_CODE != ''">
+		AND INSTCD = #{HOSPITAL_CODE} 
+		</if>
+		 -->
+	</update>
+</mapper>
+ 
+ 
+ 

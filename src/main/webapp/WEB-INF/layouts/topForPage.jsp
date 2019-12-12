@@ -232,7 +232,7 @@
 	<a class="sidebar-toggle pointer" role="button" id="cohortDoor">
 		<i class="ion ion-erlenmeyer-flask"></i> Cohort
 	</a>
-	<a class="sidebar-toggle pointer" role="button" id="patientDoor">
+	<a href="/patient/patientMain" class="sidebar-toggle pointer" role="button" id="patientDoor">
 		<i class="ion ion-stats-bars"></i> Patient
 	</a>
 	<a class="sidebar-toggle pointer" role="button" id="mutationDoor">

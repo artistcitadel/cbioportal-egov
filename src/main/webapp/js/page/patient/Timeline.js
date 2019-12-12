@@ -60,14 +60,17 @@ function TimeLine() {
         }
     }
 
+    function moveMutation(){
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
+        // ISROUNDMUTATION=true;
+    }
     function setTimeLine(node, data) {
         if(data.length<1){
             util.hideLoader();
             $('div.member').find('img').trigger('click');
             if (!ISROUNDMUTATION) {
-                var pt = new PatientViewMutationTable();
-                pt.init();
-                ISROUNDMUTATION=true;
+                moveMutation();
             }
             return;
         }
@@ -353,6 +356,7 @@ function TimeLine() {
         console.log('m ', m);
         console.log('chmName ', chmName);
         console.log(' COUNTMAP ', COUNTMAP);
+        var temp_name = [];
         for (var i = 0; i < pdata.length; i++) {
             if (pdata[i].leaf) {
                 var item = {};
@@ -365,11 +369,22 @@ function TimeLine() {
                 //console.log('pdata[i].subject ', pdata[i].subject);
                 item.id = pdata[i].id;
                 item.time = pdata[i].time;
-                item.axis = p['0'].axis;
-                item.count = p['0'].count;
-                item.name = (pdata[i].subject===subject.lab_test) ? ( event.classify_labtest(pdata[i],UNIT) ) :
-                            (pdata[i].subject===subject.pathlogy) ? ( event.classify_pathlogy(pdata[i], UNIT) ) : '';
-                pixelMap.push(item);
+
+                if( ( (i+1) < pdata.length) && item.id === pdata[i+1].id && item.time === pdata[i+1].time ) {
+                    ++i;
+                    temp_name.push(pdata[i]);
+                }
+                else {
+                    temp_name=[];
+                    temp_name.push(pdata[i]);
+                    item.axis = p['0'].axis;
+                    item.count = p['0'].count;
+                    item.name =  //(pdata[i].subject===subject.lab_test) ? ( event.classify_labtest(pdata[i],UNIT) ) :
+                        (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
+                        (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
+                        (pdata[i].subject === subject.pathlogy) ? (event.classify_pathlogy(temp_name, UNIT)) : '';
+                    pixelMap.push(item);
+                }
             }
         }
         console.log('pixelMap ', pixelMap);
@@ -428,7 +443,7 @@ function TimeLine() {
         //if(tdata.length<1)
         var tdata = util.arrayToTree(dig);
         console.log('tdata ', tdata);
-        console.log('tdata.data ', tdata[0]['data']);
+        //console.log('tdata.data ', tdata[0]['data']);
         XGRIDS = [];
 
         for(var i=0;i<tdata.length;i++) {
@@ -445,12 +460,12 @@ function TimeLine() {
         $("#spinner1").hide();
         $('div.member').find('img').trigger('click');
         $('#timeline').scrollLeft(0);
-
         //console.log('last dig is ', dig);
         if (!ISROUNDMUTATION) {
-            var pt = new PatientViewMutationTable();
+            moveMutation();
+            /*var pt = new PatientViewMutationTable();
             pt.init();
-            ISROUNDMUTATION=true;
+            ISROUNDMUTATION=true;*/
         }
     }
 
@@ -701,41 +716,57 @@ function TimeLine() {
 
         var labtest = new Labtest();
         var pathlogy = new Pathlogy();
+        var specimen = new Specimen();
         //var pathlogyD=[],labtestD=[];
-
 
         var digcategory=[];
         if(!_.isUndefined(localStorage["digcategory"]))
             digcategory = JSON.parse(localStorage.getItem("digcategory"));
         console.log('digcategory ',digcategory);
         var pids = [];
-        pids = _.filter(digcategory, function(v){
-            return v.pid==="";
-        });
-        if(pids.length<1)return;
+        // pids = _.filter(digcategory, function(v){
+        //     return v.pid==="0";
+        // });
+        pids = digcategory;
+        if(pids.length<1){
+            util.hideLoader();
+            return;
+        }
         var run=0;
-        for(var i=0;i<pids.length;i++,run++){
-            (pids[i].idd===subject.lab_test) ? pathlogy.init(findLevel, exist, setLabtestData) : null;
-            (pids[i].idd===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
+        for(var i=0;i<pids.length;i++,run++) {
+            console.log('pids[i].pid ',pids[i].pid);
+            //(pids[i].idd===subject.lab_test) ? labtest.init(findLevel, exist, setLabtestData) : null;
+            (pids[i].pid===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
+            (pids[i].pid===subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
         }
         console.log(run, pids.length);
-        function setPathlogyData(data){
+        function setPathlogyData(data) {
             console.log('pathlogy data ', data);
             RAW = _.union(RAW, data);
             if(run===pids.length) {
                 console.log('RAW ', RAW);
                 setTimeLine('C', RAW);
             }
+            ++run;
         }
 
-        function setLabtestData(data){
+        function setSpecimenData(data) {
+            console.log('specimen data ', data);
+            RAW = _.union(RAW, data);
+            if(run===pids.length) {
+                console.log('RAW ', RAW);
+                setTimeLine('C', RAW);
+            }
+            ++run;
+        }
+        /*function setLabtestData(data){
             console.log('labtest data ', data);
             RAW = _.union(RAW, data);
             if(run===pids.length) {
                 console.log('RAW ', RAW);
                 setTimeLine('C', RAW);
             }
-        }
+        }*/
 
 
         /*var ds_cond = {};

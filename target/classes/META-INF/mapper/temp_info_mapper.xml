@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="example">
+	<select id="SelectTempInfoList" parameterType="map" resultType="hashmap">
+		SELECT 	SEQ
+				,ID
+				,PWD
+				,NAME
+		FROM 	TEMP_INFO
+		WHERE	1=1
+	</select>
+	<insert id="insertTemp" parameterType="map">
+		INSERT INTO TEMP_INFO
+		 (ID,PWD,NAME) 
+		VALUES
+		(
+			#{ID},
+			#{PWD},
+			#{NAME}
+		)
+	</insert>
+	
+	<update id="updateTemp" parameterType="map">
+		UPDATE TEMP_INFO
+		SET PWD = #{PWD},
+			NAME = #{NAME}
+		WHERE	1=1
+		AND 	ID=#{ID}
+	</update>
+	<delete id="deleteTemp" parameterType="map">
+		DELETE FROM TEMP_INFO 
+		WHERE ID=#{ID}
+	
+	</delete>
+
+</mapper>
+ 
+ 
+ 

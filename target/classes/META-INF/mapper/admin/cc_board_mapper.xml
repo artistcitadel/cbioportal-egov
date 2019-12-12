@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+ 
+ 
+ <mapper namespace="boardMgmt">
+ 	<!-- 게시판 등록  -->
+	<insert id="insertBoardMgmt" parameterType="map">
+		INSERT INTO CC_BOARD_MGMT 
+		(                           
+			TITLE,                   	/* 게시판명 */
+			LIST_COUNT_DASHBOARD,       /* Dashboard에 표출되는 목록 개수 */
+			ATTACH_YN,             		/* 파일첨부 여부 */
+			SHOW_DASHBOARD_YN,			/* Dashboard 표출여부 */
+			ORDER_NUM,						/* 표출순서 */
+			WIDTH,						/* Dashboard에 표시되는 화면 넓이 (50%, 100%) */
+			UDT_DT,						/* 수정일자 */
+			UDT_ID,						/* 변경자 ID */
+			CRT_ID,						/* 생성자 ID */
+			CRT_DT,						/* 변경일자 */
+			AUTH_CODE,					/* 권한코드 */
+			SHOW_DASHBOARD_GBN 			/* 사용구분  */
+		)
+		VALUES
+		(
+			#{TITLE},
+			#{LIST_COUNT_DASHBOARD},
+			#{ATTACH_YN},
+			#{SHOW_DASHBOARD_YN},
+			#{ORDER_NUM},
+			#{WIDTH},
+			NOW(),
+			#{UDT_ID},
+			#{CRT_ID},
+			NOW(),
+			#{AUTH_CODE},
+			#{SHOW_DASHBOARD_GBN}
+		)
+	
+	</insert>
+	
+	<!-- 게시판 조회 -->
+	<select id="selectBoardMgmtList" parameterType="map" resultType="hashmap">
+		SELECT @RNUM := @RNUM + 1 AS NUM,
+				A.*
+		FROM
+		(
+			SELECT 
+				SEQ,
+				TITLE,
+				SHOW_DASHBOARD_YN,
+				LIST_COUNT_DASHBOARD,
+				ATTACH_YN,
+				ORDER_NUM,
+				WIDTH,
+				SHOW_DASHBOARD_GBN,
+				DATE_FORMAT(UDT_DT, "%Y-%m-%d") AS UDT_DT,
+				AUTH_CODE
+			FROM CC_BOARD_MGMT 
+			WHERE 1=1
+			<if test="SEARCH_VAL != null and SEARCH_VAL != ''">
+				<choose>
+					<when test="SEARCH_KEY == '001'">
+						AND SEQ LIKE CONCAT('%',#{SEARCH_VAL},'%')
+					</when>
+					<when test="SEARCH_KEY == '002'">
+						AND TITLE LIKE CONCAT('%',#{SEARCH_VAL},'%')
+					</when>
+					
+					<otherwise>
+						AND (
+								SEQ LIKE CONCAT('%',#{SEARCH_VAL},'%')
+								OR	TITLE LIKE CONCAT('%',#{SEARCH_VAL},'%')
+						)
+					
+					</otherwise>
+				</choose>
+			
+			</if>
+		)A ,
+		(SELECT @RNUM := 0 ) R
+		
+		ORDER BY ORDER_NUM ASC	
+	</select>
+	
+	<!-- 게시판 수정 -->
+	<update id="updateBoardMgmt" parameterType="map">
+		UPDATE   CC_BOARD_MGMT
+		SET		 TITLE 					= #{TITLE},
+				 LIST_COUNT_DASHBOARD	= #{LIST_COUNT_DASHBOARD},
+				 ATTACH_YN 				= #{ATTACH_YN},
+				 SHOW_DASHBOARD_YN 		= #{SHOW_DASHBOARD_YN},
+				 WIDTH 					= #{WIDTH},
+				 UDT_DT					= NOW(),
+				 UDT_ID 				= #{UDT_ID},
+				 AUTH_CODE 				= #{AUTH_CODE},
+				 SHOW_DASHBOARD_GBN 	= #{SHOW_DASHBOARD_GBN}
+		WHERE	1=1
+		AND 	SEQ = #{SEQ}
+	
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<delete id="deleteBoardMgmt" parameterType="map">
+		DELETE FROM CC_BOARD_MGMT
+		WHERE	SEQ = #{SEQ}
+	
+	</delete>
+	
+	<!-- 게시판 자기 order 번호 변경 -->
+	<update id="orderBoardMgmtUp" parameterType="map">
+		UPDATE	CC_BOARD_MGMT
+		SET		ORDER_NUM = #{ORDER_NUM_PARTNER}
+		WHERE	SEQ = #{SEQ}	
+	</update>
+	
+	<!-- 게시판 바뀔 order 번호 변경 -->
+	<update id="orderBoardMgmtDown" parameterType="map">
+		UPDATE   CC_BOARD_MGMT
+		SET		 ORDER_NUM = #{ORDER_NUM}
+		WHERE	SEQ = #{SEQ_PARTNER}	
+	</update>
+
+</mapper>
+ 
+ 
+ 

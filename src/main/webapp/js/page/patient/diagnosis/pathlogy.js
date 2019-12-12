@@ -5,9 +5,6 @@ function Pathlogy() {
     var util = new Util();
 
     self.init = function(findLevel, exist, callback){
-
-
-
         self.findLevel = findLevel;
         self.exist = exist;
         self.callback = callback;

@@ -540,23 +540,13 @@ body {
 
 
 .box-header {
-	 background-color: #242a30; 
-	/* background-color: #f5f5f5; */
- 	color: #fff; 
-	padding : 5px;
-/* 	color: #1b1b1b; */
-	font-weight: bold;
+	background-color: #242a30;
+	color: #fff;
 }
 
 
 .box-header > .fa, .box-header > .glyphicon, .box-header > .ion, .box-header .box-title {
 	font-size: 14px;
-	flex-grow: 1;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    text-align: center !important;
-    vertical-align: middle;
 }
 
 .main-header .sidebar-toggle {
@@ -579,9 +569,6 @@ body {
 	background: #2d353c !important;
 }
 
-.content {
-	padding: 16px;
-}
 .content-wrapper, .right-side {
 	background-color: #d9e0e7;
 }

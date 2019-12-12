@@ -14,7 +14,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Patient VIEW
+            Patient vieW
             <%--<small>Patient Description</small>--%>
         </h1>
         <ol class="breadcrumb">
@@ -544,7 +544,7 @@
 </div>
 
 
-<div id="spinner" style="zIndex:100;position:relative;display:none;">
+<%--<div id="spinner" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
         <div class="la-pacman la-3x" style="color: #79bbb5">
             <div></div>
@@ -555,7 +555,24 @@
             <div></div>
         </div>
     </div>
+</div>--%>
+<div id="spinner" style="zIndex:100;position:relative;display:none;">
+    <div class="centered" >
+        <div class="sk-spinner la-line-scale-pulse-out big">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <iframe id="ifr"
+            style="width:100%;position:relative;zIndex:100;border:none;"
+            src=""
+    >
+    </iframe>
 </div>
+
 
 <div id="spinner1" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
@@ -575,7 +592,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="treegrid"></div>
+                <%--<div id="treegrid"></div>--%>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr class="success">
+                            <th></th>
+                            <th>ID</th>
+                            <th>NAME</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cate_con">
+
+                        </tbody>
+                    </table>
+
             </div>
             <div class="modal-footer">
                 <button id="cateApply" class="btn btn-primary btn-block">Apply</button>
@@ -595,10 +626,13 @@
 <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
 <script src="<c:url value="/js/page/patient/diagnosis/labtest.js" />"></script>
 <script src="<c:url value="/js/page/patient/diagnosis/pathlogy.js" />"></script>
+<script src="<c:url value="/js/page/patient/diagnosis/specimen.js" />"></script>
+<script src="<c:url value="/js/page/patient/plotFilter.js" />"></script>
 <script src="<c:url value="/js/page/patient/event.js" />"></script>
 <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
+
 <script>
     var PATIENTID;
     var patients = '<%=request.getParameter("patient")%>';
@@ -637,6 +671,69 @@
         ds_cond.data = {"queryId": "selectPatientCategory"};
         ds_cond.callback = setCategory;
         action.selectList(ds_cond);
+        var CATE_TREE=[];
+
+        function setCategory(json){
+          CATE_TREE = json;
+          var txt = '';
+          console.log(" category rawdata is ", json);
+          var data  = util.arrayToTree(json);
+          console.log('category tree data ',data);
+
+          for (var i=0; i<data.length; i++) {
+              var checked = '';
+              if( _.findIndex(digcategory, function(o) {return o.idd === data[i].id;} ) !== -1){
+                  checked = 'checked';
+              }
+                  txt += '<tr>' ;
+                  if(data[i].data.length==0) txt +='<td><input type="checkbox" id="catechk_' + data[i].id + '" ' + checked + '/></td>' ;
+                  else txt += '<td class="active"></td>';
+                  txt+=  '<td>' + data[i].id + '</td>' +
+                      '<td>' + data[i].name + '</td>' +
+                      '</tr>';
+                  if(data[i].data.length>0){
+                    for(var j=0; j< data[i].data.length;j++){
+                            checked='';
+                        if( _.findIndex(digcategory, function(o) {return o.idd === data.id;} ) !== -1){
+                            checked = 'checked';
+                        }
+                        txt += '<tr>' +
+                            '<td><input type="checkbox" id="catechk_' + data[i].data[j].id + '" ' + checked + '/></td>' +
+                            '<td>&nbsp;&nbsp;&nbsp;' + data[i].data[j].id + '</td>' +
+                            '<td>&nbsp;&nbsp;&nbsp;' + data[i].data[j].name + '</td>' +
+                            '</tr>';
+                    }
+                }
+
+          }
+
+          //console.log('txt is ', txt);
+          $("#cate_con").empty();
+          $("#cate_con").append(txt);
+        }
+
+        $("#cate_con").on("click", "[id^='catechk_']",function (e) {
+            //alert($(this).prop("checked"));
+            var idd = this.id.split("_")[1];
+            var idx = _.findIndex(digcategory, function(o) {return o.idd === idd;} );
+            var pid = _.find(CATE_TREE, function(o){return o.id === idd;}).pid;
+            if(idx===-1 && $(this).prop("checked")){
+                var item = {};
+                item.idd=idd;
+                item.pid = pid;
+                digcategory.push(item);
+            }
+            if(idx !==-1 && !$(this).prop("checked")){
+               digcategory.splice(idx,1);
+            }
+        });
+
+        $("#cateApply").on("click", function(e){
+            localStorage.setItem("digcategory",JSON.stringify(digcategory));
+            $("#contactModal .close").click();
+            //console.log(digcategory);
+            location.reload();
+        });
 
         /*function setShow(data) {
             var c=0;
@@ -678,7 +775,7 @@
             return temp;
         }*/
 
-        function setCategory(json){
+        /*function setCategory(json){
 
            // var data =setShow(json);
             var data = json;
@@ -743,7 +840,7 @@
             $("#contactModal .close").click();
             location.reload();
         });
-
+*/
         var patientView = new TimeLine();
         patientView.init();
     });

@@ -6,7 +6,7 @@
 
 <mapper namespace="patient">
 
-    <select id="selectPatientMuList_temp" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientMuList_temp" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         SELECT MTTN_EXAM_RSLT_ID mttnExamRsltId,
         RESCH_PAT_ID reschPatId,
         GENE_EXAM_SPCN_ID geneExamSpcnId,
@@ -35,7 +35,7 @@
         WHERE RESCH_PAT_ID = #{patientId}
     </select>
 
-    <select id="selectPatientMutAxis" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientMutAxis" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         SELECT CHRM_NO chrmNo,
         GENE_ST_LOC_VAL geneStLocVal,
         GENE_END_LOC_VAL geneEndLocVal
@@ -43,7 +43,7 @@
         ORDER BY SORT_SEQ
     </select>
 
-    <select id="selectPatientMuList" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientMuList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
        SELECT LEFT(GROUP_CONCAT(BAS.MTTN_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)  AS geneExamSpcnId  -- 돌연변이검사결과ID (화면표시X)
      , BAS.TUMOR_NM               -- 암종 (화면표시X Annotation OncoKB 사용)
      , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq  -- Tumors
@@ -163,7 +163,7 @@
      , BAS.HGVSP_VAL
     </select>
 
-    <select id="selectPatientCNAList" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientCNAList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         /* Copy Number Alterations */
         SELECT LEFT(GROUP_CONCAT(BAS.CNV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)  AS geneExamSpcnId    -- 돌연변이검사결과ID (화면표시X)
         , BAS.TUMOR_NM          -- 암종 (화면표시X Annotation OncoKB 사용)
@@ -245,7 +245,7 @@
 
     </select>
 
-    <select id="selectPatientEXPRESSIONList" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientEXPRESSIONList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
        SELECT GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq -- Tumors
      , BAS.GENE_NM  geneNm               -- Gene
      , BAS.GENE_EXAM_MTH_NM geneExamMthNm        -- Methods
@@ -295,7 +295,7 @@
      , BAS.GENE_EXAM_MTH_NM
     </select>
 
-    <select id="selectPatientSVList" resultType="com.asan.patient.vo.PatientMut">
+    <select id="selectPatientSVList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         /* Structural Variations */
         SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)       AS GENE_EXAM_SPCN_ID   -- 돌연변이검사결과ID (화면표시X)
      , BAS.TUMOR_NM          -- 암종 (화면표시X Annotation OncoKB 사용)
@@ -363,7 +363,7 @@
      , BAS.GENE_EXAM_MTH_NM
         </select>
 
-        <select id="selectPatientMuCosmic" resultType="com.asan.patient.vo.PatientMut">
+        <select id="selectPatientMuCosmic" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         /*SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
         , MCS.MTTN_EXAM_RSLT_ID mttnExamRsltId
         , MCS.HGVSP_VAL hgvspVal               -- Protein Change

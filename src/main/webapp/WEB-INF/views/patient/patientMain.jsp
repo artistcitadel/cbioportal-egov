@@ -27,7 +27,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Title</h3>
+                <h3 class="box-title">선택</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -39,7 +39,7 @@
             </div>
             <div class="box-body">
 				<div class="container-fulid" >
-					<div class="row">
+					<%--<div class="row">
 						<div class="col-xs-2" style="width:5%;">
 							<h4><span class="label label-primary">chort</span></h4>
 						</div>
@@ -63,7 +63,7 @@
 								<span class="label label-default">gene1</span>
 							</h4>
 						</div>
-					</div>
+					</div>--%>
 
 
 					<div class="row">
