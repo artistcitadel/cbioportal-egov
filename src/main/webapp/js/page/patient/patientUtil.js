@@ -45,20 +45,14 @@ function Util() {
                 childrenOf = {};
             var item, id, parentId;
 
-            for (var i = 0; i< data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 item = data[i];
-                //console.log(item);
                 id = item[ID_KEY];
-                parentId = item[PARENT_KEY] || 0;
-                // every item may have children
+                parentId = item[PARENT_KEY] || '0';
                 childrenOf[id] = childrenOf[id] || [];
-                // init its children
                 item[CHILDREN_KEY] = childrenOf[id];
-                //console.log('patentId ', parentId);
-                if (parseInt(parentId) !== 0) {
-                    // init its parent's children object
+                if (parentId !== '0') {
                     childrenOf[parentId] = childrenOf[parentId] || [];
-                    // push it into its parent's children object
                     childrenOf[parentId].push(item);
                 } else {
                     tree.push(item);

@@ -357,9 +357,9 @@ function TimeLine() {
         console.log('chmName ', chmName);
         console.log(' COUNTMAP ', COUNTMAP);
         var temp_name = [];
+        var item = {};
         for (var i = 0; i < pdata.length; i++) {
             if (pdata[i].leaf) {
-                var item = {};
                 var p = _.filter(COUNTMAP, function (v) {
                     return v.time == getDpTime(pdata[i].time);
                 });
@@ -367,22 +367,37 @@ function TimeLine() {
                 // console.log(' position is ', p);
                 // console.log(' position is ', p['0'].axis);
                 //console.log('pdata[i].subject ', pdata[i].subject);
-                item.id = pdata[i].id;
-                item.time = pdata[i].time;
-
-                if( ( (i+1) < pdata.length) && item.id === pdata[i+1].id && item.time === pdata[i+1].time ) {
-                    ++i;
+                //console.log(( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time);
+                if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time ) {
                     temp_name.push(pdata[i]);
+                    continue;
                 }
                 else {
-                    temp_name=[];
-                    temp_name.push(pdata[i]);
+                    item = {};
                     item.axis = p['0'].axis;
                     item.count = p['0'].count;
-                    item.name =  //(pdata[i].subject===subject.lab_test) ? ( event.classify_labtest(pdata[i],UNIT) ) :
+                    if(temp_name.length>0) {
+                        var index = i-1;
+                        item.id = pdata[index].id;
+                        item.time = pdata[index].time;
+                        item.name =
+                            (pdata[index].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
+                            (pdata[index].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
+                            (pdata[index].subject === subject.pathlogy) ? (event.classify_pathlogy(temp_name, UNIT)) : '';
+                    console.log('pitem is ', item);
+                    pixelMap.push(item);
+                    console.log('pixelMap.push ', pixelMap);
+                    temp_name=[];
+                    }
+                    item.id = pdata[i].id;
+                    item.time = pdata[i].time;
+                    temp_name.push(pdata[i]);
+                    item.name =
                         (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                         (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
                         (pdata[i].subject === subject.pathlogy) ? (event.classify_pathlogy(temp_name, UNIT)) : '';
+                    temp_name=[];
+                    console.log('item is ', item);
                     pixelMap.push(item);
                 }
             }
@@ -511,7 +526,7 @@ function TimeLine() {
             var tnumber = _.round(Number(XSCALE));
             var pixelAry = _.filter(pixelMap, {'id': item.id});
 
-            //console.log('pixelAry is ', pixelAry);
+            console.log('pixelAry is ', pixelAry);
             //var tcnt = 0;
             var plen = pixelAry.length;
             for (var i = 0; i < pixelAry.length; i++) {
@@ -531,6 +546,7 @@ function TimeLine() {
                 // console.log('yrow ', yRow, h);
                 //var r = p.rect(position, yRow-4, pw, h);
                 //var r = p.circle(position, yRow - 4, pw);
+                //console.log(leftpadding, yRow-4, pw);
                 var r = p.circle(leftpadding, yRow - 4, pw);
                 // r.attr("fill", "#0f0");
                 // r.attr("stroke", "#0f0");
@@ -538,8 +554,8 @@ function TimeLine() {
 
                 /*r.attr("fill", "#ffa670");
                 r.attr("stroke", "#ffa670");*/
-                r.attr("fill", event.getPlotColor(item.subject));
-                r.attr("stroke", event.getPlotColor(item.subject));
+                r.attr("fill", event.getPlotColor(item.subject, item.id));
+                r.attr("stroke", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
@@ -723,21 +739,23 @@ function TimeLine() {
         if(!_.isUndefined(localStorage["digcategory"]))
             digcategory = JSON.parse(localStorage.getItem("digcategory"));
         console.log('digcategory ',digcategory);
+
         var pids = [];
-        // pids = _.filter(digcategory, function(v){
-        //     return v.pid==="0";
-        // });
-        pids = digcategory;
+        for(var i=0;i<digcategory.length;i++){
+            pids.push(digcategory[i].pid);
+        }
+        pids = _.uniq(pids);
+        console.log('pids ', pids);
         if(pids.length<1){
             util.hideLoader();
             return;
         }
         var run=0;
         for(var i=0;i<pids.length;i++,run++) {
-            console.log('pids[i].pid ',pids[i].pid);
+            console.log('pids[i] ',pids[i]);
             //(pids[i].idd===subject.lab_test) ? labtest.init(findLevel, exist, setLabtestData) : null;
-            (pids[i].pid===subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
-            (pids[i].pid===subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
+            (pids[i] === subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
+            (pids[i] === subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
         }
         console.log(run, pids.length);
         function setPathlogyData(data) {
@@ -747,7 +765,6 @@ function TimeLine() {
                 console.log('RAW ', RAW);
                 setTimeLine('C', RAW);
             }
-            ++run;
         }
 
         function setSpecimenData(data) {
@@ -757,7 +774,6 @@ function TimeLine() {
                 console.log('RAW ', RAW);
                 setTimeLine('C', RAW);
             }
-            ++run;
         }
         /*function setLabtestData(data){
             console.log('labtest data ', data);

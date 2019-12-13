@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patient">
+    <select id="selectBiopsyList" resultType="com.softcen.bigcen.med.patient.vo.Biopsy">
+      select 'BIOPSY' subject,
+       'biopsy' as id,
+       a.SPCN_COLEC_DT spcnColecDt, -- 검체체취일자
+       a.SPCN_NO spcnNo,  -- 검체번호
+       a.ORGAN_CD organCd , -- 장기코드
+       a.ORGAN_SITE_CD  organSiteCd, -- 장기부위코드
+       a.DP_SPCN_LOC_CD dpSpcnLocCd -- 병리검체위치코드
+from pmsdev.SSSPMPSCN a -- 병리검체의뢰기본
+join pmsdev.SSSPMORDR b on a.ORDR_NO = b.ORDR_NO and a.EXAM_SN = b.EXAM_SN
+limit 30
+    </select>
+</mapper>

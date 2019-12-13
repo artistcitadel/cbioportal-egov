@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patient">
+    <select id="selectSugeryList" resultType="com.softcen.bigcen.med.patient.vo.Sugery">
+       select 'SURGERY' subject,
+       'operation' id,
+        'operation' name,
+       a.OP_DT opDt, -- 수술일자
+       d.OPDP_CD_NM  opdpCdNm, -- 수술과
+       b.INHOSP_OP_CD  inhospOpCd, -- 원내수술코드,
+       c.INHOSP_OP_ENG_NM inhospOpEngNm -- 원내수술명
+    from pmsdev.OPSMMSURG a -- 수술일정기본
+    join pmsdev.OPSMMOPCD b -- 수술전후수술명기본
+      on a.OP_SCHD_NO = b.OP_SCHD_NO
+    join (select * from pmsdev.MSMACOPCD where USE_YN = 'Y') c -- 원내수술코드
+      on b.INHOSP_OP_CD = c.INHOSP_OP_CD
+    join pmsdev.OPSMCDEPT d -- 집도과코드
+      on a.OPDP_CD = d.OPDP_CD
+    where a.RESCH_PAT_ID != #{patientId}
+    limit 30
+    </select>
+</mapper>

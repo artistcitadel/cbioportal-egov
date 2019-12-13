@@ -635,7 +635,7 @@
 
 <script>
     var PATIENTID;
-    var patients = '<%=request.getParameter("patient")%>';
+    var patients = '<%=request.getParameter("RESCH_PAT_ID")%>';
     var pages = '<%=request.getParameter("pages")%>';
     var patientId = '<%=request.getParameter("patientId")%>';
     PATIENTID = patientId;
@@ -694,13 +694,13 @@
                   if(data[i].data.length>0){
                     for(var j=0; j< data[i].data.length;j++){
                             checked='';
-                        if( _.findIndex(digcategory, function(o) {return o.idd === data.id;} ) !== -1){
+                        if( _.findIndex(digcategory, function(o) {return o.idd === data[i].data[j].id;} ) !== -1){
                             checked = 'checked';
                         }
                         txt += '<tr>' +
                             '<td><input type="checkbox" id="catechk_' + data[i].data[j].id + '" ' + checked + '/></td>' +
-                            '<td>&nbsp;&nbsp;&nbsp;' + data[i].data[j].id + '</td>' +
-                            '<td>&nbsp;&nbsp;&nbsp;' + data[i].data[j].name + '</td>' +
+                            '<td>&nbsp;&nbsp;&nbsp;&nbsp;' + data[i].data[j].id + '</td>' +
+                            '<td>&nbsp;&nbsp;&nbsp;&nbsp;' + data[i].data[j].name + '</td>' +
                             '</tr>';
                     }
                 }
