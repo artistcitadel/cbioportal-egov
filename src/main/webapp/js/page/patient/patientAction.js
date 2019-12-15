@@ -3,6 +3,7 @@
 function Action() {
     var self = this;
     var gvSERVER  = gvServer;
+    gvSERVER = '/pmp';
     self.getPatientList = function (props) {
         $.ajax({
             type: "get",

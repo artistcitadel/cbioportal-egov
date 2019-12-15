@@ -18,6 +18,12 @@
     height: 115px;
     width: 115px;
 }
+.centered > .sk-spinner1 {
+    background: #5e586b;;
+    padding: 15px;
+    height: 115px;
+    width: 115px;
+}
 .centered .color > div {
     color: #fff !important;
 }

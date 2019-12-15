@@ -158,7 +158,8 @@ function Util() {
         if(UNIT==='y')return dat.substring(0,4);*/
         if(UNIT==='d')return self.subtractzero(dat.substring(6,8))+'일';
         if(UNIT==='m')return self.subtractzero(dat.substring(4,6))+'월';
-        if(UNIT==='y')return dat.substring(0,4)+'년';
+        // if(UNIT==='y')return dat.substring(0,4)+'년';
+        if(UNIT==='y')return dat.substring(0,4);
     };
     /*function dunformat(dat){
     console.log(UNIT, dat);
@@ -177,6 +178,7 @@ function Util() {
     self.hideLoader = function(){
         $("#spinner").delay(800).hide();
         $.unblockUI();
+        //$('.content-wrapper').show();
     };
     self._isUndefined = function(data){
         return !!(_.isUndefined(data) || data == null);

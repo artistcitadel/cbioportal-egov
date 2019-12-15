@@ -192,7 +192,7 @@
 	<!-- /.content -->
 	<script src="<c:url value="/js/page/patient/patientMain.js" />"></script>
 	<script src="<c:url value="/js/page/patient/pagination.js" />"></script>
-	<form name="pform" id="pform" method="post" action="/patient/patientView">
+	<form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
 		<input type="hidden" name="patient" id="patient" />
 	</form>
 </div>

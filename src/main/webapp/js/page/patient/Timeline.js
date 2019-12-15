@@ -61,9 +61,9 @@ function TimeLine() {
     }
 
     function moveMutation(){
-        // var pt = new PatientViewMutationTable();
-        // pt.init();
-        // ISROUNDMUTATION=true;
+        var pt = new PatientViewMutationTable();
+        pt.init();
+        ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {
         if(data.length<1){
@@ -262,8 +262,15 @@ function TimeLine() {
                 var txt = paper.text(m[i], 10, util.dformat(UNIT, chmName[txtCnt]));
                 txt.attr({"cursor": "pointer"});
                 //txt.attr("font-family", "Malgun Gothic");
-                txt.attr("font-family", "Nanum Gothic, sans-serif");
-                txt.attr("fill", "#5e586b");
+                // txt.attr("font-family", "Nanum Gothic, sans-serif");
+                // txt.attr("fill", "#5e586b");
+                txt.attr({
+                    'text-anchor': 'center',
+                    'fill': 'black',
+                    'cursor': 'pointer',
+                    'font-size': '11',
+                    'font-family': 'Nanum Gothic, sans-serif'
+                });
                 txt.data({id: chmName[txtCnt]});
                 //addToolTip(txt.node, '클릭하여 확대', 100, '');
                 txt.click(function () {
@@ -363,42 +370,58 @@ function TimeLine() {
                 var p = _.filter(COUNTMAP, function (v) {
                     return v.time == getDpTime(pdata[i].time);
                 });
+                //console.log(' p is ',p);
                 //console.log(getDpTime(pdata[i].time));
                 // console.log(' position is ', p);
                 // console.log(' position is ', p['0'].axis);
                 //console.log('pdata[i].subject ', pdata[i].subject);
                 //console.log(( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time);
-                if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time ) {
-                    temp_name.push(pdata[i]);
+                //if(pdata[0].subject ==='PATHOLOGY_EXAM' && ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
+                if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
+                    temp_name.push(pdata[i]);temp_name.push(pdata[i+1]);
                     continue;
                 }
                 else {
+                    console.log('temp_name.length ',temp_name.length);
                     item = {};
                     item.axis = p['0'].axis;
                     item.count = p['0'].count;
-                    if(temp_name.length>0) {
-                        var index = i-1;
-                        item.id = pdata[index].id;
-                        item.time = pdata[index].time;
+                    if(temp_name.length>1) {
+                        //console.log('temp_name',temp_name[0].subject , subject.sugery);
+                        item.id = temp_name[0].id;
+                        item.time = temp_name[0].time;
                         item.name =
-                            (pdata[index].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
-                            (pdata[index].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
-                            (pdata[index].subject === subject.pathlogy) ? (event.classify_pathlogy(temp_name, UNIT)) : '';
-                    console.log('pitem is ', item);
+                            (temp_name[0].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
+                            (temp_name[0].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
+                            (temp_name[0].subject === subject.pathology) ? (event.classify_pathology(temp_name, UNIT)) :
+                            (temp_name[0].subject === subject.sugery) ? (event.classify_sugery(temp_name, UNIT)) :
+                            (temp_name[0].subject === subject.biopsy) ? (event.classify_biopsy(temp_name, UNIT)) :
+                            (temp_name[0].subject === subject.imaging) ? (event.classify_image(temp_name, UNIT)) : '';
+                    item.stroke = Math.ceil(temp_name.length/2);
+                    // console.log('item.name ', item.name);
+                    // console.log('pitem is ', item);
                     pixelMap.push(item);
                     console.log('pixelMap.push ', pixelMap);
                     temp_name=[];
                     }
-                    item.id = pdata[i].id;
-                    item.time = pdata[i].time;
-                    temp_name.push(pdata[i]);
-                    item.name =
-                        (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
-                        (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
-                        (pdata[i].subject === subject.pathlogy) ? (event.classify_pathlogy(temp_name, UNIT)) : '';
-                    temp_name=[];
-                    console.log('item is ', item);
-                    pixelMap.push(item);
+                    else {
+                        temp_name.push(pdata[i]);
+                        item.id = pdata[i].id;
+                        item.time = pdata[i].time;
+                        temp_name.push(pdata[i]);
+                        item.name =
+                            (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
+                            (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
+                            (pdata[i].subject === subject.pathology) ? (event.classify_pathology(temp_name, UNIT)) :
+                            (pdata[i].subject === subject.sugery) ? (event.classify_sugery(temp_name, UNIT)) :
+                            (pdata[i].subject === subject.biopsy) ? (event.classify_biopsy(temp_name, UNIT)) :
+                            (pdata[i].subject === subject.imaging) ? (event.classify_image(temp_name, UNIT)) : '';
+
+                        console.log('item is ', item);
+                        item.stroke = temp_name.length;
+                        pixelMap.push(item);
+                        temp_name=[];
+                    }
                 }
             }
         }
@@ -434,12 +457,14 @@ function TimeLine() {
         console.log(HMIN);
         d = util.setDateTitle(UNIT, d);
         d = "" + d + "";
-        if (UNIT != 'y') {
+        //alert(d);
+        if (UNIT === 'm') {
             var d1 = HMAX;
             d1 = util.setDateTitle(UNIT, d1);
             d1 = "" + d1 + "";
-            //var head = d+" ~ "+d1;
-            var head = d;
+            //alert(d1);
+            var head = d+" ~ "+d1;
+            // var head = d;
             $("#dhead").html(head);
             //$("#dhead").html(d);
         }
@@ -554,9 +579,10 @@ function TimeLine() {
 
                 /*r.attr("fill", "#ffa670");
                 r.attr("stroke", "#ffa670");*/
+                //console.log('stroke is ',pixelAry[i].stroke);
                 r.attr("fill", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke", event.getPlotColor(item.subject, item.id));
-                r.attr("stroke-width", 1);
+                r.attr("stroke-width", pixelAry[i].stroke);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
                 r.hover(function () {
@@ -620,7 +646,7 @@ function TimeLine() {
                     setTreeNode(label.id);
                 }
             });
-            if(lbl.length>10)addToolTip(t.node, label.name, 100, '','qtip-light');
+            if(lbl.length>12)addToolTip(t.node, label.name, 100, '','qtip-light');
 
             //if(ar!=='')underlineText(t,p);
 
@@ -730,65 +756,78 @@ function TimeLine() {
         var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
 
 
-        var labtest = new Labtest();
-        var pathlogy = new Pathlogy();
+        var pathology = new Pathology();
         var specimen = new Specimen();
-        //var pathlogyD=[],labtestD=[];
+        var sugery = new Sugery();
+        var biopsy = new Biopsy();
+        var image = new Image();
 
-        var digcategory=[];
-        if(!_.isUndefined(localStorage["digcategory"]))
-            digcategory = JSON.parse(localStorage.getItem("digcategory"));
-        console.log('digcategory ',digcategory);
-
+        // var digcategory=[];
+        // if(!_.isUndefined(localStorage["digcategory"]))
+        //     digcategory = JSON.parse(localStorage.getItem("digcategory"));
+        // console.log('digcategory ',digcategory);
+        //
+        // var pids = [];
+        // for(var i=0;i<digcategory.length;i++){
+        //     pids.push(digcategory[i].pid);
+        // }
+        // pids = _.uniq(pids);
+        // console.log('pids ', pids);
+        // if(pids.length<1){
+        //     util.hideLoader();
+        //     return;
+        // }
+        // console.log(pids.length);
         var pids = [];
-        for(var i=0;i<digcategory.length;i++){
-            pids.push(digcategory[i].pid);
-        }
-        pids = _.uniq(pids);
-        console.log('pids ', pids);
-        if(pids.length<1){
-            util.hideLoader();
-            return;
-        }
+        pids.push('SPECIMEN');
+        pids.push('SUGERY');
+        pids.push('BIOPSY');
+        pids.push('PATHOLOGY_EXAM');
+        pids.push('IMAGING');
         var run=0;
-        for(var i=0;i<pids.length;i++,run++) {
-            console.log('pids[i] ',pids[i]);
-            //(pids[i].idd===subject.lab_test) ? labtest.init(findLevel, exist, setLabtestData) : null;
-            (pids[i] === subject.pathlogy) ? pathlogy.init(findLevel, exist, setPathlogyData) : null;
-            (pids[i] === subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
-        }
-        console.log(run, pids.length);
-        function setPathlogyData(data) {
-            console.log('pathlogy data ', data);
+        // for(var i=0;i<pids.length;i++) {
+        //     (pids[i] === subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
+        //     (pids[i] === subject.sugery) ? sugery.init(findLevel, exist, setSugeryData) : null;
+        //     (pids[i] === subject.biopsy) ? biopsy.init(findLevel, exist, setBiopsyData) : null;
+        //     (pids[i] === subject.pathology) ? pathology.init(findLevel, exist, setPathlogyData) : null;
+        //     (pids[i] === subject.imaging) ? image.init(findLevel, exist, setImageData) : null;
+        // }
+        specimen.init(findLevel, exist, setSpecimenData);
+        function setRound(data){
+            ++run;
+            console.log('run ', run, pids.length);
             RAW = _.union(RAW, data);
             if(run===pids.length) {
-                console.log('RAW ', RAW);
+                console.log('initRAW ', RAW);
                 setTimeLine('C', RAW);
             }
         }
-
+        //console.log(run, pids.length);
         function setSpecimenData(data) {
-            console.log('specimen data ', data);
-            RAW = _.union(RAW, data);
-            if(run===pids.length) {
-                console.log('RAW ', RAW);
-                setTimeLine('C', RAW);
-            }
+            console.log('call specimen');
+            setRound(data);
+            sugery.init(findLevel, exist, setSugeryData)
         }
-        /*function setLabtestData(data){
-            console.log('labtest data ', data);
-            RAW = _.union(RAW, data);
-            if(run===pids.length) {
-                console.log('RAW ', RAW);
-                setTimeLine('C', RAW);
-            }
-        }*/
+        function setSugeryData(data) {
+            console.log('call sugery');
+            setRound(data);
+            biopsy.init(findLevel, exist, setBiopsyData)
+        }
+        function setBiopsyData(data) {
+            console.log('call biopsy');
+            setRound(data);
+            pathology.init(findLevel, exist, setPathlogyData)
+        }
+        function setPathlogyData(data) {
+            console.log('call pathology');
+            setRound(data);
+            image.init(findLevel, exist, setImageData)
+        }
+        function setImageData(data) {
+            console.log('call image');
+            setRound(data);
+        }
 
-
-        /*var ds_cond = {};
-        ds_cond.data = {"queryId": "selectLabTestHrc", "patientId": PATIENTID};
-        ds_cond.callback = setClassifyHrc;
-        action.selectList(ds_cond);*/
     }
 
 

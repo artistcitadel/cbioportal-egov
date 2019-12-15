@@ -14,11 +14,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Patient vieW
+            Patient Chart
             <%--<small>Patient Description</small>--%>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fa fa-home"></i> </a></li>
             <li><a href="#">Patient</a></li>
             <li class="active">Patient View</li>
         </ol>
@@ -37,7 +37,7 @@
                 <div id="container">
                     <div class="team">
                         <div class="member">
-                            <img class="avatar" src="/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
+                            <img class="avatar" src="/pmp/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
                             <div class="name" id="patientname">Hong kil dong</div>
                             <div class="location"><%--Seoul--%></div>
                             <p class="bio">
@@ -74,7 +74,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Chart</h3>
+                <h3 class="box-title">Time Line</h3>
 
                 <div class="box-tools pull-right">
                     <%--<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -556,7 +556,7 @@
         </div>
     </div>
 </div>--%>
-<div id="spinner" style="zIndex:100;position:relative;display:none;">
+<%--<div id="spinner" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
         <div class="sk-spinner la-line-scale-pulse-out big">
             <div></div>
@@ -571,6 +571,31 @@
             src=""
     >
     </iframe>
+</div>--%>
+
+<div id="spinner" style="zIndex:100;position:relative;display:none;">
+    <div class="centered" >
+        <div class="la-line-spin-fade-rotating la-dark la-3x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    <%--<div class="sk-spinner1 la-line-spin-fade la-3x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>--%>
+    </div>
 </div>
 
 
@@ -624,9 +649,11 @@
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
 <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
-<script src="<c:url value="/js/page/patient/diagnosis/labtest.js" />"></script>
-<script src="<c:url value="/js/page/patient/diagnosis/pathlogy.js" />"></script>
+<script src="<c:url value="/js/page/patient/diagnosis/pathology.js" />"></script>
 <script src="<c:url value="/js/page/patient/diagnosis/specimen.js" />"></script>
+<script src="<c:url value="/js/page/patient/diagnosis/image.js" />"></script>
+<script src="<c:url value="/js/page/patient/diagnosis/sugery.js" />"></script>
+<script src="<c:url value="/js/page/patient/diagnosis/biopsy.js" />"></script>
 <script src="<c:url value="/js/page/patient/plotFilter.js" />"></script>
 <script src="<c:url value="/js/page/patient/event.js" />"></script>
 <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
@@ -635,7 +662,7 @@
 
 <script>
     var PATIENTID;
-    var patients = '<%=request.getParameter("RESCH_PAT_ID")%>';
+    var patients = '<%=request.getParameter("RESCH_PAT_ID")==null ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';
     var pages = '<%=request.getParameter("pages")%>';
     var patientId = '<%=request.getParameter("patientId")%>';
     PATIENTID = patientId;
@@ -663,6 +690,20 @@
         var digcategory=[];
         if(!_.isUndefined(localStorage["digcategory"]))
           digcategory = JSON.parse(localStorage.getItem("digcategory"));
+        else{
+            var item = {};
+            item.idd = 'TISSUE';item.pid='SPECIMEN';digcategory.push(item);item = {};
+            item.idd = 'BRC';item.pid='SPECIMEN';digcategory.push(item);item = {};
+            item.idd = 'IHC';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
+            item.idd = 'ISH';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
+            item.idd = 'PCR';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
+            item.idd = 'SUGERY';item.pid='SUGERY';digcategory.push(item);item = {};
+            item.idd = 'BIOPSY';item.pid='BIOPSY';digcategory.push(item);item = {};
+            item.idd = 'CT';item.pid='IMAGING';digcategory.push(item);item = {};
+            item.idd = 'MRI';item.pid='IMAGING';digcategory.push(item);item = {};
+            item.idd = 'PET-CT';item.pid='IMAGING';digcategory.push(item);item = {};
+            localStorage.setItem("digcategory",JSON.stringify(digcategory));
+        }
         console.log('digcategory ', digcategory);
         var cindex = [];
         var action = new Action();

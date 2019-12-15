@@ -11,7 +11,7 @@ function Specimen() {
         self.findLevel = findLevel;
         self.exist = exist;
         self.callback = callback;
-        if(plotFilter.searchPlot(subject.tissue) !==-1) {
+        if(plotFilter.searchPlotId(subject.tissue) !==-1) {
             var ds_cond = {};
             ds_cond.data = {"queryId": "selectTissueList", "patientId": PATIENTID};
             ds_cond.callback = setTissue;
@@ -40,7 +40,7 @@ function Specimen() {
             setSpecimenHeader();
             tissue_setData(json);
         }
-        if (plotFilter.searchPlot(subject.brc) !== -1) {
+        if (plotFilter.searchPlotId(subject.brc) !== -1) {
             round_brc();
         }
     }
