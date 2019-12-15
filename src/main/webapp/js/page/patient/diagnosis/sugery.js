@@ -36,10 +36,7 @@ function Sugery() {
     }
     var setSugery = function(json) {
         console.log('setSugery ',json.length);
-        if(json.length>0){
-            // setHeader();
-            sugery_setData(json);
-        }
+          sugery_setData(json);
     }
 
 

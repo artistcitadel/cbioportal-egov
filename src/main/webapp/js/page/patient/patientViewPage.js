@@ -113,6 +113,7 @@ $(document).ready(function () {
     }
     function setPatientDescription(json){
         console.log('patientDesc ', json);
+        if(json.length<1)return;
         var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
         var sex = json[0].aboBlty === 'M' ? 'Male' :'Female';
 

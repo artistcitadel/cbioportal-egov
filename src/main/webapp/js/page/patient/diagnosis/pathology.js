@@ -38,8 +38,8 @@ function Pathology() {
         // console.log('setPath ',json.length);
         if(json.length>0){
             setPathologyHeader();
-            path_setData(json);
         }
+        path_setData(json);
     }
 
 

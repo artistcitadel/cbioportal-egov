@@ -36,10 +36,7 @@ function Biopsy() {
     }
     var setBiopsy = function(json) {
         console.log('setBiopsy ',json.length);
-        if(json.length>0){
-            // setHeader();
-            biopsy_setData(json);
-        }
+          biopsy_setData(json);
     }
 
 
