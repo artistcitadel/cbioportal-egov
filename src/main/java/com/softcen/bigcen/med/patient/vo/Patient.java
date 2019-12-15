@@ -150,4 +150,42 @@ public class Patient extends RkCmmnVO {
     private String subject;
     private String recpDt;
     private String sampleId;
+
+    private String sex;
+
+  public String getSex() {
+    return sex;
+  }
+
+  public void setSex(String sex) {
+    this.sex = sex;
+  }
+
+  public String getAboBlty() {
+    return aboBlty;
+  }
+
+  public void setAboBlty(String aboBlty) {
+    this.aboBlty = aboBlty;
+  }
+
+  public String getDeathYn() {
+    return deathYn;
+  }
+
+  public void setDeathYn(String deathYn) {
+    this.deathYn = deathYn;
+  }
+
+  public String getDeathReason() {
+    return deathReason;
+  }
+
+  public void setDeathReason(String deathReason) {
+    this.deathReason = deathReason;
+  }
+
+  private String aboBlty;
+    private String deathYn;
+    private String deathReason;
 }

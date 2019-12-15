@@ -287,7 +287,7 @@
                             ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
                         , ( SELECT @ROWNUM := 0 ) RNM
                 ) SEQ
-          WHERE GEX.RESCH_PAT_ID = '4176755120'  -- 연구환자ID (조회조건)
+          WHERE GEX.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
             AND GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
        ) BAS
  GROUP BY

@@ -12,6 +12,7 @@ function Noop(){
 }
 
 $(document).ready(function () {
+    getPatientDescription();
     var $movable = $('<div id="movable"></div>')
         .appendTo('body');
     var bioBaseStyles = {
@@ -102,4 +103,22 @@ $(document).ready(function () {
         }).promise().done(showBio);
     }
     // $('div.member').find('img').trigger('click');
+
+    function getPatientDescription(){
+        var action = new Action();
+        var ds_cond = {};
+        ds_cond.data = {"queryId": "selectPatientDescription", "patientId": PATIENTID};
+        ds_cond.callback = setPatientDescription;
+        action.selectList(ds_cond);
+    }
+    function setPatientDescription(json){
+        console.log('patientDesc ', json);
+        var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
+        var sex = json[0].aboBlty === 'M' ? 'Male' :'Female';
+
+        $("#patientage").text(json[0].age + ' years old');
+
+        var txt = sex + ', ' + biocondition + ', ' +json[0].deathReason+ ', ' + json[0].cancerType;
+        $('.bio').html(txt);
+    }
  });

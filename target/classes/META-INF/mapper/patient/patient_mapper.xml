@@ -145,6 +145,20 @@
  	</select>
 
 
+    <select id="selectPatientDescription" resultType="com.softcen.bigcen.med.patient.vo.Patient">
+        SELECT
+        RESCH_PAT_ID reschPatId,
+        SEX_CD  sex,
+        AGE age,
+        ABO_BLTY aboBlty,
+        DEATH_YN deathYn,
+        IFNULL(INHOSP_DEATH_DIAG_NM,'') deathReason
+        FROM patients
+        WHERE RESCH_PAT_ID = #{patientId}
+
+
+ 	</select>
+
 </mapper>
 
 

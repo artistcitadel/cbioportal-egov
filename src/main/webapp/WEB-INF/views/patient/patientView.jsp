@@ -38,7 +38,7 @@
                     <div class="team">
                         <div class="member">
                             <img class="avatar" src="/pmp/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
-                            <div class="name" id="patientname">Hong kil dong</div>
+                            <div class="name" id="patientage"></div>
                             <div class="location"><%--Seoul--%></div>
                             <p class="bio">
                                 <%--kil dong is consultant in south seoul , specializing in bio application devlopmemnt Known for his passin for ....--%>
