@@ -10,7 +10,7 @@ function Sugery() {
         self.findLevel = findLevel;
         self.exist = exist;
         self.callback = callback;
-        if(plotFilter.searchPlot(subject.sugery) !==-1) {
+        if(plotFilter.searchPlot(subject.surgery) !==-1) {
             var ds_cond = {};
             ds_cond.data = {"queryId": "selectSugeryList", "patientId": PATIENTID};
             ds_cond.callback = setSugery;
@@ -22,10 +22,10 @@ function Sugery() {
 
     var setHeader = function(){
         var htem = {};
-        htem.id = TITLE.sugery;
+        htem.id = TITLE.surgery;
         htem.pid = "0";
-        htem.name = 'Sugery';
-        htem.subject = subject.sugery;
+        htem.name = 'Surgery';
+        htem.subject = subject.surgery;
         htem.level = 1;
         htem.show = true;
         htem.folder = false;
@@ -35,8 +35,9 @@ function Sugery() {
         crow.push(htem);
     }
     var setSugery = function(json) {
-        console.log('setSugery ',json.length);
-          sugery_setData(json);
+        console.log('setSugery ',json.length); 
+            sugery_setData(json);
+       
     }
 
 
@@ -44,7 +45,7 @@ function Sugery() {
     function sugery_setData(data) {
         for (var i = 0; i < data.length; i++) {
             var item = {};
-            item.subject = subject.sugery;
+            item.subject = subject.surgery;
             item.leaf = true;
             item.time = data[i].time;
             if (util._isUndefined(data[i].time))
@@ -67,7 +68,7 @@ function Sugery() {
 
                 crow.push(item);
         }
-        console.log('sugery_setData => ', crow);
+        console.log('surgery_setData => ', crow);
         disposer();
     }
 

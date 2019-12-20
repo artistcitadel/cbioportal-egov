@@ -9,16 +9,19 @@ function GenomicOverview() {
         action.selectPatientMuList(ds_cond);
     }
     self.init = function(mutation) {
+        setWindowSize();
         action = new Action();
         util = new Util();
-        self.mutObjData = mutation;
+        self.mutObjData = mutation['MUTATIONS'];
+        self.cnaObjData = mutation['CNV'];
+        self.stObjData = mutation['SV'];
         getXtAxis();
     }
 
+    self.ROW = 0;
     var plotChromosomes = function(genomeRef, p) {
         var yRuler = self.rowMargin+self.ticHeight;
         drawLine(self.wideLeftText,yRuler,self.wideLeftText+self.GenomeWidth,yRuler,p,'#000',1);
-
         for (var i=1; i<genomeRef.length; i++) {
                 var xt = loc2xpixil(i,0);
                 console.log(' xt is ', xt);
@@ -26,11 +29,14 @@ function GenomicOverview() {
 
                 var m = middle(i,genomeRef);
                 p.text(m,yRuler-self.rowMargin,chmName(i));
+                self.chmName.push(chmName(i));
 
         }
        drawLine(self.wideLeftText+self.GenomeWidth,yRuler,self.wideLeftText+self.GenomeWidth,self.rowMargin,p,'#000',1);
-       getMutationPixelMap(p,0);// mut,sv,
+
+       getMutationPixelMap(p, self.ROW);// mut,sv,
     }
+
     var middle = function(chm, genomeRef) {
         var loc = genomeRef[chm]/2;
         return loc2xpixil(chm,loc);
@@ -83,16 +89,16 @@ function GenomicOverview() {
         self.cnTh = [0.2,1.5];
         self.cnLengthTh = 50000;
         self.canvasWidth = self.width;
-        self.wideLeftText = 25;
+        self.wideLeftText = 37;
         self.wideRightText = 35;
-        self.pixelMap = [];
+        // self.pixelMap = [];
         console.log('self.canvasWidth ',self.canvasWidth , self.wideLeftText, self.wideRightText);
         self.GenomeWidth = self.canvasWidth-self.wideLeftText-self.wideRightText;
         console.log(' self.genomewidth ',self.GenomeWidth);
 
         self.LASTYPOS;
         self.YPOS = 0;
-        self.paper = Raphael("genomicOverviewTracksContainer1", self.width, 115);
+        self.paper = Raphael("genomicOverviewTracksContainer1", self.width, 215);
         self.paper.scale({zoom: true});
         //var t = paper.text(151, 20, "Raphaël\nkicks\nbutt!");
         self.genomeRef = [];
@@ -101,10 +107,17 @@ function GenomicOverview() {
             self.genomeRef.push(Number(xtjson[i].geneEndLocVal));
         }
         self.total = _.sum(self.genomeRef);
-
         plotChromosomes(self.genomeRef,self.paper);
 
     }
+
+    var xGenePanelIcon = function() {
+        return xRightText() + 30;
+    };
+    var xGenePanelIconText = function() {
+        return xRightText() + 30 + self.wideGenePanelIcon/2;
+    };
+
 
     var drawLine = function(x1, y1, x2, y2, p, cl, width) {
         console.log("self.YPOS " , x1, y1, x2, y2);
@@ -211,26 +224,12 @@ function GenomicOverview() {
         if (isNaN(chm) || chm < 1 || chm > 24) return null;
         return parseInt(chm);
     }
-    var getMutationPixelMap = function(p,row){
-        console.log('getMutationPixelMap called');
-        var mutObj = self.mutObjData;
-        console.log('mutObj ', mutObj);
-        for(var i=0; i<mutObj.length; i++){
-            var chm = translateChm(mutObj[i].chrnNo);
-            console.log('start end ',mutObj[i].geneVariStLocVal, mutObj[i].geneVariEndLocVal,  (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal) )/2);
-            var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal) )/2));
-            console.log('x is ',x);
-            var xBin = x - x%3;
-            if (self.pixelMap[xBin] == null) self.pixelMap[xBin] = [];
 
-            self.pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].hgvspVal);
-        }
-        console.log('GenomicOverview pixelMap ', self.pixelMap);
-
+    var drawPlot = function(pixelMap, p ,row, len,seq){
         var maxCount = 5; // set max height to 5 mutations
 
         var yRow = self.yRow(row)+self.rowHeight;
-        $.each(self.pixelMap, function(i, arr) {
+        $.each(pixelMap, function(i, arr) {
             var pixil = i;
             if (arr) {
                 console.log( 'arr ',arr);
@@ -241,16 +240,226 @@ function GenomicOverview() {
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
-                self.addToolTip(r.node, arr.join("</br>"), 100, '');
+                addToolTip(r.node, arr.join("</br>"), 100, '');
             }
         });
-        var label = "MUT";
-        var t = p.text(12,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
-        var t = p.text(xRightText(),yRow-self.rowHeight/2,mutObj.length).attr({'text-anchor': 'start','font-weight': 'bold'});
+        var label = "MUT("+seq+")";
+        var t = p.text(18,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+        t = p.text(xRightText(),yRow-self.rowHeight/2,len).attr({'text-anchor': 'start','font-weight': 'bold'});
         underlineText(t,p);
         var tip = "Number of mutation events.";
-        self.addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});
+        addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});
     }
+
+    var getMutationPixelMap = function(p,row) {
+        console.log('getMutationPixelMap called');
+        var mutObj = self.mutObjData;
+        console.log('mutObj ', mutObj);
+
+
+        var spcnSeq = [];
+        for (var i = 0; i < mutObj.length; i++) {
+            var examSeq = mutObj[i].geneExamSpcnSeq;
+            (examSeq.indexOf(',') === -1) ?
+                spcnSeq.push(examSeq) :
+                (
+                    _.forEach(examSeq.split(","), function (v) {
+                        spcnSeq.push(v)
+                    })
+                )
+        }
+        spcnSeq = _.uniq(spcnSeq);
+        console.log('MUT spcnSeq ',spcnSeq);
+
+        _.forEach(spcnSeq, function (v) {
+            console.log(' vis ', v);
+            var pixelMap = [];
+            var len = 0;
+            for (var i = 0; i < mutObj.length; i++) {
+                if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
+                    var chm = translateChm(mutObj[i].chrnNo);
+                    console.log('start end ', mutObj[i].geneVariStLocVal, mutObj[i].geneVariEndLocVal, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2);
+                    var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2));
+                    console.log('x is ', x);
+                    var xBin = x - x % 3;
+                    if (pixelMap[xBin] == null) pixelMap[xBin] = [];
+                    pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].hgvspVal);
+                    ++len;
+                }
+            }
+
+        console.log('GenomicOverview pixelMap ', pixelMap);
+        drawPlot(pixelMap, p, row, len, v);
+         ++row;
+         len=0;
+
+        });
+
+        getCnaPixelMap(p, row);// mut,sv,
+    }
+
+
+    var getCnaPixelMap = function(p,row) {
+        row-=0.5;
+        console.log('getCnaPixelMap called');
+        var cnaObj = self.cnaObjData;
+        console.log('cnaObj ', cnaObj);
+
+        var spcnSeq = [];
+        for (var i = 0; i < cnaObj.length; i++) {
+            var examSeq = cnaObj[i].geneExamSpcnSeq;
+            (examSeq.indexOf(',') === -1) ?
+                spcnSeq.push(examSeq) :
+                (
+                    _.forEach(examSeq.split(","), function (v) {
+                        spcnSeq.push(v)
+                    })
+                )
+        }
+        spcnSeq = _.uniq(spcnSeq);
+        console.log('CNA spcnSeq ',spcnSeq);
+
+        _.forEach(spcnSeq, function (v) {
+            console.log(' vis ', v);
+            var pixelMap = [];
+            var len = 0;
+            var genomeMeasured = 0;
+            var genomeAltered = 0;
+            var yRow = self.yRow(row)+self.rowHeight;
+            for (var i = 0; i < cnaObj.length; i++) {
+                // if (cnaObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
+                var chm = translateChm(cnaObj[i].chrnNo);
+                var start = Number(cnaObj[i].geneVariStLocVal);
+                var end = Number(cnaObj[i].geneVariEndLocVal);
+                var segMean = Number(cnaObj[i].segCol);
+                genomeMeasured += end-start;
+
+                if (Math.abs(segMean)<self.cnTh[0]) return;
+                if (end-start<self.cnLengthTh) return; //filter cnv
+                genomeAltered += end-start;
+
+                var x1 = loc2xpixil(chm,start);
+                var x2 = loc2xpixil(chm,end);
+                var r  = p.rect(x1,yRow,x2-x1,self.rowHeight);
+                var cl = self.getCnColor(segMean);
+                r.attr("fill",cl);
+                r.attr("stroke", cl);
+                r.attr("stroke-width", 1);
+                r.attr("opacity", 0.5);
+                r.translate(0.5, 0.5);
+                var tip = "Mean copy number log2 value: "+segMean+"<br/>from "+loc2string(chm,start)+"<br/>to "+loc2string(chm,end);
+                addToolTip(r.node,tip, '', '');
+                ++len;
+                // }
+            }
+            var label = "CNA("+v+")";
+            var t = p.text(16,yRow+self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+
+            var label = genomeMeasured===0 ? 'N/A' : (100*genomeAltered/genomeMeasured).toFixed(1)+'%';
+            var tip = genomeMeasured===0 ? 'Copy number segment data not available' :
+                ("Percentage of copy number altered chromosome regions (mean copy number log value >0.2 or <-0.2) out of measured regions.");
+
+            var t = p.text(xRightText()-4, yRow+self.rowHeight/2, label).attr({'text-anchor': 'start','font-weight': 'bold'});
+
+            underlineText(t,p);
+            addToolTip(t.node, tip,null,{my:'top right',at:'bottom left'});
+            var noGenePanelMessage = 'Gene panel information not found. Sample is presumed to be whole exome/genome sequenced.';
+
+        ++row;
+        len=0;
+        });
+
+        getStPixelMap(p, row);// st,
+    }
+
+    var getStPixelMap = function(p,row) {
+        row+=1;
+        console.log('getStPixelMap called');
+        var mutObj = self.stObjData;
+        console.log('sttObj ', mutObj);
+
+        var spcnSeq = [];
+        for (var i = 0; i < mutObj.length; i++) {
+            var examSeq = mutObj[i].geneExamSpcnSeq;
+            (examSeq.indexOf(',') === -1) ?
+                spcnSeq.push(examSeq) :
+                (
+                    _.forEach(examSeq.split(","), function (v) {
+                        spcnSeq.push(v)
+                    })
+                )
+        }
+        spcnSeq = _.uniq(spcnSeq);
+        console.log('ST spcnSeq ',spcnSeq);
+
+        _.forEach(spcnSeq, function (v) {
+            console.log(' vis ', v);
+            var pixelMap = [];
+            var len = 0;
+            for (var i = 0; i < mutObj.length; i++) {
+                if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
+
+                    var chm = translateChm(mutObj[i].chrnNo);
+                    var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariStLocVal)) / 2));
+                    var xBin = x - x % 1;
+                    if (pixelMap[xBin] == null) pixelMap[xBin] = [];
+                    pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].cytbNm);
+
+                    var chm1 = translateChm(mutObj[i].chrnNo1);
+                    var x1 = Math.round(loc2xpixil(chm1, (Number(mutObj[i].geneVariEndLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2));
+                    var xBin1 = x1 - x1 % 1;
+                    if (pixelMap[xBin1] == null) pixelMap[xBin1] = [];
+                    pixelMap[xBin1].push(mutObj[i].geneNm1 + ": " + mutObj[i].cytbNm1);
+
+                    ++len;
+
+                }
+            }
+
+            console.log('ST pixelMap ', pixelMap);
+            drawPlotSt(pixelMap, p, row, len, v);
+            ++row;
+            len=0;
+        });
+
+    }
+    var drawPlotSt = function(pixelMap, p ,row, len,seq){
+        var maxCount = 5; // set max height to 5 mutations
+
+        var yRow = self.yRow(row)+self.rowHeight;
+        var odd = 0;
+        var j=0;
+        $.each(pixelMap, function(i, arr) {
+            var pixil = i;
+            if (arr) {
+                if(j%2 === 0){
+                    odd=pixil;
+                }
+                //console.log( 'pixil ',pixil);
+                var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
+                var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h+2);
+                r.attr("fill","#0f0");
+                r.attr("stroke", "#0f0");
+                r.attr("stroke-width", 1);
+                r.attr("opacity", 0.5);
+                r.translate(0.5, 0.5);
+                addToolTip(r.node, arr.join("</br>"), 100, '');
+
+                if(j%2 !== 0) {
+                    drawLine(odd+1, yRow - h+2, pixil, yRow - h+2, p, '#000', 3);
+                }
+                // console.log('jis ', j, pixil, odd);
+                ++j;
+            }
+        });
+        var label = "ST("+seq+")";
+        var t = p.text(18,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+        t = p.text(xRightText(),yRow-self.rowHeight/2,len).attr({'text-anchor': 'start','font-weight': 'bold'});
+        underlineText(t,p);
+        var tip = "Number of mutation events.";
+        addToolTip(t.node,tip,null,{my:'top right',at:'bottom left'});
+    }
+
 
     self.yRow = function(row) {
         return 2*self.rowMargin+self.ticHeight+row*(self.rowHeight+self.rowMargin);
@@ -263,7 +472,7 @@ function GenomicOverview() {
         return p.path("M"+textBBox.x+" "+(textBBox.y+textBBox.height)+"L"+(textBBox.x+textBBox.width)+" "+(textBBox.y+textBBox.height));
     }
 
-    self.addToolTip = function(node, tip, showDelay, position) {
+    addToolTip = function(node, tip, showDelay, position) {
         var param = {
             content: {text:tip},
             show: {event: "mouseover"},
@@ -277,6 +486,33 @@ function GenomicOverview() {
         };
         $(node).qtip(param);
 
+    }
+
+    self.getCnColor = function(cnValue) {
+        if (cnValue>=self.cnTh[1])
+            return "#f00";
+        if (cnValue<=-self.cnTh[1])
+            return "#00f";
+        var c = Math.round(255*(self.cnTh[1]-Math.abs(cnValue))/(self.cnTh[1]-self.cnTh[0]));
+        if (cnValue<0)
+            return "rgb("+c+","+c+",255)";
+        else
+            return "rgb(255,"+c+","+c+")";
+    };
+
+    function loc2string(chm,loc) {
+        //console.log('loc2string ', chm , self.chmName);
+        return "chr"+chm+":"+addCommas(loc);
+    }
+
+    function addCommas(x)
+    {
+        var strX = x+"";
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(strX)) {
+            strX = strX.replace(rgx, '$1' + ',' + '$2');
+        }
+        return strX;
     }
 
 }

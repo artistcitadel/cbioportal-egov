@@ -1,7 +1,8 @@
 
     function PatientViewMutationTable() {
         var self = this;
-        var action,util;
+        var action,util, annotation;
+        self.GEANDATA = [];
         self.ISROUNDMUTATION = false;
         self.NODE = 'MUTATIONS';
         self.TABLE={};
@@ -69,15 +70,13 @@
         self.gean = [];
 
         self.init = function (){
+            console.log('PatientViewMutationTable called');
+            self.GEANDATA = [];
             action = new Action();
             util = new Util();
+            annotation = new Annotation();
 
-            var ds_cond = {};
-            ds_cond.queryId = "/utils/cancerGeneList";
-            ds_cond.callback = setcancerGean;
-            action.cancerGeanList(ds_cond);
-
-            //getMutationCosmic();
+            getMutationCosmic();
 
             //$("[id^='cosmic_']").on('hover', function (e) {
             $('input[type="checkbox"]').change(function() {
@@ -131,35 +130,26 @@
                     content: cosmic
                 });
             });
+
+            // $("#MUTATIONS_ann").on("hover", "[id^='ann_']",function (e) {
+            //     var id = e.target.id;
+            //     var geneNm = $(this).data("geneNm");
+            //     var protein = $(this).data("protein");
+            //     //annoation.init();
+            //     // var onkokb = buildOncokb(geneNm, protein);
+            //     //
+            //     // new jBox('Tooltip', {
+            //     //     //$(this).jBox('Tooltip', {
+            //     //     attach: '#' + id + '',
+            //     //     width: 290,
+            //     //     closeOnMouseleave: true,
+            //     //     animation: 'move',
+            //     //     content: onkokb
+            //     // });
+            // });
+
         }
 
-        setcancerGean = function(json){
-            self.gean = json;
-            getMutationCosmic();
-        }
-        search = function(entrezGeneId,
-                          tumorType,
-                          alteration,
-                          mutationType,
-                          proteinPosStart,
-                          proteinPosEnd,
-                          alterationType){
-            var query = util.generateQueryVariant(entrezGeneId,
-                tumorType,
-                alteration,
-                mutationType,
-                proteinPosStart,
-                proteinPosEnd,
-                alterationType);
-
-            var ds_cond = {};
-            ds_cond.queryId = "/search";
-            ds_cond.callback = setIndicator;
-            action.cancerGeanList(ds_cond);
-        }
-        setIndicator = function(json){
-            console.log(json)
-        }
         getMutationList = function(qid) {
             console.log("getround ", self.ROUNDCNT);
             //console.log("getMutation ", self.NODE);
@@ -316,11 +306,10 @@
             buildTd(data,page);
         }
 
-        var buildTd = function (json,page){
+        var buildTd = function (json, page){
             if(util._isUndefined(page)) page = 1;
             json = setRange(json, page);
             console.log('page is ', page,  json);
-
 
             var txt = '';
             _.forEach(json, function (v,i) {
@@ -332,7 +321,7 @@
                 (_includes(self.TH[self.NODE], 'geneExamMthNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneExamMthNm + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="center"><span class="font-msmall" style="white-space: nowrap;">' + v.hgvspVal + '</span></td>') : '';
                 if(_includes(self.TH[self.NODE], 'annotation')){
-                    txt+='<td><span style="display: flex; min-width: 100px;">\n' +
+                    txt+='<td><span id="ann_'+v.geneNm+'" data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="display: flex; min-width: 100px;">\n' +
                         // ' <span>\n' +
                         // ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
                         // ' </i></span></span>' +
@@ -358,7 +347,7 @@
                 (_includes(self.TH[self.NODE], 'variAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'refAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'copy'))? (txt+='<td align="center"><span class="font-msmall">' + v.copy + '</span></td>') : '';
-                if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td>\n' +
+              if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td>\n' +
                     // ' <div>\n' +
                     // ' <svg width="71" height="12">\n' +
                     // ' <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>\n' +
@@ -379,16 +368,30 @@
         }
 
 
+        var setGeans = function(data){
+            console.log('setGeans called');
+        }
+
+
         var buildRowsMutation = function(json, dirty) {
-            console.log('buildRowMutation called ',self.NODE);
+            console.log('buildRowMutation called ',self.ROUNDCNT, json);
+
+            /*if(self.ROUNDCNT < self.GOALCNT){
+                self.GEANDATA = self.GEANDATA.concat(json);
+                if(self.ROUNDCNT === self.GOALCNT-1){
+                    var annotation = new Annotation();
+                    annotation.init(self.GEANDATA, setGeans);
+                }
+            }*/
+
             buildTd(json);
 
             //var gene = new GenomicOverview(LASTYPOS);
-            if(!self.ISROUNDMUTATION) {
+            /*if(!self.ISROUNDMUTATION) {
                 var gene = new GenomicOverview();
                 gene.init(getMutation());
             }
-            self.ISROUNDMUTATION = true;
+            self.ISROUNDMUTATION = true;*/
 
             //console.log('self.TABLE[self.NODE].length ', self.NODE);
             var pager = new Pager();
@@ -459,7 +462,11 @@
 
             if(self.ROUNDCNT < self.GOALCNT){
                 ++self.ROUNDCNT;
+                //console.log('ROUNCCNT ', self.ROUNDCNT);
                 roundRobin();
+            }else{
+                // var gene = new GenomicOverview();
+                // gene.init(self.TABLE);
             }
         }
 

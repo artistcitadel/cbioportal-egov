@@ -27,10 +27,10 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/annotationStyles.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncokb.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/listGroupItem.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	<%--<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/bootstrap.min.css" type="text/css" />--%>
 	<%--<link rel="stylesheet" href="<%//docRoot%>js/page/patient/plugin/datatables/datatables.min.css" type="text/css" />--%>
 	<%--<link rel="stylesheet" href="<%//docRoot%>js/page/patient/plugin/bootstrap4/fontawasome5.css" type="text/css" />--%>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<%--<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/bootstrap4/style.css" type="text/css" />--%>
 	<%--<link rel="stylesheet" href="<%=docRoot%>jqwidgets/styles/jqx.base.css" type="text/css" />--%>
 

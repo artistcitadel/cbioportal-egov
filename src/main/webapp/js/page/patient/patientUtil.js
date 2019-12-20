@@ -184,24 +184,18 @@ function Util() {
         return !!(_.isUndefined(data) || data == null);
     };
 
-    self.generateQueryVariant = function(entrezGeneId,
-        tumorType,
-        alteration,
-        mutationType,
-        proteinPosStart,
-        proteinPosEnd,
-        alterationType)
+    self.generateQueryVariant = function(e)
     {
         var query = {
-            id: self.generateQueryVariantId(entrezGeneId, tumorType, alteration, mutationType),
-            hugoSymbol:'',
-            tumorType:'', // generated api typings are wrong, it can accept null
-            alterationType: alterationType || AlterationTypes[AlterationTypes.Mutation],
-            entrezGeneId: entrezGeneId,
-            alteration: alteration || "",
-            consequence: mutationType || "any",
-            proteinStart: proteinPosStart === undefined ? -1 : proteinPosStart,
-            proteinEnd: proteinPosEnd === undefined ? -1 : proteinPosEnd,
+            id: self.generateQueryVariantId(e.entrezGeneId, e.tumorType, e.alteration, e.mutationType),
+            hugoSymbol:e.hugoSymbol,
+            tumorType: e.tumorType, // generated api typings are wrong, it can accept null
+            alterationType: 0,
+            entrezGeneId: e.entrezGeneId,
+            alteration: e.alteration || "",
+            consequence: e.mutationType || "any",
+            proteinStart: e.proteinPosStart === undefined ? -1 : proteinPosStart,
+            proteinEnd: e.proteinPosEnd === undefined ? -1 : proteinPosEnd,
             type: "web",
             hgvs: "",
             svType: "DELETION" // TODO: hack because svType is not optional
@@ -228,6 +222,6 @@ function Util() {
         if (mutationType) {
             id = id+'_'+mutationType;
         }
-        return id.trim().replace(/\s/g, "_");
+        return $.trim(id).replace(/\s/g, "_");
     };
 }

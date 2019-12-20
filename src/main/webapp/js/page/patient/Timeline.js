@@ -300,7 +300,7 @@ function TimeLine() {
                     if (state.length < 1) return;
                     var dat = [];
                     state = util.makeHrc(state, RAW, dat);
-                    state = _.reverse(state);
+                    //state = _.reverse(state);
                     var state = _.uniqBy(state, function (o) {
                         return o.id + util.nt(o.time);
                     })
@@ -378,7 +378,7 @@ function TimeLine() {
                 //console.log(( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time);
                 //if(pdata[0].subject ==='PATHOLOGY_EXAM' && ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
                 if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
-                    temp_name.push(pdata[i]);temp_name.push(pdata[i+1]);
+                    temp_name.push(pdata[i]);//temp_name.push(pdata[i+1]);
                     continue;
                 }
                 else {
@@ -394,7 +394,7 @@ function TimeLine() {
                             (temp_name[0].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                             (temp_name[0].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
                             (temp_name[0].subject === subject.pathology) ? (event.classify_pathology(temp_name, UNIT)) :
-                            (temp_name[0].subject === subject.sugery) ? (event.classify_sugery(temp_name, UNIT)) :
+                            (temp_name[0].subject === subject.surgery) ? (event.classify_sugery(temp_name, UNIT)) :
                             (temp_name[0].subject === subject.biopsy) ? (event.classify_biopsy(temp_name, UNIT)) :
                             (temp_name[0].subject === subject.imaging) ? (event.classify_image(temp_name, UNIT)) : '';
                     item.stroke = Math.ceil(temp_name.length/2);
@@ -408,12 +408,11 @@ function TimeLine() {
                         temp_name.push(pdata[i]);
                         item.id = pdata[i].id;
                         item.time = pdata[i].time;
-                        temp_name.push(pdata[i]);
                         item.name =
                             (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                             (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
                             (pdata[i].subject === subject.pathology) ? (event.classify_pathology(temp_name, UNIT)) :
-                            (pdata[i].subject === subject.sugery) ? (event.classify_sugery(temp_name, UNIT)) :
+                            (pdata[i].subject === subject.surgery) ? (event.classify_sugery(temp_name, UNIT)) :
                             (pdata[i].subject === subject.biopsy) ? (event.classify_biopsy(temp_name, UNIT)) :
                             (pdata[i].subject === subject.imaging) ? (event.classify_image(temp_name, UNIT)) : '';
 
@@ -591,7 +590,7 @@ function TimeLine() {
                         this.transform('s1,1');
                     }
                 );
-                r.animate({ cx:position}, 1500);
+                r.animate({ cx:position}, 1900);
                 //r.transform('S'+tnumber,tnumber+'');
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
                 addToolTip(r.node, pixelAry[i].name, 100, '');
@@ -607,6 +606,13 @@ function TimeLine() {
         if (label.show) {
             var deep = label.level;
             if (label.leaf) deep += 2;
+            //console.log("label texting ",  label.subject);
+            //console.log('label texting ', label.subject, subject.biopsy, subject.surgery);
+            if (label.subject===subject.biopsy || label.subject === subject.surgery) {
+                console.log('label texting ', label.subject);
+                deep=2;
+            }
+            // console.log('label.id ', label.id, label.name);
             // console.log('show ', label, label.folder);
             var ar = "❯ ";
             //var ar = '開';
@@ -741,7 +747,7 @@ function TimeLine() {
 
 
     self.init = function () {
-        setWindowSize();
+        // setWindowSize();
         setDom(self);
         action = new Action();
         util = new Util();
@@ -809,7 +815,7 @@ function TimeLine() {
             sugery.init(findLevel, exist, setSugeryData)
         }
         function setSugeryData(data) {
-            console.log('call sugery');
+            console.log('call sugery ');
             setRound(data);
             biopsy.init(findLevel, exist, setBiopsyData)
         }

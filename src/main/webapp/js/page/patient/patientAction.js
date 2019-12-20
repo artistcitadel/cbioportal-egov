@@ -44,6 +44,25 @@ function Action() {
             }
         });
     }
+    self.getCancerGeanAnnotation = function (props){
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            cache: false,
+            url: gvSERVER+"/proxy/searchGean",
+            contentType: "application/json",
+            data: JSON.stringify(props),
+            callback: props.disposer,
+            //timeout: 10000,
+            success: function (json) {
+                props.callback(json);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
 
     self.selectList = function (props) {
         $.ajax({

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -26,6 +27,7 @@ public class ProxyController {
   public String geanList(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
 
+    System.err.println("ProxyController getanList called");
     URI uri = new URI("http://legacy.oncokb.org/api/v1/utils/cancerGeneList");
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -36,16 +38,17 @@ public class ProxyController {
 
     RestTemplate restTemplate = new RestTemplate();
     restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+//    System.err.println(restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class).getBody());
     return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class).getBody();
   }
 
   @ResponseBody
-  @RequestMapping(value="/search")
-  public String search(HttpServletResponse response, @RequestBody Map<Object,Object> body, HttpServletRequest request)
+  @RequestMapping(value="/searchGean")
+  public String searchGean(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
+    System.err.println("ProxyController searchGean called " + body);
 
     URI uri = new URI("http://legacy.oncokb.org/api/v1/search");
-    String query = (String)body.get("query");
     HttpHeaders httpHeaders = new HttpHeaders();
     String contentType = request.getHeader("Content-Type");
     if (contentType != null) {
@@ -54,7 +57,7 @@ public class ProxyController {
 
     RestTemplate restTemplate = new RestTemplate();
     restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-    return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(query, httpHeaders), String.class).getBody();
+    return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(body, httpHeaders), String.class).getBody();
   }
 
 }

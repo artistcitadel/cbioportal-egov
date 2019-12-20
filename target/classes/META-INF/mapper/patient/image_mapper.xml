@@ -39,6 +39,7 @@
                             )
     and a.RESCH_PAT_ID != #{patientId}
     limit 30
+
     </select>
 
     <select id="selectMriList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -73,8 +74,8 @@
                           and S.PACS_EQUIP_DIV_CD = 'MR'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                           and O.ORDR_CD = S.EXAM_CD
                         )
-    and a.RESCH_PAT_ID != #{patientId}
-    limit 30
+    and a.RESCH_PAT_ID = #{patientId}
+
     </select>
 
     <select id="selectPetCtList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -109,8 +110,44 @@
                               and S.PACS_EQUIP_DIV_CD = 'NM'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-        and a.RESCH_PAT_ID != #{patientId}
-    limit 30
+        and a.RESCH_PAT_ID = #{patientId}
+
+    </select>
+
+    <select id="selectUsList" resultType="com.softcen.bigcen.med.patient.vo.Image">
+     select 'IMAGING' subject,
+       'UTRASONO' id,
+       'UTRASONO' name,
+        a.CLINICDATE time,
+        a.EXAMDATE examdate,
+        b.CD_VAL_NM cdValNm, -- 처방부서
+        a.CLINICDATE clinicdate,  -- 처방일자
+        c.CD_VAL_NM modality, -- MODALITY,
+        a.ORDERCODE ordercode, -- 검사코드,
+        d.ORDR_ENG_NM ordrEngNm -- 검사코드명
+        from pmsdev.EXAM a -- 환자검사접수 테이블
+        LEFT OUTER JOIN (SELECT CD_VAL,CD_VAL_NM FROM EIMIDCDVL WHERE CD_NO = 'WR0021') b ON a.CLINICDEPT = b.CD_VAL
+        LEFT OUTER JOIN (SELECT CD_VAL,CD_VAL_NM FROM EIMIDCDVL WHERE CD_NO = 'SE0005') c ON a.MODALITY = c.CD_VAL
+        JOIN (
+            select O.ORDR_CD, O.ORDR_KOR_NM, O.ORDR_ENG_NM
+              from OOOTMODCD O, SEECCEXCD S
+             where 1=1
+
+               and S.INDVI_ORDR_POSBL_YN = 'Y' -- 개별처방가능여부(Y/N)
+               and S.PACS_EQUIP_DIV_CD = 'US'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
+               and O.ORDR_CD = S.EXAM_CD
+             ) d on a.ORDERCODE = d.ORDR_CD
+        where  a.ORDERCODE in  (
+                           select O.ORDR_CD
+                             from OOOTMODCD O, SEECCEXCD S
+                            where 1=1
+
+                              and S.INDVI_ORDR_POSBL_YN = 'Y' -- 개별처방가능여부(Y/N)
+                              and S.PACS_EQUIP_DIV_CD = 'US'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
+                              and O.ORDR_CD = S.EXAM_CD
+                            )
+        and a.RESCH_PAT_ID = #{patientId}
+
     </select>
 
 </mapper>

@@ -54,11 +54,23 @@ function Image() {
             ds_cond.callback = setPetct;
             action.selectEventList(ds_cond);
         }else{
+        	round_us();
+        }
+    }
+    
+    function round_us(json) {
+        if(plotFilter.searchPlotId(subject.us) !==-1) {
+            var ds_cond = {};
+            ds_cond.data = {"queryId": "selectUsList", "patientId": PATIENTID};
+            ds_cond.callback = setUs;
+            action.selectEventList(ds_cond);
+        }else{
             disposer([]);
         }
     }
 
     var setCt = function(json) {
+    	console.log('setCt called');
          setHeader();
          ct_setData(json);
     }
@@ -69,6 +81,9 @@ function Image() {
 
     var setPetct = function(json) {
         petct_setData(json);
+    }
+    var setUs = function(json) {
+        us_setData(json);
     }
 
 
@@ -87,6 +102,12 @@ function Image() {
 
     function petct_setData(data){
         console.log('petct_setData');
+        setData(data);
+        round_us();
+       
+    }
+    function us_setData(data){
+        console.log('us_setData');
         setData(data);
         disposer();
     }

@@ -1,6 +1,7 @@
+
 TITLE = {
     specimen: "1",
-    sugery : "2",
+    surgery : "2",
     biospy : "3",
     pathology: "4",
     imaging : "5"
@@ -15,10 +16,11 @@ subject = {
            pcr : "PCR",
            ish : "ISH",
            ihc : "IHC",
-           sugery : "SUGERY",
+           surgery : "SURGERY",
            biopsy : "BIOPSY",
            imaging : "IMAGING",
            ct : "CT",
            mri : "MRI",
-           petct : "PET-CT"
+           petct : "PET-CT",
+           us : "UTRASONO"
 };

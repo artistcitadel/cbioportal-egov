@@ -150,8 +150,17 @@ public class Patient extends RkCmmnVO {
     private String subject;
     private String recpDt;
     private String sampleId;
-
     private String sex;
+
+  public String getCancerMode() {
+    return cancerMode;
+  }
+
+  public void setCancerMode(String cancerMode) {
+    this.cancerMode = cancerMode;
+  }
+
+  private String cancerMode;
 
   public String getSex() {
     return sex;

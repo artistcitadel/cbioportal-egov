@@ -9,6 +9,25 @@ public class PatientMut  extends RkCmmnVO {
     private String copy;
     private String cosmic;
 
+  public String getMutationType() {
+    return mutationType;
+  }
+
+  public void setMutationType(String mutationType) {
+    this.mutationType = mutationType;
+  }
+
+  private String mutationType;
+
+  public String getTumorNm() {
+    return tumorNm;
+  }
+
+  public void setTumorNm(String tumorNm) {
+    this.tumorNm = tumorNm;
+  }
+
+  private String tumorNm;
     private String svExamRsltId;
     private String geneNm1;
 
@@ -419,6 +438,26 @@ public class PatientMut  extends RkCmmnVO {
     private String exonLocVal;
     private String intrnLocVal;
     private String trscId;
+
+  public String getChrnNo1() {
+    return chrnNo1;
+  }
+
+  public void setChrnNo1(String chrnNo1) {
+    this.chrnNo1 = chrnNo1;
+  }
+
+  private String chrnNo1;
+
+  public String getSegCol() {
+    return segCol;
+  }
+
+  public void setSegCol(String segCol) {
+    this.segCol = segCol;
+  }
+
+  private String segCol;
 
 
 }

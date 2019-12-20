@@ -6,14 +6,16 @@ import com.softcen.bigcen.med.patient.vo.Patient;
 import com.softcen.bigcen.med.patient.vo.PatientMut;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reactkorea.Result;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.ui.Model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import java.util.Map;
 import com.softcen.bigcen.med.patient.service.PatientServiceImpl;
 import com.softcen.bigcen.med.patient.service.PatientMutServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -64,7 +67,10 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	}
 
 	@RequestMapping(value="/patientView")
-	public String patientView(){
+	public String patientView(HttpServletRequest request, HttpServletResponse response,
+														Model model , @RequestParam(value="QUERY", defaultValue="") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="48321932") String RESCH_PAT_ID){
+		model.addAttribute("QUERY", QUERY);
+		model.addAttribute("RESCH_PAT_ID", RESCH_PAT_ID);
 		return "/patient/patientView.tiles";
 	}
 

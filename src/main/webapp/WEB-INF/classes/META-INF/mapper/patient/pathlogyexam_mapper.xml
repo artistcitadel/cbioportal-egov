@@ -14,10 +14,9 @@
                a.EXAM_CD examCd, -- 검사코드,
                a.EXAM_KOR_NM examKorNm -- 검사명
         from pmsdev.PMGEMEMTH a
-         join pmsdev.OOODMEXAM b on a.EXAM_CD = b.ORDR_CD
+        join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
         WHERE a.GENE_EXAM_MTH_NM != ''
-          and b.RESCH_PAT_ID != #{patientId}
-          limit 20
+          and b.RESCH_PAT_ID = #{patientId}
     </select>
 
     <select id="selectPathHrc" resultType="com.softcen.bigcen.med.patient.vo.Pathology">
