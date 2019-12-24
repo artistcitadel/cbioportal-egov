@@ -94,6 +94,10 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		return "/patient/oncokbcard.tiles";
 	}
 
+	@RequestMapping(value="/civic")
+	public String civic(){
+		return "/patient/civic.tiles";
+	}
 	/**
 	 * 환자 진단진료 타임라인 그래프
 	 * @param

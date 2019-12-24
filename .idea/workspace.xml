@@ -10,45 +10,30 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Patient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/image_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/image_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/pathlogyexam_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/pathlogyexam_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/sugery_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/sugery_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/chromosome_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/chromosome_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/image_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/image_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/pathlogyexam_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/pathlogyexam_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/sugery_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/META-INF/mapper/patient/sugery_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/ProxyController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/ProxyController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/vo/Patient.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/vo/Patient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/vo/PatientMut.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/vo/PatientMut.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/image.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/sugery.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/sugery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/event.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/event.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/chromosome_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/chromosome_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/image_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/image_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/pathlogyexam_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/pathlogyexam_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/patient_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/patient_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/sugery_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/mapper/patient/sugery_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/ProxyController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/ProxyController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/vo/Patient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/vo/Patient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/vo/PatientMut.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/vo/PatientMut.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -80,15 +65,15 @@
     <session id="662276549">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="44" />
+          <entry key="project.closed" value="47" />
           <entry key="project.open.time.102" value="1" />
           <entry key="project.open.time.104" value="1" />
-          <entry key="project.open.time.12" value="3" />
+          <entry key="project.open.time.12" value="4" />
           <entry key="project.open.time.122" value="1" />
           <entry key="project.open.time.129" value="1" />
-          <entry key="project.open.time.13" value="2" />
+          <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.14" value="5" />
-          <entry key="project.open.time.15" value="4" />
+          <entry key="project.open.time.15" value="5" />
           <entry key="project.open.time.16" value="3" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.18" value="1" />
@@ -120,59 +105,59 @@
           <entry key="project.open.time.83" value="1" />
           <entry key="project.open.time.89" value="1" />
           <entry key="project.open.time.90" value="1" />
-          <entry key="project.opened" value="60" />
+          <entry key="project.opened" value="63" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="css" value="57" />
+          <entry key="css" value="69" />
           <entry key="html" value="1" />
-          <entry key="java" value="129" />
-          <entry key="js" value="160" />
-          <entry key="jsp" value="77" />
+          <entry key="java" value="141" />
+          <entry key="js" value="177" />
+          <entry key="jsp" value="89" />
           <entry key="properties" value="37" />
           <entry key="tobe" value="1" />
           <entry key="txt" value="1" />
-          <entry key="xml" value="141" />
+          <entry key="xml" value="148" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="57" />
+          <entry key="CSS" value="69" />
           <entry key="HTML" value="1" />
-          <entry key="JAVA" value="129" />
-          <entry key="JSP" value="77" />
-          <entry key="JavaScript" value="160" />
+          <entry key="JAVA" value="141" />
+          <entry key="JSP" value="89" />
+          <entry key="JavaScript" value="177" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Properties" value="37" />
           <entry key="UML" value="1" />
-          <entry key="XML" value="141" />
+          <entry key="XML" value="148" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="css" value="134" />
+          <entry key="css" value="215" />
           <entry key="dummy" value="1" />
           <entry key="html" value="54" />
-          <entry key="java" value="4110" />
-          <entry key="js" value="78262" />
-          <entry key="jsp" value="15565" />
+          <entry key="java" value="4357" />
+          <entry key="js" value="93974" />
+          <entry key="jsp" value="19554" />
           <entry key="properties" value="127" />
           <entry key="txt" value="11" />
-          <entry key="xml" value="2808" />
+          <entry key="xml" value="2986" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="134" />
-          <entry key="HTML" value="58" />
-          <entry key="JAVA" value="4110" />
-          <entry key="JSP" value="15562" />
-          <entry key="JavaScript" value="78261" />
+          <entry key="CSS" value="215" />
+          <entry key="HTML" value="79" />
+          <entry key="JAVA" value="4357" />
+          <entry key="JSP" value="19546" />
+          <entry key="JavaScript" value="93957" />
           <entry key="PLAIN_TEXT" value="12" />
           <entry key="Properties" value="127" />
-          <entry key="SQL" value="104" />
-          <entry key="XML" value="2704" />
+          <entry key="SQL" value="111" />
+          <entry key="XML" value="2875" />
         </counts>
       </usages-collector>
     </session>
@@ -180,21 +165,14 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="448" column="65" selection-start-line="448" selection-start-column="65" selection-end-line="448" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="365" column="45" selection-start-line="365" selection-start-column="45" selection-end-line="365" selection-end-column="45" />
+            <state relative-caret-position="144">
+              <caret line="422" column="54" selection-start-line="422" selection-start-column="31" selection-end-line="422" selection-end-column="54" />
               <folding>
-                <element signature="n#style#0;n#img#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
                 <element signature="e#56#62#0" expanded="true" />
                 <element signature="e#62#68#0" expanded="true" />
                 <element signature="e#68#74#0" expanded="true" />
@@ -208,41 +186,117 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="792">
-              <caret line="70" column="159" selection-start-line="70" selection-start-column="159" selection-end-line="70" selection-end-column="159" />
+            <state relative-caret-position="229">
+              <caret line="666" column="38" selection-start-line="665" selection-start-column="16" selection-end-line="666" selection-end-column="38" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#span#0;n#td#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4914">
-              <caret line="273" column="42" lean-forward="true" selection-start-line="273" selection-start-column="42" selection-end-line="273" selection-end-column="42" />
+            <state relative-caret-position="198">
+              <caret line="120" column="42" lean-forward="true" selection-start-line="112" selection-start-column="7" selection-end-line="120" selection-end-column="42" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#span#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#span#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#0;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#1;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#2;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#3;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#4;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tbody#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#1;n#span#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/civic/civic.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/civic.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/oncokbUtil.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="445">
+              <caret line="413" column="44" lean-forward="true" selection-start-line="413" selection-start-column="44" selection-end-line="413" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="257">
+              <caret line="46" lean-forward="true" selection-end-line="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="343">
+              <caret line="124" column="12" selection-start-line="124" selection-start-column="12" selection-end-line="124" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="410">
+              <caret line="115" column="74" selection-start-line="115" selection-start-column="74" selection-end-line="115" selection-end-column="74" />
             </state>
           </provider>
         </entry>
@@ -253,47 +307,48 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="Jsp File" />
         <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getCancerGeanAnnotation</find>
-      <find>HGVSP_VAL</find>
-      <find>se</find>
+      <find>tab2</find>
+      <find>The information above is</find>
+      <find>pubmed</find>
+      <find>vus</find>
+      <find>processEvidence</find>
+      <find>getLevel</find>
+      <find>drugToStr</find>
+      <find>mergeAlterations</find>
+      <find>id</find>
+      <find>self.EVIDENCE</find>
+      <find>selectPatientMutCol</find>
+      <find>oncology</find>
+      <find>addToolTip</find>
+      <find>trigger</find>
+      <find>OncoKbTreatmentTable</find>
+      <find>tabToggle</find>
       <find>annotation</find>
-      <find>buildRowsMutation</find>
-      <find>ISROUNDMUTATION</find>
-      <find>width</find>
-      <find>size</find>
-      <find>init</find>
-      <find>showBio</find>
-      <find>getMutation</find>
-      <find>getMutationPixelMap</find>
-      <find>xGenePanelIcon</find>
-      <find>heigthGenePanelIcon</find>
-      <find>rowHeight</find>
-      <find>wideGenePanelIcon</find>
-      <find>xRightText</find>
-      <find>len</find>
-      <find>self.chmName</find>
-      <find>chmName</find>
-      <find>getPatientDescription</find>
-      <find>chrn</find>
-      <find>cytbNm</find>
-      <find>self.TABLE</find>
-      <find>geneNm1</find>
-      <find>getCnaPixelMap</find>
-      <find>cnLengthTh</find>
-      <find>cnTh</find>
-      <find>draw</find>
-      <find>Genomic</find>
+      <find>DELETION</find>
+      <find>Civic</find>
+      <find>request.get</find>
+      <find>RequestBase.prototype.get</find>
+      <find>re</find>
+      <find>searchGean</find>
+      <find>getCivicVariants</find>
+      <find>loadCivic</find>
+      <find>getCivic</find>
+      <find>buildCivic</find>
+      <find>addCivicVariant</find>
+      <find>GenomicOverview</find>
+      <find>sk-double-bounce</find>
     </findStrings>
     <replaceStrings>
       <replace>util._isUndefined</replace>
       <replace>drawLine</replace>
+      <replace>#</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -302,11 +357,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Tissue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Brc.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/dao/EventDAOImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/service/EventServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/brc.js" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/tissue_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/brc_mapper.xml" />
@@ -327,32 +377,37 @@
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/sugery.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/biopsy.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/pathology.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Patient.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/image_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/biopsy_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/sugery_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/event.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/pathlogyexam_mapper.xml" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/font-awesome.css" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/chromasome/oncob-styles/oncokb.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/civic.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/civic/civic.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/oncokbUtil.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css" />
       </list>
     </option>
   </component>
@@ -376,9 +431,14 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/tooltipster/package.json" />
+    </packageJsonPaths>
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="1600" />
-    <option name="height" value="1105" />
+    <option name="width" value="1489" />
+    <option name="height" value="1103" />
   </component>
   <component name="ProjectId" id="1Sv08f3kGRp8IMLgMsslEcVtk0O" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -389,7 +449,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -506,7 +566,38 @@
               <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bigcen" type="462c0819:PsiDirectoryNode" />
+              <item name="med" type="462c0819:PsiDirectoryNode" />
+              <item name="patientcpm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bigcen" type="462c0819:PsiDirectoryNode" />
+              <item name="med" type="462c0819:PsiDirectoryNode" />
+              <item name="patientcpm" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="configuration" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
@@ -524,25 +615,6 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="META-INF" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="mapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="mapper" type="462c0819:PsiDirectoryNode" />
-              <item name="patient" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
@@ -595,6 +667,18 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+              <item name="patient" type="462c0819:PsiDirectoryNode" />
+              <item name="plugin" type="462c0819:PsiDirectoryNode" />
+              <item name="loader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asan.tobe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ASAN-TOBE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
               <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -620,7 +704,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -628,10 +712,10 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="patient&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;time&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;event.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/event.js&#10;timeline&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;patienti&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;patientutil&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;patientView&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;patientMain&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientMain.jsp&#10;patientMa&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientMain.js&#10;patientIn&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;pati&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;const&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/const.js&#10;patientV&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;Timeline&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;Time&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;pa&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;big&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;PatientUtil&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;patientAc&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;bigcen&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;tiles.&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/tiles.xml&#10;util&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;util.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;action.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;bigce&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;bigc&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties" />
+    <property name="SearchEverywhereHistoryKey" value="patientAction.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;const.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/const.js&#10;patientutil&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;patient&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;time&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;event.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/event.js&#10;timeline&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;patienti&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;patientView&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;patientMain&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientMain.jsp&#10;patientMa&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientMain.js&#10;patientIn&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;pati&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp&#10;const&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/const.js&#10;patientV&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/views/patient/patientView.jsp&#10;Timeline&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;Time&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/Timeline.js&#10;pa&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;big&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;PatientUtil&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;patientAc&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;bigcen&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;tiles.&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/WEB-INF/tiles.xml&#10;util&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;util.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientUtil.js&#10;action.js&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/webapp/js/page/patient/patientAction.js&#10;bigce&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties&#10;bigc&#9;FILE&#9;file://C:/workspace/ASAN-TOBE/src/main/resources/bigcen.properties" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576803465588" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577111522348" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -809,18 +893,21 @@
       <workItem from="1576540138123" duration="20332000" />
       <workItem from="1576625782650" duration="16249000" />
       <workItem from="1576712566928" duration="23699000" />
-      <workItem from="1576798759106" duration="3510000" />
+      <workItem from="1576798759106" duration="26923000" />
+      <workItem from="1576886181807" duration="58697000" />
+      <workItem from="1577058452946" duration="38987000" />
+      <workItem from="1577143880634" duration="19034000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="868987000" />
+    <option name="totallyTimeSpent" value="1009118000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.23020135" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24563758" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -830,7 +917,7 @@
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.8769231" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.84615386" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -911,104 +998,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/labtest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/common_const.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Brc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Pathology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/linespin.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3519">
-          <caret line="207" column="14" lean-forward="true" selection-start-line="207" selection-start-column="14" selection-end-line="207" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Sugery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Biopsy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="39" column="22" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/spinfade.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="829">
-          <caret line="211" column="1" selection-start-line="211" selection-start-column="1" selection-end-line="211" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/Image.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="33" lean-forward="true" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plotFilter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="882">
-          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientMain.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3492">
-          <caret line="194" column="61" selection-start-line="194" selection-start-column="61" selection-end-line="194" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/specimen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="94" column="30" selection-end-line="122" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/diagnosis/pathology.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12">
@@ -1034,13 +1023,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="154" column="33" selection-start-line="154" selection-start-column="33" selection-end-line="154" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="121" column="24" selection-start-line="121" selection-start-column="24" selection-end-line="121" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1079,13 +1061,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="123" column="6" selection-start-line="123" selection-start-column="6" selection-end-line="123" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/sugery_mapper.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -1107,59 +1082,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/service/PatientcpmServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/dao/PatientcpmDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="25" column="41" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/controller/PatientcpmController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/pathlogyexam_mapper.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="321">
           <caret line="18" column="43" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3654">
-          <caret line="203" column="47" selection-start-line="203" selection-start-column="37" selection-end-line="203" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="54" column="38" selection-start-line="54" selection-start-column="38" selection-end-line="54" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="32" column="56" selection-start-line="32" selection-start-column="56" selection-end-line="32" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -1170,38 +1096,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="52" column="4" selection-start-line="52" selection-start-column="1" selection-end-line="52" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/font-awesome.css" />
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="6" lean-forward="true" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="633" column="43" selection-start-line="633" selection-start-column="39" selection-end-line="633" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientViewPage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -1209,46 +1104,269 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/chromasome/oncokb.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/chromasome/oncoKbTreatmentTable.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/chromasome/annotationStyles.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="518">
+          <caret line="453" column="11" selection-start-line="453" selection-start-column="11" selection-end-line="453" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/chromasome/oncob-styles/oncokb.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/modals/modalColumnAlign.jsp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/layouts/topForPage.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3519" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="174" column="64" selection-start-line="174" selection-start-column="64" selection-end-line="174" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/layouts/modal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="597">
+          <caret line="187" selection-start-line="187" selection-end-line="187" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="444" lean-forward="true" selection-start-line="444" selection-end-line="444" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/patient_mapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="57" column="18" selection-start-line="57" selection-start-column="18" selection-end-line="57" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3528">
+          <caret line="196" column="110" selection-start-line="196" selection-start-column="110" selection-end-line="196" selection-end-column="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientUtil.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3474">
+          <caret line="193" column="41" selection-start-line="193" selection-start-column="41" selection-end-line="193" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/Timeline.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="654" column="82" selection-start-line="654" selection-start-column="29" selection-end-line="654" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/oncokbcard.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="45" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#0;n#tr#0;n#thead#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#1;n#tr#0;n#thead#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#2;n#tr#0;n#thead#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#3;n#tr#0;n#thead#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#4;n#tr#0;n#thead#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#2;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#span#0;n#div#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="70" column="159" selection-start-line="70" selection-start-column="159" selection-end-line="70" selection-end-column="159" />
+        <state relative-caret-position="284">
+          <caret line="96" column="33" lean-forward="true" selection-start-line="96" selection-start-column="33" selection-end-line="96" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/vo/PatientMut.java">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/civic/civicCard.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="99" column="18" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="18" />
+        <state relative-caret-position="554">
+          <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/superagent.js" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/configuration/mybatis-config.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/service/PatientcpmServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="16" column="37" lean-forward="true" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/dao/PatientcpmDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patientcpm/controller/PatientcpmController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="64" column="62" lean-forward="true" selection-start-line="64" selection-start-column="62" selection-end-line="64" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientIndex.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="124" column="12" selection-start-line="124" selection-start-column="12" selection-end-line="124" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/ProxyController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="115" column="74" selection-start-line="115" selection-start-column="74" selection-end-line="115" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/annotation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="120" column="42" lean-forward="true" selection-start-line="112" selection-start-column="7" selection-end-line="120" selection-end-column="42" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
-            <element signature="e#326#327#0" expanded="true" />
-            <element signature="e#380#381#0" expanded="true" />
-            <element signature="e#422#423#0" expanded="true" />
-            <element signature="e#9295#9296#0" expanded="true" />
-            <element signature="e#9319#9320#0" expanded="true" />
-            <element signature="e#9363#9364#0" expanded="true" />
-            <element signature="e#9395#9396#0" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#span#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#span#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#2;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#0;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#1;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#2;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#3;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#4;n#tr#0;n#thead#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#tbody#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#1;n#span#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/mapper/patient/chromosome_mapper.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/civic.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2498">
-          <caret line="170" column="26" lean-forward="true" selection-start-line="170" selection-start-column="26" selection-end-line="170" selection-end-column="26" />
+        <state relative-caret-position="405">
+          <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/civic/civic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="27" column="3" selection-start-line="24" selection-end-line="27" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/oncokbUtil.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="413" column="44" lean-forward="true" selection-start-line="413" selection-start-column="44" selection-end-line="413" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="666" column="38" selection-start-line="665" selection-start-column="16" selection-end-line="666" selection-end-column="38" />
+          <folding>
+            <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/patient.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="46" lean-forward="true" selection-end-line="62" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/patient/patientView.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="365" column="45" selection-start-line="365" selection-start-column="45" selection-end-line="365" selection-end-column="45" />
+        <state relative-caret-position="144">
+          <caret line="422" column="54" selection-start-line="422" selection-start-column="31" selection-end-line="422" selection-end-column="54" />
           <folding>
-            <element signature="n#style#0;n#img#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
             <element signature="e#56#62#0" expanded="true" />
             <element signature="e#62#68#0" expanded="true" />
             <element signature="e#68#74#0" expanded="true" />
@@ -1261,24 +1379,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/GenomicOverview.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/plugin/loader/indicator.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="448" column="65" selection-start-line="448" selection-start-column="65" selection-end-line="448" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4914">
-          <caret line="273" column="42" lean-forward="true" selection-start-line="273" selection-start-column="42" selection-end-line="273" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/page/patient/const.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="270">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
         </state>
       </provider>
     </entry>

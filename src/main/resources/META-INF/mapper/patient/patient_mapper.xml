@@ -55,6 +55,7 @@
     <select id="selectPatientMutCol" resultType="com.softcen.bigcen.med.patient.vo.Patient">
         SELECT DISTINCT ITEM_CATE_ID subject, ITEM_ID id , ITEM_NM name FROM pmsportal.CC_ITEM_MGMT
         WHERE PROGRM_ID = 'PATIENT_MUTATION' AND LENGTH(ITEM_ID)>0 AND DEFAULT_YN = 'Y'
+        ORDER BY 1
     </select>
 
     <select id="selectPatientChoiceList" resultType="com.softcen.bigcen.med.patient.vo.Patient">

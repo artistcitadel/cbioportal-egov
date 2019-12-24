@@ -439,6 +439,25 @@ public class PatientMut  extends RkCmmnVO {
     private String intrnLocVal;
     private String trscId;
 
+  public String getHgvspVal1() {
+    return hgvspVal1;
+  }
+
+  public void setHgvspVal1(String hgvspVal1) {
+    this.hgvspVal1 = hgvspVal1;
+  }
+
+  public String getGeneVariClsfNm1() {
+    return geneVariClsfNm1;
+  }
+
+  public void setGeneVariClsfNm1(String geneVariClsfNm1) {
+    this.geneVariClsfNm1 = geneVariClsfNm1;
+  }
+
+  private String hgvspVal1;
+    private String geneVariClsfNm1;
+
   public String getChrnNo1() {
     return chrnNo1;
   }

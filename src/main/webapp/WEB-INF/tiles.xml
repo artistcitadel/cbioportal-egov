@@ -187,7 +187,6 @@
 		<!--<put-attribute name="adminLeft" value="/WEB-INF/views/patient/patientLeft.jsp" />-->
 		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
 	</definition>
-
 	<definition name="/patient/*.tiles" extends="patient">
 		<put-attribute name="content" value="/WEB-INF/views/patient/{1}.jsp" />
 	</definition>

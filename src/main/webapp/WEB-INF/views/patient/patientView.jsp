@@ -129,6 +129,15 @@
 
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
+                                <div class="col-md-2">
+                                    <div  id="mut_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
                                 <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                     <div class="btn-group" style="width:60%;">
                                         <button class="btn btn-success" type="button">
@@ -155,7 +164,7 @@
                                             <li role="presentation"><input id="variAlleleReadCnt_MUTATIONS" type="checkbox"> Varient Reads(N)</li>
                                             <li role="presentation"><input id="refAlleleReadCnt_MUTATIONS" type="checkbox"> Ref Reads(N)</li>
                                             <li role="presentation"><input id="copy_MUTATIONS" type="checkbox"> Copy #</li>
-                                            <li role="presentation"><input id="chort_MUTATIONS" type="checkbox"> Cohort</li>
+                                            <li role="presentation"><input id="cohort_MUTATIONS" type="checkbox"> Cohort</li>
                                             <li role="presentation"><input id="cosmic_MUTATIONS" type="checkbox"> COSMIC</li>
                                         </ul>
 
@@ -172,10 +181,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col">
-
                                     <div style="overflow-x:auto;">
-
-                                        <table id="MUTATIONS_t" class="table table-bordered">
+                                        <table id="MUTATIONS_t" class="table table-bordered" style="display:none;">
                                             <thead>
                                             <tr id='MUTATIONS' class="success">
 
@@ -198,6 +205,15 @@
 
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
+                                <div class="col-md-2">
+                                    <div id="cna_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
                                 <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                     <div class="btn-group" style="width:60%;">
                                         <button class="btn btn-success" type="button">
@@ -232,7 +248,7 @@
 
                                     <div style="overflow-x:auto;">
 
-                                        <table id="CNV_t" class="table table-bordered">
+                                        <table id="CNV_t" class="table table-bordered" style="display:none;">
                                             <thead>
                                             <tr id='CNV' class="info">
                                             </tr>
@@ -253,6 +269,15 @@
 
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
+                                <div class="col-md-2">
+                                    <div id="exp_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
                                 <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                     <div class="btn-group" style="width:60%;">
                                         <button class="btn btn-success" type="button">
@@ -286,7 +311,7 @@
 
                                     <div style="overflow-x:auto;">
 
-                                        <table id="EXPRESSION_t" class="table table-bordered">
+                                        <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
                                             <thead>
                                             <tr id='EXPRESSION' class="warning">
                                             </tr>
@@ -307,6 +332,15 @@
 
                                 <div class="container-fulid" align="right">
                                     <div class="row" style="width:60%;float:right;">
+                                        <div class="col-md-2">
+                                            <div id="st_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                             <div class="btn-group" style="width:60%;">
                                                 <button class="btn btn-success" type="button">
@@ -324,7 +358,7 @@
                                                     <li role="presentation"><input id="annotation_SV" type="checkbox"> Annotation</li>
                                                     <li role="presentation"><input id="cytbNm_SV" type="checkbox"> Cytoband1</li>
                                                     <li role="presentation"><input id="cytbNm1_SV" type="checkbox"> Cytoband2</li>
-                                                    <li role="presentation"><input id="chort_SV" type="checkbox"> Chort</li>
+                                                    <li role="presentation"><input id="cohort_SV" type="checkbox"> Chort</li>
                                                 </ul>
 
                                                 <form role="search" style="width:400px;">
@@ -343,7 +377,7 @@
 
                                             <div style="overflow-x:auto;">
 
-                                                <table id="SV_t" class="table table-bordered">
+                                                <table id="SV_t" class="table table-bordered" style="display:none;">
                                                     <thead>
                                                     <tr id='SV' class="danger">
                                                     </tr>
@@ -363,7 +397,7 @@
                 </div>
 
                 <div class="box-footer text-align-center Footer-module">
-                    <span style="font-size:14px;">Inspired by and supported by</span> <%--Memorial Sloan Kettering CancerCenter--%>
+                    <span style="font-size:14px;">Inspired by and Kopied by</span> <%--Memorial Sloan Kettering CancerCenter--%>
                     <img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>
                 </div>
 
@@ -383,9 +417,11 @@
         </div>
     </div>
 </div>--%>
+
 <div id="spinner" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
         <div class="sk-spinner la-line-scale-pulse-out big">
+            <%--<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">--%>
             <div></div>
             <div></div>
             <div></div>
@@ -399,6 +435,40 @@
     >
     </iframe>
 </div>
+
+
+    <%--<div id="spinner" class="styles-module_centered styles-module_centered-with-children inlineBlock" style="zIndex:100;position:relative;display:none;">
+      <div class="sk-spinner styles-module_color styles-module_big_ inlineBlock line-scale-pulse-out" style="display: inline-block;">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+     <div class="styles-module_progressUI">
+       <div class="styles-module_container">
+         <div class="styles-module_items-container">
+           <span class="styles-module_item-row">Loading meta information
+             <span style="margin-left: 7px;">
+               <div class="sk-spinner styles-module_pulse-spinner sk-double-bounce">
+                 <div></div>
+                 <div></div>
+               </div>
+             </span>
+           </span>
+           <span class="styles-module_item-row">Loading clinical data
+             <span style="margin-left: 7px;">
+               <div class="sk-spinner styles-module_pulse-spinner sk-double-bounce">
+                 <div></div>
+                 <div></div>
+              </div>
+            </span>
+          </span>
+         </div>
+        </div>
+      </div>
+    </div>--%>
+
 
 <%--<div id="spinner" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
@@ -476,6 +546,7 @@
 </form>
 
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
+<script src="<c:url value="/js/page/patient/oncokbUtil.js" />"></script>
 <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
 <script src="<c:url value="/js/page/patient/diagnosis/pathology.js" />"></script>
@@ -487,6 +558,7 @@
 <script src="<c:url value="/js/page/patient/event.js" />"></script>
 <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
 <script src="<c:url value="/js/page/patient/annotation.js" />"></script>
+<script src="<c:url value="/js/page/patient/plugin/civic/civic.js" />"></script>
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 
@@ -616,12 +688,138 @@
             location.reload();
         });
 
-        // var patientView = new TimeLine();
-        // patientView.init();
-        var pt = new PatientViewMutationTable();
-        pt.init();
+        var patientView = new TimeLine();
+        patientView.init();
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
 
     });
+
+    function tabToggle(seq,id){
+        if(seq===1){
+            $(".oncogenicity").addClass("enable-hover-active");
+            $(".mutation-effect").removeClass("enable-hover-active");
+            $("#tab1_"+id+"").show();
+            $("#tab2_"+id+"").hide();
+            $('.oncokb-treatment-table').show();
+        }
+        if(seq===2){
+            $(".mutation-effect").addClass("enable-hover-active");
+            $(".oncogenicity").removeClass("enable-hover-active");
+            $("#tab1_"+id+"").hide();
+            $("#tab2_"+id+"").show();
+            $('.oncokb-treatment-table').hide();
+        }
+    }
+    var toggle=false;
+    function levelToggle(id){
+     console.log(id, toggle);
+     (!toggle) ? ($("#secret1_"+id+"").show(),toggle=true, $("#ardown_"+id+"").show(),$("#arup_"+id+"").hide() ) :
+         ( $("#secret1_"+id+"").hide(),toggle=false, $("#arup_"+id+"").show(),$("#ardown_"+id+"").hide() )
+    }
+
+    var EVA;
+    function pmidtooltip(id){
+
+        console.log('id is ', id);
+        console.log('EVA is ', EVA);
+        var cache;
+        for(var i=0;i<EVA.length;i++) {
+            _.map(EVA[i], function (v, k) {
+                console.log(k, id);
+                if ($.trim(k) === id) {
+                    console.log('bingo');
+                    cache = v.data.treatments.sensitivity;
+                }
+            });
+        }
+        var data = cache[0];
+        console.log(' datais ', data);
+        var abstracts = data.abstracts;
+        var articles = data.articles;
+        var pmids = data.pmids;
+        var description = data.description;
+        var content = '<ul class="no-style-ul">';
+        var abstract = '';
+        var article = '';
+        console.log('abstracts is ', abstracts);
+        console.log('articles is ' , articles);
+        if(!_.isUndefined(abstracts) && abstracts.length>0) {
+            for(var i=0;i<abstracts.length;i++) {
+                abstract +=
+                    '   <li class="list-group-item">\n' +
+                    '    <span className="list-group-item-title"><a href="' + abstracts[i].link + '" target="_blank">' + abstracts[i].abstract + '</a></span>\n' +
+                    '  </li>';
+            }
+
+        }
+        if(!_.isUndefined(articles) && articles.length>0){
+            for(var i=0;i<articles.length;i++){
+                if(articles[i].pmid==null)continue;
+                article +=
+                    ' <li key='+articles[i].pmid+' class="list-group-item">\n' +
+                    '                <a\n' +
+                    '                    class="list-group-item-title"\n' +
+                    '                    href="getNCBIlink(/pubmed/'+articles[i].pmid+')" \n' +
+                    '                    target="_blank"\n>' +
+                    '                    <b>'+articles[i].title+'</b>\n' +
+                    '                </a>\n' +
+                    '                <div class="list-group-item-content">\n' +
+                    '                    <span>'+articles[i].authors+''+ articles[i].reference +'.'+ articles[i].pubDate+'</span>\n' +
+                    // '                    <span>PMID: '+articles[i].pmid+'</span>\n' +
+                    '                </div>\n' +
+                    '                <div class="list-group-item-content">\n' +
+                    '                    <span>PMID: '+articles[i].pmid+'</span>\n' +
+                    '                </div>\n' +
+                    '            </li>';
+            }
+        }
+
+        content+=abstract+article+'</ul>';
+
+        console.log(id);
+        //console.log(content);
+
+        // $('#article_'+id+'').trigger('hover');
+        $('#article_'+id+'').tooltipster({
+            theme: 'tooltipster-shadow',
+            contentAsHTML: true,
+            interactive: true,
+            content : content
+        });
+        $('#article_'+id+'').tooltipster('open');
+
+        // new jBox('Tooltip', {
+        //     //$(this).jBox('Tooltip', {
+        //     attach: '#article_' + id + '',
+        //     width: 350,
+        //     closeOnMouseleave: true,
+        //     animation: 'move',
+        //     content: content,
+        // });
+
+        // $('#article_'+id+'').trigger('mouseover');
+        // $('#article_'+id+'').trigger('mouseout');
+        // addpmidToolTip(id, content, 100, '','qtip-light');
+    }
+    function addpmidToolTip(node, tip, showDelay, position, theme) {
+        var theme = theme;
+        if(_.isUndefined(theme)) theme = 'qtip-dark';
+        var param = {
+            content: {text: tip},
+            show: {event: "mouseover"},
+            hide: {fixed: true, delay: 100, event: "mouseout"},
+            //style: {classes: ''+theme+' qtip-rounded'},
+            style: {classes: ''+theme+' qtip-bootstrap'},
+            position: {
+                my: "bottom right",
+                at: "top left",
+                viewport: $("body")
+            }
+        };
+        $('#'+node+'').qtip(param);
+    }
+
 </script>
 
 </body>

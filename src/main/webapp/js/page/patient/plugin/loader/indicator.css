@@ -12,7 +12,8 @@
     display: none !important;
 }
 .centered > .sk-spinner {
-    background: #79bbb5;;
+    /*background: #79bbb5;*/
+    background: #3786C2;
     padding: 15px;
     border-radius: 50%;
     height: 115px;

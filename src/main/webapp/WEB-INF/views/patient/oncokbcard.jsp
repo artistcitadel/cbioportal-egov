@@ -1,9 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<head>
+    <script>
+    $(document).ready(function () {
+        // $('.main-header').hide();
+    });
+    </script>
+</head>
+<div id="oncokbcard" class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <%--<section class="content-header">
         <h1>
             Patient List
             <small></small>
@@ -13,7 +20,7 @@
             <li><a href="#">Patient</a></li>
             <li class="active">Patient select</li>
         </ol>
-    </section>
+    </section>--%>
 
    <section class="content">
 
@@ -49,7 +56,7 @@
             <p style="margin-bottom: 0px;">There are no FDA-approved or NCCN-compendium listed treatments specifically for patients with KMT2A-ATP5L fusion positive adrenocortical carcinoma.</p>
         </div>
 
-        <%--<div class="tab-pane" style="max-height: 200px; overflow-y: auto;background-color: white;">
+        <div class="tab-pane" style="max-height: 200px; overflow-y: auto;background-color: white;display:none;">
         <ul class="no-style-ul">
         <li class="list-group-item"><a class="list-group-item-title" href="https://www.ncbi.nlm.nih.gov/pubmed/23628958" target="_blank"><b>The MLL recombinome of acute leukemias in 2013.</b></a>
             <div class="list-group-item-content"><span>Meyer C et al. Leukemia. 2013</span><span>PMID: 23628958</span></div>
@@ -67,11 +74,56 @@
                 <div class="list-group-item-content"><span>Chen W et al. Cancer Cell. 2008</span><span>PMID: 18455126</span></div>
             </li>
         </ul>
-        </div>--%>
+        </div>
 
 
     </div>
+
 </div>
+
+
+<div class="oncokb-treatment-table" style="font-size: 1.2rem;">
+      <table class="table table table-bordered" style="margin-top:1px;margin-bottom:1px;">
+            <thead>
+                <tr>
+                    <th scope="col" style="background-color:white;">Level</th>
+                    <th scope="col" style="background-color:white;">Alteration(s)</th>
+                    <th scope="col" style="background-color:white;">Drug(s)</th>
+                    <th scope="col" style="background-color:white;">Level-associated<br/>cancer Type(s)</th>
+                    <th scope="col" style="background-color:white;"></th>
+                </tr>
+            </thead>
+            <tbody style="background-color:white;">
+               <tr>
+                   <td><i class="oncokb level-icon level-3B" style="margin:auto;" /></td>
+                   <td>
+                       <div style="whiteSpace: normal;lineHeight:1rem;">Oncogenic Mutations</div>
+                   </td>
+                   <td>
+                      <div style="whiteSpace: normal;lineHeight:1rem;">
+                       Cobimetinib, Trametinib
+                      </div>
+                   </td>
+                   <td>
+                      <div style="whiteSpace: normal;lineHeight:1rem;">
+                       Melanoma
+                      </div>
+                   </td>
+                   <td>
+                    <div style="whiteSpace: normal;lineHeight:1rem;">
+                      <i class="fa fa-book"></i>
+                    </div>
+                   </td>
+               </tr>
+            </tbody>
+      </table>
+
+</div>
+
+
+
+
+
 <div class="disclaimer" style="background-color: white;"><span>The information above is intended for research purposes only and should not be used as a substitute for professional diagnosis and treatment.</span></div>
 
 
@@ -130,7 +182,6 @@
   </div>
 <%--</div>
 </div>--%>
-
 
 </section>
 </div>

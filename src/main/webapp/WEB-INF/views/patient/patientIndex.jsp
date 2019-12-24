@@ -8,6 +8,10 @@
 	<tiles:insertAttribute name="head_css"/>
 	<tiles:insertAttribute name="js"/>
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/css/tooltipster.bundle.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/civic/civicCard.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/style.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/indicator.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linepulse.css" type="text/css" />
@@ -63,9 +67,10 @@
 
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jquery-ui-1.8.13.custom.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/popper.min.js"></script>
-	<%--<script type="text/javascript" src="<%//docRoot%>js/page/patient/plugin/datatables/datatables.min.js"></script>--%>
+    <%--<script type="text/javascript" src="<%//docRoot%>js/page/patient/plugin/datatables/datatables.min.js"></script>--%>
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jbox/jbox.all.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jqtip/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/js/tooltipster.bundle.min.js" ></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/lodash.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientAction.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientUtil.js"></script>
@@ -74,6 +79,7 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/moment-with-locales.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphael.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphaelscale.js"></script>
+
 <script>
 	var gvServer = gvSERVER;
 </script>

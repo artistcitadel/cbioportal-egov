@@ -190,12 +190,12 @@ function Util() {
             id: self.generateQueryVariantId(e.entrezGeneId, e.tumorType, e.alteration, e.mutationType),
             hugoSymbol:e.hugoSymbol,
             tumorType: e.tumorType, // generated api typings are wrong, it can accept null
-            alterationType: 0,
+            alterationType: e.alterationType || 0,
             entrezGeneId: e.entrezGeneId,
             alteration: e.alteration || "",
             consequence: e.mutationType || "any",
-            proteinStart: e.proteinPosStart === undefined ? -1 : proteinPosStart,
-            proteinEnd: e.proteinPosEnd === undefined ? -1 : proteinPosEnd,
+            proteinStart: e.proteinPosStart === undefined ? -1 : e.proteinPosStart,
+            proteinEnd: e.proteinPosEnd === undefined ? -1 : e.proteinPosEnd,
             type: "web",
             hgvs: "",
             svType: "DELETION" // TODO: hack because svType is not optional
@@ -224,4 +224,51 @@ function Util() {
         }
         return $.trim(id).replace(/\s/g, "_");
     };
+
+    self.annotationIconClassNames = function (indicatorQueryResp) {
+        var classNames = ["oncokb", "annotation-icon", "unknown", "no-level"];
+
+        if (indicatorQueryResp) {
+            var sl = normalizeLevel(indicatorQueryResp.highestSensitiveLevel);
+            var rl = normalizeLevel(indicatorQueryResp.highestResistanceLevel);
+            // console.log('sl ', sl);
+            // console.log('rl ', rl);
+            classNames[2] = ONCOGENIC_CLASS_NAMES[indicatorQueryResp.oncogenic] || (indicatorQueryResp.vus ? "vus" : "unknown");
+
+            if (sl || rl) {
+                var levelName = 'level';
+
+                if (sl) {
+                    levelName = levelName+"-"+sl;
+                }
+
+                if (rl) {
+                    levelName = levelName+"-"+rl;
+                }
+
+                classNames[3] = levelName;
+            }
+        }
+        // console.log("classNames ", classNames);
+        return classNames.join(" ");
+    }
+
+    function normalizeLevel(level)
+    {
+        if (level)
+        {
+            var matchArray = level.match(/LEVEL_(R?\d[AB]?)/);
+
+            if (matchArray && matchArray.length >= 2) {
+                return matchArray[1];
+            }
+            else {
+                return level;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+
 }

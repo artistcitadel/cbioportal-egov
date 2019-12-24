@@ -29,6 +29,9 @@ function Action() {
     self.cancerGeanList = function (props){
         $.ajax({
             type: "get",
+            headers: {
+                Bearer: 'ca94ed72-6380-4f16-ab74-a573874781db'
+            },
             dataType: "json",
             cache: false,
             url: gvSERVER+"/proxy/geanList",
@@ -44,10 +47,12 @@ function Action() {
             }
         });
     }
-    self.getCancerGeanAnnotation = function (props){
-
+    self.getCancerGeanAnnotation = function (props, node){
         $.ajax({
             type: "post",
+            headers: {
+                Bearer: 'ca94ed72-6380-4f16-ab74-a573874781db'
+            },
             dataType: "json",
             cache: false,
             url: gvSERVER+"/proxy/searchGean",
@@ -56,7 +61,67 @@ function Action() {
             callback: props.disposer,
             //timeout: 10000,
             success: function (json) {
+                props.callback(json,node);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+    self.getEvidence = function (props, data){
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            cache: false,
+            url: gvSERVER+"/proxy/searchEvidence",
+            contentType: "application/json",
+            data: JSON.stringify(props.body),
+            callback: props.disposer,
+            //timeout: 10000,
+            success: function (json) {
+                props.callback(json, data);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    self.getCivic = function (props){
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            // cache: false,
+           url: gvSERVER+"/proxy/searchCivic",
+           //  url: 'https://civicdb.org/api/genes/' + props.ids,
+            contentType: "application/json",
+            data: JSON.stringify(props),
+            callback: props.disposer,
+            timeout: 10000,
+            success: function (json) {
+              //  console.log(json);
                 props.callback(json);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    self.getVarient = function(props){
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            // cache: false,
+            url: gvSERVER+"/proxy/searchCivicVarient",
+            contentType: "application/json",
+            data: JSON.stringify(props),
+            callback: props.disposer,
+            timeout: 10000,
+            success: function (json) {
+                //  console.log(json);
+                props.callback(json, props);
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
