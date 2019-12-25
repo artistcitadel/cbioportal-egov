@@ -26,6 +26,16 @@ function Civic(){
       var url = record.url; //'https://civicdb.org/#/events/genes/'+ record.id + '/summary';
       var variants = varient;
       console.log('variants is ', variants);
+      var vastr = '';
+      var vaname;
+      var vaurl;
+      _.map(variants, function(v, k){
+         if(k=='name')vaname = v;
+         if(k=='url')vaurl = v;
+     });
+    _.map(variants.evidence, function(v,k){
+        vastr += k+ ":" + v;
+    });
 
       var txt = '';
       txt +='<div class="civic-card">\n' +
@@ -42,7 +52,7 @@ function Civic(){
              txt += '    <div class="civic-card-variant">\n' +
                  '          <div class="civic-card-variant-header"><span class="civic-card-variant-name">' +
                  '          <a href="' + variants.url + '" target="_blank">' + variants.name + '</a></span>' +
-                 '          <span class="civic-card-variant-entry-types"> Entries: ' + variants.evidence + '</span></div>\n' +
+                 '          <span class="civic-card-variant-entry-types"> Entries: ' + vastr + '</span></div>\n' +
                  //'          <span class="civic-card-variant-entry-types"> Entries: prognostic: 1.</span></div>\n' +
                  '          <div class="civic-card-variant-description summary"></div>\n' +
                  '        </div>\n';

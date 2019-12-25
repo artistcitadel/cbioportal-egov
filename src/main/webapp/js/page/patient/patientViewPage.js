@@ -29,8 +29,8 @@ $(document).ready(function () {
         udata.push(patients);
     }
 
-    console.log(document.pform.pages.value);
-    console.log(document.pform.patient.value);
+    // console.log(document.pform.pages.value);
+    // console.log(document.pform.patient.value);
     var page = parseInt(document.pform.pages.value);
     var tpage = udata.length;
     //alert(udata.length + ' '+ page);

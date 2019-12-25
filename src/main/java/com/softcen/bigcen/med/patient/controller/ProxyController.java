@@ -29,7 +29,7 @@ public class ProxyController {
   public String geanList(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
 
-    System.err.println("ProxyController getanList called");
+//    System.err.println("ProxyController getanList called");
     URI uri = new URI("http://legacy.oncokb.org/api/v1/utils/cancerGeneList");
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -48,7 +48,7 @@ public class ProxyController {
   @RequestMapping(value="/searchGean")
   public String searchGean(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
-    System.err.println("ProxyController searchGean called " + body);
+//    System.err.println("ProxyController searchGean called " + body);
 
     URI uri = new URI("http://legacy.oncokb.org/api/v1/search");
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -66,7 +66,7 @@ public class ProxyController {
   @RequestMapping(value="/searchEvidence")
   public String searchEvidence(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
-    System.err.println("ProxyController searchEvidence called " + body);
+//    System.err.println("ProxyController searchEvidence called " + body);
 
     URI uri = new URI("http://legacy.oncokb.org/api/v1/evidences/lookup");
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -84,14 +84,14 @@ public class ProxyController {
   @RequestMapping(value="/searchCivic")
   public String searchCivic(@RequestBody(required = false) Map<String,String> body, HttpServletRequest request)
       throws URISyntaxException {
-    System.err.println("ProxyController searchCivic called " + body.get("ids"));
+//    System.err.println("ProxyController searchCivic called " + body.get("ids"));
     URI uri = new URI("https://civicdb.org/api/genes/"+body.get("ids")+"?identifier_type=entrez_id");
     RestTemplate restTemplate = new RestTemplate();
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
     HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-    System.err.println(restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody());
+//    System.err.println(restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody());
     return restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody();
 
     /*HttpHeaders httpHeaders = new HttpHeaders();
@@ -113,14 +113,14 @@ public class ProxyController {
   @RequestMapping(value="/searchCivicVarient")
   public String searchCivicVarient(@RequestBody(required = false) Map<String,String> body, HttpServletRequest request)
       throws URISyntaxException {
-    System.err.println("ProxyController searchCivicVarient called " + body);
+//    System.err.println("ProxyController searchCivicVarient called " + body);
     URI uri = new URI("https://civicdb.org/api/variants/"+body.get("id"));
     RestTemplate restTemplate = new RestTemplate();
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
     HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-    System.err.println(restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody());
+//    System.err.println(restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody());
     return restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody();
 
   }

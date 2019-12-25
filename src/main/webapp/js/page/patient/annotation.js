@@ -89,6 +89,11 @@ function Annotation() {
              // self.callback(oncology);
              console.log('oncology length ',_.size(oncology['MUTATIONS'])+_.size(oncology['CNV'])+_.size(oncology['SV']));
              SIZE = _.size(oncology['MUTATIONS'])+_.size(oncology['CNV'])+_.size(oncology['SV']);
+
+             if(SIZE === 0){
+                 self.callback(oncology,[],[]);
+             }
+
              CNT=0;
              _.forEach(oncology, function(v,k){
                  for(var i=0;i<v.length;i++) {
@@ -104,7 +109,8 @@ function Annotation() {
             evidenceTypes: evidenceTypes ? evidenceTypes : "GENE_SUMMARY,GENE_BACKGROUND,ONCOGENIC,MUTATION_EFFECT,VUS,MUTATION_SUMMARY,TUMOR_TYPE_SUMMARY,STANDARD_THERAPEUTIC_IMPLICATIONS_FOR_DRUG_SENSITIVITY,STANDARD_THERAPEUTIC_IMPLICATIONS_FOR_DRUG_RESISTANCE,INVESTIGATIONAL_THERAPEUTIC_IMPLICATIONS_DRUG_SENSITIVITY,INVESTIGATIONAL_THERAPEUTIC_IMPLICATIONS_DRUG_RESISTANCE",
             highestLevelOnly: false,
             levels: [LevelOfEvidence.LEVEL_1, LevelOfEvidence.LEVEL_2A, LevelOfEvidence.LEVEL_2B, LevelOfEvidence.LEVEL_3A, LevelOfEvidence.LEVEL_3B, LevelOfEvidence.LEVEL_4, LevelOfEvidence.LEVEL_R1, LevelOfEvidence.LEVEL_R2],
-            source: "cbioportal",
+            // source: "cbioportal",
+            source: "asancbioportal",
             queries: queryVariants,
         };
     }

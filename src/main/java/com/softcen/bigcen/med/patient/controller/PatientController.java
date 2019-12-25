@@ -68,7 +68,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 
 	@RequestMapping(value="/patientView")
 	public String patientView(HttpServletRequest request, HttpServletResponse response,
-														Model model , @RequestParam(value="QUERY", defaultValue="") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="48321932") String RESCH_PAT_ID){
+														Model model , @RequestParam(value="QUERY", defaultValue="") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="51384218") String RESCH_PAT_ID){
 		model.addAttribute("QUERY", QUERY);
 		model.addAttribute("RESCH_PAT_ID", RESCH_PAT_ID);
 		return "/patient/patientView.tiles";

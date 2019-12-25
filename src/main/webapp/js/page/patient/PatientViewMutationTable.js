@@ -5,6 +5,9 @@
         self.EVIDENCE = [];
         self.CIVICGENE = [];
         self.GEANDATA = [];
+        self.annotationList = [];
+        self.civicList = [];
+
         self.ISROUNDMUTATION = false;
         self.NODE = 'MUTATIONS';
         self.TABLE={};
@@ -73,7 +76,7 @@
 
         var buildAnnotation = function(con,id){
             console.log('self.EVIDENCE', self.EVIDENCE);
-            console.log('con is', con[0].query.id);
+          //  console.log('con is', con[0].query.id);
             var cache;
             for(var i=0;i<self.EVIDENCE.length;i++){
                 _.map(self.EVIDENCE[i],function(v,k){
@@ -99,37 +102,53 @@
         }
 
         var loadAnnotation = function(id, v){
-            new jBox('Tooltip', {
-                attach: '#' + id + '',
-                width: 600,
-                closeOnMouseleave: true,
-                animation: 'move',
-                content: buildAnnotation(v,id) ,
-                    // onOpen: function() {
-                    //     new jBox('Notice', {content: id.split("_")[1], color: 'green'});
-                    // },
-                    // onClose: function() {
-                    //     new jBox('Notice', {content: 'See ya later!', color: 'red'});
-                    // }
+        	if(v.length<1)return;
+      	    /*new jBox('Tooltip', {
+               attach: '#' + id + '',
+               width: 600,
+               closeOnMouseleave: true,
+               animation: 'move',
+               content: buildAnnotation(v, id),
+                onOpen: function() {
+
+               //    new jBox('Notice', {content: id.split("_")[1], color: 'green'});
+               },
+              onClose: function() {
+               //   new jBox('Notice', {content: 'See ya later!', color: 'red'});
+
+              }
+            });*/
+            // tip.open();
+
+
+            $('#'+id+'').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                positionTracker:true,
+                trackTooltip:true,
+                arrow: false,
+                content : buildAnnotation(v,id)
             });
-
-            // $('#' + id + '').tooltipster({
-            //     theme: 'tooltipster-shadow',
-            //     contentAsHTML: true,
-            //     interactive: true,
-            //     content : buildAnnotation(v,id)
-            // });
-
+            $('#'+id+'').tooltipster('open');
         }
 
         var loadCivic = function(id, v, varient) {
-            new jBox('Tooltip', {
-                attach: '#' + id + '',
-                width: 600,
-                closeOnMouseleave: true,
-                animation: 'move',
-                content: buildCivic(v,id, varient) ,
-            });
+            // new jBox('Tooltip', {
+            //     attach: '#' + id + '',
+            //     width: 500,
+            //     closeOnMouseleave: true,
+            //     animation: 'move',
+            //     content: buildCivic(v,id, varient) ,
+            // });
+            $('#'+id+'').tooltipster({
+                    theme: 'tooltipster-shadow',
+                    contentAsHTML: true,
+                    interactive: true,
+                    arrow: false,
+                    content: buildCivic(v,id, varient)
+                });
+                $('#'+id+'').tooltipster('open');
         }
 
         self.init = function (){
@@ -140,13 +159,17 @@
 
             getMutationCosmic();
 
+            // $("#CNV_con").on("mouseover", "[id^='ann_']",function (e) {
+            //     alert('');
+            // });
             //$("[id^='cosmic_']").on('hover', function (e) {
             $('input[type="checkbox"]').change(function() {
                 setColumn(this.id);
             });
 
             //~ mutation annotation
-            $("#MUTATIONS_con").on("hover", "[id^='ann_']",function (e) {
+
+            $("#MUTATIONS_con").on("mouseover", "[id^='ann_']",function (e) {
                 var id = e.target.id;
                 var v = _.filter(self.GENE['MUTATIONS'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
@@ -154,15 +177,18 @@
                 console.log('vis ', v);
                 loadAnnotation(id,v);
             });
-            $("#CNV_con").on("hover", "[id^='ann_']",function (e) {
+            $("#CNV_con").on("mouseover", "[id^='ann_']",function (e) {
                 var id = e.target.id;
+                console.log(id);
                 var v = _.filter(self.GENE['CNV'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
                 })
                 console.log('vis ', v);
+                // if(TOOLTIP)
+                // TOOLTIP.destroy();
                 loadAnnotation(id,v);
             });
-            $("#SV_con").on("hover", "[id^='ann_']",function (e) {
+            $("#SV_con").on("mouseover", "[id^='ann_']",function (e) {
                 var id = e.target.id;
                 var v = _.filter(self.GENE['SV'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
@@ -178,7 +204,7 @@
                 loadCivic(id, v, variant);
             }
 
-            $("#MUTATIONS_con").on("hover", "[id^='civic_']",function (e) {
+            $("#MUTATIONS_con").on("mouseover", "[id^='civic_']",function (e) {
                 var id = e.target.id;
                 var v = _.filter(self.GENE['MUTATIONS'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
@@ -187,15 +213,16 @@
                 getCivicVariants(self.CIVICGENE, v, false, showCivic , id);
 
             });
-            $("#CNV_con").on("hover", "[id^='civic_']",function (e) {
+            $("#CNV_con").on("mouseover", "[id^='civic_']",function (e) {
+
                 var id = e.target.id;
                 var v = _.filter(self.GENE['CNV'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
                 })
                 console.log('vis ', v);
-                getCivicVariants(self.CIVICGENE, v, false, showCivic , id);
+                getCivicVariants(self.CIVICGENE, v, true, showCivic , id);
             });
-            $("#SV_con").on("hover", "[id^='civic_']",function (e) {
+            $("#SV_con").on("mouseover", "[id^='civic_']",function (e) {
                 var id = e.target.id;
                 var v = _.filter(self.GENE['SV'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
@@ -304,12 +331,10 @@
             getMutationList(self.QID[self.ROUNDCNT]);
         }
         var mutation_disposer = function(json) {
-            //$("#mutation_con").empty();
-            // $("#mutation_template").tmpl(page.model).appendTo($("#mutation_con"));
             console.log('mutation_disposer ', self.NODE);
             self.TABLE[self.NODE] = json;
-              //setMutation(self.TABLE[self.NODE]);
-             setTh();
+
+            setTh();
         }
         var setTh=function(){
             var ds_cond = {};
@@ -340,7 +365,7 @@
 
                 }
             }
-           buildTh();
+            buildTh();
         }
 
         var buildTh = function() {
@@ -353,7 +378,26 @@
             }
             $("#" + self.NODE).empty();
             $("#" + self.NODE).append(txt);
-            buildRowsMutation(self.TABLE[self.NODE]);
+            // buildRowsMutation(self.TABLE[self.NODE]);
+            if(self.ROUNDCNT < self.GOALCNT){
+                ++self.ROUNDCNT;
+                //console.log('ROUNCCNT ', self.ROUNDCNT);
+                roundRobin();
+            }else{
+                var gene = new GenomicOverview();
+                gene.init(self.TABLE);
+
+
+                var temp = {};
+                temp['MUTATIONS'] = self.TABLE['MUTATIONS'];
+                temp['CNV'] = self.TABLE['CNV'];
+                temp['SV'] = self.TABLE['SV'];
+                console.log('temp.TABLE ', temp);
+                var annotation = new Annotation();
+                annotation.init(temp, setGeans);
+            }
+
+
         }
 
         var setColumn = function (id){
@@ -440,7 +484,10 @@
             json = setRange(json, page);
             console.log('page is ', page,  json);
 
+            console.log('annotation list', self.annotationList);
+            console.log('civic list', self.civicList);
             var txt = '';
+
             _.forEach(json, function (v,i) {
 
                 txt += '<tr>';
@@ -450,13 +497,35 @@
                 (_includes(self.TH[self.NODE], 'geneExamMthNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneExamMthNm + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="center"><span class="font-msmall" style="white-space: nowrap;"><strong>' + v.hgvspVal + '</strong></span></td>') : '';
                 if(_includes(self.TH[self.NODE], 'annotation')){
+                    // console.log('td annotation ','ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'')
+                    var ann = _.filter(self.annotationList,function(o){
+                        console.log(o.id, 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal));
+                        return o.id == 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal);
+                    });
+                    var civic = _.filter(self.civicList,function(o){
+                        console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
+                        return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
+                    });
+
                     txt+='<td>' +
-                        '<span style="display: flex; min-width: 100px;">' +
-                        '<span id="ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'" data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n' +
+                        '<span class="annotationspan" style="display: flex; min-width: 100px;">\n' +
+                        '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n';
+                   if(ann.length>0) {
+                       txt+='<span><i id="ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'" class="'+ann[0].class+'" ></i></span></span>&nbsp;&nbsp;';
+                       // console.log('annotation id is ', 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal), ann);
+                   }
+                   if(civic.length>0) {
+                       // console.log('civic[0].id ',civic[0].id);
+                       txt+=getCivicEl(civic[0].id)+'&nbsp;&nbsp';
+                   }
+                   txt+=getHotspot();
+
+                   txt+='</span>';
+
                         // ' <span>\n' +
                         // ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
                         // ' </i></span></span>' +
-                        '</span></td>';
+                        txt+='</span></td>';
                 }
 
                 (_includes(self.TH[self.NODE], 'chrnNo'))? (txt+='<td align="center"><span class="font-msmall">' + v.chrnNo + '</span></td>') : '';
@@ -503,6 +572,8 @@
             self.EVIDENCE = evidence;
             self.CIVICGENE = civicGene;
             console.log('setGeans called ',data);
+            console.log('evidence called ',evidence);
+            console.log('civicGene called ',civicGene);
             if(!_.isUndefined((data['MUTATIONS']))){
                 self.GENE['MUTATIONS'] = data['MUTATIONS'];
             }
@@ -519,68 +590,65 @@
                   // var id = 'ann_'+v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration);
                   //var annid = $("#ann_"+v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration));
                   var id = v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration);
-                  var annid =  $("#ann_"+id+"");
-                  var civicid = "civic_"+id+"";
-                  console.log("#ann_"+v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration));
-                  console.log('annotion id is ', annid.prop('id'));
-                  var className = util.annotationIconClassNames(v[i]);
-                  // console.log(annid, className);
-                  annid.addClass(className);
-
-                  var cidx = _.findIndex(self.CIVICGENE, function(o){
-                      // console.log(o.id , v[i].query.entrezGeneId);
-                      return o.id === v[i].query.entrezGeneId;
-                  });
-                  var cidx = _.findIndex(self.CIVICGENE,['id', v[i].query.entrezGeneId]);
-
-                  if(cidx!==-1) {
-                      annid.parent('span').append(getCivicEl(civicid));
+                  if(astoempty(v[i].query.alteration==='Amplification')){
+                      id = v[i].query.hugoSymbol+'_AMPLIFICATION';
+                  }
+                  if(astoempty(v[i].query.alteration==='Deletion')){
+                        id = v[i].query.hugoSymbol+'_LOSS';
                   }
 
-                  //for testable only
-                  /*if(v[i].query.hugoSymbol ==='ALK' || v[i].query.hugoSymbol ==='MYC'){
-                    annid.parent('span').append(getCivicEl(civicid));
-                  }*/
-                  //end testable
+                  //console.log('id is ', id);
+                  var className = util.annotationIconClassNames(v[i]);
+                  var annid =  "ann_"+id+"";
+                  var annotationmap = {};
+                  annotationmap.id = annid;
+                  annotationmap.class = className;
+                  self.annotationList.push(annotationmap);
 
-                  /*var id = annid.prop("id");
-                    new jBox('Tooltip', {
-                        attach: '#' + id + '',
-                        width: 600,
-                        closeOnMouseleave: true,
-                        animation: 'move',
-                        content: buildAnnotation(v[i])
-                    });*/
+
+                 var cidx = _.findIndex(self.CIVICGENE, function(o){
+                      // console.log(o.name , v[i].query.hugoSymbol);
+                     return o.name === v[i].query.hugoSymbol;
+                 });
+//               var cidx = _.findIndex(self.CIVICGENE,['id', v[i].query.entrezGeneId]);
+                  
+
+                  if(cidx!==-1) {
+                      var civicid = "civic_"+id+"";
+                      var civicmap = {};
+                      civicmap.id = civicid;
+                      self.civicList.push(civicmap);
+                	  // console.log('cidxx' , v[i].query.entrezGeneId, v[i].query.hugoSymbol);
+                      // annid.parent('span').append(getCivicEl(civicid));
+                  }
+
+
                 }
             });
 
-            $("[id^='ann_']").trigger('hover');
-            $("[id^='civic_']").trigger('hover');
+            for(var i=0;i<self.NODES.length;i++) {
+                // console.log('self.TABLE ',self.TABLE[self.NODES[i]]);
+                if(self.TABLE[self.NODES[i]].length<1)continue;
+                self.NODE = self.NODES[i];
+                buildRowsMutation(self.TABLE[self.NODES[i]]);
+            }
+
+
+            // $("[id^='ann_']").trigger('hover');
+            // $("[id^='civic_']").trigger('hover');
             $("#mut_loader").hide();
             $("#cna_loader").hide();
-            $("#exp_loader").hide();
+            // $("#exp_loader").hide();
             $("#st_loader").hide();
             $("#MUTATIONS_t").show();
             $("#CNV_t").show();
-            $("#EXPRESSION_t").show();
+            // $("#EXPRESSION_t").show();
             $("#SV_t").show();
         }
 
 
         var buildRowsMutation = function(json, dirty) {
             console.log('buildRowMutation called ',self.ROUNDCNT, json);
-
-            if(self.ROUNDCNT === self.GOALCNT) {
-                var temp = {};
-                temp['MUTATIONS'] = self.TABLE['MUTATIONS'];
-                temp['CNV'] = self.TABLE['CNV'];
-                temp['SV'] = self.TABLE['SV'];
-
-                console.log('temp.TABLE ', temp);
-              var annotation = new Annotation();
-                annotation.init(temp, setGeans);
-            }
-
 
             buildTd(json);
 
@@ -658,14 +726,7 @@
                 $table3.children('tbody').html(buildTd(rows));
             });
 
-            if(self.ROUNDCNT < self.GOALCNT){
-                ++self.ROUNDCNT;
-                //console.log('ROUNCCNT ', self.ROUNDCNT);
-                roundRobin();
-            }else{
-                var gene = new GenomicOverview();
-                gene.init(self.TABLE);
-            }
+
         }
 
         var moveSanger = function(id) {
@@ -684,8 +745,20 @@
     }
 
     var getCivicEl = function(civicid){
-      var txt ='<span id="'+civicid+'" class="annotation-item">\n' +
-          '  <img width="14px" height="14px" src="/pmp/js/page/patient/images/civic-logo.png"  alt=\'Civic Variant Entry\'  />\n' +
+      var txt ='<span class="annotation-item">\n' +
+          '  <img id="'+civicid+'" width="14px" height="14px" src="/pmp/js/page/patient/images/civic-logo.png"  alt=\'Civic Variant Entry\'  />\n' +
           '</span>';
       return txt;
+    }
+
+    var getHotspot = function(){
+    var txt='<span class="annotation-item chang_hotspot">\n' +
+        '    <img \n' +
+        '        width="14px" ' +
+        '        height="14px" \n' +
+        '        src="/pmp/js/page/patient/images/3d-hotspots.svg" \n' +
+        '        alt=\'Recurrent Hotspot Symbol\'\n' +
+        '            />\n' +
+        '            </span>';
+        return txt;
     }

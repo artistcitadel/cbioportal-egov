@@ -214,6 +214,7 @@
                                         <div></div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                     <div class="btn-group" style="width:60%;">
                                         <button class="btn btn-success" type="button">
@@ -269,7 +270,7 @@
 
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
-                                <div class="col-md-2">
+                                <%--<div class="col-md-2">
                                     <div id="exp_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
                                         <div></div>
                                         <div></div>
@@ -277,7 +278,7 @@
                                         <div></div>
                                         <div></div>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
                                     <div class="btn-group" style="width:60%;">
                                         <button class="btn btn-success" type="button">
@@ -311,7 +312,7 @@
 
                                     <div style="overflow-x:auto;">
 
-                                        <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
+                                        <table id="EXPRESSION_t" class="table table-bordered">
                                             <thead>
                                             <tr id='EXPRESSION' class="warning">
                                             </tr>
@@ -395,7 +396,7 @@
 
                    </div>
                 </div>
-
+<hr/>
                 <div class="box-footer text-align-center Footer-module">
                     <span style="font-size:14px;">Inspired by and Kopied by</span> <%--Memorial Sloan Kettering CancerCenter--%>
                     <img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>
@@ -688,10 +689,10 @@
             location.reload();
         });
 
-        var patientView = new TimeLine();
-        patientView.init();
-        // var pt = new PatientViewMutationTable();
-        // pt.init();
+        // var patientView = new TimeLine();
+        // patientView.init();
+        var pt = new PatientViewMutationTable();
+        pt.init();
 
     });
 

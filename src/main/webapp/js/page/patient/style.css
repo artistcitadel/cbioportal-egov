@@ -149,7 +149,7 @@ th, td {
 
 .com-paging {margin-top:30px;text-align:center;}
 .com-paging a, em {display:inline-block;vertical-align:middle;}
-.com-paging [class^="btn_"] {overflow:hidden;width:36px;height:36px;background-image:url("/js/page/patient/images/btn_paging.png");background-repeat:no-repeat;white-space:nowrap;text-indent:100%;}
+.com-paging [class^="btn_"] {overflow:hidden;width:36px;height:36px;background-image:url("/pmp/js/page/patient/images/btn_paging.png");background-repeat:no-repeat;white-space:nowrap;text-indent:100%;}
 .com-paging .btn_first {background-position:0 0;}
 .com-paging .btn_prev {margin-right:10px;background-position:-36px 0;}
 .com-paging .btn_next {margin-left:10px;background-position:-72px 0;}

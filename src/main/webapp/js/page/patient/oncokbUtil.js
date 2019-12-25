@@ -407,7 +407,7 @@ if (!isCna) {
         var geneSymbol = mutation.query.hugoSymbol;
         var geneEntry = _.filter(civicGenes,['name',geneSymbol]);
         console.log('geneEntry is ', geneEntry);
-        var proteinChange = mutation.query.alteration;
+        var proteinChange = mutation.query.alteration.toUpperCase();
 
         console.log('geneEntry.variants ',geneEntry[0].variants);
         addCivicVariant(civicVariants,
@@ -415,36 +415,47 @@ if (!isCna) {
                         // geneEntry[0].variants['L1196M'], for testable only
                         proteinChange,
                         geneSymbol,
-                        geneEntry.id);
+                        geneEntry[0].id);
 
                 }
 
-} /*else {
-    for (var i=0; i< civicGenes; i++) {
+} else {
+    for (var i=0; i< civicGenes.length; i++) {
         var geneName = civicGenes[i].name;
         var geneEntry = civicGenes[i];
-        var geneVariants = geneEntry.variants;
+        console.log('geneEntry', geneEntry);
+        console.log('mutationSpecs[0].query.alteration',mutationSpecs[0].query.alteration);
+
+        var geneVariantz = geneEntry.variants;
+        console.log('geneVariantz', geneVariantz);
+        var geneVariants = Object.keys(geneVariantz);
         if (!_.isEmpty(geneVariants)) {
             for (var j=0; j<geneVariants.length;j++) {
                 var variantName = geneVariants[j];
                 // Only retrieve CNA variants
-                if (variantName == 'AMPLIFICATION' || variantName == 'DELETION') {
-                    promises.push(addCivicVariant(civicVariants,
-                        geneVariants[variantName],
-                        variantName,
-                        geneName,
-                        geneEntry.id));
+                // console.log('variantName', mutationSpecs[0].query.alteration.toUpperCase(), variantName);
+                if(mutationSpecs[0].query.alteration.toUpperCase() == variantName) {
+                    if (variantName == 'AMPLIFICATION' || variantName == 'DELETION') {
+                        addCivicVariant(civicVariants,
+                            geneVariantz[variantName],
+                            variantName,
+                            geneName,
+                            geneEntry.id);
+                    }
                 }
+            }
+            // if (geanVariants['AMPLIFICATION'] || geanVariants['DELETION']) {
+            //     addCivicVariant(civicVariants,
+            //         geneEntry[0].variants[proteinChange],
+            //         proteinChange,
+            //         geneSymbol,
+            //         geneEntry[0].id);
+            //   }
             }
         }
     }
-}*/
-
-// return Promise.all(promises).then(function() {
-//     console.log('civicVariants', civicVariants);
-//     return civicVariants;
-// });
 }
+
 
 function addCivicVariant(variantMap, variantId, variantName, geneSymbol, geneId) {
     console.log('addCivicVariant called');
