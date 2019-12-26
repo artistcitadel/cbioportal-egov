@@ -6,14 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f67cda9-a09e-46a0-9e96-904c2b2f401d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softcen/bigcen/med/patient/controller/PatientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/PatientViewMutationTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/page/patient/patientAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softcen/bigcen/med/patient/controller/PatientController.class" afterDir="false" />
-    </list>
+    <list default="true" id="8f67cda9-a09e-46a0-9e96-904c2b2f401d" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -806,12 +799,12 @@
       <workItem from="1577058452946" duration="38987000" />
       <workItem from="1577143880634" duration="20423000" />
       <workItem from="1577247108577" duration="21196000" />
-      <workItem from="1577316583840" duration="2099000" />
+      <workItem from="1577316583840" duration="2700000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1033802000" />
+    <option name="totallyTimeSpent" value="1034403000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
