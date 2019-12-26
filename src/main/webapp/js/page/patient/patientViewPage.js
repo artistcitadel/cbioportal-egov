@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function Noop(){
     var self = this;
     self.movePage = function(page){

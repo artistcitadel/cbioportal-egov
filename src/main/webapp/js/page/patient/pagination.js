@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function Pager() {
     var self = this;
     self.buildPage = function (page, total, el, callback, data, node) {

@@ -1,4 +1,6 @@
-
+/**
+ * @author 오세영
+ */
     function PatientViewMutationTable() {
         var self = this;
         var action,util, annotation;
@@ -884,7 +886,7 @@
        return txt;
     }
     /*
-      param:
+      param: asan logic
       totalCount  : total row count(sample count) in the future will be point out, each patient in cohort total Count
       obj = keyword count gene + protein + mutation type
      */
@@ -927,11 +929,13 @@
             var freqRects = [];
             var colorIdx = index % freqColors.length;
             var color = colorIdx >= 0 ? freqColors[colorIdx] : freqColors[0];
+            // console.log('color is ' , color);
             freqRects.push(frequencyRectangle(count, totalCount, color,barWidth,barHeight ));
+           // console.log('freqRect is ', freqRects.join());
         });
 
         var txt='';
-        txt=' <svg width={totalWidth} height="12">\n' +
+        txt+=' <svg width={totalWidth} height="12">\n' +
             '                <text\n' +
             '                    x='+textPos+' \n' +
             '                    y="9.5"\n' +
@@ -942,12 +946,13 @@
             txt+='          </text>\n' +
             '                <rect\n' +
             '                    y="2"\n' +
-            '                    width='+barWidth+' \n' +
-            '                    height='+barHeight+' \n' +
-            '                    fill='+barColor+' \n' +
+            '                    width=" '+barWidth+' "\n' +
+            '                    height=" '+barHeight+' "\n' +
+            '                    fill=" '+barColor+' "\n' +
             '                />\n' +
-            '                {freqRects}\n' +
+            '                '+ freqRects.join()+' \n' +
             '            </svg>';
+            console.log(txt);
             return txt;
     }
 
@@ -957,11 +962,11 @@
         var proportion = count / totalCount;
         var width = proportion * (barWidth || 0);
         var txt = '';
-        txt+='<rect\n' +
-            '        y="2"\n' +
-            '        width='+width+' \n' +
-            '        height='+barHeight+' \n' +
-            '        fill='+color+' \n' +
+        txt+='<rect \n' +
+            '        y="2" \n' +
+            '        width=" '+width+' "\n' +
+            '        height=" '+barHeight+' "\n' +
+            '        fill="'+color+'"\n' +
             '        />'
         return txt;
     }

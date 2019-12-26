@@ -1,3 +1,7 @@
+/**
+ * @author 오세영
+ */
+
 function PlotFilter() {
     var self = this;
     self.searchPlot = function(id) {

@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function TimeLine() {
     var self = this;
     var leftpadding = 90, lvalue = 90;

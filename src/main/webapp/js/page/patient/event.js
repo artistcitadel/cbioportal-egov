@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function Event() {
     var self = this;
     var util = new Util();

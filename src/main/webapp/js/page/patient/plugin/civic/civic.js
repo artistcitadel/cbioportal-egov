@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function Civic(){
     var self = this;
     var action;

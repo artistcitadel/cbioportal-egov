@@ -1,3 +1,6 @@
+/**
+ * @author 오세영
+ */
 function GenomicOverview() {
     var self = this;
     var util,action;

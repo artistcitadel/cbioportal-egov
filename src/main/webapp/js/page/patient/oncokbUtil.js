@@ -1,4 +1,6 @@
-
+/**
+ * @author 오세영
+ */
 function processEvidence(evidences) {
     var result = {}; //id based.
     if (evidences && evidences.length > 0) {

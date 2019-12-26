@@ -1,5 +1,5 @@
 /**
- * @return {string}
+ * @author 오세영
  */
 function Util() {
     var self = this;

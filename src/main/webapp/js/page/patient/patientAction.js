@@ -1,4 +1,6 @@
-"use strict";
+/**
+ * @author 오세영
+ */
 
 function Action() {
     var self = this;
