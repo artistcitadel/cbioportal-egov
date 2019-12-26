@@ -163,6 +163,21 @@
             $('#'+id+'').tooltipster('open');
         }
 
+        var loadMycancergenome = function(id) {
+            var myCancerGenome = new CancerGenome();
+            var data = _.filter(MYCANCERGENOME, function(o){
+                return o.hugoGeneSymbol == id.split("_")[1];
+            });
+            $('#'+id+'').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: false,
+                content: myCancerGenome.init(data)
+            });
+            $('#'+id+'').tooltipster('open');
+        }
+
         self.init = function (){
             console.log('PatientViewMutationTable called');
             action = new Action();
@@ -259,6 +274,21 @@
                 loadHotspot(id);
             });
             //~ end hotspot annotation
+
+            //~ myCancerGenome annotation
+            $("#MUTATIONS_con").on("mouseover", "[id^='my_']",function (e) {
+                var id = e.target.id;
+                loadMycancergenome(id);
+            });
+            $("#CNV_con").on("mouseover", "[id^='my_']",function (e) {
+                var id = e.target.id;
+                loadMycancergenome(id);
+            });
+            $("#SV_con").on("mouseover", "[id^='my_']",function (e) {
+                var id = e.target.id;
+                loadMycancergenome(id);
+            });
+            //~ end myCancerGenome annotation
 
             $("[id^='search_']").keyup(function (event) {
                 event.preventDefault();
@@ -572,6 +602,17 @@
                     });
                     var isHot = _.includes(HOTSPOT, v.geneNm);
 
+                    var hasCancerGenome =_.findIndex(MYCANCERGENOME, ['hugoGeneSymbol',v.geneNm]);
+                    // console.log('MYCANCERGENOME ', MYCANCERGENOME);
+                    // console.log('v.geneNm ', v.geneNm);
+                    // console.log('hasCancerGenome ', hasCancerGenome);
+                    var userGenomeData = [];
+                    if(hasCancerGenome!=-1){
+                        var userGenome = _.filter(MYCANCERGENOME, function(o){
+                            return o.hugoGeneSymbol == v.geneNm;
+                        });
+                    }
+
                     txt+='<td>' +
                         '<span class="annotationspan" style="display: flex; min-width: 100px;">\n' +
                         '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n';
@@ -581,12 +622,17 @@
                    }
                    if(civic.length>0) {
                        // console.log('civic[0].id ',civic[0].id);
-                       txt+=getCivicEl(civic[0].id)+'&nbsp;&nbsp';
+                       txt+=getCivicEl(civic[0].id)+'</span>&nbsp;&nbsp;';
                    }
                    if(isHot)
                      txt+=getHotspot('hot_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'');
 
-                   txt+='</span>';
+                   txt+='</span>&nbsp;&nbsp;';
+
+                    if(hasCancerGenome!=-1){
+                        txt+=getUserGenome('my_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'');
+                    }
+
 
                         // ' <span>\n' +
                         // ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
@@ -614,6 +660,7 @@
                 (_includes(self.TH[self.NODE], 'refAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'copy'))? (txt+='<td align="center"><span class="font-msmall">' + v.copy + '</span></td>') : '';
               if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td>\n' +
+                  renderCohort(json,v);
                     // ' <div>\n' +
                     // ' <svg width="71" height="12">\n' +
                     // ' <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>\n' +
@@ -827,4 +874,118 @@
         '            />\n' +
         '            </span>';
         return txt;
+    }
+
+    var getUserGenome = function(id){
+       var txt='';
+       txt+=' <span class="annotation-item mcg">\n' +
+           '  <img id='+id+' width="14px" height="14px" src="/pmp/js/page/patient/images/mcg_logo.png" alt="My Cancer Genome Symbol" />\n' +
+           '  </span>';
+       return txt;
+    }
+    /*
+      param:
+      totalCount  : total row count(sample count) in the future will be point out, each patient in cohort total Count
+      obj = keyword count gene + protein + mutation type
+     */
+    var renderCohort = function(data, obj){
+        totalCount = data.length;
+        var countsmap={};
+        for(var i=0;i<data.length;i++){
+            var keyword = data[i].geneNm+data[i].hgvspVal+data[i].geneVariClsfNm;
+            var numberOfSampleKeyword = obj.geneNm+obj.hgvspVal+obj.geneVariClsfNm;
+            if( keyword == numberOfSampleKeyword ){
+              // if(!_.isUndefined(countsmap[ astoempty(keyword)]) )
+                if(countsmap[ astoempty(keyword)] )
+                  countsmap[astoempty(keyword)]+=1;
+              else
+                  countsmap[astoempty(keyword)]=1;
+            }
+        }
+        console.log('countsmap is ', countsmap);
+        var counts=[];
+        _.map(countsmap, function(v,k){
+            counts.push(v);
+        });
+        console.log('counts', counts);
+
+        var freqColors =["lightgreen", "green"];
+        var barColor = "#ccc";
+        var textMargin = 6;
+        var textWidth = 35;
+        var barWidth = 30;
+        var barHeight = 8;
+
+        var mainCountIndex = 0;
+        var mainProportion = counts[mainCountIndex] / totalCount;
+
+        var textPos = (barWidth || 0) + (textMargin || 0);
+        var totalWidth = textPos + (textWidth || 0);
+
+        var freqRects = [];
+        _.forEach(counts, function(count, index) {
+            var freqRects = [];
+            var colorIdx = index % freqColors.length;
+            var color = colorIdx >= 0 ? freqColors[colorIdx] : freqColors[0];
+            freqRects.push(frequencyRectangle(count, totalCount, color,barWidth,barHeight ));
+        });
+
+        var txt='';
+        txt=' <svg width={totalWidth} height="12">\n' +
+            '                <text\n' +
+            '                    x='+textPos+' \n' +
+            '                    y="9.5"\n' +
+            '                    textAnchor="start"\n' +
+            '                    fontSize="10"\n' +
+            '                    >\n';
+            txt+=getPercentage(mainProportion);
+            txt+='          </text>\n' +
+            '                <rect\n' +
+            '                    y="2"\n' +
+            '                    width='+barWidth+' \n' +
+            '                    height='+barHeight+' \n' +
+            '                    fill='+barColor+' \n' +
+            '                />\n' +
+            '                {freqRects}\n' +
+            '            </svg>';
+            return txt;
+    }
+
+
+    var frequencyRectangle = function(count, totalCount, color, barWidth,barHeight)
+    {
+        var proportion = count / totalCount;
+        var width = proportion * (barWidth || 0);
+        var txt = '';
+        txt+='<rect\n' +
+            '        y="2"\n' +
+            '        width='+width+' \n' +
+            '        height='+barHeight+' \n' +
+            '        fill='+color+' \n' +
+            '        />'
+        return txt;
+    }
+
+    function getPercentage(proportion) {
+    var digits = 1;
+        return toFixedWithThreshold(100 * proportion, digits) + '%';
+    }
+
+    function toFixedWithThreshold(value, digits)
+    {
+        var fixed = value.toFixed(digits);
+
+        // if we end up with 0.0...0, returns <0.0...1 instead
+        if (value !== 0 && parseFloat(fixed) === 0) {
+            var floatingZeros = digits > 1 ? _.fill(Array(digits - 1), "0") : [];
+
+            // in case the value is negative, direction of the inequality changes
+            // (because, for example, 0.02 < 0.1 but, -0.02 > -0.1)
+            // we need to add the minus sign as well...
+            var prefix = value > 0 ? "<" : ">-";
+
+            fixed = prefix+'0.'+floatingZeros.join('')+'1';
+        }
+
+        return fixed;
     }

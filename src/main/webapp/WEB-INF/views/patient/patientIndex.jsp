@@ -81,6 +81,8 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphaelscale.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/hotspot.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/hotspotGenes.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/mycancergenome.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/cancergenome.js"></script>
 
 <script>
 	var gvServer = gvSERVER;
