@@ -151,13 +151,26 @@
                 $('#'+id+'').tooltipster('open');
         }
 
+        var loadHotspot = function(id){
+            var hotspot = new Hotspot();
+            $('#'+id+'').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: false,
+                content: hotspot.init()
+            });
+            $('#'+id+'').tooltipster('open');
+        }
+
         self.init = function (){
             console.log('PatientViewMutationTable called');
             action = new Action();
             util = new Util();
             annotation = new Annotation();
 
-            getMutationCosmic();
+            roundRobin();
+            // getMutationCosmic();
 
             // $("#CNV_con").on("mouseover", "[id^='ann_']",function (e) {
             //     alert('');
@@ -232,6 +245,21 @@
             });
             //~ end civic annotation
 
+            //~ hotspot annotation
+            $("#MUTATIONS_con").on("mouseover", "[id^='hot_']",function (e) {
+                var id = e.target.id;
+                loadHotspot(id);
+            });
+            $("#CNV_con").on("mouseover", "[id^='hot_']",function (e) {
+                var id = e.target.id;
+                loadHotspot(id);
+            });
+            $("#SV_con").on("mouseover", "[id^='hot_']",function (e) {
+                var id = e.target.id;
+                loadHotspot(id);
+            });
+            //~ end hotspot annotation
+
             $("[id^='search_']").keyup(function (event) {
                 event.preventDefault();
                 var id = this.id;
@@ -262,9 +290,22 @@
                 buildRowsMutation(temp,'1');
                 });
 
-            $("#MUTATIONS_con").on("hover", "[id^='cosmic_']",function (e) {
+            $("#MUTATIONS_con").on("mouseover", "[id^='cosmic_']",function (e) {
             //$("#MUTATIONS_con td").last().on("hover", "td:eq(last)",function (e) {
                 var id = e.target.id;
+                var count = $(this).text();
+                var geneNm = $(this).data("geneNm");
+                var protein = $(this).data("protein");
+                var temp = getCosmic(id.split("_")[1]);
+                var prop = {};
+                prop.count  = count;
+                prop.geneNm = geneNm;
+                prop.protein = protein;
+                prop.temp = temp;
+                prop.id = id;
+                getMutationCosmic(prop);
+
+                /*var id = e.target.id;
                 var count = $(this).text();
                 var geneNm = $(this).data("geneNm");
                 var protein = $(this).data("protein");
@@ -278,7 +319,7 @@
                     closeOnMouseleave: true,
                     animation: 'move',
                     content: cosmic
-                });
+                });*/
             });
 
             // $("#MUTATIONS_ann").on("hover", "[id^='ann_']",function (e) {
@@ -300,6 +341,28 @@
 
         }
 
+        var loadCosmic = function(cosmic, prop){
+            var cosmic = buildCosmic(prop.count, prop.geneNm, prop.protein, prop.temp);
+            $('#'+prop.id+'').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: false,
+                content: cosmic,
+            });
+            $('#'+prop.id+'').tooltipster('open');
+
+            // new jBox('Tooltip', {
+            //     //$(this).jBox('Tooltip', {
+            //     attach: '#' + id + '',
+            //     width: 290,
+            //     closeOnMouseleave: true,
+            //     animation: 'move',
+            //     content: cosmic
+            // });
+
+        }
+
         getMutationList = function(qid) {
             console.log("getround ", self.ROUNDCNT);
             //console.log("getMutation ", self.NODE);
@@ -309,21 +372,22 @@
             action.selectPatientMuList(ds_cond);
         }
 
-        var getMutationCosmic = function() {
+        var getMutationCosmic = function(prop) {
             var ds_cond = {};
             ds_cond.data = {"queryId": "selectPatientMuCosmic", "patientId": PATIENTID};
             ds_cond.callback = cosmic_disposer;
-            action.selectPatientMuList(ds_cond);
+            action.selectPatientMuList(ds_cond, prop);
         }
 
 
-        var cosmic_disposer = function(json) {
-            setCosmic(json);
+        var cosmic_disposer = function(json, prop) {
+            setCosmic(json, prop);
         }
 
-        var setCosmic = function(data){
+        var setCosmic = function(data, prop){
             self.COSMIC = data;
-            roundRobin();
+            loadCosmic(self.COSMIC, prop);
+            // roundRobin();
         }
 
         var roundRobin = function(){
@@ -506,6 +570,7 @@
                         console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
                         return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
                     });
+                    var isHot = _.includes(HOTSPOT, v.geneNm);
 
                     txt+='<td>' +
                         '<span class="annotationspan" style="display: flex; min-width: 100px;">\n' +
@@ -518,7 +583,8 @@
                        // console.log('civic[0].id ',civic[0].id);
                        txt+=getCivicEl(civic[0].id)+'&nbsp;&nbsp';
                    }
-                   txt+=getHotspot();
+                   if(isHot)
+                     txt+=getHotspot('hot_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'');
 
                    txt+='</span>';
 
@@ -672,7 +738,7 @@
                 //alert(self.ROUNDCNT + ' ' +self.GOALCNT);
                 buildSort();
             }
-             $("[id^='cosmic_']").trigger('hover');
+             // $("[id^='cosmic_']").trigger('hover');
 
             //alert($("#MUTATIONS_con td").last().find('div').prop('id'));
 
@@ -751,9 +817,9 @@
       return txt;
     }
 
-    var getHotspot = function(){
+    var getHotspot = function(hotspotId){
     var txt='<span class="annotation-item chang_hotspot">\n' +
-        '    <img \n' +
+        '    <img id="'+hotspotId+'"  \n' +
         '        width="14px" ' +
         '        height="14px" \n' +
         '        src="/pmp/js/page/patient/images/3d-hotspots.svg" \n' +

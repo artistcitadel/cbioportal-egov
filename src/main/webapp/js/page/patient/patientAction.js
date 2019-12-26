@@ -173,7 +173,7 @@ function Action() {
         });
     }
 
-    self.selectPatientMuList = function (props) {
+    self.selectPatientMuList = function (props, arg) {
 
         $.ajax({
             type: "post",
@@ -188,7 +188,7 @@ function Action() {
             callback: props.disposer,
             //timeout: 10000,
             success: function (json) {
-                props.callback(json);
+                props.callback(json, arg);
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
