@@ -26,6 +26,52 @@ public class CohortcpmServiceImpl extends BigcenMedAbstractServiceImpl implement
 		// TODO Auto-generated method stub
 		return cohortcpm.selectCohortContList(paramMap);
 	}
+
+	@Override
+	public Object selectCohortTable(Map<Object, Object> paramMap) {
+		// TODO Auto-generated method stub
+		
+		String tableNM = "P"+paramMap.get("PER_CODE").toString();
+		
+		StringBuffer sbQuery = new StringBuffer();
+		sbQuery.append(SQL.SEPERATE + SQL.SELECT + "RESCH_PAT_ID");
+		sbQuery.append(SQL.SEPERATE + SQL.FROM);
+		sbQuery.append(SQL.SEPERATE + "pmsdata." + tableNM);
+		sbQuery.append(SQL.SEPERATE + SQL.WHERE);
+		sbQuery.append(SQL.SEPERATE + "1=1");
+		sbQuery.append(SQL.SEPERATE + SQL.AND + "DELETE_YN = 'N'");
+		
+		paramMap.put("CohortTableQuery", sbQuery);
+		
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("CohortTableQuery", sbQuery);
+		resultMap.put("selectCohortTable", cohortcpm.selectCohortTable(paramMap));
+		
+		return resultMap;
+	}
+
+	@Override
+	public Object selectCohortFilteringTable(Map<Object, Object> paramMap) {
+		// TODO Auto-generated method stub
+		
+		return cohortcpm.selectCohortTable(paramMap);
+	}
+	
+	@Override
+	public Object selectCohortPatientDataList(Map<Object, Object> paramMap) {
+		// TODO Auto-generated method stub
+		String tableName = "pmsdata.P" + paramMap.get("PER_CODE").toString();
+		
+		paramMap.put("TABLE",paramMap.get("SUBQUERY"));
+		paramMap.put("TABLENAME", tableName);
+		return cohortcpm.selectCohortPatientDataList(paramMap);
+	}
+
+	@Override
+	public void updateCohortPatientList(Map<Object, Object> paramMap) {
+		// TODO Auto-generated method stub
+		cohortcpm.updateCohortPatientList(paramMap);
+	}
 	
 
 	

@@ -195,7 +195,7 @@
         , BAS.COHORT_2          -- Cohort (진한색)
         , ' ' chort
        -- ,(select HGVSP_VAL from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.CNV_EXAM_RSLT_ID and RESCH_PAT_ID = ) hgvspVal
-        , BAS.CNA hgvspVal
+        ,'Amplification' hgvspVal
         ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.CNV_EXAM_RSLT_ID and RESCH_PAT_ID = #{patientId})  geneVariClsfNm
         FROM ( SELECT GCV.CNV_EXAM_RSLT_ID                  -- 복제수변이검사결과ID (화면표시X)
         , NULL AS TUMOR_NM                      -- 암종 (화면표시X Annotation OncoKB 사용)

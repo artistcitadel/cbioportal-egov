@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="mutation">
+	<!-- MUTATION LIST -->
+	<select id="selectMutationList" parameterType="map" resultType="hashmap">
+		SELECT   PGG.GENE_NM
+				,PGG.CYTB_NM
+				,1234 AS "GENE_SIZE"
+				,COUNT(DISTINCT(AA.RESCH_PAT_ID)) AS "MUTATIONS"
+				,COUNT(DISTINCT(AA.RESCH_PAT_ID)) / 1234 AS "MUT_NUC_RATE"
+				,0 AS "MUTSIG_Q_VALUE"
+		  FROM 
+		  (
+			SELECT 	PGM.MTTN_EXAM_RSLT_ID, PGM.RESCH_PAT_ID, PGM.GENE_NM, COUNT(*) OVER()
+			  FROM 	pmsdev.PMGERMUEM PGM
+			 WHERE 	EXISTS
+				(
+					SELECT 1
+					FROM 
+					(
+						SELECT RESCH_PAT_ID
+						FROM pmsdata.P0000000_20191218015019
+						WHERE DELETE_YN='N'
+					)PAT
+					WHERE PGM.RESCH_PAT_ID=PAT.RESCH_PAT_ID
+				)
+		  )AA
+		LEFT OUTER JOIN pmsdev.PMGEMGENE PGG ON (AA.GENE_NM=PGG.GENE_NM)
+		GROUP BY PGG.GENE_NM, PGG.CYTB_NM
+	</select>
+	
+	<select id="selectOncoPrintList" parameterType="map" resultType="hashmap">
+		SELECT *
+		FROM (
+			SELECT 	 mst.GENE_EXAM_SPCN_ID 	AS "group"
+					,mst.RESCH_PAT_ID		
+					,mst.GENE_NM			AS "variable"
+					,mst.HGVSP_VAL			AS "value"
+					,mst.GENE_VARI_CLSF_NM 	AS "mutation"
+			 FROM 	pmsdev.PMGERMUEM mst
+			WHERE 	1=1
+			  AND 	mst.GENE_NM IN 
+					<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+	            		#{geneNm}
+	        		</foreach>
+			UNION 
+			SELECT	 mst.GENE_EXAM_SPCN_ID AS "group" 
+					,mst.RESCH_PAT_ID 
+					,mst.GENE_NM AS "variable" 
+					,CASE mst.CNV_STAT_NM WHEN 'Amplification' THEN 'Amp' ELSE 'HomDel' END AS "value" 
+					,'CNA' AS "mutation"
+			 FROM	pmsdev.PMGERCVEM mst
+			WHERE	1=1
+			  AND 	mst.GENE_NM IN 
+					<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+            			#{geneNm}
+        			</foreach>
+		)A
+		WHERE 1=1
+		AND EXISTS
+		(
+			SELECT 1
+			FROM 
+			(
+				SELECT RESCH_PAT_ID
+				FROM pmsdata.P0000000_20191218015019
+				WHERE DELETE_YN='N'
+			)PAT
+			WHERE A.RESCH_PAT_ID=PAT.RESCH_PAT_ID
+		)
+	</select>
+	
+
+</mapper>

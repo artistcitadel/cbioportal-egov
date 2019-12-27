@@ -6,7 +6,7 @@
  <mapper namespace="common_sys">
  	<!-- 연구항목공유 조회 -->
  	<select id="selectItemCont" parameterType="map" resultType="hashmap">
-		SELECT 	 A.SEQ
+ 		SELECT 	 A.SEQ
 				,A.SHARE_CD
 				,B.COMM_CD_NM AS SHARE_NM
 				,A.PER_CODE
@@ -934,6 +934,25 @@
 		AND `COLUMN`=#{COLUMN}
 	
 	</update>
+	
+	<!-- ASAN Mutation List 조회 -->
+	<select id="selectItemContList" parameterType="map" resultType="hashmap">
+		SELECT	 item.SEQ
+				,item.CATE_DETL_SEQ
+				,item.CONT_NM
+				,item.CONT_DESC
+				,item.CONT_NUM
+				,item.PER_CODE
+				,item.TABLE_NM
+				,item.SHARE_CD
+				,item.CRT_ID
+				,item.CRT_DT
+				,item.UDT_ID
+				,item.UDT_DT
+		  FROM	pmsportal.CC_ITEM_CONT item
+		 WHERE 	item.PER_CODE=#{PER_CODE}
+		   AND 	item.SHARE_CD=#{SHARE_CD}
+	</select>
 
 </mapper>
  

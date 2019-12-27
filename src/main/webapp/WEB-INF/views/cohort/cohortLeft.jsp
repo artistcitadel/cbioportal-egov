@@ -7,7 +7,7 @@
 
 $(document).ready(function(){
 	
-	var dataSet = {};
+/* 	var dataSet = {};
 	var promise = http('dashboard/selectCohortList', 'post', true , dataSet);
 	promise.then(function(result){
 		
@@ -43,7 +43,7 @@ $(document).ready(function(){
 		}
 		
 	});
-	
+	 */
 });
 
 </script>

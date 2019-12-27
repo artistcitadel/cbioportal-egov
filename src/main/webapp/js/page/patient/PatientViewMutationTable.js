@@ -595,13 +595,15 @@
                 if(_includes(self.TH[self.NODE], 'annotation')){
                     // console.log('td annotation ','ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'')
                     var ann = _.filter(self.annotationList,function(o){
-                        console.log(o.id, 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal));
+                        // console.log(o.id, 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal));
                         return o.id == 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal);
                     });
                     var civic = _.filter(self.civicList,function(o){
-                        console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
+                        // console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
                         return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
                     });
+                    console.log('maatch ann', ann);
+                    console.log('match civic', civic);
                     var isHot = _.includes(HOTSPOT, v.geneNm);
 
                     var hasCancerGenome =_.findIndex(MYCANCERGENOME, ['hugoGeneSymbol',v.geneNm]);

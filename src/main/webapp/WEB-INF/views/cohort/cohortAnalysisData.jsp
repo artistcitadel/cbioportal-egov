@@ -7,23 +7,18 @@
 
 </style>
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="box">
-			
-			<div class="box-body" style="height: 500px; overflow: auto;  overflow-x: hidden; text-align: center;">
-		        
-			    <div class="row">
-			    	<div class="col-lg-12">
-			    		<div id="dvExcel">
-			    		</div>
-			    	</div>
+<section class="content">
+	<div class="row">
+		<div class="col-lg-12" id="jqxCustomFilter">
+			<div id="jqxRangeSelector">
+			    <div id="jqxRangeSelectorContent">
 			    </div>
-		    
-			</div>			    
-	    </div>
+			</div>	
+		</div>
+		<div class="col-lg-12" id="jqxCohortAnalysisData">	
+		</div>
 	</div>
-</div>
+</section>
 
 <script src="<c:url value="" />"></script>
 

@@ -49,13 +49,13 @@ $(document).ready(function () {
     }
 
     function setPatientDescription(json){
-
+        console.log('setPatientDescription', json);
         if(json.length<1)return;
         console.log('patientDesc ', json);
         var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
         var sex = json[0].sex === 'M' ? 'Male' :'Female';
 
-        $("#patientage").text(json[0].patientId);
+        // $("#patientage").text(json[0].patientId);
 
         var cancerType='';
         var cancerMode = '';
@@ -75,7 +75,9 @@ $(document).ready(function () {
         }
 
         var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
-        $('.bio').html(txt);
+        // console.log('pat info ', txt);
+        // $('.bio').html(txt);
+        $("#patientage").text(json[0].patientId + ' , '+txt);
     }
 
  });

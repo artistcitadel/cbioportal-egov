@@ -1,6 +1,12 @@
 var filterApplyYN = false;
 var dataClinical = []; // chart data
-
+var cohortTablePatnoList = [];
+var cohortQuery = '';
+var cohortFilterQuery = '';
+var currentCohortTab = '1';
+var dashboardTabNo;
+var selectedCohort = '';
+var savedMyCohort = [];
 var gvChartOpts = {
 		lines: 13, // The number of lines to draw
 		length: 11, // The length of each line
@@ -29,6 +35,325 @@ $(document).ready(function(){
 	
 	
 });
+
+
+function analysisInit(){
+	//차트추가 목록
+	dashboardTabNo = $('#hiddenCohortTab').val();
+	
+	setCohortKindBox();
+	
+	setCohortFilterBox();
+	
+	setChartAddList();
+
+	
+	checkDefaultChart();
+	
+	
+	getCohortTable();
+	
+	
+
+	//setCohortAnalysisData();
+}
+
+function gvSpinnerOpen(){
+	
+	var strMsg = 'Loading....';
+	var spinner = new Spinner(gvOpts).spin(gvTargetModal);
+	
+	if(isNullOrEmpty(gvOverlayModal) || gvOverlayModal == null){
+		gvOverlayModal = iosOverlay({
+			text: strMsg,
+			spinner: spinner
+		});
+	}
+	
+}
+
+
+function gvSpinnerClose(){
+	if(!isNull(gvOverlayModal) && !isNullOrEmpty(gvOverlayModal)){
+		gvOverlayModal.hide();
+		gvOverlayModal = null;
+	}
+}
+
+function setCohortAnalysisData(sbQuery){
+	gvSpinnerOpen();
+	var patientDataList = [];
+	
+	var dataSet = {};
+	dataSet.PER_CODE = $.session.get("PER_CODE");
+	dataSet.SUBQUERY = sbQuery;
+	var promise = http('cohort/selCohortPatientDataList', 'post', true , dataSet);
+	promise.then(function(result){
+		console.log(result);
+		var dataView = result.selCohortPatientDataList;
+		patientDataList = dataView;
+		gvSpinnerClose();
+		
+		if(isNullOrEmpty($('#jqxCohortAnalysisData').jqxGrid('source'))){
+			setJqxCohortAnalysisData(patientDataList);
+
+		}
+		else{
+			var $jqx = $('#jqxCohortAnalysisData');
+    		$jqx.jqxGrid('source')._source.localdata = patientDataList;
+    		
+    		$jqx.jqxGrid('updatebounddata','cells');
+		}
+
+		
+		
+	});
+	promise.fail(function(e){
+		console.log(e);
+		gvSpinnerClose();
+	});
+	
+	
+	
+	return patientDataList
+	    
+}
+
+function setJqxCohortAnalysisData(patientDataList){
+	var source =
+	   {
+	       localdata: patientDataList,
+	       datafields:
+	       [
+	           { name: 'RESCH_PAT_ID', type: 'string' },
+	           { name: 'DELETE_YN', type: 'string' },
+	           { name: 'AGE', type: 'number' },
+	           { name: 'SEX_CD', type: 'string' },
+	           { name: 'ABO_BLTY', type: 'string' },
+	           { name: 'DEATH_YN', type: 'string' },
+	           { name: 'DEATH_DT', type: 'date' },
+	           { name: 'INHOSP_DEATH_DT', type: 'date' },
+	           { name: 'UCOD_DIAG_CD', type: 'string' },
+	           { name: 'CANCER_REG_YN', type: 'string' },
+	           { name: 'SPCN_CNT', type: 'string' },
+	           { name: 'MUT_CNT', type: 'string' },
+	           { name: 'CNV_CNT', type: 'string' },
+	           { name: 'SV_CNT', type: 'string' },
+	           { name: 'EXP_CNT', type: 'string' },
+	           { name: 'CANCER_TYPE', type: 'string' },
+	           { name: 'CANCER_DETAIL', type: 'string' }
+	        ],
+	       datatype: "json",
+	       id : 'RESCH_PAT_ID',
+	       deleterow: function (rowid, commit) {
+               // synchronize with the server - send deleterow command
+               // call commit with parameter true if the synchronization with the server is successful 
+               // and with parameter false if the synchronization failed.
+               //commit(true);
+               
+               var selectedrowindexes = $("#jqxCohortAnalysisData").jqxGrid('getselectedrowindexes');
+	    	   if (selectedrowindexes.length > 0) $('#deletePatientList').trigger('click');
+	    	   else if(selectedrowindexes.length == 0) {
+	    		   showAlert('알림','삭제 되었습니다.',null);
+	    	   }
+           }
+	       
+	   };
+	
+		/*var source =
+	    {
+	        localdata: patientDataList,
+	        datatype: "json",
+	        id: "ITEM"
+	    };*/
+	    var dataAdapter = new $.jqx.dataAdapter(source, {
+	        downloadComplete: function (data, status, xhr) { },
+	        loadComplete: function (data) { },
+	        loadError: function (xhr, status, error) { }
+	    });
+	
+	    var cellsrenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
+         return '<div style="margin: 4px; color: #0000ff; cursor:pointer; text-align: center;" name="'+value+'" onclick=jqxPatiendataCellClick('+value+')>' + value + '</div>';
+	    }
+	    
+	    var cellsrendereDel = function(row, columnfield, value, defaulthtml, columnproperties) {
+	    	var rowdata = $("#jqxCohortAnalysisData").jqxGrid('getrowdata',row);
+	    	
+	    	var html = '';
+			if(value=="N"){
+				html = '';
+				
+				html = '<div class="row" style=" text-align: center;"><button type="button" ';
+				html += ' id="btnDeletePatient_' + row + '"';
+				html += ' row='+row+' seq='+rowdata.RESCH_PAT_ID+' class="btn btn-danger btn-sm btnDeletePatient"';
+				html += ' style="text-align:center;"> ';
+				html += '삭제';
+				html += '</button></div> ';
+				
+			}
+			else{
+			
+				html = '';
+				
+				html = '<div class="row" style="text-align: center;"><button type="button" ';
+				html += ' id="btnRecoverPatient_' + row + '"';
+				html += ' row='+row+' seq='+rowdata.RESCH_PAT_ID+' class="btn btn-warning btn-sm btnRecoverPatient"';
+				html += ' style="text-align:center;"> ';
+				html += '복구';
+				html += '</button></div> ';
+
+			}
+			
+			return html;
+	    }
+	    
+	    $("#jqxCohortAnalysisData").jqxGrid(
+	    {
+	    	height : 500,
+	    	/*width : 465,*/
+	    	width: "100%",
+	    	editable: true,
+	    	theme: 'bootstrap',
+	    	pageable: true,
+	    	pagesize: 100,
+			pagesizeoptions: ['10', '20', '30', '50', '100'],
+	    	//showfilterrow : true,
+	    	selectionmode: 'multiplerows',
+	    	filterable: true,
+	    	columnsresize: true,
+	    	columnsautoresize : true,
+	        source: dataAdapter,
+	        sortable : true,
+	        ready: function () {
+              
+            },
+	        columns: 
+	        	[
+	          { text: 'RESCH_PAT_ID', datafield: 'RESCH_PAT_ID' , editable: false, cellsrenderer: cellsrenderer,cellsalign: 'right'},
+	          { text: 'DELETE_YN', datafield:'DELETE_YN', editable:false, cellsrenderer: cellsrendereDel},
+	          { text: 'AGE', datafield: 'AGE', editable: false,cellsalign: 'right'},
+	          { text: 'SEX_CD', datafield: 'SEX_CD' , editable: false,cellsalign: 'right'},
+	          { text: 'ABO_BLTY' , datafield: 'ABO_BLTY', editable: false ,cellsalign: 'right'},
+	          { text: 'DEATH_YN' , datafield: 'DEATH_YN', editable: false ,cellsalign: 'right'},
+	          { text: 'DEATH_DT' , datafield: 'DEATH_DT', editable: false ,cellsalign: 'right',cellsformat: 'yyyy-MM-dd' },
+	          { text: 'INHOSP_DEATH_DT' , datafield: 'INHOSP_DEATH_DT', editable: false,cellsalign: 'right',cellsformat: 'yyyy-MM-dd' },
+	          { text: 'UCOD_DIAG_CD' , datafield: 'UCOD_DIAG_CD', editable: false ,cellsalign: 'right'},
+	          { text: 'CANCER_REG_YN' , datafield: 'CANCER_REG_YN', editable: false ,cellsalign: 'right'},
+	          { text: 'SPCN_CNT' , datafield: 'SPCN_CNT', editable: false ,cellsalign: 'right'},
+	          { text: 'MUT_CNT' , datafield: 'MUT_CNT', editable: false ,cellsalign: 'right'},
+	          { text: 'CNV_CNT' , datafield: 'CNV_CNT', editable: false ,cellsalign: 'right'},
+	          { text: 'SV_CNT' , datafield: 'SV_CNT', editable: false,cellsalign: 'right' },
+	          { text: 'EXP_CNT' , datafield: 'EXP_CNT', editable: false ,cellsalign: 'right'},
+	          { text: 'CANCER_TYPE' , datafield: 'CANCER_TYPE', editable: false ,cellsalign: 'right'},
+	          { text: 'CANCER_DETAIL' , datafield: 'CANCER_DETAIL', editable: false ,cellsalign: 'right'}
+	        ]
+	    });
+	    
+	    /*$("#jqxRangeSelector").jqxRangeSelector({
+            width: 750, height: 80, min: "January 01, 1800", max: "January 01, 1900",
+            majorTicksInterval: { years: 10 }, minorTicksInterval: "year", labelsFormat: "yyyy", markersFormat: "yyyy"
+        });*/
+	    
+	    /*var applyFilter = function (from, to) {
+            $("#jqxCohortAnalysisData").jqxGrid("clearfilters");
+            filtertype = "datefilter";
+            var filtergroup = new $.jqx.filter();
+            var filter_or_operator = 0;
+            var filtervalueFrom = from;
+            var filterconditionFrom = "GREATER_THAN_OR_EQUAL";
+            var filterFrom = filtergroup.createfilter(filtertype, filtervalueFrom, filterconditionFrom);
+            filtergroup.addfilter(filter_or_operator, filterFrom);
+            var filtervalueTo = to;
+            var filterconditionTo = "LESS_THAN_OR_EQUAL";
+            var filterTo = filtergroup.createfilter(filtertype, filtervalueTo, filterconditionTo);
+            filtergroup.addfilter(filter_or_operator, filterTo);
+            $("#jqxGrid").jqxGrid("DEATH_DT", "year", filtergroup);
+            $("#jqxGrid").jqxGrid("applyfilters");
+        };
+        // update filter on "change" event.
+        $("#jqxRangeSelector").on("change", function (event) {
+            var range = event.args;
+            var min = $("#jqxRangeSelector").jqxRangeSelector("min");
+            var max = $("#jqxRangeSelector").jqxRangeSelector("max");
+            min = new Date(min);
+            max = new Date(max);
+            if (range.from.getTime() == min.getTime() && range.to.getTime() == max.getTime()) {
+                $("#jqxCohortAnalysisData").jqxGrid("clearfilters");
+            } else {
+                applyFilter(range.from, range.to);
+            };
+        });*/
+
+}
+
+
+function setCohortFilterBox(){
+	if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+		var html = '';
+		html +=		'<div class="btn-group label-group margin-left-10">';
+		html += 		'<small class="label bg-orange">';
+		html +=  			"Cancer Type";
+		html += 		'</small>';
+		html += 	'</div>';
+		
+		$('#cohortFilter').append(html);
+		
+	}
+}
+
+
+function setCohortKindBox(){
+
+	if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+		var html = '';
+		html +=		'<div class="btn-group label-group margin-left-10" id="btnSelectedCohortModal">';
+		html += 		'<small class="label bg-orange">';
+		html +=  			"New Cohort";
+		html += 		'</small>';
+		html += 	'</div>';
+		
+		$('#cohort-grouop').append(html);
+		
+	}
+	else if(dashboardTabNo == "3"){
+		for(var i=0; i<savedMyCohort.length; i++){
+			var html = '';
+			html +=		'<div class="btn-group label-group margin-left-10" id="">';
+			html += 		'<small class="label bg-orange">';
+			html +=  			savedMyCohort[i].CONT_NM;
+			html += 		'</small>';
+			html += 	'</div>';
+			
+			$('#cohort-grouop').append(html);
+		}
+	}
+}
+
+function plotHighlight(filterArray){
+	
+	for(var i=0; i<filterArray.length; i++){
+		var tmpMap = filterArray[i];
+		var seq = tmpMap.SEQ;
+		var myPlot = "boxChart"+seq;
+		var filteridx = [];
+		var widths = [];
+		
+		var plotMap = $('#'+myPlot)[0].data;
+		var plotIdArr = plotMap[0].ids;
+		var intBox =  Array.apply(null, new Array(plotIdArr.length)).map(Number.prototype.valueOf,0);
+		var colorBox =  Array.apply(null, new Array(plotIdArr.length)).map(function(item) {return "silver"});
+		for(var j=0; j<tmpMap.CONDITION.length; j++){
+			
+			filteridx.push(plotIdArr.indexOf(tmpMap.CONDITION[j]));
+			intBox[plotIdArr.indexOf(tmpMap.CONDITION[j])] = '3';
+			colorBox[plotIdArr.indexOf(tmpMap.CONDITION[j])] = '';
+		}
+		
+		var update = {'marker':{ colors: colorBox, line: {width : intBox}}};
+		Plotly.restyle(myPlot, update, []);
+	}
+}
+
 function setChartKindBox(rowData, seq, idx, result){
 	 if(rowData.CHART_TYPE == 'PIE'){
 		  makeTableChart(result.loadselectedChart, rowData, seq, 'boxChart'+seq, idx);
@@ -61,8 +386,117 @@ function getSelectedChartList(){
 	return selectedArr;
 	//var rowData = $('#subClinical').jqxGrid('getrowdata',rowBoundIndex);
 }
+function getSelectedChartDefault(rowData, sb){
+	var seq = rowData.SEQ;
+	
+	var itemTarget = $('#box_item_'+seq).children('.box')[0];
 
-function getSelectedChartFilter(rowData, sb){
+	var spinner = new Spinner(gvChartOpts).spin(itemTarget);
+	
+	var dataSet = {};
+	dataSet.ROW = rowData;
+	dataSet.SUB_QUERY = sb;
+	
+	console.log(dataSet);
+	var promise = http('dashboard/loadselectedChartFilter', 'post', true , dataSet);
+    promise.then(function(result){
+    	spinner.stop();
+    	console.log(rowData.ITEM_NM,result);
+    	
+
+    	var resultData = result.loadselectedChartFilter.CHART;
+    	
+    	var idx = '';
+	   	 if(rowData.CHART_TYPE == 'PIE'){
+			  makeTableChart(resultData, rowData, seq, 'boxChart'+seq, idx);
+			  makePieChart(resultData, rowData, seq, 'boxChart'+seq, idx);
+			  $('#boxChart'+seq+'_jqx').css('display','none');
+			  
+			  //$('#boxChart'+seq).css('display','none');
+		  }
+		  else if(rowData.CHART_TYPE == 'BAR'){
+			  makeBarChart(resultData, rowData, seq, 'boxChart'+seq, idx);	    		  
+		  }
+		  else if(rowData.CHART_TYPE == 'GRD'){
+			  makeTableChart(resultData, rowData, seq, 'boxChart'+seq, idx);
+		  }
+		  else if(rowData.CHART_TYPE == 'GAO'){
+			  makeTableGAOChart(resultData, rowData, seq, 'boxChart'+seq, idx);
+		  }
+    	
+    	
+    })
+    
+    promise.fail(function(e){
+    	console.log(e)
+    })
+	
+}
+
+function filteringAfterCheck(){
+	$('.filter-box').each(function(key,value){
+		
+		var $this = $(this);
+		var itemId = this.getAttribute('name');
+		var seq = this.id.replace('filter_','');
+		var tmpArray = [];
+		var tmpMap = {};
+		
+		$jqx = $('#boxChart'+seq+'_jqx');
+		
+		var rowData = $('#subClinical').jqxGrid('getrowdatabyid',seq);
+		var type = rowData.CHART_TYPE;
+		if(type == 'PIE'){
+			$.each($(this).children('.btn-group'),function(){
+				//tmpArray.push(this.id); 
+				if($jqx.jqxGrid('getcellvaluebyid',this.id,'CHK') !== null){
+					$jqx.jqxGrid('setcellvaluebyid',this.id,'CHK',true);	
+				}
+			});
+		}
+		/*else if(type == 'BAR'){
+			$.each($(this).children('input[type="hidden"]'),function(){
+				tmpArray.push(this.value);
+			});
+		}*/
+		else if(type == 'GRD'){
+			$.each($(this).children('.btn-group'),function(){
+				//tmpArray.push(this.id); 
+				if($jqx.jqxGrid('getcellvaluebyid',this.id,'CHK') !== null){
+					$jqx.jqxGrid('setcellvaluebyid',this.id,'CHK',true);	
+				}
+			});
+		}
+		else if(type == 'GAO'){
+			$.each($(this).children('.and-group'),function(){
+				$.each($(this).children('.btn-group'),function(){
+					if($jqx.jqxGrid('getcellvaluebyid',this.id,'CHK') !== null){
+						$jqx.jqxGrid('setcellvaluebyid',this.id,'CHK',true);	
+					}
+				});
+			});
+			
+			/*$.each($(this).children('.and-group'),function(){
+				var tmpArr2 = [];
+				var $this2 = $(this);
+				$.each($(this).children('.btn-group'),function(){
+					var tmpSet = {};
+					//tmpSet["ID"] = this.id;
+					$.each($(this).children('input[type="hidden"]'),function(){
+						tmpSet[this.name] = this.value;
+					})
+					tmpArr2.push(tmpSet);
+				});
+				
+				tmpArray.push(tmpArr2);
+			});*/
+		}
+		
+	});
+}
+
+
+function getSelectedChartFilter(rowData, sb, filterArray){
 	
 	//if(isNullOrEmpty(sb)) return;
 	var seq = rowData.SEQ;
@@ -87,7 +521,8 @@ function getSelectedChartFilter(rowData, sb){
     		var $chart = $('#boxChart'+rowData.SEQ);
     		var data = setPieChartdataform(resultData);
     		Plotly.react('boxChart'+rowData.SEQ,data,pieLayout,config);
-    		
+			plotHighlight(filterArray);
+
     		var $jqx = $('#boxChart'+rowData.SEQ+'_jqx');
     		$jqx.jqxGrid('source')._source.localdata = resultData;
     		$jqx.jqxGrid('updatebounddata','cells');
@@ -113,7 +548,12 @@ function getSelectedChartFilter(rowData, sb){
     		$jqx.jqxGrid('updatebounddata','cells');
     		
     	}
+    	//필터링 이후 jqxGrid 다시 체크
+    	filteringAfterCheck();
     	
+    	/*marker : { colors : [,'rgb(226, 215, 215)'] ,
+			  line : {color : ['silver'], width:[3,0]}
+		}*/
     	
     })
 	
@@ -211,17 +651,21 @@ function setDrawChart(rowData){
 		$('#item_'+idx).append(html);
 	}
 	var itemTarget = $('#box_item_'+seq).children('.box')[0];
-	var spinner = new Spinner(gvChartOpts).spin(itemTarget);
+	/*var spinner = new Spinner(gvChartOpts).spin(itemTarget);
 
-	
 	var promise = http('dashboard/loadselectedChart', 'post', true , dataSet);
     promise.then(function(result){
     	spinner.stop();
     	
-    	setChartKindBox(rowData, seq, idx, result);
+    	//setChartKindBox(rowData, seq, idx, result);
     	
-    });
+    });*/
 }
+
+function getItemCateId(cate){
+	
+}
+
 
 function checkDefaultChart(){
 	
@@ -243,32 +687,33 @@ function setChartAddList(){
 	dataClinical = [];
 	
 	var dataSet = {};
-	
-	dataSet.CATE_ID_CLINICAL = "CLINICAL";
-	dataSet.CATE_ID_GENOMIC = "GENOMIC";
-	dataSet.CATE_ID_ETC = "ETC";
+	var cate_kind = ["CLINICAL", "GENOMIC", "ETC"];
+	dataSet.CATE_ID_KIND = cate_kind;
+	dataSet.PROGRM_ID = "MAIN";
 	var promise = http('dashboard/selectChartList', 'post', false , dataSet);
-	
 	promise.then(function(result){
-		var dataView = result.CATE_ID_CLINICAL;
+		console.log(result);
+		var dataView = result.CLINICAL;
 		
 		dataClinical = dataView;
 		
 	});
-
-	console.log(dataClinical)
-	
+	promise.fail(function(e){
+		console.log(e);
+	});
 	
 	 var source =
 	   {
 	       localdata: dataClinical,
 	       datafields:
 	       [
-	           { name: 'ITEM_NM', type: 'string' },
-	           { name: 'SEQ', type: 'string' },
+	    	   { name: 'SEQ', type: 'string' },
+	           { name: 'PROGRM_ID', type: 'string' },
+	           { name: 'ITEM_CATE_ID', type: 'string' },
 	           { name: 'ITEM_CATE_NM', type: 'string' },
 	           { name: 'ITEM_ID', type: 'string' },
 	           { name: 'ITEM_NM', type: 'string' },
+	           { name: 'ITEM_DESC', type: 'string' },
 	           { name: 'ORDER', type: 'int' },
 	           { name: 'SEARCH_YN', type: 'string' },
 	           { name: 'DEFAULT_YN', type: 'string' },
@@ -295,7 +740,7 @@ function setChartAddList(){
 		
 	  });
 	  
-	 var dataAdapter = new $.jqx.dataAdapter(source, {
+	  var dataAdapter = new $.jqx.dataAdapter(source, {
 		 beforeLoadComplete: function (records) {
 		        var data = new Array();
 		        // update the loaded records. Dynamically add EmployeeName and EmployeeID fields. 
@@ -370,7 +815,7 @@ function setChartAddList(){
 
 		      var dataSet = {};
 		      dataSet.DATAQUERY = query;
-		      
+		      dataSet.ROW = rowData;
 		      var tmpMap = boxListSearch();
     		  var len = tmpMap.len;
     		  var idx = tmpMap.idx + 1;
@@ -392,14 +837,17 @@ function setChartAddList(){
 			  $('#item_'+idx).append(html);
 
 			  var itemTarget = $('#box_item_'+seq).children('.box')[0];
-			  var spinner = new Spinner(gvChartOpts).spin(itemTarget);
 			  
-		      var promise = http('dashboard/loadselectedChart', 'post', true , dataSet);
+			  getSelectedChartDefault(rowData, cohortFilterQuery);
+			  
+/*			  var spinner = new Spinner(gvChartOpts).spin(itemTarget);
+			  
+		      var promise = http('dashboard/loadselectedChartFilter', 'post', true , dataSet);
 		      promise.then(function(result){
 		    	  spinner.stop();
 	    		  setChartKindBox(rowData,seq,idx,result);
 
-		      });
+		      });*/
 	      }
 	      else{
 	    	  console.log("false");
@@ -429,20 +877,455 @@ function getParent($this) {
     return $parent && $parent.length ? $parent : $this.parent()
 }
 
-function analysisInit(){
-	
-	//차트추가 목록
-	setChartAddList();
+function getCohortTable(){
 	
 	
-	checkDefaultChart();
-	
+	if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+		var dataSet = {};
+		dataSet.PER_CODE = $.session.get("PER_CODE");
+		
+		var promise = http('cohort/selCohortTable', 'post', false , dataSet);
+		
+		promise.then(function(result){
+			var dataView = result.selCohortTable;
+			
+			console.log(result);
+			
+			cohortTablePatnoList = dataView;
+			cohortQuery = result.CohortTableQuery;
+			cohortFilterQuery = result.CohortTableQuery;
+			var selectedArr = [];
+			selectedArr = getSelectedChartList();
+			
+			
+			for(var i=0; i<selectedArr.length; i++){
+				
+				var row = selectedArr[i];
+				getSelectedChartDefault(row, result.CohortTableQuery);
+			}
+			
+		});
+		
+		//모달 트리
+		initTreeC(selectedCohort);
+		
+	}
+	else if(dashboardTabNo == "3"){
+		var tableList = [];
+		for(var i=0; i<savedMyCohort.length; i++){
+			tableList.push(savedMyCohort[i].TABLE_NM);
+		}
+		
+		
+		var dataSet = {};
+		dataSet.PER_CODE = $.session.get("PER_CODE");
+		dataSet.TABLE_LIST = tableList;
+		var promise = http('dashboard/loadselectedCohort', 'post', false , dataSet);
+		
+		promise.then(function(result){
+			var dataView = result.loadselectedCohort;
+			
+			console.log(result);
+			
+			cohortTablePatnoList = dataView;
+			cohortQuery = result.CohortTableQuery;
+			cohortFilterQuery = result.CohortTableQuery;
+			var selectedArr = [];
+			selectedArr = getSelectedChartList();
+			
+			
+			for(var i=0; i<selectedArr.length; i++){
+				
+				var row = selectedArr[i];
+				getSelectedChartDefault(row, result.CohortTableQuery);
+			}
+			
+		});
+	}
 	
 	
 }
 
+function initTreeC(dataTree){
+
+	var width = 1400;
+	var height = 1000;
+	var dx = 24;
+	var dy = width/4;
+	var margin = ({top: 10, right: 10, bottom: 10, left: 100});
+
+	var diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
+	var tree = d3.tree().nodeSize([dx, dy]);
+	var radius = 6;
+
+	const root = d3.stratify()
+				.id(function(d){return d.ID})
+				.parentId(function(d){return d.PARENTS_ID})(dataTree);
+			root.x0 = dy / 2;
+			root.y0 = 0;
+			root.descendants().forEach((d, i) => {
+		    d.id = i;
+		    d._children = d.children;
+		    d.checked = false;
+		    //if (d.depth && d.data.ID.length !== 4) d.children = null;
+	 });
+
+	$('#divSelectedCohort').empty();
+	
+	const svg = d3.select("#divSelectedCohort").append("svg")
+    .attr("viewBox", [-margin.left, -margin.top, width, dx])
+    .style("font", "13px sans-serif")
+    .style("user-select", "none")
+    .style("min-height","500px");
+    
+	const gLink = svg.append("g")
+    .attr("fill", "none")
+    .attr("stroke", "#555")
+    .attr("stroke-opacity", 0.4)
+    .attr("stroke-width", 1.5);
+
+	const gNode = svg.append("g")
+    .attr("cursor", "pointer")
+    .attr("pointer-events", "all");
+    
+	svg.call(d3.zoom().scaleExtent([1/2,2]).on("zoom", function () {
+        gNode.attr("transform", d3.event.transform)
+        gLink.attr("transform", d3.event.transform)
+        /*var rang = (d3.zoomTransform(this).k*100).toFixed(2)
+        var rang_f = d3.zoomTransform(this).k*50;
+        $('#customRange1').val(rang_f);
+        $('#rangeScaleVal').text((d3.zoomTransform(this).k*100).toFixed(2)+"%");*/
+     }))
+	
+	function update(source) {
+		    const duration = d3.event && d3.event.altKey ? 2500 : 250;
+		    const nodes = root.descendants().reverse();
+		    const links = root.links();
+
+		    // Compute the new tree layout.
+		    tree(root);
+		    //d3.tree().nodeSize([root.dx, root.dy]);
+		    
+		    let left = root;
+		    let right = root;
+		    root.eachBefore(node => {
+		      if (node.x < left.x) left = node;
+		      if (node.x > right.x) right = node;
+		    });
+
+		    const height = right.x - left.x + margin.top + margin.bottom;
+
+		    const transition = svg.transition()
+		        .duration(duration)
+		        .attr("viewBox", [-margin.left, left.x - margin.top, width, height])
+		        .tween("resize", window.ResizeObserver ? null : () => () => svg.dispatch("toggle"));
+
+		    // Update the nodes…
+		    const node = gNode.selectAll("g")
+		      .data(nodes, d => d.id);
+		    
+		    // Enter any new nodes at the parent's previous position.
+		    		    
+		    const nodeEnter = node.enter().append("g")
+		        .attr("transform", d => 'translate('+source.y0+','+source.x0+')')
+		        .attr("fill-opacity", 0)
+		        .attr("stroke-opacity", 0)
+		        
+
+		        
+		   /* nodeEnter.on("mouseover", mouseover)
+            .on("mousemove", function(d){mousemove(d);})
+            .on("mouseout", mouseout)
+            .attr("fill","black")
+            .attr("r", 5.5);*/
+		    
+		    nodeEnter.append("circle")
+		        .attr("r", 5)
+		        .attr("fill", d => {	
+		        	if(d.data.LEVEL == 1) return d.data.COLOR
+		        	else return d._children ? "#555" : "rgb(255, 255, 255)"
+		        	})
+	        	.attr("stroke", d => {	
+		        	if(d.data.LEVEL == 1) return d.data.COLOR
+		        	else return d._children ? "#555" : "#999"
+		        	})
+		        .attr("stroke-width", 1)
+		        .on("click", d => {
+			          d.children = d.children ? null : d._children;
+			          update(d);
+			        });
+		        
+		    nodeEnter.append("text")
+		        .attr("dy", "0.31em")
+		        .attr("x", d => d._children ? -9 : 9)
+		        .attr("text-anchor", d => d._children ? "end" : "start")
+		        .text(d => d.data.NM)
+		        .on("click", d => {
+			          d.children = d.children ? null : d._children;
+			          update(d);
+			        })
+		      .clone(true).lower();
+		    
+		    const checkNode = nodeEnter.append("foreignObject")
+		    	.attr("dy", "0.31em")
+		    	.attr("x", d => d._children ? 7 : -19)
+		    	.attr("y","-6")
+	   			.attr("width","13px")
+       			.attr("height", "13px")
+		        .html(d=> {
+		        	if (d.data.checked == true){
+		        		d.checked = true;
+		        		return '<input type="checkbox" class="input-check-tree" style="height:13px; width:13px; margin:0px; position:absolute;" seq="'+d.data.SEQ+'" value="'+d.data.ID+'" checked disabled>';
+		        	}
+		        	else{
+		        		d.checked = false;
+		        		return '<input type="checkbox" class="input-check-tree" style="height:13px; width:13px; margin:0px; position:absolute;" seq="'+d.data.SEQ+'" value="'+d.data.ID+'" disabled>';
+		        	}
+		        });
+
+		    
+		    // Transition nodes to their new position.
+		    const nodeUpdate = node.merge(nodeEnter).transition(transition)
+		        .attr("transform", d => 'translate('+d.y+','+d.x+')')
+		        .attr("fill-opacity", 1)
+		        .attr("stroke-opacity", 1);
+
+		 // Transition exiting nodes to the parent's new position.
+		    const nodeExit = node.exit().transition(transition).remove()
+		        .attr("transform", d => 'translate('+source.y+','+source.x+')')
+		        .attr("fill-opacity", 0)
+		        .attr("stroke-opacity", 0);
+
+		    
+		    // Update the links…
+		    const link = gLink.selectAll("path")
+		      .data(links, d => d.target.id);
+
+		    // Enter any new links at the parent's previous position.
+		    const linkEnter = link.enter().append("path")
+		        .attr("d", d => {
+		          const o = {x: source.x0, y: source.y0};
+		          return diagonal({source: o, target: o});
+		        });
+
+		    // Transition links to their new position.
+		    link.merge(linkEnter).transition(transition)
+		        .attr("d", diagonal);
+
+		    // Transition exiting nodes to the parent's new position.
+		    link.exit().transition(transition).remove()
+		        .attr("d", d => {
+		          const o = {x: source.x, y: source.y};
+		          return diagonal({source: o, target: o});
+		        });
+
+		    // Stash the old positions for transition.
+		    root.eachBefore(d => {
+		      d.x0 = d.x;
+		      d.y0 = d.y;
+		    });
+		    
+		  }
+	  
+	  update(root);
+
+	  
+}
+
+
+function jqxPatiendataCellClick(value){
+	$('#hiddenCohortPatno').val(value);
+	$('#hiddenCohortQuery').val(cohortFilterQuery);
+	
+	$('#frmCohortAnalysis').attr('target', "_blank");
+	$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/patient/patientView');
+	$('#frmCohortAnalysis').method = 'POST';
+	$('#frmCohortAnalysis').submit();
+}
+
 
 function analysisInitEvent(){
+	$(document).on('click','.btnDeletePatient',function(){
+		var tmpthis = $(this);
+		var rowid = $(this).attr("row");
+		var dataSet = {};
+		dataSet.DELETE_YN = "Y";
+		dataSet.RESCH_PAT_ID = $(this).attr("seq");
+		showConfirm('삭제',"계정를 삭제 하시겠습니까?", function(result){
+			if(!result){
+				return;
+			}
+			var promise = http('cohort/updateCohortPatientList','post',false, dataSet);
+			promise.then(function (result2) {	
+//				console.log(result2)
+				//table.draw();
+				$("#jqxCohortAnalysisData").jqxGrid('source')._source.localdata[rowid].DELETE_YN = "Y";
+				$("#jqxCohortAnalysisData").jqxGrid('updatebounddata','cells');
+			});
+		});
+		
+	});
+	
+	$(document).on('click','.btnRecoverPatient',function(){
+		var tmpthis = $(this);
+		var rowid = $(this).attr("row");
+		var dataSet = {};
+		dataSet.DELETE_YN = "N";
+		dataSet.RESCH_PAT_ID = $(this).attr("seq");
+		showConfirm('복구',"환자를 복구 하시겠습니까?", function(result){
+			if(!result){
+				return;
+			}
+			var promise = http('cohort/updateCohortPatientList','post',false, dataSet);
+			promise.then(function (result2) {	
+				$("#jqxCohortAnalysisData").jqxGrid('source')._source.localdata[rowid].DELETE_YN = "N";
+				$("#jqxCohortAnalysisData").jqxGrid('updatebounddata','cells');
+			});
+		});
+	});
+	
+	$('#deletePatientList').on('click',function(){
+		 var selectedrowindexes = $("#jqxCohortAnalysisData").jqxGrid('getselectedrowindexes');
+         var rowscount = $("#jqxCohortAnalysisData").jqxGrid('getdatainformation').rowscount;
+         showConfirm('삭제',"계정를 삭제 하시겠습니까?", function(result){
+ 			if(!result){
+ 				return;
+ 			}
+ 			for(var i=0; i<selectedrowindexes.length; i++){
+ 	        	 var selectedrowindex = selectedrowindexes[i];
+ 	        	 var rowdata = $("#jqxCohortAnalysisData").jqxGrid('getrowdata',selectedrowindex);
+ 	        	 
+ 	        	 if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+ 	                 /*var id = $("#jqxCohortAnalysisData").jqxGrid('getrowid', selectedrowindex);
+ 	                 var commit = $("#jqxCohortAnalysisData").jqxGrid('deleterow', id);*/
+ 	        		var dataSet = {};
+ 	        		dataSet.DELETE_YN = "Y";
+ 	        		dataSet.RESCH_PAT_ID = rowdata.RESCH_PAT_ID;
+ 	        		var promise = http('cohort/updateCohortPatientList','post',false, dataSet);
+ 	    			promise.then(function (result2) {	
+// 	    				console.log(result2)
+ 	    				//table.draw();
+ 	    				$("#jqxCohortAnalysisData").jqxGrid('source')._source.localdata[selectedrowindex].DELETE_YN = "Y";
+ 	    				$("#jqxCohortAnalysisData").jqxGrid('updatebounddata','cells');
+ 	    			});
+ 	             }
+ 	         }
+ 			
+ 			
+ 		});
+         
+         
+	});
+	
+	
+	$(document).on('click','#btnSelectedCohortModal',function(){
+		console.log(selectedCohort);
+		$('#popSelectedCohortModal').modal('show');
+		//$('#popSelectedCohortModal').show();
+		initTreeC(selectedCohort);
+	});
+	
+	$('.cohortAnalysisViewTab').on('shown.bs.tab',function(e){
+		console.log(e);
+		currentCohortTab = $(this).attr("pageNum");
+		if(currentCohortTab == '1'){
+			
+			$('.sortable_area').empty();
+			checkDefaultChart();
+			var selectedArr = [];
+			selectedArr = getSelectedChartList();
+			
+			
+			for(var i=0; i<selectedArr.length; i++){
+				
+				var row = selectedArr[i];
+				getSelectedChartDefault(row, cohortFilterQuery);
+			}
+			
+			
+		}
+		else if(currentCohortTab == '2'){
+			
+			setCohortAnalysisData(cohortFilterQuery);
+
+			
+		}
+      });
+	$('.cohortAnalysisViewTab').on('shown.bs.tab',function(e){
+		
+	});
+	
+	
+	
+	$('#btnPatientView').on('click',function(){
+/*		gvSpinnerOpen();
+		//CohortTableQuery
+		var dataSet = {};
+		dataSet.CohortTableQuery = cohortFilterQuery;
+		var promise = http('cohort/selCohortFilteringTable', 'post', false , dataSet);
+		promise.then(function(result){
+			gvSpinnerClose();
+			console.log(result);
+			var dataView = result.selCohortFilteringTable;
+			$('#hiddenCohortQuery').val(dataView.toString());
+			gvSpinnerClose();
+		});
+		promise.fail(function(e){
+			console.log(e)
+			gvSpinnerClose();
+		})*/
+		
+		$('#hiddenCohortPatno').val('null');
+		//$('#hiddenCohortQuery').val(cohortFilterQuery);
+		$('#hiddenCohortQuery').val(cohortFilterQuery);
+		$('#frmCohortAnalysis').attr('target', "_blank");
+		$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/patient/patientView');
+		$('#frmCohortAnalysis').method = 'POST';
+		$('#frmCohortAnalysis').submit();
+
+		
+	});
+	
+	$('#btnMutationView').on('click',function(){
+		gvSpinnerOpen();
+		if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+			$('#hiddenCohortPatno').val('null');
+			$('#hiddenCohortMyCohort').val('null');
+			
+			$('#hiddenCohortQuery').val(cohortFilterQuery);
+			
+			$('#hiddenCohortTreeModal').val($('#divSelectedCohort').html());
+			
+			$('#frmCohortAnalysis').attr('target', "_blank");
+			$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/mutation/mutationList');
+			$('#frmCohortAnalysis').method = 'POST';
+			$('#frmCohortAnalysis').submit();
+		}
+		else if(dashboardTabNo == "3"){
+			$('#hiddenCohortPatno').val('null');
+			$('#hiddenCohortQuery').val(cohortFilterQuery);
+			$('#hiddenCohortTreeModal').val('null');
+
+			var tmpStr = '';
+			for(var i=0; i<savedMyCohort.length; i++){
+				if(i!=0) tmpStr+="|";
+				tmpStr += savedMyCohort[i].CONT_NM;	
+			}
+			$('#hiddenCohortMyCohort').val(tmpStr);
+			
+			
+			$('#frmCohortAnalysis').attr('target', "_blank");
+			$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/mutation/mutationList');
+			$('#frmCohortAnalysis').method = 'POST';
+			$('#frmCohortAnalysis').submit();
+		}
+		
+		
+		
+		gvSpinnerClose();
+	});
+	
 	$('#filter-group').eq(0).on('DOMSubtreeModified', function(){
 		$('#filterApplyAfter').css('display','none');
 		$('#filterApplyBefore').css('display','inline-block');
@@ -510,16 +1393,22 @@ function analysisInitEvent(){
 		var dataSet = {};
 		console.log(filterArray);
 		dataSet.FILTER = filterArray;
+		dataSet.COHORTSET = cohortQuery;
+		dataSet.PER_CODE = $.session.get("PER_CODE");
+		dataSet.CREATEDTABLE = "P"+$.session.get("PER_CODE");
+		
 		var promise = http('dashboard/filterApply', 'post', true, dataSet);
 		promise.then(function(result){
 
 			console.log(result);
-			
+
 			var selectedArr = [];
 			selectedArr = getSelectedChartList();
 			var dataView = result.filterApply;
 			var resultKeys = Object.keys(dataView);
 			var resultVals = Object.values(dataView);
+
+			cohortFilterQuery = dataView.all;
 			
 			for(var i=0; i<selectedArr.length; i++){
 				
@@ -527,10 +1416,10 @@ function analysisInitEvent(){
 				var idx = resultKeys.indexOf(row.SEQ.toString());
 				if( idx != -1 ){
 					if(isNullOrEmpty(resultVals[idx])) continue;
-					getSelectedChartFilter(row, resultVals[idx]);
+					getSelectedChartFilter(row, resultVals[idx], filterArray);
 				}
 				else{
-					getSelectedChartFilter(row, dataView.all);
+					getSelectedChartFilter(row, dataView.all, filterArray);
 				}
 			}
 			$('#filterApplyBefore').css('display','none');
@@ -591,7 +1480,7 @@ function analysisInitEvent(){
 	
 	
 	$('#btnDashboardCohortAdd').on('click',function(){
-		if(filterApplyYN == false){
+		/*if(filterApplyYN == false){
 			showAlert('알림','필터 적용후, 저장 해주십시오.',null);
 			return ;
 		}
@@ -599,35 +1488,42 @@ function analysisInitEvent(){
 		if(isNullOrEmpty($('input[name="itemCate_tree"]:checked').val())){
 			showAlert('알림','코호트를 선택해주십시오.',null);
 			return ;
-		}
+		}*/
 		if(isNullOrEmpty($('#txtDashboardCohortNM').val())){
 			showAlert('알림','코호트 명을 입력해주십시오.',null);
 			return ;
 		}
 		
-		var dataSet = {};
-		//dataSet.SEQ = $('input[name="itemCate_tree"]:checked').attr('seq');
-		//dataSet.MID_SEQ = $('input[name="itemCate_tree"]:checked').val();
-		dataSet.CATE_DETL_SEQ = $('#selDashboardCohortList').val();
-		dataSet.CONT_NM = $('#txtDashboardCohortNM').val();
-		dataSet.CONT_DESC = $('#txtDashboardCohortSub').val();
-		dataSet.UDT_ID = $.session.get('PER_CODE');
-		dataSet.CRT_ID = $.session.get('PER_CODE');
-		
-		var selectedArr = getSelectedChartList();
-		dataSet.SELECTED_CHART = selectedArr;
-		
-		var filterArr = getFilterBoxGroup();
-		dataSet.FILTER = filterArr;
-		
-		console.log(dataSet);
-		var promise = http('/dashboard/insertCohortItemCont', 'post' ,true, dataSet);
-		promise.then(function(result){
-			showAlert('알림','저장 되었습니다.',null);
+		if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+			var dataSet = {};
+			//dataSet.SEQ = $('input[name="itemCate_tree"]:checked').attr('seq');
+			//dataSet.MID_SEQ = $('input[name="itemCate_tree"]:checked').val();
+			//dataSet.CATE_DETL_SEQ = $('#selDashboardCohortList').val();
+			dataSet.CONT_NM = $('#txtDashboardCohortNM').val();
+			dataSet.CONT_DESC = $('#txtDashboardCohortSub').val();
+			dataSet.PER_CODE = $.session.get('PER_CODE');
+			dataSet.UDT_ID = $.session.get('PER_CODE');
+			dataSet.CRT_ID = $.session.get('PER_CODE');
+			dataSet.SHARE_CD = "CO";
+			var selectedArr = getSelectedChartList();
+			dataSet.SELECTED_CHART = selectedArr;
 			
-			console.log(result);
-		});
-		
+			var filterArr = getFilterBoxGroup();
+			dataSet.FILTER = filterArr;
+			
+			console.log(dataSet);
+			var promise = http('/dashboard/insertCohortItemCont', 'post' ,true, dataSet);
+			promise.then(function(result){
+				showAlert('알림','저장 되었습니다.',null);
+				
+				console.log(result);
+				$('#mainSaveAdd').trigger('click');
+
+			});
+			promise.fail(function(e){
+				console.log(e)
+			})
+		}
 	});
 	
 

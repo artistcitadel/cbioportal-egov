@@ -118,6 +118,9 @@
 		font-weight: bold; */
 /* 		padding-top: 5px;
 	  	padding-bottom: 5px; */
+	  	height: 30px;
+	  	padding-bottom: 5px;
+    	padding-top: 3px;
 	}
 	.box-title{
 		flex-grow: 1;
@@ -157,6 +160,14 @@
 	    padding: 5px;
         float: left;
     }
+    .cohort-box{
+    	background-color: #ececec;
+	    border: 1px solid #ddd;
+	    border-radius: 5px;
+	    margin: 2px 5px 2px 0;
+	    padding: 5px;
+        float: left;
+    }
     .chart-body-pie {
     	padding : 1px;
     	height: calc(100% - 30px);
@@ -177,7 +188,29 @@
 	    vertical-align: middle;
     }
 </style>
+<script>
+$(document).ready(function(){
+	//console.log("${tab}")
+	//console.log("${paramMap}")
+	<%
+	
+		//request.setCharacterEncoding("UTF-8");
+	
+		String a = request.getParameter("tab");
+		String b = request.getParameter("json");
+		String c = request.getParameter("mycohort");
+		//System.out.println(a);
+		System.out.println(b);
+		//model.addAttribute("table", b);
+	%>
+	
+	selectedCohort = <%=b %>;
+	savedMyCohort = <%=c%>;
+	$('#hiddenCohortTab').val(<%=a %>);
+	console.log(savedMyCohort)
+});
 
+</script>
 <section class="content-header">
 	<h1>
 		Cohort Analysis
@@ -187,30 +220,19 @@
 		<li class="active">Cohort Analysis</li>
 	</ol>
 </section>
-<section  class="col-lg-12">
-	<section class="box box-solid">
-		<div class="box-header">
+<section  class="col-lg-12" style="margin-top:10px;">
+	<section class="box">
+		<div class="box-header" id="">
 			<i class="ion ion-ios-list-outline"></i>
 			<div class="box-title">Cohort 선택</div>
-			<div class="box-tools pull-right">
-		      <!-- Collapse Button -->
-		      <button type="button" class="btn btn-box-tool" data-widget="collapse">
-		        <i class="fa fa-minus"></i>
-		      </button>
-		    </div>
 		</div>
-		<div class="box-body" style="height: 100px; overflow: auto;  overflow-x: hidden; text-align: center;">
-	        
-		    <div class="row">
-		    	<div class="col-lg-12">
-		    		
-		    	</div>
-		    </div>
-	    
-		</div>			    
+		<div class="box-body">
+			<div id="cohort-grouop" style="">
+			</div>
+		</div>
     </section>
-	<section class="box" style="margin-bottom: 5px; border: none;">
-		<div class="box-header with-border">
+	<section class="box" style="margin-bottom: 5px; border: none;    margin-top: 10px;" >
+		<div class="box-header with-border" id="cohortFilter">
 			<h3 class="box-title"><i class="ion ion-ios-speedometer-outline"></i>&nbsp;Filter</h3>
 			<div class="btn-group pull-right" style="margin-left:10px; display:none;" id="filterApplyAfter">
 				
@@ -222,96 +244,64 @@
 			
 		</div>
 		<div class="box-body">
-				<div id="filter-group" style="">
-					<!-- <div class="filter-box" id="filter_cancer">
-						<span>
-							Cancer : 
-						</span>
-						<div class="btn-group">
-							<button type="button" class="btn bg-navy btn-flat" style="">
-							    Removable Box Example
-						    </button>
-						    <button type="button" class="btn bg-navy btn-flat delete">
-							    <i class="fa fa-times"></i>
-							</button>
-							
-						</div>
-						<div class="btn-group">
-							<button type="button" class="btn bg-navy btn-flat" style="">
-							    Removable Box Example
-						    </button>
-						    <button type="button" class="btn bg-navy btn-flat delete">
-							    <i class="fa fa-times"></i>
-							</button>
-							
-						</div>
-					</div> -->
-					
-					
-				</div>
-			
-			
-		     <div class="btn-group pull-right">
-			 	<button type="button" class="btn btn-default btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
+			<div id="filter-group" style="">
+			</div>
+		</div>
+		<div class="box-footer">
+			<div class="btn-group pull-right">
+			 	<button type="button" class="btn btn-danger btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
 			 </div>
 			 <div class="btn-group pull-right">
-			 	<button type="button" class="btn btn-indigo btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
+			 	<button type="button" class="btn btn-primary btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
 			 </div>
 			 <div class="btn-group pull-right open">
-					<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
-					<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainSaveAdd" id="divmainSaveAdd" style="width:800px; z-index:-1;">
-						<div class="box-body">
-							<div class="col-lg-5 panel"  data-widget="tree" id="divDashboardCohortList" style="height:500px; overflow:auto;">
-								
+				<button type="button" class="btn bg-orange btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
+				<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainSaveAdd" id="divmainSaveAdd" style="width:400px; z-index:-1;">
+					<div class="box-body">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label> 코호트 명 </label>
+								<input type="text" class="form-control" placeholder="Enter ..." id="txtDashboardCohortNM">
 							</div>
-							<div class="col-lg-7">
-								<div class="form-group">
-									<label> 상세 분류 </label>
-									<select class="form-control" id="selDashboardCohortList" disabled>
-					                  <option value="">없음</option>
-					                </select>
-								</div>
-								<div class="form-group">
-									<label> 코호트 명 </label>
-									<input type="text" class="form-control" placeholder="Enter ..." id="txtDashboardCohortNM">
-								</div>
-								<div class="form-group">
-									<label> 설명 </label>
-									<textarea class="form-control" rows="3" placeholder="Enter ..." id="txtDashboardCohortSub" style="margin: 0px 59.5px 0px 0px; height: 300px;"></textarea>
-								</div>
+							<div class="form-group">
+								<label> 설명 </label>
+								<textarea class="form-control" rows="3" placeholder="Enter ..." id="txtDashboardCohortSub" style="margin: 0px 59.5px 0px 0px; height: 300px;"></textarea>
 							</div>
 						</div>
-					
-						<div class="text-center">
-							<button type="button" class="btn btn-danger btn-sm" style="margin-bottom: 20px;" id="btnDashboardCohortAdd"> 저장 </button>
-						</div>
-				     </div>
+					</div>
+				
+					<div class="text-center">
+						<button type="button" class="btn bg-orange btn-sm" style="margin-bottom: 20px;" id="btnDashboardCohortAdd"> 저장 </button>
+					</div>
 			     </div>
+		     </div>
 		</div>
 	</section>
 	
 	<div class="row" style="margin-right:10px; margin-bottom: 10px;">
 		<div class="btn-group pull-right">
-			<button type="button" class="btn btn-default btn-sm" style="margin-left:10px;"><a href="<c:url value="/cohort/cohortAnalysis" />">Patient View </a>  </button>
-			<button type="button" class="btn btn-default btn-sm" style="margin-left:10px;"><a href="<c:url value="/cohort/cohortAnalysis" />">Mutation View </a>  </button>
+			
 		</div>
 	</div>
 </section>
-<section  class="col-lg-12">
+<section  class="col-lg-12" style="">
 	<nav class="navbar navbar-light navbar-background-color margin-top-10" >
 		<div class="row" >
 			<div class="col-lg-12">
 				<div class="nav-tabs-custom">
 					<ul class="nav nav-tabs" id="myTab">
 						<li class="active">
-							<a href="#cohortSummary" id="cohortSummary-tab" class="patientViewTab" pageNum="1" page="tabCohortSummary" data-toggle="tab" aria-controls="cohortSummary" aria-selected="true"><b>Summary</b></a>
+							<a href="#cohortSummary" id="cohortSummary-tab" class="cohortAnalysisViewTab" pageNum="1" page="tabCohortSummary" data-toggle="tab" aria-controls="cohortSummary" aria-selected="true"><b>Summary</b></a>
 						</li>
 						<li>
-							<a href="#cohortData" id="cohortData-tab" class="patientViewTab" pageNum="2" page="tabCohortData" data-toggle="tab" aria-controls="cohortData" aria-selected="false"><b>Clinical Data</b></a>
+							<a href="#cohortData" id="cohortData-tab" class="cohortAnalysisViewTab" pageNum="2" page="tabCohortData" data-toggle="tab" aria-controls="cohortData" aria-selected="false"><b>Clinical Data</b></a>
 						</li>
 						<div class="btn-group pull-right open" style="margin-right:10px; margin-top: 10px;">
-				
-							<button type="button" class="btn bg-navy btn-sm" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
+							
+							<button type="button" class="btn bg-silver btn-sm" style="margin-left:10px;" id="deletePatientList"> 환자 삭제 </button>
+							<button type="button" class="btn bg-orange btn-sm" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
+							<button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;" id="btnPatientView">Patient View</button>
+							<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="btnMutationView">Mutation View</button>
 							<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainChartAdd" id="divmainChartAdd" style="width:600px; z-index:-1;"> 
 						     	<div class="box-body">
 						     		<nav class="navbar navbar-light navbar-background-color margin-top-10" >
@@ -350,7 +340,7 @@
 						    
 					    </div>
 					</ul>
-					<div class="tab-content">
+					<div class="tab-content" style="margin-bottom: 20px;">
 						<div class="tab-pane active" id="cohortSummary" role="tabpanel" aria-labelledby="cohortSummary-tab">
 							<jsp:include page="cohortAnalysisSummary.jsp" flush="true"></jsp:include>
 						</div>
@@ -363,7 +353,41 @@
 		</div>
 	</nav>
 </section>
+<form id="frmCohortAnalysis" name="frmCohortAnalysis" method="post">
+	<input class="form-control" type="hidden" id="hiddenCohortTab" name="TAB" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortNewCohort" name="NEWCOHORTNAME" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortPatno" name="RESCH_PAT_ID" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortQuery" name="QUERY" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortTreeModal" name="TREE" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortMyCohort" name="MYCOHORT" value="">
+</form>
+<div class="modal fade bs-example-modal-lg" id="popSelectedCohortModal" tabindex="-1" role="dialog" aria-labelledby="popSelectedCohortModalLabel">
+	<div class="modal-dialog modal-lg" style="height:800px; width:80%;" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="popSelectedCohortModalLabel">Selected Cohort</h4>
+			</div>
+			<div class="modal-body skin-black">
+				<div class="row">
+					<div class="col-lg-12">
+		                <div class="box">
+							<div class="box-body padding-20-30" id="divSelectedCohort" style="margin:auto;width:100%;height:800px; ">
+								
+							</div>
+						</div>
+	                </div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
 
+<script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>
 <script src="<c:url value="/js/plugins/plotly-latest-1.51.min.js" />"></script>
 <script src="<c:url value="/js/cohort/cohortAnalysis.js" />"></script>
 

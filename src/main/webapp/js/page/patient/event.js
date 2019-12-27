@@ -6,18 +6,18 @@ function Event() {
     var util = new Util();
 
     self.getPlotColor = function(sub,id){
-        console.log('pdata[i].subject ', sub,id);
+        // console.log('pdata[i].subject ', sub,id);
         return (sub === subject.pathology) ? '#3941FF':
-               (id === subject.tissue) ? '#ff8040' :
-               (id === subject.brc) ? '#81abf6' :
-               (sub === subject.biopsy) ? '#b4c4cc' :
-               (sub === subject.surgery) ? '#6ed2f6' :
-               (sub === subject.imaging) ? '#f6df23' :
-               (id === subject.ct) ? '#27176b' :
-               (id === subject.mri) ? '#e9a2e8' :
-               (id === subject.petct) ? '#f6f504' :
-               (id === subject.us) ? '#A0F682' :
-               '';
+            (id === subject.tissue) ? '#ff8040' :
+            (id === subject.brc) ? '#81abf6' :
+            (sub === subject.biopsy) ? '#b4c4cc' :
+            (sub === subject.surgery) ? '#6ed2f6' :
+            (sub === subject.imaging) ? '#f6df23' :
+            (id === subject.ct) ? '#27176b' :
+            (id === subject.mri) ? '#e9a2e8' :
+            (id === subject.petct) ? '#f6f504' :
+            (id === subject.us) ? '#A0F682' :
+            '';
     }
 
     self.classify_tissue= function(data,  UNIT) {
@@ -62,7 +62,7 @@ function Event() {
     }
 
     self.classify_sugery = function(data,  UNIT) {
-    	var tip = '';
+        var tip = '';
         // tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</p>";
         for(var i=0;i<data.length;i++) {
             // tip += "<hr />";

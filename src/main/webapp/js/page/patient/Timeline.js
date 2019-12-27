@@ -64,9 +64,9 @@ function TimeLine() {
     }
 
     function moveMutation(){
-        var pt = new PatientViewMutationTable();
-        pt.init();
-        ISROUNDMUTATION=true;
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
+        // ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {
         if(data.length<1){
@@ -86,9 +86,9 @@ function TimeLine() {
         //paperWidth = chmName.length * dynamicWidthPartial;
         console.log(chmName);
         xt = setXposition(start, chmName.length);
-        console.log('xt is ', xt);
+        // console.log('xt is ', xt);
         m = setXnamePosition(xt);
-        console.log(m);
+        // console.log(m);
         var end = xt[xt.length - 1];
         var margin = paperWidth - end;
         end += margin;
@@ -100,7 +100,7 @@ function TimeLine() {
 
     function setTrack(data) {
         dig = data;
-        console.log(' data is ', dig);
+        // console.log(' data is ', dig);
         var chmName = [];
         var temp = [];
         for (var i = 0; i < data.length; i++) {
@@ -233,14 +233,14 @@ function TimeLine() {
         countTime = _.filter(countTime, function(o){
             return o.time != 'undefined';
         });
-        console.log('countTime ', countTime);
+        // console.log('countTime ', countTime);
         console.log('start ', yRuler, start, end);
 
         var startXruler = end;
         var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
         OLINE.push(oline);
         //drawLine(xt[0], yRuler, xt[0], 5, paper, '#000', 1);
-        console.log('start ', start, xt);
+        // console.log('start ', start, xt);
         var txtCnt = 0;
         for (var i = 0; i < xt.length; i++) {
             if (i % 2 === 0) {
@@ -253,7 +253,7 @@ function TimeLine() {
                 var cidx = _.findIndex(countTime, function (v) {
                     return v.time == chmName[txtCnt];
                 })
-                console.log('countTime[cidx ', countTime[cidx]);
+                // console.log('countTime[cidx ', countTime[cidx]);
                 if (cidx !== -1) {
                     //countTime[cidx].axis = m[i];
                     countTime[cidx].axis = mx;
@@ -286,9 +286,6 @@ function TimeLine() {
                     console.log(state);
                     state = _.filter(state, function (o) {
                         var time = o.time;
-                        //console.log('click temp is ',time, '=> ',UNIT,  temp);
-                        ////if(util._isUndefined(time))time="00000000"
-                        //console.log(time.substring(0,4));
                         if (UNIT === 'd') {
                             return (time === temp);
                         }
@@ -327,7 +324,7 @@ function TimeLine() {
         oline = drawLine(end - 1, yRuler, end - 1, 5, paper, '#000', 1);
         OLINE.push(oline);
         COUNTMAP = countTime;
-        console.log(" COUNTMAP ", COUNTMAP);
+        // console.log(" COUNTMAP ", COUNTMAP);
     }
 
     function drawLine(x1, y1, x2, y2, p, cl, width) {
@@ -343,29 +340,14 @@ function TimeLine() {
     }
 
 // -- event bar chart -- //
-
- /*   function classify_labtest(data) {
-        var item = {};
-        //var tip = "[" + data.id + "]";
-        var tip='';
-        tip += "<span>" + util.dateFormat(UNIT, data.time) + "</p>";
-        tip += "<strong>[" + data.name + "]</strong><br/>";
-        tip += "<hr />";
-        //tip += "<span>" + util.dateFormat(UNIT, data.time) + "</br>";
-        tip += "<span>검사 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.exam + "</br>";
-        tip += "<span>표시 결과값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.mark + "</br>";
-        tip += "<span>기준 단위값 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp : &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;" + data.crte + "</br>";
-        return tip;
-    }*/
-
     function setPlotAxis(pdata) {
         pixelMap = [];
         //pdata = _.sortBy(pdata,['time']);
-        console.log('pdata is ', pdata);
-        console.log('xt ', xt);
-        console.log('m ', m);
-        console.log('chmName ', chmName);
-        console.log(' COUNTMAP ', COUNTMAP);
+        // console.log('pdata is ', pdata);
+        // console.log('xt ', xt);
+        // console.log('m ', m);
+        // console.log('chmName ', chmName);
+        // console.log(' COUNTMAP ', COUNTMAP);
         var temp_name = [];
         var item = {};
         for (var i = 0; i < pdata.length; i++) {
@@ -373,19 +355,13 @@ function TimeLine() {
                 var p = _.filter(COUNTMAP, function (v) {
                     return v.time == getDpTime(pdata[i].time);
                 });
-                //console.log(' p is ',p);
-                //console.log(getDpTime(pdata[i].time));
-                // console.log(' position is ', p);
-                // console.log(' position is ', p['0'].axis);
-                //console.log('pdata[i].subject ', pdata[i].subject);
-                //console.log(( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time);
-                //if(pdata[0].subject ==='PATHOLOGY_EXAM' && ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
+
                 if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
                     temp_name.push(pdata[i]);//temp_name.push(pdata[i+1]);
                     continue;
                 }
                 else {
-                    console.log('temp_name.length ',temp_name.length);
+                    // console.log('temp_name.length ',temp_name.length);
                     item = {};
                     item.axis = p['0'].axis;
                     item.count = p['0'].count;
@@ -404,7 +380,7 @@ function TimeLine() {
                     // console.log('item.name ', item.name);
                     // console.log('pitem is ', item);
                     pixelMap.push(item);
-                    console.log('pixelMap.push ', pixelMap);
+                    // console.log('pixelMap.push ', pixelMap);
                     temp_name=[];
                     }
                     else {
@@ -419,7 +395,7 @@ function TimeLine() {
                             (pdata[i].subject === subject.biopsy) ? (event.classify_biopsy(temp_name, UNIT)) :
                             (pdata[i].subject === subject.imaging) ? (event.classify_image(temp_name, UNIT)) : '';
 
-                        console.log('item is ', item);
+                        // console.log('item is ', item);
                         item.stroke = temp_name.length;
                         pixelMap.push(item);
                         temp_name=[];
@@ -427,7 +403,7 @@ function TimeLine() {
                 }
             }
         }
-        console.log('pixelMap ', pixelMap);
+        // console.log('pixelMap ', pixelMap);
     }
 
     function getDpTime(d) {
@@ -450,9 +426,7 @@ function TimeLine() {
     }
 
     function makeEventBarChartSub() {
-        console.log('dig-> ', dig);
-        /*var label = "Time since diagnosis";
-        var t = paper.text(55, 10, label).attr({'text-anchor': 'center', 'fill': 'black', "font-size": 12});*/
+        // console.log('dig-> ', dig);
 
         $("#dhead").html("");
         var d = HMIN;
@@ -553,35 +527,20 @@ function TimeLine() {
             var tnumber = _.round(Number(XSCALE));
             var pixelAry = _.filter(pixelMap, {'id': item.id});
 
-            console.log('pixelAry is ', pixelAry);
+            // console.log('pixelAry is ', pixelAry);
             //var tcnt = 0;
             var plen = pixelAry.length;
             for (var i = 0; i < pixelAry.length; i++) {
                 var position = pixelAry[i].axis;
-                // if(i===0)first = position;
+
                 var size = pixelAry[i].count;
-                //if(UNIT==='y') pw=0.3;
-                //console.log('-->size ', size);
+
                 if (UNIT === 'y') {
-                    // pw = (size>20 && size < 41) ? 2 :  (size>40 && size<61) ? 1 : (size>60 && size < 81) ? (0.5) : (0.1);
-                    pw = (plen > 100) ? 2 : (plen > 200) ? 1 : (plen > 300) ? 0.5 : 3;
+                   pw = (plen > 100) ? 2 : (plen > 200) ? 1 : (plen > 300) ? 0.5 : 3;
                 }
                 position = getPositionSpec(position, size, pixelAry[i].time);
-                //position = (i>0) ? (position+deepCalcPosition(i)) : position;
-                //var h = pixelMap[i].name.length>maxCount ? 20 : (20*pixeldata[i].name.length/maxCount);
                 var h = maxCount;
-                // console.log('yrow ', yRow, h);
-                //var r = p.rect(position, yRow-4, pw, h);
-                //var r = p.circle(position, yRow - 4, pw);
-                //console.log(leftpadding, yRow-4, pw);
                 var r = p.circle(leftpadding, yRow - 4, pw);
-                // r.attr("fill", "#0f0");
-                // r.attr("stroke", "#0f0");
-                //r.attr("fill", "#ffaf8a");
-
-                /*r.attr("fill", "#ffa670");
-                r.attr("stroke", "#ffa670");*/
-                //console.log('stroke is ',pixelAry[i].stroke);
                 r.attr("fill", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke-width", pixelAry[i].stroke);
@@ -733,7 +692,7 @@ function TimeLine() {
             show: {event: "mouseover"},
             hide: {fixed: true, delay: 100, event: "mouseout"},
             //style: {classes: ''+theme+' qtip-rounded'},
-            style: {classes: ''+theme+' qtip-bootstrap'},
+            style: {classes: ''+theme+' qtip-bootstrap my-qtip'},
             position: {
                 my: "bottom right",
                 at: "top left",
@@ -771,22 +730,6 @@ function TimeLine() {
         var biopsy = new Biopsy();
         var image = new Image();
 
-        // var digcategory=[];
-        // if(!_.isUndefined(localStorage["digcategory"]))
-        //     digcategory = JSON.parse(localStorage.getItem("digcategory"));
-        // console.log('digcategory ',digcategory);
-        //
-        // var pids = [];
-        // for(var i=0;i<digcategory.length;i++){
-        //     pids.push(digcategory[i].pid);
-        // }
-        // pids = _.uniq(pids);
-        // console.log('pids ', pids);
-        // if(pids.length<1){
-        //     util.hideLoader();
-        //     return;
-        // }
-        // console.log(pids.length);
         var pids = [];
         pids.push('SPECIMEN');
         pids.push('SUGERY');
@@ -794,20 +737,14 @@ function TimeLine() {
         pids.push('PATHOLOGY_EXAM');
         pids.push('IMAGING');
         var run=0;
-        // for(var i=0;i<pids.length;i++) {
-        //     (pids[i] === subject.specimen) ? specimen.init(findLevel, exist, setSpecimenData) : null;
-        //     (pids[i] === subject.sugery) ? sugery.init(findLevel, exist, setSugeryData) : null;
-        //     (pids[i] === subject.biopsy) ? biopsy.init(findLevel, exist, setBiopsyData) : null;
-        //     (pids[i] === subject.pathology) ? pathology.init(findLevel, exist, setPathlogyData) : null;
-        //     (pids[i] === subject.imaging) ? image.init(findLevel, exist, setImageData) : null;
-        // }
+
         specimen.init(findLevel, exist, setSpecimenData);
         function setRound(data){
             ++run;
             console.log('run ', run, pids.length);
             RAW = _.union(RAW, data);
             if(run===pids.length) {
-                console.log('initRAW ', RAW);
+                // console.log('initRAW ', RAW);
                 setTimeLine('C', RAW);
             }
         }
@@ -838,9 +775,6 @@ function TimeLine() {
         }
 
     }
-
-
-
 
     self.setZoom = function(scale,w, node){
         (node===1) ? LASTYPOS *= scale : LASTYPOS /= scale;

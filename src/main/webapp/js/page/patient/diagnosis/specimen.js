@@ -78,7 +78,7 @@ function Specimen() {
                 item.leaf = true;
                 crow.push(item);
         }
-        console.log('round tissue => ', crow);
+        // console.log('round tissue => ', crow);
      //return crow;
     }
 
@@ -112,7 +112,7 @@ function Specimen() {
                 item.leaf = true;
             crow.push(item);
         }
-        console.log('round brc => ', crow);
+        // console.log('round brc => ', crow);
         disposer();
     }
 

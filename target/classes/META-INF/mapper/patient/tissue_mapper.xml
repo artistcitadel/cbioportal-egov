@@ -17,7 +17,7 @@
        SPCN_NO spcnNo,  -- 검체번호,
        SPCN_EXAM_ORDR_TYP_CD spcnExamOrdrTypCd -- 검체검사처방유형코드
 from SSSPMORDR a -- 검체검사처방기본
-where a.RESCH_PAT_ID != #{patientId}
-limit 10
+where a.RESCH_PAT_ID = #{patientId}
+
     </select>
 </mapper>

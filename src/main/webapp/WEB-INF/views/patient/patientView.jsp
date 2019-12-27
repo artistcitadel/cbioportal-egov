@@ -64,12 +64,15 @@
                                 <i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i>
                                 <div style="display: inline-flex;">
                                     <table>
+                                        <thead>
+                                        </thead>
+                                        <tbody>
                                         <tr>
-                                            <td>Patient:</td>
-                                            <td id="patientage"></td>
-                                            <td class="bio"></td>
+                                            <td>Patient ID:
+                                              <span id="patientage"></span>
+                                            </td>
                                         </tr>
-
+                                        </tbody>
                                     </table>
                                 </div>
                                 <div className="studyMetaBar"></div>
@@ -538,6 +541,8 @@
     </div>
 </div>
 
+</div>
+
 <form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
     <input type="hidden" name="patient" id="patient" value=""/>
     <input type="hidden" name="pages" id="pages" value="1" />
@@ -567,14 +572,16 @@
     var PATIENTID;
     var patients1 = document.pform.RESCH_PAT_ID.value;
     var patients = document.pform.QUERY.value;
+    console.log('RESCH_PAT_ID ', patients1);
+    console.log('QUERY ' , patients);
 
-    if(patients.indexOf(",")===-1){
+    /*if(patients.indexOf(",")===-1){
         patients = patients1;
         console.log('*************************');
         console.log('pattients is ', patients);
         console.log('*************************');
-    }
-
+    }*/
+    if(patients1.length>3)patients=patients1;
     var pages = '<%=request.getParameter("pages")%>';
     var patientId = '<%=request.getParameter("patientId")%>';
     PATIENTID = patientId;
@@ -630,9 +637,9 @@
         function setCategory(json){
             CATE_TREE = json;
             var txt = '';
-            console.log(" category rawdata is ", json);
+            // console.log(" category rawdata is ", json);
             var data  = util.arrayToTree(json);
-            console.log('category tree data ',data);
+            // console.log('category tree data ',data);
 
             for (var i=0; i<data.length; i++) {
                 var checked = '';
@@ -689,10 +696,10 @@
             location.reload();
         });
 
-        // var patientView = new TimeLine();
-        // patientView.init();
-        var pt = new PatientViewMutationTable();
-        pt.init();
+        var patientView = new TimeLine();
+        patientView.init();
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
 
     });
 

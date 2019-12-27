@@ -37,9 +37,8 @@
                               and S.PACS_EQUIP_DIV_CD = 'CT'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-    and a.RESCH_PAT_ID != #{patientId}
-    limit 30
-
+    and a.RESCH_PAT_ID = #{patientId}
+  
     </select>
 
     <select id="selectMriList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -75,7 +74,7 @@
                           and O.ORDR_CD = S.EXAM_CD
                         )
     and a.RESCH_PAT_ID = #{patientId}
-
+    
     </select>
 
     <select id="selectPetCtList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -111,10 +110,10 @@
                               and O.ORDR_CD = S.EXAM_CD
                             )
         and a.RESCH_PAT_ID = #{patientId}
-
+    
     </select>
 
-    <select id="selectUsList" resultType="com.softcen.bigcen.med.patient.vo.Image">
+<select id="selectUsList" resultType="com.softcen.bigcen.med.patient.vo.Image">
      select 'IMAGING' subject,
        'UTRASONO' id,
        'UTRASONO' name,
@@ -132,7 +131,7 @@
             select O.ORDR_CD, O.ORDR_KOR_NM, O.ORDR_ENG_NM
               from OOOTMODCD O, SEECCEXCD S
              where 1=1
-
+              
                and S.INDVI_ORDR_POSBL_YN = 'Y' -- 개별처방가능여부(Y/N)
                and S.PACS_EQUIP_DIV_CD = 'US'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                and O.ORDR_CD = S.EXAM_CD
@@ -141,13 +140,13 @@
                            select O.ORDR_CD
                              from OOOTMODCD O, SEECCEXCD S
                             where 1=1
-
+                             
                               and S.INDVI_ORDR_POSBL_YN = 'Y' -- 개별처방가능여부(Y/N)
                               and S.PACS_EQUIP_DIV_CD = 'US'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
         and a.RESCH_PAT_ID = #{patientId}
-
+    
     </select>
-
+    
 </mapper>

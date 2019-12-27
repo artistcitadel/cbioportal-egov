@@ -19,5 +19,16 @@ public class CohortcpmDAO extends BigcenMedAbstractMapperDAO{
 	public Object selectCohortContList(Map<Object, Object> paramMap){
 		return sqlSession.selectList("cohort.selectCohortContList",paramMap);
 	}
-
+	
+	public Object selectCohortTable(Map<Object, Object> paramMap){
+		return sqlSession.selectList("cohort.selectCohortTable",paramMap);
+	}
+	
+	public Object selectCohortPatientDataList(Map<Object, Object> paramMap){
+		return sqlSession.selectList("cohort.selectCohortPatientDataList",paramMap);
+	}
+	
+	public void updateCohortPatientList(Map<Object, Object> paramMap){
+		sqlSession.update("cohort.updateCohortPatientList",paramMap);
+	}
 }

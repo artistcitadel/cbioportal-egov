@@ -12,6 +12,28 @@
 		FROM pmsportal.CC_ITEM_CONT
 		WHERE CATE_DETL_SEQ = {CATE_DETL_SEQ}
  	</select> -->
+ 	<insert id="selectCohortAnalysisPatno" parameterType="map"> 	
+ 		${PatnoQuery}
+ 	</insert>
+ 	
+ 	<select id="selectCheckCohortTable" parameterType="map" resultType="java.lang.String">
+ 		SELECT EXISTS (
+		  SELECT 1
+		  FROM Information_schema.tables
+		  WHERE table_name = #{TABLE}
+		  AND table_schema = #{SCHEMA}
+		) AS flag
+ 	</select>
+ 	
+ 	<select id="selectSavedCohortList" parameterType="map" resultType="hashmap">
+ 		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT, PER_CODE, TABLE_NM, SHARE_CD
+		FROM pmsportal.CC_ITEM_CONT
+		WHERE 1=1
+		AND SEQ =  #{SEQ}
+ 	</select>
+ 	
+ 	
+ 	
  	<select id="selectPatnoResultCheck" parameterType="map" resultType="java.lang.String">
  		SELECT PATNO
 		FROM pmsdev.CLPIMRPID
@@ -24,18 +46,27 @@
  	</select>
  	
  	<select id="selectMainPatientChart" parameterType="map" resultType="hashmap"> 		
-		SELECT a.CRCN_CD, b.COMM_CD_NM, a.CNT  
-		FROM (SELECT CRCN_CD, count(distinct RESCH_PAT_ID) AS CNT FROM pmsdev.MSMAMCAMN group by CRCN_CD) a
-		 join (select * from pmsportal.CC_COMMON_CODE where COMM_GRP_SEQ = 75) b on a.CRCN_CD = b.COMM_CD_ID
+		select ONCOTREE_CD as CRCN_CD, ONCOTREE_CD as COMM_CD_NM , count(distinct RESCH_PAT_ID) as CNT
+		from pmsdev.MSMAMCAMN
+		where ONCOTREE_CD is not null
+		group by ONCOTREE_CD
 		order by 3 desc
  	</select> 
+ 	
+ 	<select id="createCohortTable" parameterType="map" resultType="hashmap">
+ 		CREATE TABLE ${newTableName}
+ 		AS ( SELECT * 
+ 			FROM ${tableName} 
+ 			)
+ 	</select>
  	
  	<insert id="insertCohortItemCont" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ">
  		INSERT INTO CC_ITEM_CONT
 		(
-			CATE_DETL_SEQ,
 			CONT_NM,
 			CONT_DESC,
+			PER_CODE,
+			TABLE_NM,
 			CRT_ID,
 			CRT_DT,
 			UDT_ID,
@@ -43,9 +74,10 @@
 		)
 		VALUES
 		(
-			#{CATE_DETL_SEQ},
 			#{CONT_NM},
 			#{CONT_DESC},
+			#{PER_CODE},
+			#{TABLE_NM},
 			#{CRT_ID},
 			NOW(),
 			#{UDT_ID},

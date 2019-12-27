@@ -7,14 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,9 +42,82 @@ public class CohortcpmController extends BigcenMedAbstractController{
 	}
 
 	@RequestMapping(value="/cohortAnalysis")
-	public String cohortAnalysis(){
+	public String cohortAnalysis(HttpServletRequest request, HttpServletResponse response,
+			Model model ){
+		
+		//model.addAttribute("tab", tab);
+		//model.addAttribute("table", table);
+		
 		return "/cohort/cohortAnalysis.tiles";
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/selCohortFilteringTable")
+	public Object selCohortFilteringTable(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCohortFilteringTable START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selCohortFilteringTable", cohortcpmService.selectCohortFilteringTable(paramMap));			
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selCohortPatientDataList")
+	public Object selCohortPatientDataList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCohortPatientDataList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selCohortPatientDataList", cohortcpmService.selectCohortPatientDataList(paramMap));			
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * cohort list 출력
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selCohortTable")
+	public Object selCohortTable(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCohortTable START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap = (HashMap)cohortcpmService.selectCohortTable(paramMap);			
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
 	
 	/**
 	 * cohort list 출력
@@ -103,6 +179,26 @@ public class CohortcpmController extends BigcenMedAbstractController{
 		
 		return resultMap;
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/updateCohortPatientList")
+	public Object updateCohortPatientList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- updateCohortPatientList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			cohortcpmService.updateCohortPatientList(paramMap);			
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
 	}
 	
 }

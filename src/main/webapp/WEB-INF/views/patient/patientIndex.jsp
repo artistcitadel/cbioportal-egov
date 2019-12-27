@@ -63,6 +63,10 @@
 		.qtip-content {
 			font-size:13px;
 		}
+
+		.qtip.my-qtip {
+			max-width: none;
+		}
 	</style>
 
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jquery-ui-1.8.13.custom.min.js"></script>

@@ -13,12 +13,12 @@
 		<tiles:insertAttribute name="top"/>
 	</header>
 	<!-- Left side column. contains the logo and sidebar -->
-	<aside class="main-sidebar">
+<%-- 	<aside class="main-sidebar">
 		<tiles:insertAttribute name="adminLeft"/>
-	</aside>
+	</aside> --%>
 
 	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper" data-toggle="control-sidebar">
+	<div class="content-wrapper" style="    margin-left: 0px;">
 		<tiles:insertAttribute name="content"/>
 		<div style="position: absolute;left:-999px;">
 				<input type="text" class="">

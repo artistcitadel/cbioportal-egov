@@ -9,7 +9,58 @@
  	<select id="selectCohortContList" parameterType="map" resultType="hashmap"> 		
 		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT
 		FROM pmsportal.CC_ITEM_CONT
+		WHERE 1=1
+		AND PER_CODE = #{PER_CODE}
+		AND SHARE_CD = #{SHARE_CD}
  	</select>
+ 	
+ 	<select id="selectCohortTable" parameterType="map" resultType="java.lang.String"> 		
+		${CohortTableQuery}
+ 	</select>
+ 	
+ 	<select id="selectCohortPatientDataList" parameterType="map" resultType="hashmap"> 		
+
+		select a.*, b.SEX_CD, (YEAR(MAKEDATE(0, DATEDIFF(CURDATE(), b.PAT_BIRTHDT)))-2000) AS AGE, b.ABO_BLTY, b.DEATH_YN, b.DEATH_DT, b.INHOSP_DEATH_DT, b.UCOD_DIAG_CD, b.INHOSP_DEATH_DIAG_NM, b.CANCER_REG_YN , c.SPCN_CNT , c.MUT_CNT, d.CNV_CNT, e.SV_CNT, f.EXP_CNT, g.CANCER_TYPE, g.CANCER_DETAIL
+		from ${TABLENAME} a
+		join pmsdev.WPPIMINFO b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		left outer join (
+		               select a.RESCH_PAT_ID, count(distinct b.GENE_EXAM_SPCN_ID) as SPCN_CNT, count(distinct b.GENE_NM) as MUT_CNT
+		               from (${TABLE}) a
+		               join pmsdev.PMGERMUEM b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		               group by a.RESCH_PAT_ID
+		              ) c on a.RESCH_PAT_ID = c.RESCH_PAT_ID
+		left outer join (
+		               select a.RESCH_PAT_ID, count(distinct b.GENE_NM, b.CNV_STAT_NM) as CNV_CNT
+		               from (${TABLE}) a
+		               join pmsdev.PMGERCVEM b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		               group by a.RESCH_PAT_ID
+		              ) d on a.RESCH_PAT_ID = d.RESCH_PAT_ID
+		left outer join (
+		               select a.RESCH_PAT_ID, count(distinct NVL(b.GENE_NM1,''), NVL(b.GENE_NM2,''), NVL(b.GENE_NM3,'')) as SV_CNT
+		               from (${TABLE}) a
+		               join pmsdev.PMGERSVEM b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		               group by a.RESCH_PAT_ID
+		              ) e on a.RESCH_PAT_ID = e.RESCH_PAT_ID
+		left outer join (
+		               select a.RESCH_PAT_ID, count(distinct b.GENE_NM) as EXP_CNT
+		               from (${TABLE}) a
+		               join pmsdev.PMGERGNEX b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		               group by a.RESCH_PAT_ID
+		              ) f on a.RESCH_PAT_ID = e.RESCH_PAT_ID
+		left outer join (
+		               select a.RESCH_PAT_ID, MAX(ONCOTREE_CD) as CANCER_TYPE, MAX(PRMR_ORGAN_CD) as CANCER_DETAIL, MAX(MRPH_DIAG_CD) as CANCER_MCODE
+		               from (${TABLE}) a
+		               join pmsdev.MSMAMCAMN b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
+		               group by a.RESCH_PAT_ID
+		              ) g on a.RESCH_PAT_ID = g.RESCH_PAT_ID
+ 	</select>
+ 	
+ 	<update id="updateCohortPatientList" parameterType="map">
+ 		UPDATE pmsdata.P0001101
+		SET DELETE_YN=#{DELETE_YN}
+		WHERE 1=1
+		AND RESCH_PAT_ID=#{RESCH_PAT_ID}
+ 	</update>
  	
 </mapper>
  

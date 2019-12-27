@@ -27,7 +27,7 @@ function GenomicOverview() {
         drawLine(self.wideLeftText,yRuler,self.wideLeftText+self.GenomeWidth,yRuler,p,'#000',1);
         for (var i=1; i<genomeRef.length; i++) {
                 var xt = loc2xpixil(i,0);
-                console.log(' xt is ', xt);
+                // console.log(' xt is ', xt);
                 drawLine(xt,yRuler,xt,self.rowMargin,p,'#000',1);
 
                 var m = middle(i,genomeRef);
@@ -51,15 +51,15 @@ function GenomicOverview() {
     }
 
     var loc2xpixil = function(chm, loc){
-        console.log('chm is ', chm);
-        console.log('goConfig.GenomeWidth + goConfig.wideLeftText ', self.GenomeWidth , self.wideLeftText);
+        // console.log('chm is ', chm);
+        // console.log('goConfig.GenomeWidth + goConfig.wideLeftText ', self.GenomeWidth , self.wideLeftText);
         return loc2perc(chm,loc) * self.GenomeWidth+self.wideLeftText;
     }
     var loc2perc = function(chm, loc){
         //console.log('GenomicOverview.genomeRef ', self.genomeRef);
-        console.log('GenomicOverview.total ', self.total);
+        // console.log('GenomicOverview.total ', self.total);
         var perc = getChmEndsPerc(self.genomeRef, self.total);
-        console.log('chm-1 ', chm-1, loc, self.total, perc[chm-1], perc[chm-1] + loc / self.total);
+        // console.log('chm-1 ', chm-1, loc, self.total, perc[chm-1], perc[chm-1] + loc / self.total);
         return perc[chm-1] + loc / self.total;
     }
 
@@ -264,10 +264,10 @@ function GenomicOverview() {
         for (var i = 0; i < mutObj.length; i++) {
             var examSeq = mutObj[i].geneExamSpcnSeq;
             (examSeq.indexOf(',') === -1) ?
-                spcnSeq.push(examSeq) :
+                spcnSeq.push($.trim(examSeq)) :
                 (
                     _.forEach(examSeq.split(","), function (v) {
-                        spcnSeq.push(v)
+                        spcnSeq.push($.trim(v))
                     })
                 )
         }
@@ -312,17 +312,17 @@ function GenomicOverview() {
         for (var i = 0; i < cnaObj.length; i++) {
             var examSeq = cnaObj[i].geneExamSpcnSeq;
             (examSeq.indexOf(',') === -1) ?
-                spcnSeq.push(examSeq) :
+                spcnSeq.push($.trim(examSeq)) :
                 (
                     _.forEach(examSeq.split(","), function (v) {
-                        spcnSeq.push(v)
+                        spcnSeq.push($.trim(v))
                     })
                 )
         }
-        spcnSeq = _.uniq(spcnSeq);
-        console.log('CNA spcnSeq ',spcnSeq);
+        var spcnSeq1 = _.uniq(spcnSeq);
+        console.log('CNA spcnSeq ',spcnSeq1);
 
-        _.forEach(spcnSeq, function (v) {
+        _.forEach(spcnSeq1, function (v) {
             console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
@@ -377,13 +377,13 @@ function GenomicOverview() {
 
     var getStPixelMap = function(p,row) {
         row+=1;
-        console.log('getStPixelMap called');
         var mutObj = self.stObjData;
         console.log('sttObj ', mutObj);
-
+        console.log('getStPixelMap called',mutObj);
         var spcnSeq = [];
         for (var i = 0; i < mutObj.length; i++) {
             var examSeq = mutObj[i].geneExamSpcnSeq;
+            //console.log('==>',examSeq, examSeq.indexOf(','));
             (examSeq.indexOf(',') === -1) ?
                 spcnSeq.push(examSeq) :
                 (

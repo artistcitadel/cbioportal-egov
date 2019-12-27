@@ -17,16 +17,54 @@
 	
 	<!-- 조회조건정보 저장 -->
 	<insert id="insertItemCont" parameterType="map" useGeneratedKeys="true" keyProperty="SEQ">
-		INSERT INTO CC_ITEM_CONT(
-			 SHARE_CD,CONDT_NM,PER_CODE,METH_CD
-			,CC_POP_NUM,CC_CASE_NUM,CC_SAM_NUM,CC_CONT_CD,CC_MAT_CD,CC_AGE_NUM
-			,SAVE_CD,DEPT_CODE,INSTCD,UDT_DT,CRT_DT
-			
-		)VALUES(
-			 #{SHARE_CD},#{CONDT_NM},#{PER_CODE},#{METH_CD}
-			,#{CC_POP_NUM},#{CC_CASE_NUM},#{CC_SAM_NUM},#{CC_CONT_CD},#{CC_MAT_CD},#{CC_AGE_NUM}
-			,#{SAVE_CD},#{DEPT_CODE},#{INSTCD},NOW(),NOW()
-		)
+		<choose>
+			<when test="SHARE_CD == 'MU'">
+				INSERT INTO pmsportal.CC_ITEM_CONT(
+					 SHARE_CD
+					,PER_CODE
+					,CONT_NM
+					,CONT_DESC
+					,CONT_NUM
+					,CATE_DETL_SEQ
+					,CRT_ID
+					,CRT_DT
+					,UDT_ID
+					,UDT_DT
+				)VALUES(
+					 #{SHARE_CD}
+					,#{PER_CODE}
+					,#{CONT_NM}
+					,#{CONT_DESC}
+					,#{CONT_NUM}
+					,#{CATE_DETL_SEQ}
+					,#{CRT_ID}
+					,NOW()
+					,#{UDT_ID}
+					,NOW()
+				)
+			</when>
+			<otherwise>
+				INSERT INTO CC_ITEM_CONT(
+					 SHARE_CD
+					,CONDT_NM
+					,PER_CODE
+					,METH_CD
+					,CC_POP_NUM
+					,CC_CASE_NUM
+					,CC_SAM_NUM
+					,CC_CONT_CD
+					,CC_MAT_CD
+					,CC_AGE_NUM
+					,SAVE_CD,DEPT_CODE,INSTCD,UDT_DT,CRT_DT
+					
+				)VALUES(
+					 #{SHARE_CD},#{CONDT_NM},#{PER_CODE},#{METH_CD}
+					,#{CC_POP_NUM},#{CC_CASE_NUM},#{CC_SAM_NUM},#{CC_CONT_CD},#{CC_MAT_CD},#{CC_AGE_NUM}
+					,#{SAVE_CD},#{DEPT_CODE},#{INSTCD},NOW(),NOW()
+				)
+			</otherwise>
+		</choose>
+		
 	</insert>
 	
 	<!-- 조회조건정보 수정 -->
