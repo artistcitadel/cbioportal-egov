@@ -55,26 +55,21 @@
 		
 			<div class="content-wrapper margin-left-0" data-toggle="control-sidebar" style="padding-left: 40px; padding-right: 40px;">
 				<!-- Content Header (Page header) -->
-						<section class="content-header">
-							<h1 style="margin-bottom:15px;     font-weight: bold;">
-								<i class="ion ion-ios-speedometer-outline"></i>&nbsp;
+						<section class="content-header margin-left--20">
+							<h1>
 								<spring:message code="dashboard.summary.title_kor" />
 							</h1>
-							<!--  -->
 							<ol class="breadcrumb">
-								<li>
-									<small class="label bg-olive btn-flat">
-										${SERVICE_STAT.CODE}
-									</small>
-									${SERVICE_STAT.MESSAGE}
-								</li>
+								<li><a href="#"><i class="ion ion-home"></i> > Cohort</a></li>
+							</ol>
+							
 								
 						</section>
 						
 			     		<nav class="navbar navbar-light navbar-background-color margin-top-10" style="margin-bottom: 0px;">
 							<div class="row" >
-								<div class="col-lg-10" style="padding-right:15px;padding-left:0;">
-									<div class="nav-tabs-custom">
+								<div class="col-lg-10" style="padding-right:15px;padding-left:0;min-height:870px;">
+									<div class="nav-tabs-custom" style="min-height: 870px;">
 										<ul class="nav nav-tabs" id="myTab">
 											<li class="active">
 												<a href="#subNewCohort" id="newcohort-subtab" class="patientViewTab" pageNum="1" page="tabNewCohort" data-toggle="tab" aria-controls="subNewCohort" aria-selected="true"><b>New Cohort(by Cancer)</b></a>
@@ -87,13 +82,20 @@
 											</li>
 											
 											<div class="btn-group pull-right" style="margin-right:10px; margin-top: 10px;">
-												<button type="button" class="btn btn-default btn-sm" style="margin-left:10px;"><a href="<c:url value="/cohort/cohortAnalysis" />">Cohort Analysis </a> </button>
-												<button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;"><a href="<c:url value="/dashboard/main2" />"> Patient View </a> </button>
-												<button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;" id="btnMutationViewMove"> Mutation View </button>
+												<button type="button" class="btn btn-success btn-sm" style="margin-left:10px;" id="btnCohortAnalysis">Cohort Analysis</button>
+												<form id="frmCohortAnalysis" name="frmCohortAnalysis" method="post">
+													<input type="hidden" id="hiddenDashboardTab" name="tab" value="">
+													<input type="hidden" id="hiddenSelectedCancer" name="json" value="" />
+													<input type="hidden" id="hiddenSelectedCohort" name="mycohort" value="" />
+												
+												</form>
+												
+												<%-- <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;"><a href="<c:url value="/dashboard/main2" />"> Patient View </a> </button>
+												<button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;" id="btnMutationViewMove"> Mutation View </button> --%>
 											</div>
 		
 										</ul>
-										<div class="tab-content">
+										<div class="tab-content" style="padding-bottom:0px;">
 											<div class="tab-pane active" id="subNewCohort" role="tabpanel" aria-labelledby="newcohort-subtab">
 												<div class="col-lg-12" style="z-index:1; height: 30px;">
 													<div class="form-group pull-right">
@@ -117,19 +119,30 @@
 										                  </div>
 										                  <div class="btn-group">
 										                    <label>
-										                      <input type="radio" name="patnoRadios" id="optionsRadiosb" value="patnoB">
+										                      <input type="radio" name="patnoRadios" id="optionsRadiosb" value="patnoB" selected>
 										                      	연구용 환자
 										                    </label>
 										                  </div>
 										                </div>
 														<div class="form-group">
 										                  <label><i class="fa fa-circle-o text-aqua"></i> 입력 (숫자,|/)</label>
-										                  <textarea class="form-control" id="txtareaPatnoResultCheck" rows="3" style="min-height: 300px;"
-										                   placeholder="환자번호를 입력하세요. &#13;&#10 ex) &#13;&#10 1234567890,0987654321 &#13;&#10 1234567890/0987654321 &#13;&#10 1234567890|0987654321"></textarea>
+										                  <textarea class="form-control" id="txtareaPatnoResultCheck" rows="3" style="min-height: 318px; max-width: 100%;"
+										                   placeholder="연구번호를 입력하세요. &#13;&#10 ex) &#13;&#10 1234567890,0987654321 &#13;&#10 1234567890/0987654321 &#13;&#10 1234567890|0987654321"></textarea>
 										                </div>
 										                <div class="form-group">
-										                  <label><i class="fa fa-circle-o text-red"></i> 결과 </label>
-										                  <div id="divPatnoResult" style="height:300px; background:white; border: 1px solid #ccc; overflow-y:auto;"></div>
+										                  <label class=""><i class="fa fa-circle-o text-red"></i> 결과 </label>
+										                  <div id="divPatnoResult" style="">
+										                  	<div class="" style="height:318px;background:white;border: 1px solid #ccc;overflow-y:auto;display:inline-block;width: 49%;     word-break: break-all;">
+											                	<label class="pull-right-container" style="margin-left: 5px;">Success : <small class="label bg-blue" id="divPatnoResultSuccess">0</small></label>
+											                  	<div id="divPatnoResultSuccesstxt"></div>
+											                </div>
+											                <div class="pull-right" style="height:318px;background:white;border: 1px solid #ccc;overflow-y:auto;display:inline-block;width: 49%;    word-break: break-all;">
+											                  	<label class="pull-right-container" style="margin-left: 5px;">Fail : <small class="label bg-red" id="divPatnoResultFail">0</small></label>
+											                  	<div id="divPatnoResultFailtxt"></div>
+											                </div>
+										                  	
+										                  </div>
+										                  
 										                </div>
 										                <button type="button" class="btn btn-default btn-sm" style="" id="btnPatnoResultCheck"> Check </button>
 													</div>
@@ -145,7 +158,7 @@
 								</div>	
 								<div class="col-lg-2" style="padding:0px;">
 									<div class="box">
-										<div class="box-body">
+										<div class="box-body" style="min-height:870px;">
 											<div id="mainPatientbarChart" style="max-height:600px; overflow-y: auto;"></div>
 											<div id="mainPatientpieChart" style=""></div>
 										</div>

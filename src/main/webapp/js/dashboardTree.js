@@ -1,5 +1,5 @@
 var currentDashboardTab = 1;
-
+var checkedPatnoResult = [];
 //------------------------------------------------------------------------------------------
 // PAGE INIT	
 //------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ function initTreeC(dataTree){
 
 	var width = 1400;
 	var height = 1000;
-	var dx = 20;
+	var dx = 24;
 	var dy = width/4;
 	var margin = ({top: 10, right: 10, bottom: 10, left: 100});
 
@@ -119,6 +119,12 @@ function initTreeC(dataTree){
     	$('#rangeScaleVal').text((sz*100).toFixed(2)+"%")
     })
     
+/*    $(document).on('change','.input-check-tree',function(){
+		console.log(this);
+		var d = d3.select($(this).parent()[0]).data()[0];
+		
+	});*/
+    
 	/*	
 	svg.selectAll("circle")
     .data(dataTree)
@@ -128,6 +134,83 @@ function initTreeC(dataTree){
     .on("mouseover", handleMouseOver)
     .on("mouseout", handleMouseOut);*/
 
+    function checkupdate(d){
+    	d.checked = $('input[value='+d.data.ID+']').is(':checked');
+        
+        if(d.checked == false){
+			if(d.parent == null) return;
+			  
+			if(d.parent.checked == true){
+				d.parent.checked = false;
+				  
+				$('input[value='+d.parent.data.ID+']').prop('checked',false);
+				checkParentupdate(d.parent);
+			}
+      	  
+	      	if(!isNullOrEmpty(d.children)){
+	    		for(var i=0; i<d.children.length; i++){
+	    			d.children[i].checked = false;
+	    			$('input[value='+d.children[i].data.ID+']').prop('checked',false);
+	    			checkChildernupdate(d.children[i]);
+	    		}
+	    	}
+      	  
+        }
+        else{
+        	if(!isNullOrEmpty(d.children)){
+        		for(var i=0; i<d.children.length; i++){
+        			d.children[i].checked = true;
+        			$('input[value='+d.children[i].data.ID+']').prop('checked',true);
+        			checkChildernupdate(d.children[i]);
+        		}
+        	}
+        	
+        }
+    }
+    
+    function checkParentupdate(d){
+    	d.checked = $('input[value='+d.data.ID+']').is(':checked');
+        
+        if(d.checked == false){
+			if(d.parent == null) return;
+			  
+			if(d.parent.checked == true){
+				d.parent.checked = false;
+				  
+				$('input[value='+d.parent.data.ID+']').prop('checked',false);
+				checkParentupdate(d.parent);
+			}
+      	  
+        }
+    }
+    
+    function checkChildernupdate(d){
+    	d.checked = $('input[value='+d.data.ID+']').is(':checked');
+        
+        if(d.checked == false){
+        	
+	      	if(!isNullOrEmpty(d.children)){
+	    		for(var i=0; i<d.children.length; i++){
+	    			d.children[i].checked = false;
+	    			$('input[value='+d.children[i].data.ID+']').prop('checked',false);
+	    			checkupdate(d.children[i]);
+	    		}
+	    	}
+      	  
+        }
+        else{
+        	if(!isNullOrEmpty(d.children)){
+        		for(var i=0; i<d.children.length; i++){
+        			d.children[i].checked = true;
+        			$('input[value='+d.children[i].data.ID+']').prop('checked',true);
+        			checkupdate(d.children[i]);
+        		}
+        	}
+        	
+        }
+    }
+    
+    
 	  function mouseover() {
           div.transition()
           .duration(100)
@@ -140,9 +223,10 @@ function initTreeC(dataTree){
         		  + "Level : " + d.data.LEVEL + "</br>"
         		  + "NCI : " + d.data.NCI + "</br>"
         		  + "UMLS : " + d.data.UMLS + "</br>"
-        		  + "Color : " + d.data.COLOR + "</br>")
-          .style("left", (d3.event.pageX ) + "px")
-          .style("top", (d3.event.pageY) + "px");
+        		  + "Color : " + d.data.COLOR + "</br>"
+        		  + "Checked " + d.checked)
+          .style("left", (d3.event.pageX+15 ) + "px")
+          .style("top", (d3.event.pageY+20) + "px");
       }
 
       function mouseout() {
@@ -195,42 +279,59 @@ function initTreeC(dataTree){
             .attr("r", 5.5);
 		    
 		    nodeEnter.append("circle")
-		        .attr("r", 2.5)
+		        .attr("r", 5)
 		        .attr("fill", d => {	
+		        	if(d.data.LEVEL == 1) return d.data.COLOR
+		        	else return d._children ? "#555" : "rgb(255, 255, 255)"
+		        	})
+	        	.attr("stroke", d => {	
 		        	if(d.data.LEVEL == 1) return d.data.COLOR
 		        	else return d._children ? "#555" : "#999"
 		        	})
-		        .attr("stroke-width", 10).on("click", d => {
+		        .attr("stroke-width", 1)
+		        .on("click", d => {
 			          d.children = d.children ? null : d._children;
 			          update(d);
-			        });;
+			        });
 		        
 		    nodeEnter.append("text")
 		        .attr("dy", "0.31em")
-		        .attr("x", d => d._children ? -6 : 6)
+		        .attr("x", d => d._children ? -9 : 9)
 		        .attr("text-anchor", d => d._children ? "end" : "start")
 		        .text(d => d.data.NM)
 		        .on("click", d => {
 			          d.children = d.children ? null : d._children;
 			          update(d);
 			        })
-		      .clone(true).lower()
-		        //.attr("stroke-linejoin", "round")
-		        //.attr("stroke-width", 3)
-		        //.attr("stroke", "white");
-
-		    nodeEnter.append("foreignObject")
+		      .clone(true).lower();
+		    
+		    const checkNode = nodeEnter.append("foreignObject")
 		    	.attr("dy", "0.31em")
-		    	.attr("x", d => d._children ? 4 : -12)
-		    	.attr("y","-4")
-	   			.attr("width","9px")
-       			.attr("height", "9px")
-		        .html(d=> '<input type="checkbox" class="input-check-tree" style="height:9px; width:9px; margin:0px; position:absolute;" seq="'+d.data.SEQ+'" value="'+d.data.ID+'">')
-		        .on("click", d => {
-			          d.checked = $('.input-check-tree').is(':checked');
-			    });;
+		    	.attr("x", d => d._children ? 7 : -19)
+		    	.attr("y","-6")
+	   			.attr("width","13px")
+       			.attr("height", "13px")
+		        .html(d=> {
+		        	if (!isNullOrEmpty(d.parent) && d.parent.checked == true){
+		        		d.checked = true;
+		        		return '<input type="checkbox" class="input-check-tree" style="height:13px; width:13px; margin:0px; position:absolute;" seq="'+d.data.SEQ+'" value="'+d.data.ID+'" checked>';
+		        	}
+		        	else{
+		        		d.checked = false;
+		        		return '<input type="checkbox" class="input-check-tree" style="height:13px; width:13px; margin:0px; position:absolute;" seq="'+d.data.SEQ+'" value="'+d.data.ID+'">';
+		        	}
+		        })
+		        .on("change", d => {
+		        	checkupdate(d)
+			          
+			    });
        			
-
+		    	/*		  checkNode.attr("checked",d=>{ 
+			  if (d.checked == true)
+				return true;
+			  else 
+				return false;
+			});*/
 		    
 		   /* nodeEnter.on("mouseover", (d, i) => {
 		    	console.log(d)
@@ -283,6 +384,8 @@ function initTreeC(dataTree){
 		      d.x0 = d.x;
 		      d.y0 = d.y;
 		    });
+		    
+		    //treeRoot = root;
 		  }
 	  
 	  update(root);
@@ -412,6 +515,64 @@ function setMainPatientPieChart(){
 function treeChart(){
 	
 }
+function parentCheckChange(d){
+	d.checked = false;
+	
+}
+
+function getParentData(d, selectedTreeArr){
+	
+	if(selectedTreeArr.indexOf(d.data) == -1 ){
+		
+		d.data.checked = d.checked;
+		selectedTreeArr.push(d.data);
+		
+		if(!isNullOrEmpty(d.parent)){
+			selectedTreeArr = getParentData(d.parent, selectedTreeArr);						
+		}
+	}
+	
+	return selectedTreeArr;
+}
+
+function getPatnoResultCheck(dataSet, txtArr, last){
+	
+	var promise = http('dashboard/selPatnoResultCheck', 'post', true , dataSet);
+	promise.then(function(result){
+		
+		//console.log(result);
+		var dataView = result.selPatnoResultCheck;
+		checkedPatnoResult = checkedPatnoResult.concat(dataView);
+		var failArr = [];
+		
+		for(var i=0; i<txtArr.length; i++){
+			if(dataView.indexOf(txtArr[i]) == -1 ) failArr.push(txtArr[i]);
+		}
+
+		var html = '';
+
+		var succLen = $('#divPatnoResultSuccess').html()*1 + dataView.length;
+		var failLen = $('#divPatnoResultFail').html()*1 + failArr.length;
+		
+		$('#divPatnoResultSuccess').html(succLen);
+		if($('#divPatnoResultSuccesstxt').html() != "") $('#divPatnoResultSuccesstxt').append(",");
+		$('#divPatnoResultSuccesstxt').append(dataView.toString());
+		
+		$('#divPatnoResultFail').html(failLen);
+		if($('#divPatnoResultFailtxt').html() != "") $('#divPatnoResultFailtxt').append(",");
+		$('#divPatnoResultFailtxt').append(failArr.toString());
+		
+		if(last == true) {
+			showAlert('알림','완료 되었습니다.',null);
+			gvSpinnerClose();
+		}
+		
+	});
+	promise.fail(function(e){
+		console.log(e);
+	})
+}
+
 //------------------------------------------------------------------------------------------
 //	EVENT	
 //------------------------------------------------------------------------------------------
@@ -421,11 +582,162 @@ function treeChart(){
  */
 function initTreeEvent(){
 	//
+	$('#btnCohortAnalysis').on('click',function(){
+		gvSpinnerOpen();
+		if(currentDashboardTab == "1"){
+			var tmpArr = [];
+			var treeArr = [];
+			var selectedTreeArr = [];
+			
+			$.each($('.input-check-tree:checked'),function(key,value){
+				$this = $(this).parent()[0];
+				var d = d3.select($this).data()[0];
+				
+				if(d.parent != null && d.parent.checked == true){
+					return true;
+				}
+				
+				var tmpMap = {};
+				
+				tmpMap.CNMN_CRCN_CD = d.data.CNMN_CRCN_CD;
+				tmpMap.CNMN_PRMR_ORGAN_CD = d.data.CNMN_PRMR_ORGAN_CD;
+				tmpMap.CNMN_MRPH_DIAG_CD = d.data.CNMN_MRPH_DIAG_CD;
+				
+				tmpArr.push(tmpMap);
+				
+				treeArr.push(d);
+			})
+			console.log(treeArr);
+			
+			console.log(selectedTreeArr);
+			
+			for(var i=0; i<treeArr.length; i++){
+				var d = treeArr[i];
+				
+				if(selectedTreeArr.indexOf(d.data) == -1 ){
+					
+					d.data.checked = d.checked;
+					selectedTreeArr.push(d.data);
+					
+					if(!isNullOrEmpty(d.parent)){
+						selectedTreeArr = getParentData(d.parent, selectedTreeArr);						
+					}
+
+				}
+			}
+
+			
+			var dataSet = {};
+			dataSet.codelist = tmpArr;
+			dataSet.currentTab = currentDashboardTab;
+			dataSet.PER_CODE = $.session.get('PER_CODE');
+			
+			/*$('#hiddenDashboardTab').val('');
+			$('#hiddenDashboardTab').val(currentDashboardTab);
+			$('#hiddenSelectedCancer').val('');
+			$('#hiddenSelectedCancer').val(nvl(JSON.stringify(selectedTreeArr),""));
+			$('#hiddenSelectedCohort').val('null');
+		
+			$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/cohort/cohortAnalysis');
+			$('#frmCohortAnalysis').method = 'POST';
+			$('#frmCohortAnalysis').submit();
+			gvSpinnerClose();*/
+			
+			var promise = http('dashboard/selCohortAnalysisPatno', 'post', true , dataSet);
+			promise.then(function(result){
+				$('#hiddenDashboardTab').val('');
+				$('#hiddenDashboardTab').val(currentDashboardTab);
+				$('#hiddenSelectedCancer').val('');
+				$('#hiddenSelectedCancer').val(nvl(JSON.stringify(selectedTreeArr),""));
+				$('#hiddenSelectedCohort').val('null');
+			
+				$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/cohort/cohortAnalysis');
+				$('#frmCohortAnalysis').method = 'POST';
+				$('#frmCohortAnalysis').submit();
+				gvSpinnerClose();
+				
+			});
+			promise.fail(function(e){
+				console.log(e);
+				gvSpinnerClose();
+			});
+		}
+		else if(currentDashboardTab == "2"){
+			var dataSet = {};
+			dataSet.TXTARR = checkedPatnoResult.toString();
+			dataSet.PER_CODE = $.session.get('PER_CODE');
+			dataSet.KIND = $('input[name="patnoRadios"]:checked').val();
+			var promise = http('dashboard/selCohortAnalysisPatnoByNo', 'post', true , dataSet);
+			
+			promise.then(function(result){
+				
+				console.log(result);
+			
+				$('#hiddenDashboardTab').val('');
+				$('#hiddenSelectedCancer').val('null');
+				$('#hiddenSelectedCohort').val('null');
+				//$('#hiddenDashboardTab').val(JSON.stringify(tmpArr));
+			
+				$('#hiddenDashboardTab').val(currentDashboardTab);
+				$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/cohort/cohortAnalysis');
+				$('#frmCohortAnalysis').method = 'POST';
+				$('#frmCohortAnalysis').submit();
+				gvSpinnerClose();
+			});
+			promise.fail(function(e){
+				console.log(e);
+				gvSpinnerClose();
+			});
+		}
+		else if(currentDashboardTab == "3"){
+		
+			var chkCohort = $('input[name="itemCate_tree"]:checked');
+			var contSeq = [];
+			for(var i=0; i<chkCohort.length; i++) contSeq.push(chkCohort[i].value);
+			var dataSet = {};
+			dataSet.CONT_SEQ = contSeq;
+			var promise = http('dashboard/selSavedCohortList', 'post', true , dataSet);
+			
+			promise.then(function(result){
+				
+				console.log(result);
+				var tmpArr = result.selSavedCohortList;
+				$('#hiddenDashboardTab').val('');
+				$('#hiddenSelectedCohort').val('');
+				$('#hiddenSelectedCancer').val('null');
+
+				$('#hiddenDashboardTab').val(currentDashboardTab);
+				$('#hiddenSelectedCohort').val(JSON.stringify(tmpArr));
+				
+
+				$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/cohort/cohortAnalysis');
+				$('#frmCohortAnalysis').method = 'POST';
+				$('#frmCohortAnalysis').submit();
+				gvSpinnerClose();
+			});
+			promise.fail(function(e){
+				console.log(e);
+				gvSpinnerClose();
+			});
+			
+			
+			
+		}
+		
+		
+	})
+	
+	$('.input-check-tree').on('change',function(){
+		console.log(this);
+		
+	});
+
+	
 	$('.patientViewTab').on('click',function(){
 		currentDashboardTab = $(this).attr("pageNum");
 	})
 	$('#txtareaPatnoResultCheck').on('keyup',function(e){
-		regexp = /[^0-9,|/]/gi;
+		regexp = /[^0-9,|/\n]/gi;
 
         v = $(this).val();
 
@@ -435,49 +747,47 @@ function initTreeEvent(){
 	})
 	
 	$('#btnPatnoResultCheck').on('click',function(){
-		var dataSet = {};
+		gvSpinnerOpen();
+		
 		var regexp = /[,|/]/gi;
 		var numregexp = /[^0-9]/gi;
-		
+		var lastCnt = 0;
 		var txtareaVal = $('#txtareaPatnoResultCheck').val();
+		txtareaVal = txtareaVal.replace(/\n/gi,'');
 		var txtArr = txtareaVal.split(regexp);
-	
 		
+		var dataSet = {};
 		dataSet.KIND = $('input[name="patnoRadios"]:checked').val();
-		dataSet.TXTARR = txtArr;
 		
-		var promise = http('dashboard/selPatnoResultCheck', 'post', false , dataSet);
-		promise.then(function(result){
-			
-			console.log(result);
-			var dataView = result.selPatnoResultCheck;
-			var failArr = [];
-			for(var i=0; i<txtArr.length; i++){
-				if(dataView.indexOf(txtArr[i]) == -1 ) failArr.push(txtArr[i]);
+		//초기화
+		$('#divPatnoResultSuccess').html('0');
+		$('#divPatnoResultSuccesstxt').html('');
+		$('#divPatnoResultFail').html('0');
+		$('#divPatnoResultFailtxt').html('');
+		
+		
+		//var tmpTxtArr = [];
+		for(var i=0; i<txtArr.length; i++){
+			if(i == txtArr.length-1){
+				dataSet.TXTARR = txtArr.slice(lastCnt, txtArr.length).toString();
+				getPatnoResultCheck(dataSet , txtArr.slice(lastCnt, txtArr.length),true);	
+			}
+			else{
+				if(i%100 == 0){
+					dataSet.TXTARR = txtArr.slice(lastCnt, i+1).toString();
+					
+					getPatnoResultCheck(dataSet, txtArr.slice(lastCnt, i+1),false);
+					
+					lastCnt = i+1;
+				}
 			}
 			
+
 			
-			var html = '';
-			html += '<div class="row" style="margin:0px;">';
-			html += 	'<div class="col-lg-6">';
-			html += 		'<label class="pull-right-container">';
-			html += 			'Success : <small class="label bg-blue">'+dataView.length+'</small>';
-			html += 		'</label>';
-			html += 		'<div>'+dataView.toString();
-			html += 		'</div>';
-			html += 	'</div>';
-			html += 	'<div class="col-lg-6" style="min-height:290px; border-left:1px solid;">';
-			html += 		'<label class="pull-right-container">';
-			html += 			'Fail : <small class="label bg-red">'+failArr.length+'</small>';
-			html += 		'</label>';
-			html += 		'<div>'+failArr.toString();
-			html += 		'</div>';
-			html += 	'</div>';
-			html += '';
-			html += '';
-			
-			$('#divPatnoResult').html(html);
-		});
+		}
+		
+		
+		
 		
 	});
 	
@@ -488,6 +798,8 @@ function initTreeEvent(){
 	});
 	$('#mycohort-tab').on('click',function(){
 		var dataSet = {};
+		dataSet.PER_CODE = $.session.get("PER_CODE");
+		dataSet.SHARE_CD = 	"CO";
 		var cohortdetlArr;
 		var detlSeqArr = [];
 		//dataSet.CATE_MID_SEQ = $this.val();
@@ -531,39 +843,39 @@ function initTreeEvent(){
 						html += '<div class="treeview" id="cohortList_'+tmpMap.CATE_DETL_SEQ+'">';
 						html += '<a data-toggle="collapse" data-parent="#cohortTree" href="#cohortList_tree'+tmpMap.CATE_DETL_SEQ+'" aria-expanded="true"><h3>'+tmpMap.CATE_DETL_NM+'</h3></a>';
 						html += '<ul class="treeview-menu collapse in" id="cohortList_tree'+tmpMap.CATE_DETL_SEQ+'" style="padding-left: 10px;">';
-						/*
-						html += '<div class="treeview"><div class="checkbox" href="#"><label for="itemCateDetl_tree_">';
-						html += '<input type="checkbox" name="itemCate_tree" detlseq="1" value="2" id="itemCateDetl_tree_" style="margin-top:5px;">';
-						html += 'breacMSKSKSK'+'</label>';
-						html += '<div class="pull-right">';
-						html += '1919 samples';
-						html += '</div></div></div>';
-						*/
 						html += '</ul>';
 						html += '</div>';
-						$('#jqxCohortList').append(html);
 						
 					}
 					
 				}
+				
+				$('#jqxCohortList').append("<h3>Cohort List</h3>");
 
-				for(var i=0; i<dataView2.length; i++){
-					var tmpMap = dataView2[i];
 					var html = '';
-					//html += '<ul class="treeview-menu collapse in" id="cohortList_tree'+tmpMap.CATE_DETL_SEQ+'" style="padding-left: 10px;">';
 					
-					html += '<div class="treeview"><div class="checkbox" href="#"><label for="itemCateDetl_tree_'+tmpMap.SEQ+'">';
-					html += '<input type="checkbox" class="cohort-cate-list" name="itemCate_tree" detlseq="'+tmpMap.CATE_DETL_SEQ+'" value="'+tmpMap.SEQ+'" id="itemCateDetl_tree_'+tmpMap.SEQ+'" style="margin-top:5px;">';
-					html += tmpMap.CONT_NM+'</label>';
-					html += '<div class="pull-right">';
-					html += '1919 samples';
-					html += '</div></div>';
-					html += '<input type="hidden" id="itemCate_tree_'+tmpMap.SEQ+'" value="'+tmpMap.CONT_NM+'"></div>';
+					html += '<table width="100%" class="table table-bordered table-striped dataTable no-footer">';
+					html += '	<th style="text-align: center;">#</th>';
+					html += '	<th>Cohort Name</th>';
+					html += '	<th>Desc</th>';
+					html += '	<th>Date</th>';
+			
+					for(var i=0; i<dataView2.length; i++){
+						var tmpMap = dataView2[i];
 					
-					//html += '</ul>';
+						html += '	<tr>';
+						html += '		<td width="5%" style="text-align: center;"><input type="checkbox" name="itemCate_tree" detlseq="'+tmpMap.CATE_DETL_SEQ+'" value="'+tmpMap.SEQ+'" id="itemCateDetl_tree_'+tmpMap.SEQ+'" style=""></td>';
+						html += '		<td width="30%"><label for="itemCateDetl_tree_'+tmpMap.SEQ+'" style="margin-bottom:0px;  font-weight: normal; width:100%; cursor:pointer;">'+tmpMap.CONT_NM+'</label></td>';
+						html += '		<td width="40%">'+tmpMap.CONT_DESC+'</td>';
+						html += '		<td width="20%">'+tmpMap.CRT_DT+'</td>';
+						html += '	</tr>';
+
+					}
+					html += '</table>';
 					
-					$('#cohortList_tree'+tmpMap.CATE_DETL_SEQ).append(html);
-				}
+					
+					$('#jqxCohortList').append(html);
+				
 
 			}
 		});
