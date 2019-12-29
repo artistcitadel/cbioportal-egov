@@ -7,7 +7,17 @@ public class PatientMut  extends RkCmmnVO {
     private String reschPatId;
     private String ms;
     private String copy;
-    private String cosmic;
+
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
+  }
+
+  private String cosmic;
+    private String query;
 
   public String getMutationType() {
     return mutationType;

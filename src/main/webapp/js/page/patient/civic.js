@@ -7,7 +7,7 @@ function Civic(){
     var util;
 
     self.init = function (callback,entrez_id) {
-        console.log('ids is ', entrez_id);
+        // console.log('ids is ', entrez_id);
         action = new Action();
         util = new Util();
         self.callback = callback;
@@ -18,7 +18,7 @@ function Civic(){
     }
 
     var setCivic = function(json){
-         console.log('civic ', json);
+         // console.log('civic ', json);
         self.callback(json);
     }
 

@@ -1,46 +1,12 @@
 /**
  * @author 오세영
  */
-function Noop(){
-    var self = this;
-    self.movePage = function(page){
-    document.pform.patient.value=patients;
-    document.pform.pages.value=page;
-    document.pform.patientId.value=patients.split(",")[parseInt(page)-1];
-    PATIENTID = document.pform.patientId.value;
-    console.log("PATIENTID ", PATIENTID);
-    console.log(patients);
-    document.pform.submit();
-    }
-}
 
-$(document).ready(function () {
-    getPatientDescription();
 
-    $("#patientname").text(PATIENTID);
-    var pager = new Pager();
-    var sel = $("#summary_pageview");
-    var udata = [];
-    // var patients = document.pform.patient.value;
-    // var pages = document.pform.pages.value;
-    if(patients.indexOf(",")!==-1){
-        var ps = patients.split(",");
-        for(var i=0;i<ps.length;i++){
-            udata.push(ps[i]);
-        }
-    }else{
-        udata.push(patients);
-    }
 
-    // console.log(document.pform.pages.value);
-    // console.log(document.pform.patient.value);
-    var page = parseInt(document.pform.pages.value);
-    var tpage = udata.length;
-    //alert(udata.length + ' '+ page);
-
-    pager.buildPage(page, tpage, sel, new Noop, udata, 'simple');
-
-    function getPatientDescription(){
+function PatientView(){
+   var self = this;
+   self.getPatientDescription = function (){
         var action = new Action();
         var ds_cond = {};
         ds_cond.data = {"queryId": "selectPatientDescription", "patientId": PATIENTID};
@@ -51,7 +17,7 @@ $(document).ready(function () {
     function setPatientDescription(json){
         console.log('setPatientDescription', json);
         if(json.length<1)return;
-        console.log('patientDesc ', json);
+        // console.log('patientDesc ', json);
         var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
         var sex = json[0].sex === 'M' ? 'Male' :'Female';
 
@@ -80,4 +46,5 @@ $(document).ready(function () {
         $("#patientage").text(json[0].patientId + ' , '+txt);
     }
 
- });
+
+}

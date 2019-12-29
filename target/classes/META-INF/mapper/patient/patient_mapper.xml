@@ -158,6 +158,10 @@
 
  	</select>
 
+    <select id="selectPatientz" parameterType="map" resultType="hashmap">
+          ${query}
+    </select>
+
 </mapper>
 
 

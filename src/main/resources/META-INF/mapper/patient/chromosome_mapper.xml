@@ -69,10 +69,11 @@
              , GROUP_CONCAT(BAS.REF_ALLELE_READ_CNT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') refAlleleReadCnt   -- Ref Reads
              , BAS.COPY  copy                 -- Copy #
              , ' ' cohort
-             , BAS.COHORT_1               -- Cohort (밝은색)
-             , BAS.COHORT_2               -- Cohort (진한색)
+             -- , BAS.COHORT_1               -- Cohort (밝은색)
+             -- , BAS.COHORT_2               -- Cohort (진한색)
              , BAS.OCCUR_CNT  cosmic           -- COSMIC
           FROM ( SELECT GMU.MTTN_EXAM_RSLT_ID              -- 돌연변이검사결과ID (화면표시X)
+                      , GMU.RESCH_PAT_ID
                       , CAN.OCT_CD AS TUMOR_NM             -- 암종 (Annotation OncoKB 사용)
                       , GMU.GENE_EXAM_SPCN_ID              -- 유전자검사검체ID
                       , RS1.RSLT_CNFM_DT AS SPCN_DT        -- 유전자검사검체일자
@@ -166,7 +167,10 @@
                       , GMU.TOT_ALLELE_READ_CNT
                       , GMU.VARI_ALLELE_READ_CNT
                       , GMU.REF_ALLELE_READ_CNT
-               ) BAS
+               ) BAS, (
+                        ${query}
+                      ) STUDY
+              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
          GROUP BY
                BAS.GENE_NM
              , BAS.GENE_EXAM_MTH_NM
@@ -185,19 +189,19 @@
         , BAS.GENE_NM  geneNm       -- Gene (Annotation OncoKB 사용)
         , BAS.GENE_EXAM_MTH_NM  geneExamMthNm -- Methods
         ,' ' annotation
-        , BAS.CNA     annotation          -- CNA  (Annotation OncoKB 사용)
+        , BAS.CNA     hgvspVal          -- CNA  (Annotation OncoKB 사용)
         , BAS.CYTB_NM   cytbNm        -- Cytoband
         , BAS.CHRM_NO    chrnNo       -- Chromosome (화면표시X)
         , BAS.ST_POS   geneVariStLocVal         -- Start Pos  (화면표시X)
         , BAS.END_POS  geneVariEndLocVal         -- End Pos    (화면표시X)
         , BAS.BNLG_RT  segCol         -- Log2       (화면표시X)
-        , BAS.COHORT_1          -- Cohort (밝은색)
-        , BAS.COHORT_2          -- Cohort (진한색)
+       -- , BAS.COHORT_1          -- Cohort (밝은색)
+       -- , BAS.COHORT_2          -- Cohort (진한색)
         , ' ' chort
        -- ,(select HGVSP_VAL from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.CNV_EXAM_RSLT_ID and RESCH_PAT_ID = ) hgvspVal
-        ,'Amplification' hgvspVal
         ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.CNV_EXAM_RSLT_ID and RESCH_PAT_ID = #{patientId})  geneVariClsfNm
         FROM ( SELECT GCV.CNV_EXAM_RSLT_ID                  -- 복제수변이검사결과ID (화면표시X)
+        , GCV.RESCH_PAT_ID
         , NULL AS TUMOR_NM                      -- 암종 (화면표시X Annotation OncoKB 사용)
         , GCV.GENE_EXAM_SPCN_ID                 -- 유전자검사검체ID
         , RS1.RSLT_CNFM_DT AS SPCN_DT           -- 유전자검사검체일자
@@ -250,7 +254,10 @@
         ) PAT
         WHERE GCV.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         AND GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        ) BAS
+        ) BAS, (
+                        ${query}
+                      ) STUDY
+              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
         GROUP BY
         BAS.GENE_NM
         , BAS.GENE_EXAM_MTH_NM
@@ -335,6 +342,7 @@ SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS
   ,(select HGVSP_VAL from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM2 and RESCH_PAT_ID = ${patientId} ) hgvspVal1
   ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM2 and RESCH_PAT_ID = ${patientId} ) geneVariClsfNm1
   FROM ( SELECT GSV.SV_EXAM_RSLT_ID          -- 구조변이검사결과ID (화면표시X)
+  ,GSV.RESCH_PAT_ID
               , CAN.OCT_CD AS TUMOR_NM       -- 암종 (Annotation OncoKB 사용)
               , GSV.GENE_EXAM_SPCN_ID        -- 유전자검사검체ID
               , RS1.RSLT_CNFM_DT AS SPCN_DT  -- 유전자검사검체일자
@@ -393,7 +401,10 @@ SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS
           WHERE GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
             AND GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
             AND GSV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
-       ) BAS
+       ) BAS, (
+                        ${query}
+                      ) STUDY
+              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
       GROUP BY
        BAS.GENE_NM1
      , BAS.GENE_NM2

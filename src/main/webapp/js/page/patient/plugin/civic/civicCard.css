@@ -26,7 +26,8 @@
 .civic-card .tip-header {
   line-height: 22px;
   font-size: 22px;
-  background-color: #8539b2;
+  /*background-color: #8539b2;*/
+    background-color: #2f48f6;
   color: #fff;
   text-align: center;
   padding: 5px 10px; }

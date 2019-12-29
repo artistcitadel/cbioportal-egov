@@ -95,9 +95,9 @@ function GenomicOverview() {
         self.wideLeftText = 37;
         self.wideRightText = 35;
         // self.pixelMap = [];
-        console.log('self.canvasWidth ',self.canvasWidth , self.wideLeftText, self.wideRightText);
+        // console.log('self.canvasWidth ',self.canvasWidth , self.wideLeftText, self.wideRightText);
         self.GenomeWidth = self.canvasWidth-self.wideLeftText-self.wideRightText;
-        console.log(' self.genomewidth ',self.GenomeWidth);
+        // console.log(' self.genomewidth ',self.GenomeWidth);
 
         self.LASTYPOS;
         self.YPOS = 0;
@@ -123,7 +123,7 @@ function GenomicOverview() {
 
 
     var drawLine = function(x1, y1, x2, y2, p, cl, width) {
-        console.log("self.YPOS " , x1, y1, x2, y2);
+        // console.log("self.YPOS " , x1, y1, x2, y2);
 
         width = 1;
         //console.log( 'x1 ', x1 , ' y1 ', y1, ' x2 ', x2, ' y2 ',y2, ' p ', p, ' cl ', cl, ' width ', width);
@@ -235,7 +235,7 @@ function GenomicOverview() {
         $.each(pixelMap, function(i, arr) {
             var pixil = i;
             if (arr) {
-                console.log( 'arr ',arr);
+                // console.log( 'arr ',arr);
                 var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
                 var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h);
                 r.attr("fill","#0f0");
@@ -255,9 +255,9 @@ function GenomicOverview() {
     }
 
     var getMutationPixelMap = function(p,row) {
-        console.log('getMutationPixelMap called');
+        // console.log('getMutationPixelMap called');
         var mutObj = self.mutObjData;
-        console.log('mutObj ', mutObj);
+        // console.log('mutObj ', mutObj);
 
 
         var spcnSeq = [];
@@ -272,18 +272,18 @@ function GenomicOverview() {
                 )
         }
         spcnSeq = _.uniq(spcnSeq);
-        console.log('MUT spcnSeq ',spcnSeq);
+        // console.log('MUT spcnSeq ',spcnSeq);
 
         _.forEach(spcnSeq, function (v) {
-            console.log(' vis ', v);
+            // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             for (var i = 0; i < mutObj.length; i++) {
                 if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
                     var chm = translateChm(mutObj[i].chrnNo);
-                    console.log('start end ', mutObj[i].geneVariStLocVal, mutObj[i].geneVariEndLocVal, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2);
+                    // console.log('start end ', mutObj[i].geneVariStLocVal, mutObj[i].geneVariEndLocVal, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2);
                     var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariEndLocVal)) / 2));
-                    console.log('x is ', x);
+                    // console.log('x is ', x);
                     var xBin = x - x % 3;
                     if (pixelMap[xBin] == null) pixelMap[xBin] = [];
                     pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].hgvspVal);
@@ -291,7 +291,7 @@ function GenomicOverview() {
                 }
             }
 
-        console.log('GenomicOverview pixelMap ', pixelMap);
+        // console.log('GenomicOverview pixelMap ', pixelMap);
         drawPlot(pixelMap, p, row, len, v);
          ++row;
          len=0;
@@ -304,9 +304,9 @@ function GenomicOverview() {
 
     var getCnaPixelMap = function(p,row) {
         row-=0.5;
-        console.log('getCnaPixelMap called');
+        // console.log('getCnaPixelMap called');
         var cnaObj = self.cnaObjData;
-        console.log('cnaObj ', cnaObj);
+        // console.log('cnaObj ', cnaObj);
 
         var spcnSeq = [];
         for (var i = 0; i < cnaObj.length; i++) {
@@ -320,10 +320,10 @@ function GenomicOverview() {
                 )
         }
         var spcnSeq1 = _.uniq(spcnSeq);
-        console.log('CNA spcnSeq ',spcnSeq1);
+        // console.log('CNA spcnSeq ',spcnSeq1);
 
         _.forEach(spcnSeq1, function (v) {
-            console.log(' vis ', v);
+            // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             var genomeMeasured = 0;
@@ -378,8 +378,8 @@ function GenomicOverview() {
     var getStPixelMap = function(p,row) {
         row+=1;
         var mutObj = self.stObjData;
-        console.log('sttObj ', mutObj);
-        console.log('getStPixelMap called',mutObj);
+        // console.log('sttObj ', mutObj);
+        // console.log('getStPixelMap called',mutObj);
         var spcnSeq = [];
         for (var i = 0; i < mutObj.length; i++) {
             var examSeq = mutObj[i].geneExamSpcnSeq;
@@ -393,10 +393,10 @@ function GenomicOverview() {
                 )
         }
         spcnSeq = _.uniq(spcnSeq);
-        console.log('ST spcnSeq ',spcnSeq);
+        // console.log('ST spcnSeq ',spcnSeq);
 
         _.forEach(spcnSeq, function (v) {
-            console.log(' vis ', v);
+            // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             for (var i = 0; i < mutObj.length; i++) {
@@ -419,7 +419,7 @@ function GenomicOverview() {
                 }
             }
 
-            console.log('ST pixelMap ', pixelMap);
+            // console.log('ST pixelMap ', pixelMap);
             drawPlotSt(pixelMap, p, row, len, v);
             ++row;
             len=0;

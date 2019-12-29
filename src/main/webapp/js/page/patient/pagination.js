@@ -14,7 +14,7 @@ function Pager() {
 
    var generate = function (page) {
         var totalPage = self.tPage;
-        console.log('totalpage ', totalPage);
+        // console.log('totalpage ', totalPage);
         var prev = '<a style="cursor:pointer;" class="btn_first">처음</a>';
         var next = '<a style="cursor:pointer;" class="btn_last">마지막</a>';
         var before = '<a style="cursor:pointer;" class="btn_prev">이전</a>';
@@ -67,7 +67,7 @@ function Pager() {
     }
 
     var buildCount = function (totalPage, page) {
-        console.log(totalPage, page);
+        // console.log(totalPage, page);
         var sidx = 1, eidx = 10, track=10;
         sidx = page / track;
         sidx = Math.floor(sidx) * track + 1;

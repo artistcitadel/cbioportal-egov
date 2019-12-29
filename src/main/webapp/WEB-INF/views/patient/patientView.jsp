@@ -23,9 +23,9 @@
 
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" style="margin-left:0px;">
+<div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header" style="background-color: aliceblue;">
         <h1>
             &nbsp;
             <%--<small>Patient Description</small>--%>
@@ -133,7 +133,7 @@
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div  id="mut_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                    <div  id="mut_loader" class="la-ball-elastic-dots" style="color: #5ddb28;display:none;">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -209,7 +209,7 @@
                         <div class="container-fulid" align="right">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div id="cna_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                    <div id="cna_loader" class="la-ball-elastic-dots" style="color: #ff192f;display:none;">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -337,7 +337,7 @@
                                 <div class="container-fulid" align="right">
                                     <div class="row" style="width:60%;float:right;">
                                         <div class="col-md-2">
-                                            <div id="st_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
+                                            <div id="st_loader" class="la-ball-elastic-dots" style="color: #27176b;display:none;">
                                                 <div></div>
                                                 <div></div>
                                                 <div></div>
@@ -401,26 +401,12 @@
                 </div>
 <hr/>
                 <div class="box-footer text-align-center Footer-module">
-                    <span style="font-size:14px;">Inspired by and Kopied by</span> <%--Memorial Sloan Kettering CancerCenter--%>
+                    <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
                     <img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>
                 </div>
 
 
 </div>
-
-
-<%--<div id="spinner" style="zIndex:100;position:relative;display:none;">
-    <div class="centered" >
-        <div class="la-pacman la-3x" style="color: #79bbb5">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-</div>--%>
 
 <div id="spinner" style="zIndex:100;position:relative;display:none;">
     <div class="centered" >
@@ -439,65 +425,6 @@
     >
     </iframe>
 </div>
-
-
-    <%--<div id="spinner" class="styles-module_centered styles-module_centered-with-children inlineBlock" style="zIndex:100;position:relative;display:none;">
-      <div class="sk-spinner styles-module_color styles-module_big_ inlineBlock line-scale-pulse-out" style="display: inline-block;">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-     <div class="styles-module_progressUI">
-       <div class="styles-module_container">
-         <div class="styles-module_items-container">
-           <span class="styles-module_item-row">Loading meta information
-             <span style="margin-left: 7px;">
-               <div class="sk-spinner styles-module_pulse-spinner sk-double-bounce">
-                 <div></div>
-                 <div></div>
-               </div>
-             </span>
-           </span>
-           <span class="styles-module_item-row">Loading clinical data
-             <span style="margin-left: 7px;">
-               <div class="sk-spinner styles-module_pulse-spinner sk-double-bounce">
-                 <div></div>
-                 <div></div>
-              </div>
-            </span>
-          </span>
-         </div>
-        </div>
-      </div>
-    </div>--%>
-
-
-<%--<div id="spinner" style="zIndex:100;position:relative;display:none;">
-    <div class="centered" >
-        <div class="la-line-spin-fade-rotating la-dark la-3x">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        &lt;%&ndash;<div class="sk-spinner1 la-line-spin-fade la-3x">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>&ndash;%&gt;
-    </div>
-</div>--%>
 
 
 <div id="spinner1" style="zIndex:100;position:relative;display:none;">
@@ -544,11 +471,11 @@
 </div>
 
 <form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
-    <input type="hidden" name="patient" id="patient" value=""/>
-    <input type="hidden" name="pages" id="pages" value="1" />
-    <input type="hidden" name="patientId" id="patientId" value="" />
-    <input type="hidden" name="QUERY" id="QUERY" value="${QUERY}"/>
-    <input type="hidden" name="RESCH_PAT_ID" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
+    <input type="hidden" name="patients" id="patients" value="${patients}"/>
+    <input type="hidden" name="query" id="QUERY" value="${QUERY}"/>
+    <input type="hidden" name="resch_pat_id" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
+    <input type="hidden" name="pages" id="pages" value="${pages}"/>
+    <input type="hidden" name="patientId" id="patientId" value="${patientId}"/>
 </form>
 
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
@@ -564,270 +491,99 @@
 <script src="<c:url value="/js/page/patient/event.js" />"></script>
 <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
 <script src="<c:url value="/js/page/patient/annotation.js" />"></script>
-<script src="<c:url value="/js/page/patient/plugin/civic/civic.js" />"></script>
+<script src="<c:url value="/js/page/patient/civic.js" />"></script>
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
-
 <script>
     var PATIENTID;
-    var patients1 = document.pform.RESCH_PAT_ID.value;
-    var patients = document.pform.QUERY.value;
-    console.log('RESCH_PAT_ID ', patients1);
-    console.log('QUERY ' , patients);
+    var QUERY;
+    var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';
+    var patients  = '<%=(request.getParameter("patients") == null) ? "" : request.getParameter("patients")%>';
+    var patientId = '<%=(request.getParameter("patientId") == null) ? "" : request.getParameter("patientId")%>';
+    var pages     = '<%=(request.getParameter("pages") == null) ? "1" : request.getParameter("pages")%>'
 
-    /*if(patients.indexOf(",")===-1){
-        patients = patients1;
-        console.log('*************************');
-        console.log('pattients is ', patients);
-        console.log('*************************');
-    }*/
-    if(patients1.length>3)patients=patients1;
-    var pages = '<%=request.getParameter("pages")%>';
-    var patientId = '<%=request.getParameter("patientId")%>';
-    PATIENTID = patientId;
-
-    if(pages==='null')pages='1';
-    document.pform.patient.value = patients;
+    document.pform.patients.value = patients;
+    document.pform.patientId.value = patientId;
     document.pform.pages.value = pages;
+    document.pform.resch_pat_id.value = resch_pat_id;
 
-    if(patientId==="null") {
-        PATIENTID = patients;
-        if (patients.indexOf(",") !== -1)
-            PATIENTID = patients.split(",")[0];
-        document.pform.patientId.value = PATIENTID;
+    console.log('pages ', pages);
+    console.log('resch_pat_id ', resch_pat_id);
+    console.log('patientId ', patientId);
+    // console.log('patients ' , patients);
+
+    if(patients=='') {
+        getPatients();
+    }
+    else {
+        buildPatient();
     }
 
-    $(document).ready(function () {
-        $(window).keydown(function(event){
-            if(event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
-
-        //console.log('localStorage["digcategory"]) ',localStorage["digcategory"]);
-        var digcategory=[];
-        if(!_.isUndefined(localStorage["digcategory"]))
-            digcategory = JSON.parse(localStorage.getItem("digcategory"));
-        else{
-            var item = {};
-            item.idd = 'TISSUE';item.pid='SPECIMEN';digcategory.push(item);item = {};
-            item.idd = 'BRC';item.pid='SPECIMEN';digcategory.push(item);item = {};
-            item.idd = 'IHC';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
-            item.idd = 'ISH';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
-            item.idd = 'PCR';item.pid='PATHOLOGY_EXAM';digcategory.push(item);item = {};
-            item.idd = 'SURGERY';item.pid='SURGERY';digcategory.push(item);item = {};
-            item.idd = 'BIOPSY';item.pid='BIOPSY';digcategory.push(item);item = {};
-            item.idd = 'CT';item.pid='IMAGING';digcategory.push(item);item = {};
-            item.idd = 'MRI';item.pid='IMAGING';digcategory.push(item);item = {};
-            item.idd = 'PET-CT';item.pid='IMAGING';digcategory.push(item);item = {};
-            item.idd = 'UTRASONO';item.pid='IMAGING';digcategory.push(item);item = {};
-            localStorage.setItem("digcategory",JSON.stringify(digcategory));
+    function buildPatient(){
+        var patients = document.pform.patients.value;
+         if(pages==='1' && resch_pat_id.length>7 && resch_pat_id.length<15){
+             patientId = resch_pat_id;
+         }
+        if(patientId==""){
+            patientId = patients.split(",")[0];
         }
-        console.log('digcategory ', digcategory);
-        var cindex = [];
+        PATIENTID = patientId;
+        QUERY = document.pform.query.value;
+
+        $("#patientname").text(patientId);
+        var pager = new Pager();
+        var sel = $("#summary_pageview");
+        var udata = [];
+        if(patients.indexOf(",")!==-1){
+            var ps = patients.split(",");
+            for(var i=0;i<ps.length;i++){
+                udata.push(ps[i]);
+            }
+        }else{
+            udata.push(patients);
+        }
+
+        var patientView = new PatientView();
+        patientView.getPatientDescription();
+
+        var tpage = udata.length;
+        var page = parseInt(pages);
+        pager.buildPage(page, tpage, sel, new Noop, udata, 'simple');
+    }
+
+
+    function getPatients(){
+        // alert('getPatients');
+        console.log('getPatients called');
         var action = new Action();
-        var util = new Util();
         var ds_cond = {};
-        ds_cond.data = {"queryId": "selectPatientCategory"};
-        ds_cond.callback = setCategory;
-        action.selectList(ds_cond);
-        var CATE_TREE=[];
+        console.log('document.pform.QUERY.value',document.pform.QUERY.value);
+        ds_cond.data = {"queryId": "selectPatientz",'query':document.pform.query.value};
+        ds_cond.callback = setPatients;
+        action.selectPatientz(ds_cond);
 
-        function setCategory(json){
-            CATE_TREE = json;
-            var txt = '';
-            // console.log(" category rawdata is ", json);
-            var data  = util.arrayToTree(json);
-            // console.log('category tree data ',data);
-
-            for (var i=0; i<data.length; i++) {
-                var checked = '';
-                if( _.findIndex(digcategory, function(o) {return o.idd === data[i].id;} ) !== -1){
-                    checked = 'checked';
-                }
-                txt += '<tr>' ;
-                if(data[i].data.length==0) txt +='<td><input type="checkbox" id="catechk_' + data[i].id + '" ' + checked + '/></td>' ;
-                else txt += '<td class="active">+</td>';
-                txt+=  '<td>' + data[i].id + '</td>' +
-                    '<td>' + data[i].name + '</td>' +
-                    '</tr>';
-                if(data[i].data.length>0){
-                    for(var j=0; j< data[i].data.length;j++){
-                        checked='';
-                        if( _.findIndex(digcategory, function(o) {return o.idd === data[i].data[j].id;} ) !== -1){
-                            checked = 'checked';
-                        }
-                        txt += '<tr>' +
-                            '<td><input type="checkbox" id="catechk_' + data[i].data[j].id + '" ' + checked + '/></td>' +
-                            '<td>&nbsp;&nbsp;&nbsp;&nbsp;' + data[i].data[j].id + '</td>' +
-                            '<td>&nbsp;&nbsp;&nbsp;&nbsp;' + data[i].data[j].name + '</td>' +
-                            '</tr>';
-                    }
-                }
-
-            }
-
-            //console.log('txt is ', txt);
-            $("#cate_con").empty();
-            $("#cate_con").append(txt);
-        }
-
-        $("#cate_con").on("click", "[id^='catechk_']",function (e) {
-            //alert($(this).prop("checked"));
-            var idd = this.id.split("_")[1];
-            var idx = _.findIndex(digcategory, function(o) {return o.idd === idd;} );
-            var pid = _.find(CATE_TREE, function(o){return o.id === idd;}).pid;
-            if(idx===-1 && $(this).prop("checked")){
-                var item = {};
-                item.idd=idd;
-                item.pid = pid;
-                digcategory.push(item);
-            }
-            if(idx !==-1 && !$(this).prop("checked")){
-                digcategory.splice(idx,1);
-            }
-        });
-
-        $("#cateApply").on("click", function(e){
-            localStorage.setItem("digcategory",JSON.stringify(digcategory));
-            $("#contactModal .close").click();
-            //console.log(digcategory);
-            location.reload();
-        });
-
-        var patientView = new TimeLine();
-        patientView.init();
-        // var pt = new PatientViewMutationTable();
-        // pt.init();
-
-    });
-
-    function tabToggle(seq,id){
-        if(seq===1){
-            $(".oncogenicity").addClass("enable-hover-active");
-            $(".mutation-effect").removeClass("enable-hover-active");
-            $("#tab1_"+id+"").show();
-            $("#tab2_"+id+"").hide();
-            $('.oncokb-treatment-table').show();
-        }
-        if(seq===2){
-            $(".mutation-effect").addClass("enable-hover-active");
-            $(".oncogenicity").removeClass("enable-hover-active");
-            $("#tab1_"+id+"").hide();
-            $("#tab2_"+id+"").show();
-            $('.oncokb-treatment-table').hide();
-        }
     }
-    var toggle=false;
-    function levelToggle(id){
-     console.log(id, toggle);
-     (!toggle) ? ($("#secret1_"+id+"").show(),toggle=true, $("#ardown_"+id+"").show(),$("#arup_"+id+"").hide() ) :
-         ( $("#secret1_"+id+"").hide(),toggle=false, $("#arup_"+id+"").show(),$("#ardown_"+id+"").hide() )
+    function setPatients(json){
+        console.log('setPatients called');
+        // console.log(json);
+        var temp = [];
+        for(var i=0;i<json.length;i++){
+            temp.push(json[i].RESCH_PAT_ID);
+        }
+        document.pform.patients.value = temp.join(",");
+        buildPatient();
     }
 
-    var EVA;
-    function pmidtooltip(id){
-
-        console.log('id is ', id);
-        console.log('EVA is ', EVA);
-        var cache;
-        for(var i=0;i<EVA.length;i++) {
-            _.map(EVA[i], function (v, k) {
-                console.log(k, id);
-                if ($.trim(k) === id) {
-                    console.log('bingo');
-                    cache = v.data.treatments.sensitivity;
-                }
-            });
+    function Noop(){
+        var self = this;
+        self.movePage = function(page){
+            document.pform.pages.value = page;
+            var patients = document.pform.patients.value;
+            document.pform.patientId.value=patients.split(",")[parseInt(page)-1];
+            // console.log(patients);
+            // alert(document.pform.patientId.value);
+            document.pform.submit();
         }
-        var data = cache[0];
-        console.log(' datais ', data);
-        var abstracts = data.abstracts;
-        var articles = data.articles;
-        var pmids = data.pmids;
-        var description = data.description;
-        var content = '<ul class="no-style-ul">';
-        var abstract = '';
-        var article = '';
-        console.log('abstracts is ', abstracts);
-        console.log('articles is ' , articles);
-        if(!_.isUndefined(abstracts) && abstracts.length>0) {
-            for(var i=0;i<abstracts.length;i++) {
-                abstract +=
-                    '   <li class="list-group-item">\n' +
-                    '    <span className="list-group-item-title"><a href="' + abstracts[i].link + '" target="_blank">' + abstracts[i].abstract + '</a></span>\n' +
-                    '  </li>';
-            }
-
-        }
-        if(!_.isUndefined(articles) && articles.length>0){
-            for(var i=0;i<articles.length;i++){
-                if(articles[i].pmid==null)continue;
-                article +=
-                    ' <li key='+articles[i].pmid+' class="list-group-item">\n' +
-                    '                <a\n' +
-                    '                    class="list-group-item-title"\n' +
-                    '                    href="getNCBIlink(/pubmed/'+articles[i].pmid+')" \n' +
-                    '                    target="_blank"\n>' +
-                    '                    <b>'+articles[i].title+'</b>\n' +
-                    '                </a>\n' +
-                    '                <div class="list-group-item-content">\n' +
-                    '                    <span>'+articles[i].authors+''+ articles[i].reference +'.'+ articles[i].pubDate+'</span>\n' +
-                    // '                    <span>PMID: '+articles[i].pmid+'</span>\n' +
-                    '                </div>\n' +
-                    '                <div class="list-group-item-content">\n' +
-                    '                    <span>PMID: '+articles[i].pmid+'</span>\n' +
-                    '                </div>\n' +
-                    '            </li>';
-            }
-        }
-
-        content+=abstract+article+'</ul>';
-
-        console.log(id);
-        //console.log(content);
-
-        // $('#article_'+id+'').trigger('hover');
-        $('#article_'+id+'').tooltipster({
-            theme: 'tooltipster-shadow',
-            contentAsHTML: true,
-            interactive: true,
-            content : content
-        });
-        $('#article_'+id+'').tooltipster('open');
-
-        // new jBox('Tooltip', {
-        //     //$(this).jBox('Tooltip', {
-        //     attach: '#article_' + id + '',
-        //     width: 350,
-        //     closeOnMouseleave: true,
-        //     animation: 'move',
-        //     content: content,
-        // });
-
-        // $('#article_'+id+'').trigger('mouseover');
-        // $('#article_'+id+'').trigger('mouseout');
-        // addpmidToolTip(id, content, 100, '','qtip-light');
     }
-    function addpmidToolTip(node, tip, showDelay, position, theme) {
-        var theme = theme;
-        if(_.isUndefined(theme)) theme = 'qtip-dark';
-        var param = {
-            content: {text: tip},
-            show: {event: "mouseover"},
-            hide: {fixed: true, delay: 100, event: "mouseout"},
-            //style: {classes: ''+theme+' qtip-rounded'},
-            style: {classes: ''+theme+' qtip-bootstrap'},
-            position: {
-                my: "bottom right",
-                at: "top left",
-                viewport: $("body")
-            }
-        };
-        $('#'+node+'').qtip(param);
-    }
-
 </script>
-
 </body>

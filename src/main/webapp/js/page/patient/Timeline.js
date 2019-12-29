@@ -64,9 +64,9 @@ function TimeLine() {
     }
 
     function moveMutation(){
-        // var pt = new PatientViewMutationTable();
-        // pt.init();
-        // ISROUNDMUTATION=true;
+        var pt = new PatientViewMutationTable();
+        pt.init();
+        ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {
         if(data.length<1){

@@ -395,15 +395,15 @@ function getCivicVariants(civicGenes, mutationSpecs, isCna, callback, id){
   CALLBACK = callback;
   ID = id;
 
-  console.log('getCivicVariants id ', id);
-  console.log('getCivicVariants ', civicGenes);
-  console.log('mutationSpecs' , mutationSpecs);
-  console.log('isCna' , isCna);
+  // console.log('getCivicVariants id ', id);
+  // console.log('getCivicVariants ', civicGenes);
+  // console.log('mutationSpecs' , mutationSpecs);
+  // console.log('isCna' , isCna);
   var civicVariants = {};
   var promises = [];
 
 if (!isCna) {
-    var calledVariants = new Set([]);
+    // var calledVariants = new Set([]);
     for (var i=0;i<mutationSpecs.length;i++) {
         var mutation = mutationSpecs[i];
         var geneSymbol = mutation.query.hugoSymbol;
@@ -412,6 +412,20 @@ if (!isCna) {
         var proteinChange = mutation.query.alteration.toUpperCase();
 
         console.log('geneEntry.variants ',geneEntry[0].variants);
+
+        if(_.isUndefined(geneEntry[0].variants[proteinChange])){
+            var item = {};
+            item.id = geneEntry.id;
+            item.name = geneEntry.name;
+            item.geneId = geneEntry.name;
+            item.description = geneEntry.description;
+            item.url = geneEntry.url;
+            item.evidence = "";
+            console.log('setVarient ', item);
+            CALLBACK(item, ID, MSPEC);
+            return;
+        }
+
         addCivicVariant(civicVariants,
                         geneEntry[0].variants[proteinChange],
                         // geneEntry[0].variants['L1196M'], for testable only
@@ -471,12 +485,13 @@ function addCivicVariant(variantMap, variantId, variantName, geneSymbol, geneId)
     var id  = variantId;
     var name  = variantName;
     var geneId = geneId;
+
     var action = new Action();
     var ds_cond = {};
     ds_cond.id = id;
     ds_cond.name = name;
     ds_cond.geneId = geneId;
-    console.log('getVarient search condition', ds_cond);
+    // console.log('getVarient search condition', ds_cond);
     ds_cond.callback = setVarient;
     action.getVarient(ds_cond);
     // console.log('addCivicVariant get after', result);

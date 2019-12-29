@@ -40,7 +40,7 @@
            {id:'cosmic', name:'COSMIC',show:false}
         ];
         self.cnaMap = [
-            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
+            {id:'geneExamSpcnSeq', name:'TUMORS', show:false},
             {id:'geneNm',name:'GENE', show:true},
             {id:'geneExamMthNm', name:'METHODS', show:false},
             {id:'annotation', name:'ANNOTATION',show:false},
@@ -77,18 +77,18 @@
         self.GENE = [];
 
         var buildAnnotation = function(con,id){
-            console.log('self.EVIDENCE', self.EVIDENCE);
+            // console.log('self.EVIDENCE', self.EVIDENCE);
           //  console.log('con is', con[0].query.id);
             var cache;
             for(var i=0;i<self.EVIDENCE.length;i++){
                 _.map(self.EVIDENCE[i],function(v,k){
-                    console.log(k);
+                    // console.log(k);
                     if(k===con[0].query.id){
                         cache = v.data;
                     }
                 })
             }
-            console.log('cache is ', cache);
+            // console.log('cache is ', cache);
             var annotation = new Annotation();
             EVA = self.EVIDENCE;
             return annotation.buildToolbox(con[0],id,cache, con[0].query.id);
@@ -124,11 +124,13 @@
 
 
             $('#'+id+'').tooltipster({
+                plugins: ['sideTip', 'scrollableTip'],
                 theme: 'tooltipster-shadow',
                 contentAsHTML: true,
                 interactive: true,
-                positionTracker:true,
-                trackTooltip:true,
+                // positionTracker:true,
+                // trackOrigin:true,
+                // trackTooltip:true,
                 arrow: false,
                 content : buildAnnotation(v,id)
             });
@@ -181,7 +183,11 @@
         }
 
         self.init = function (){
-            console.log('PatientViewMutationTable called');
+            // console.log('PatientViewMutationTable called');
+            $("#mut_loader").show();
+            $("#cna_loader").show();
+            $("#st_loader").show();
+
             action = new Action();
             util = new Util();
             annotation = new Annotation();
@@ -204,7 +210,7 @@
                 var v = _.filter(self.GENE['MUTATIONS'], function(o){
                     return o.query.hugoSymbol === id.split("_")[1];
                 })
-                console.log('vis ', v);
+                // console.log('vis ', v);
                 loadAnnotation(id,v);
             });
             $("#CNV_con").on("mouseover", "[id^='ann_']",function (e) {
@@ -396,10 +402,11 @@
         }
 
         getMutationList = function(qid) {
-            console.log("getround ", self.ROUNDCNT);
+            // console.log("getround ", self.ROUNDCNT);
             //console.log("getMutation ", self.NODE);
+            // console.log(QUERY);
             var ds_cond = {};
-            ds_cond.data = {"queryId": qid, "patientId": PATIENTID};
+            ds_cond.data = {"queryId": qid, "patientId": PATIENTID, 'query':QUERY};
             ds_cond.callback = mutation_disposer;
             action.selectPatientMuList(ds_cond);
         }
@@ -427,25 +434,25 @@
             getMutationList(self.QID[self.ROUNDCNT]);
         }
         var mutation_disposer = function(json) {
-            console.log('mutation_disposer ', self.NODE);
+            // console.log('mutation_disposer ', self.NODE);
             self.TABLE[self.NODE] = json;
 
             setTh();
         }
         var setTh=function(){
-            var ds_cond = {};
-            ds_cond.data = {"queryId": "selectPatientMutCol", "patientId": PATIENTID};
-            ds_cond.callback = tableDisposer;
-            action.selectPatientMuList(ds_cond);
+             var ds_cond = {};
+             ds_cond.data = {"queryId": "selectPatientMutCol", "patientId": PATIENTID};
+             ds_cond.callback = tableDisposer;
+             action.selectPatientMuList(ds_cond);
         }
 
         var tableDisposer = function(thdata){
-            console.log('thdata ', thdata , self.NODE);
+            // console.log('thdata ', thdata , self.NODE);
             var data = _.filter(thdata, function(o){
                 //console.log(o.subject , self.NODE);
                 return o.subject === self.NODE;
             })
-            console.log('subject data ', data);
+            // console.log('subject data ', data);
             for(var i=0;i<data.length;i++){
                 var idx = _.findIndex(self.TH[self.NODE], function(o){
                     return o.name === data[i].id;
@@ -464,7 +471,7 @@
             buildTh();
         }
 
-        var buildTh = function() {
+        var renderTh = function(){
             var txt = '';
             // console.log('self.TH[self.NODE]', self.TH[self.NODE],self.NODE);
             for(var i=0;i<self.TH[self.NODE].length;i++) {
@@ -474,7 +481,12 @@
             }
             $("#" + self.NODE).empty();
             $("#" + self.NODE).append(txt);
-            // buildRowsMutation(self.TABLE[self.NODE]);
+        }
+
+        var buildTh = function() {
+
+            renderTh();
+
             if(self.ROUNDCNT < self.GOALCNT){
                 ++self.ROUNDCNT;
                 //console.log('ROUNCCNT ', self.ROUNDCNT);
@@ -488,7 +500,7 @@
                 temp['MUTATIONS'] = self.TABLE['MUTATIONS'];
                 temp['CNV'] = self.TABLE['CNV'];
                 temp['SV'] = self.TABLE['SV'];
-                console.log('temp.TABLE ', temp);
+                // console.log('temp.TABLE ', temp);
                 var annotation = new Annotation();
                 annotation.init(temp, setGeans);
             }
@@ -503,7 +515,10 @@
                 return o.id === id;
             });
             self.TH[self.NODE][i].show = !self.TH[self.NODE][i].show;
-            buildTh();
+
+            renderTh();
+
+            buildRowsMutation(self.TABLE[self.NODE]);
         }
 
         var buildCosmic = function(count, geneNm, protein, data) {
@@ -541,7 +556,7 @@
         }
 
         var getMutation = function(temp) {
-            console.log('getMutation ', self.TABLE[self.NODE]);
+            // console.log('getMutation ', self.TABLE[self.NODE]);
             if(_.isUndefined(temp))
             return self.TABLE[self.NODE];
             else return temp;
@@ -549,12 +564,15 @@
 
 
         var _includes = function(data, item){
-            console.log(item, self.TH[self.NODE]);
+             // console.log(item, self.TH[self.NODE]);
+            // if(self.NODE=='CNV'){
+            //     console.log('NODE', item, data);
+            // }
             var idx = _.findIndex(data, function(o){
                 return o.id === item;
             });
             if(idx===-1)return false;
-            console.log(item, idx, self.TH[self.NODE][idx]);
+            // console.log(item, idx, self.TH[self.NODE][idx]);
             if(self.TH[self.NODE][idx].show)return true;
             else return false;
         }
@@ -564,7 +582,7 @@
             var start = page*10-10;
             var end = start+10;
             if(end>data.length)end = data.length;
-            console.log('data slice ',start, end);
+            // console.log('data slice ',start, end);
             return data.slice(start, end);
         }
         self.showPageBuild = function(data, page, node){
@@ -578,10 +596,10 @@
         var buildTd = function (json, page){
             if(util._isUndefined(page)) page = 1;
             json = setRange(json, page);
-            console.log('page is ', page,  json);
+            // console.log('page is ', page,  json);
 
-            console.log('annotation list', self.annotationList);
-            console.log('civic list', self.civicList);
+            // console.log('annotation list', self.annotationList);
+            // console.log('civic list', self.civicList);
             var txt = '';
 
             _.forEach(json, function (v,i) {
@@ -602,8 +620,8 @@
                         // console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
                         return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
                     });
-                    console.log('maatch ann', ann);
-                    console.log('match civic', civic);
+                    // console.log('maatch ann', ann);
+                    // console.log('match civic', civic);
                     var isHot = _.includes(HOTSPOT, v.geneNm);
 
                     var hasCancerGenome =_.findIndex(MYCANCERGENOME, ['hugoGeneSymbol',v.geneNm]);
@@ -618,30 +636,28 @@
                     }
 
                     txt+='<td>' +
-                        '<span class="annotationspan" style="display: flex; min-width: 100px;">\n' +
-                        '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n';
-                   if(ann.length>0) {
-                       txt+='<span><i id="ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'" class="'+ann[0].class+'" ></i></span></span>&nbsp;&nbsp;';
-                       // console.log('annotation id is ', 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal), ann);
+                        '<span class="annotationspan" style="display: flex; min-width: 100px;">\n' ;
+                    if(ann.length>0) {
+                       txt+= '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n' +
+                             ' <i id="ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'" class="'+ann[0].class+'" ></i></span>&nbsp;&nbsp;';
                    }
                    if(civic.length>0) {
                        // console.log('civic[0].id ',civic[0].id);
-                       txt+=getCivicEl(civic[0].id)+'</span>&nbsp;&nbsp;';
+                       txt+=getCivicEl(civic[0].id)+'&nbsp;&nbsp;';
                    }
                    if(isHot)
-                     txt+=getHotspot('hot_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'');
+                     txt+=getHotspot('hot_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'') +'&nbsp;&nbsp;';
 
-                   txt+='</span>&nbsp;&nbsp;';
+                   // txt+='</span>&nbsp;';
 
                     if(hasCancerGenome!=-1){
-                        txt+=getUserGenome('my_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'');
+                        txt+=getUserGenome('my_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'') +'&nbsp;&nbsp;';
                     }
-
 
                         // ' <span>\n' +
                         // ' <i class="oncokb annotation-icon oncogenic level-3A" >\n' +
                         // ' </i></span></span>' +
-                        txt+='</span></td>';
+                        txt+='</span></span></td>';
                 }
 
                 (_includes(self.TH[self.NODE], 'chrnNo'))? (txt+='<td align="center"><span class="font-msmall">' + v.chrnNo + '</span></td>') : '';
@@ -663,8 +679,13 @@
                 (_includes(self.TH[self.NODE], 'variAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'refAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'copy'))? (txt+='<td align="center"><span class="font-msmall">' + v.copy + '</span></td>') : '';
-              if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td>\n' +
-                  renderCohort(json,v);
+              if(_includes(self.TH[self.NODE], 'cohort')){ txt+='<td><span class="font-msmall">\n';
+                  if(self.NODE==='MUTATIONS')
+                    txt+=renderMutCohort(json,v);
+                  if(self.NODE==='CNV')
+                      txt+=renderCnaCohort(json,v);
+                  if(self.NODE==='SV')
+                      txt+=renderSvCohort(json,v);
                     // ' <div>\n' +
                     // ' <svg width="71" height="12">\n' +
                     // ' <text x="36" y="9.5" text-anchor="start" font-size="10">10.5%</text>\n' +
@@ -673,7 +694,7 @@
                     // ' <rect y="2" width="2.3684210526315788" height="8" fill="green"></rect>\n' + '' +
                     // ' </svg>\n' +
                     // ' </div>\n' +
-                    '</td>';
+                    txt+='</span></td>';
                 }
                 (_includes(self.TH[self.NODE], 'cosmic'))? (txt+='<td align="center"><div id="cosmic_' + v.geneExamSpcnId + '"  data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '">' + null2str(v.cosmic) + '</div></td>'):'';
                 txt+='</tr>';
@@ -688,9 +709,9 @@
         var setGeans = function(data, evidence, civicGene){
             self.EVIDENCE = evidence;
             self.CIVICGENE = civicGene;
-            console.log('setGeans called ',data);
-            console.log('evidence called ',evidence);
-            console.log('civicGene called ',civicGene);
+            // console.log('setGeans called ',data);
+            // console.log('evidence called ',evidence);
+            // console.log('civicGene called ',civicGene);
             if(!_.isUndefined((data['MUTATIONS']))){
                 self.GENE['MUTATIONS'] = data['MUTATIONS'];
             }
@@ -704,19 +725,19 @@
             // self.GENE[self.NODE] = data;
             _.forEach(data, function(v,n){
                 for(var i=0;i<v.length;i++) {
-                  // var id = 'ann_'+v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration);
-                  //var annid = $("#ann_"+v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration));
+                  // console.log('v[i].query.alteration',v[i].query.alteration , n);
                   var id = v[i].query.hugoSymbol+'_'+astoempty(v[i].query.alteration);
-                  if(astoempty(v[i].query.alteration==='Amplification')){
+                  if(n==='CNV' && astoempty(v[i].query.alteration==='Amplification')){
                       id = v[i].query.hugoSymbol+'_AMPLIFICATION';
                   }
-                  if(astoempty(v[i].query.alteration==='Deletion')){
+                  if(n==='CNV' && astoempty(v[i].query.alteration==='Deletion')){
                         id = v[i].query.hugoSymbol+'_LOSS';
                   }
 
                   //console.log('id is ', id);
                   var className = util.annotationIconClassNames(v[i]);
                   var annid =  "ann_"+id+"";
+                  // console.log('ann_id', annid);
                   var annotationmap = {};
                   annotationmap.id = annid;
                   annotationmap.class = className;
@@ -725,7 +746,7 @@
 
                  var cidx = _.findIndex(self.CIVICGENE, function(o){
                       // console.log(o.name , v[i].query.hugoSymbol);
-                     return o.name === v[i].query.hugoSymbol;
+                     return (o.description!=="") && o.name === v[i].query.hugoSymbol;
                  });
 //               var cidx = _.findIndex(self.CIVICGENE,['id', v[i].query.entrezGeneId]);
                   
@@ -765,7 +786,7 @@
 
 
         var buildRowsMutation = function(json, dirty) {
-            console.log('buildRowMutation called ',self.ROUNDCNT, json);
+            // console.log('buildRowMutation called ',self.ROUNDCNT, json);
 
             buildTd(json);
 
@@ -886,113 +907,4 @@
            '  <img id='+id+' width="14px" height="14px" src="/pmp/js/page/patient/images/mcg_logo.png" alt="My Cancer Genome Symbol" />\n' +
            '  </span>';
        return txt;
-    }
-    /*
-      param: asan logic
-      totalCount  : total row count(sample count) in the future will be point out, each patient in cohort total Count
-      obj = keyword count gene + protein + mutation type
-     */
-    var renderCohort = function(data, obj){
-        totalCount = data.length;
-        var countsmap={};
-        for(var i=0;i<data.length;i++){
-            var keyword = data[i].geneNm+data[i].hgvspVal+data[i].geneVariClsfNm;
-            var numberOfSampleKeyword = obj.geneNm+obj.hgvspVal+obj.geneVariClsfNm;
-            if( keyword == numberOfSampleKeyword ){
-              // if(!_.isUndefined(countsmap[ astoempty(keyword)]) )
-                if(countsmap[ astoempty(keyword)] )
-                  countsmap[astoempty(keyword)]+=1;
-              else
-                  countsmap[astoempty(keyword)]=1;
-            }
-        }
-        console.log('countsmap is ', countsmap);
-        var counts=[];
-        _.map(countsmap, function(v,k){
-            counts.push(v);
-        });
-        console.log('counts', counts);
-
-        var freqColors =["lightgreen", "green"];
-        var barColor = "#ccc";
-        var textMargin = 6;
-        var textWidth = 35;
-        var barWidth = 30;
-        var barHeight = 8;
-
-        var mainCountIndex = 0;
-        var mainProportion = counts[mainCountIndex] / totalCount;
-
-        var textPos = (barWidth || 0) + (textMargin || 0);
-        var totalWidth = textPos + (textWidth || 0);
-
-        var freqRects = [];
-        _.forEach(counts, function(count, index) {
-            var freqRects = [];
-            var colorIdx = index % freqColors.length;
-            var color = colorIdx >= 0 ? freqColors[colorIdx] : freqColors[0];
-            // console.log('color is ' , color);
-            freqRects.push(frequencyRectangle(count, totalCount, color,barWidth,barHeight ));
-           // console.log('freqRect is ', freqRects.join());
-        });
-
-        var txt='';
-        txt+=' <svg width={totalWidth} height="12">\n' +
-            '                <text\n' +
-            '                    x='+textPos+' \n' +
-            '                    y="9.5"\n' +
-            '                    textAnchor="start"\n' +
-            '                    fontSize="10"\n' +
-            '                    >\n';
-            txt+=getPercentage(mainProportion);
-            txt+='          </text>\n' +
-            '                <rect\n' +
-            '                    y="2"\n' +
-            '                    width=" '+barWidth+' "\n' +
-            '                    height=" '+barHeight+' "\n' +
-            '                    fill=" '+barColor+' "\n' +
-            '                />\n' +
-            '                '+ freqRects.join()+' \n' +
-            '            </svg>';
-            console.log(txt);
-            return txt;
-    }
-
-
-    var frequencyRectangle = function(count, totalCount, color, barWidth,barHeight)
-    {
-        var proportion = count / totalCount;
-        var width = proportion * (barWidth || 0);
-        var txt = '';
-        txt+='<rect \n' +
-            '        y="2" \n' +
-            '        width=" '+width+' "\n' +
-            '        height=" '+barHeight+' "\n' +
-            '        fill="'+color+'"\n' +
-            '        />'
-        return txt;
-    }
-
-    function getPercentage(proportion) {
-    var digits = 1;
-        return toFixedWithThreshold(100 * proportion, digits) + '%';
-    }
-
-    function toFixedWithThreshold(value, digits)
-    {
-        var fixed = value.toFixed(digits);
-
-        // if we end up with 0.0...0, returns <0.0...1 instead
-        if (value !== 0 && parseFloat(fixed) === 0) {
-            var floatingZeros = digits > 1 ? _.fill(Array(digits - 1), "0") : [];
-
-            // in case the value is negative, direction of the inequality changes
-            // (because, for example, 0.02 < 0.1 but, -0.02 > -0.1)
-            // we need to add the minus sign as well...
-            var prefix = value > 0 ? "<" : ">-";
-
-            fixed = prefix+'0.'+floatingZeros.join('')+'1';
-        }
-
-        return fixed;
     }

@@ -1,3 +1,5 @@
+*.class
+*.properties
 .idea/
 .git/
 .svn/
@@ -8,4 +10,7 @@
 .project
 .classpath
 /src/main/resources/bigcen.properties
-.pom.xml
+/src/main/webapp/WEB-INF/classes/**/*
+pom.xml
+.gitignore
+asan.tobe.iml

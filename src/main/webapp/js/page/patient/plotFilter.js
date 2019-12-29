@@ -5,7 +5,7 @@
 function PlotFilter() {
     var self = this;
     self.searchPlot = function(id) {
-        console.log('id is ', id);
+        // console.log('id is ', id);
         var digcategory = [];
         if (!_.isUndefined(localStorage["digcategory"]))
             digcategory = JSON.parse(localStorage.getItem("digcategory"));
@@ -23,7 +23,7 @@ function PlotFilter() {
         var searchIdx = _.findIndex(digcategory, function (v) {
             return v.idd === id;
         });
-        console.log('id is ', id, searchIdx);
+        // console.log('id is ', id, searchIdx);
         return searchIdx;
     }
 }

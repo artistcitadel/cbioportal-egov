@@ -1,6 +1,7 @@
 package com.softcen.bigcen.med.patient.controller;
 
 import com.softcen.bigcen.med.patient.service.EventServiceImpl;
+import com.softcen.bigcen.med.patient.service.PatientsInfoServiceImpl;
 import com.softcen.bigcen.med.patient.vo.Event;
 import com.softcen.bigcen.med.patient.vo.Patient;
 import com.softcen.bigcen.med.patient.vo.PatientMut;
@@ -53,6 +54,9 @@ public class PatientController {
 private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
 
 	@Autowired
+	private PatientsInfoServiceImpl patientsInfoService;
+
+	@Autowired
 	private PatientServiceImpl patientService;
 
 	@Autowired
@@ -68,7 +72,15 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 
 	@RequestMapping(value="/patientView")
 	public String patientView(HttpServletRequest request, HttpServletResponse response,
-														Model model , @RequestParam(value="QUERY", defaultValue="") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="48321932") String RESCH_PAT_ID){
+														Model model , @RequestParam(value="QUERY", defaultValue="SELECT RESCH_PAT_ID\n" +
+			" FROM \n" +
+			"pmsdata.P0000001\n" +
+			" WHERE \n" +
+			"1=1\n" +
+			" AND DELETE_YN = 'N'") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="48321932") String RESCH_PAT_ID,
+														@RequestParam(value="pages",defaultValue="1") String pages,
+														@RequestParam(value="patients",defaultValue="") String patients,
+														@RequestParam(value="patientId",defaultValue="") String patientId){
 		model.addAttribute("QUERY", QUERY);
 		model.addAttribute("RESCH_PAT_ID", RESCH_PAT_ID);
 		return "/patient/patientView.tiles";
@@ -98,6 +110,39 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	public String civic(){
 		return "/patient/civic.tiles";
 	}
+
+
+
+	/**
+	 * 환자 리스트 쿼리
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectPatientz")
+	public void fetchPatients(HttpServletResponse response, @RequestBody Map<String,String> param){
+		logger.debug("/selectPatientz");
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+
+		try{
+			ObjectMapper mapper = new ObjectMapper();
+			String queryid = param.get("queryId");
+			String query = param.get("query");
+			System.err.println("query id is "+ queryid);
+			System.err.println("query is "+ query);
+			Result<List> ar = patientsInfoService.fetchPatients(queryid, param);
+			String jdata = "";
+			jdata = mapper.writeValueAsString(ar.getData());
+			logger.debug(" result is " + jdata);
+			response.setContentType("text/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(jdata);
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+	}
+
 	/**
 	 * 환자 진단진료 타임라인 그래프
 	 * @param

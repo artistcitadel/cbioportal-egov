@@ -24,8 +24,8 @@ function Annotation() {
     }
 
     var setcancerGean = function (json) {
-        console.log("annoataion entryzeanId ", json);
-        console.log("self.geans ", self.gene);
+        // console.log("annoataion entryzeanId ", json);
+        // console.log("self.geans ", self.gene);
 
         _.forEach(self.gene, function (v,i) {
             // if(i==='EXPRESSION' || i==='SV') return;
@@ -53,13 +53,13 @@ function Annotation() {
               }
           }
 
-            console.log('find entryzeanid is ', entry);
+            // console.log('find entryzeanid is ', entry);
             search(entry, i);
         });
     }
 
     var search = function (data, node) {
-        console.log('node is ', node);
+        // console.log('node is ', node);
         var queries = [];
         for(var i=0;i<data.length;i++){
             self.entrez_id.push(data[i].entrezGeneId);
@@ -85,12 +85,12 @@ function Annotation() {
     }
 
     var setIndicator = function (json,node) {
-        console.log('indicator post', node, json, CNT);
+        // console.log('indicator post', node, json, CNT);
         oncology[node] = json;
          ++CNT;
          if(CNT===3) {
              // self.callback(oncology);
-             console.log('oncology length ',_.size(oncology['MUTATIONS'])+_.size(oncology['CNV'])+_.size(oncology['SV']));
+             // console.log('oncology length ',_.size(oncology['MUTATIONS'])+_.size(oncology['CNV'])+_.size(oncology['SV']));
              SIZE = _.size(oncology['MUTATIONS'])+_.size(oncology['CNV'])+_.size(oncology['SV']);
 
              if(SIZE === 0){
@@ -102,7 +102,7 @@ function Annotation() {
                  for(var i=0;i<v.length;i++) {
                      searchEvidence(v[i]);
                  }
-                 console.log('kis ',k);
+                 // console.log('kis ',k);
              });
 
          }
@@ -123,14 +123,14 @@ function Annotation() {
         var queryVariants = [];
         queryVariants.push(data.query);
         var query = generateEvidenceQuery(queryVariants, "STANDARD_THERAPEUTIC_IMPLICATIONS_FOR_DRUG_SENSITIVITY,STANDARD_THERAPEUTIC_IMPLICATIONS_FOR_DRUG_RESISTANCE,INVESTIGATIONAL_THERAPEUTIC_IMPLICATIONS_DRUG_SENSITIVITY,INVESTIGATIONAL_THERAPEUTIC_IMPLICATIONS_DRUG_RESISTANCE");
-        console.log('searchEvidence query', query);
+        // console.log('searchEvidence query', query);
         var ds_cond = {};
         ds_cond.body = query;
         ds_cond.callback = setEvidence;
         action.getEvidence(ds_cond, data);
     }
     var setEvidence = function (json, data) {
-        console.log('setEvidence', json);
+        // console.log('setEvidence', json);
         var evidenceMap = processEvidence(json);
         var cache={};
         for (var id in evidenceMap) {
@@ -146,11 +146,11 @@ function Annotation() {
                     };
             }
         }
-        console.log('evidence cache',cache);
+        // console.log('evidence cache',cache);
         EVIDENCE.push(cache);
         ++CNT;
         if(CNT===SIZE){
-            console.log('CNT,EVIDENCE', CNT,EVIDENCE);
+            // console.log('CNT,EVIDENCE', CNT,EVIDENCE);
            // self.callback(oncology,EVIDENCE);
 
             getCivic();
@@ -164,7 +164,7 @@ function Annotation() {
         civic.init(finalRound,self.entrez_id.join());
     }
     var finalRound = function(result){
-        console.log('finalRound', result);
+        // console.log('finalRound', result);
         var civicData = [];
         for(var i=0;i<result.length;i++){
             var record = result[i];
@@ -176,19 +176,19 @@ function Annotation() {
             slot.variants = createVariantMap(record.variants);
             civicData.push(slot);
         }
-        console.log('civicData', civicData);
+        // console.log('civicData', civicData);
         self.callback(oncology,EVIDENCE, civicData);
     }
 
     self.buildToolbox = function(data, id, cache, sample){
-        console.log(data.geneExist, id);
-        console.log('cache.treatments ',cache.treatments);
+        // console.log(data.geneExist, id);
+        // console.log('cache.treatments ',cache.treatments);
         var oncogenic = (data.oncogenic=='')?"Unknown" : data.oncogenic;
         var mutationEffect = (data.mutationEffect == null) ?'Unknown':data.mutationEffect.knownEffect;
         var geneSummary = data.geneSummary;
         var tumorTypeSummary = data.tumorTypeSummary
-        console.log(oncogenic);
-        console.log(mutationEffect);
+        // console.log(oncogenic);
+        // console.log(mutationEffect);
 
         var txt = '';
         if(data.geneExist!==true){
@@ -214,8 +214,8 @@ function Annotation() {
                 '                   <div>\n' +
                 '                       <span>\n' +
                 '                           <div class="tabs-wrapper">\n' +
-                '                               <div class="title" style="background-color: cadetblue;">'+data.query.hugoSymbol+' '+data.query.alteration+' in '+data.query.tumorType+'</div>\n' +
-                '                               <div class="tabs" style="background-color: black;">\n' +
+                '                               <div class="title" style="background-color: #a03f61;">'+data.query.hugoSymbol+' '+data.query.alteration+' in '+data.query.tumorType+'</div>\n' +
+                '                               <div class="tabs" style="background-color: #ff9361;">\n' +
                 '                                   <div class="tab enable-hover">\n' +
                 '                                       <a onClick="tabToggle(1,\''+id+'\');" class="oncogenicity tab-title-a enable-hover-a enable-hover-active">\n' +
                 '                                           <span class="tab-title">clinical implications</span>\n' +
