@@ -17,7 +17,6 @@
         join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
         WHERE a.GENE_EXAM_MTH_NM != ''
           and b.RESCH_PAT_ID = #{patientId}
-  
     </select>
 
     <select id="selectPathHrc" resultType="com.softcen.bigcen.med.patient.vo.Pathology">

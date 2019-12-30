@@ -132,6 +132,7 @@ function Action() {
     }
 
     self.selectPatientz = function (props) {
+    	console.log('self.selectPatientz ', props);
         $.ajax({
             type: "post",
             /*headers: {

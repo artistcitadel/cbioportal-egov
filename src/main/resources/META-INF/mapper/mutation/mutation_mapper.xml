@@ -33,30 +33,31 @@
 		GROUP BY PGG.GENE_NM, PGG.CYTB_NM
 	</select>
 	
+	<!-- ONCOPRINT LIST -->
 	<select id="selectOncoPrintList" parameterType="map" resultType="hashmap">
 		SELECT *
 		FROM (
-			SELECT 	 mst.GENE_EXAM_SPCN_ID 	AS "group"
-					,mst.RESCH_PAT_ID		
-					,mst.GENE_NM			AS "variable"
-					,mst.HGVSP_VAL			AS "value"
-					,mst.GENE_VARI_CLSF_NM 	AS "mutation"
+			SELECT 	 mst.GENE_NM			AS "LABEL"
+					,mst.GENE_EXAM_SPCN_ID 	AS "DIMENSION"
+					,mst.RESCH_PAT_ID		AS "RESCH_PAT_ID"	
+					,mst.HGVSP_VAL			AS "VALUE"
+					,mst.GENE_VARI_CLSF_NM 	AS "ALTERATION"
 			 FROM 	pmsdev.PMGERMUEM mst
 			WHERE 	1=1
 			  AND 	mst.GENE_NM IN 
-					<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
-	            		#{geneNm}
-	        		</foreach>
+			  		<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+            			#{geneNm}
+        			</foreach>
 			UNION 
-			SELECT	 mst.GENE_EXAM_SPCN_ID AS "group" 
-					,mst.RESCH_PAT_ID 
-					,mst.GENE_NM AS "variable" 
-					,CASE mst.CNV_STAT_NM WHEN 'Amplification' THEN 'Amp' ELSE 'HomDel' END AS "value" 
-					,'CNA' AS "mutation"
+			SELECT	 mst.GENE_NM 			AS "LABEL"
+					,mst.GENE_EXAM_SPCN_ID 	AS "DIMENSION" 
+					,mst.RESCH_PAT_ID 		AS "RESCH_PAT_ID"
+					,CASE mst.CNV_STAT_NM WHEN 'Amplification' THEN 'Amp' ELSE 'HomDel' END AS "VALUE" 
+					,'CNA' 					AS "ALTERATION"
 			 FROM	pmsdev.PMGERCVEM mst
 			WHERE	1=1
 			  AND 	mst.GENE_NM IN 
-					<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+			  		<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
             			#{geneNm}
         			</foreach>
 		)A
@@ -67,12 +68,192 @@
 			FROM 
 			(
 				SELECT RESCH_PAT_ID
-				FROM pmsdata.P0000000_20191218015019
-				WHERE DELETE_YN='N'
-			)PAT
-			WHERE A.RESCH_PAT_ID=PAT.RESCH_PAT_ID
+				  FROM pmsdata.P0000000_20191218015019
+				 WHERE DELETE_YN='N'
+			)P
+			WHERE A.RESCH_PAT_ID=P.RESCH_PAT_ID
 		)
+		ORDER BY A.DIMENSION ASC
 	</select>
 	
+	<select id="selectClinicalTrackList" parameterType="map" resultType="hashmap">
+		SELECT	 B.DIMENSION
+				,(
+					SELECT	 MAX(ITM.NM)
+					  FROM	 pmsdev.MSMAMCAMN MCA
+							,pmsportal.CC_ITEM_CATE_ONCOTREE ITM
+					 WHERE	 MCA.ONCOTREE_CD = ITM.ID
+		 			   AND 	 MCA.RESCH_PAT_ID = B.RESCH_PAT_ID
+					   AND 	 ITM.`LEVEL` = 1
+				  ORDER BY	 MCA.CANCER_REG_DT DESC 
+				) AS "CANCER_TYPE"
+				,(
+					SELECT	 ROUND((TO_DAYS(DATE_FORMAT(NOW(),'%Y%m%d')) - TO_DAYS(DATE_FORMAT(WPI.PAT_BIRTHDT, '%Y%m%d'))) / 365)
+					  FROM	 pmsdev.WPPIMINFO WPI
+					 WHERE	 WPI.RESCH_PAT_ID = B.RESCH_PAT_ID
+				) AS "AGE"
+				,(
+					SELECT	 WPI.SEX_CD
+					  FROM	 pmsdev.WPPIMINFO WPI
+					 WHERE	 WPI.RESCH_PAT_ID = B.RESCH_PAT_ID
+				) AS "SEX"
+				,B.ALTERATION_COUNT
+		  FROM(
+			SELECT	 A.DIMENSION
+					,A.RESCH_PAT_ID
+					,COUNT(*) AS "ALTERATION_COUNT"
+			  FROM
+			  (
+				SELECT 	 mst.GENE_NM			AS "LABEL"
+						,mst.GENE_EXAM_SPCN_ID 	AS "DIMENSION"
+						,mst.RESCH_PAT_ID		AS "RESCH_PAT_ID"	
+						,mst.HGVSP_VAL			AS "VALUE"
+						,mst.GENE_VARI_CLSF_NM 	AS "ALTERATION"
+				  FROM 	pmsdev.PMGERMUEM mst
+				 WHERE 	1=1
+				   AND 	mst.GENE_NM IN 
+				  		<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+	            			#{geneNm}
+	        			</foreach>
+				 UNION 
+				SELECT	 mst.GENE_NM 			AS "LABEL"
+						,mst.GENE_EXAM_SPCN_ID 	AS "DIMENSION" 
+						,mst.RESCH_PAT_ID 		AS "RESCH_PAT_ID"
+						,CASE mst.CNV_STAT_NM WHEN 'Amplification' THEN 'Amp' ELSE 'HomDel' END AS "VALUE" 
+						,'CNA' 					AS "ALTERATION"
+				  FROM	pmsdev.PMGERCVEM mst
+				 WHERE	1=1
+				   AND 	mst.GENE_NM IN 
+				  		<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+	            			#{geneNm}
+	        			</foreach>
+			  )A
+			GROUP BY A.DIMENSION
+		)B
+		WHERE	1=1
+		  AND EXISTS(
+			SELECT 1
+			  FROM(
+				SELECT	RESCH_PAT_ID
+				  FROM	pmsdata.P0000000_20191218015019
+				 WHERE	DELETE_YN = 'N' 
+			  )P
+			WHERE P.RESCH_PAT_ID = B.RESCH_PAT_ID 
+		  )
+		ORDER BY B.DIMENSION
+	</select>
+	
+	
+	<select id="selectOncoPrintPatList" parameterType="map" resultType="hashmap">
+		SELECT 	 B.`group`
+				,w.RESCH_PAT_ID
+				,ROUND((TO_DAYS(DATE_FORMAT(NOW(),'%Y%m%d')) - TO_DAYS(DATE_FORMAT(w.PAT_BIRTHDT, '%Y%m%d'))) / 365) AS REAL_AGE
+				,TRUNCATE((TO_DAYS(DATE_FORMAT(NOW(),'%Y%m%d')) - TO_DAYS(DATE_FORMAT(w.PAT_BIRTHDT, '%Y%m%d'))) / 365, 0) AS STD_AGE
+				,w.SEX_CD
+		FROM (
+			SELECT 	 A.`group`
+					,A.RESCH_PAT_ID
+			FROM(
+				SELECT 	 mst.GENE_EXAM_SPCN_ID 	AS "group"
+						,mst.RESCH_PAT_ID		
+						,mst.GENE_NM			AS "variable"
+						,mst.HGVSP_VAL			AS "value"
+						,mst.GENE_VARI_CLSF_NM 	AS "mutation"
+				 FROM 	pmsdev.PMGERMUEM mst
+				WHERE 	1=1
+				  AND 	mst.GENE_NM IN 
+						<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+		            		#{geneNm}
+		        		</foreach>
+				UNION 
+				SELECT	 mst.GENE_EXAM_SPCN_ID AS "group" 
+						,mst.RESCH_PAT_ID 
+						,mst.GENE_NM AS "variable" 
+						,CASE mst.CNV_STAT_NM WHEN 'Amplification' THEN 'Amp' ELSE 'HomDel' END AS "value" 
+						,'CNA' AS "mutation"
+				 FROM	pmsdev.PMGERCVEM mst
+				WHERE	1=1
+				  AND 	mst.GENE_NM IN 
+						<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+	            			#{geneNm}
+	        			</foreach>
+			)A
+			GROUP BY A.`group`
+		)B, pmsdev.WPPIMINFO w
+		WHERE 1=1
+		  AND B.RESCH_PAT_ID=w.RESCH_PAT_ID
+		  AND EXISTS(
+			SELECT 1
+			FROM(
+				SELECT	RESCH_PAT_ID
+				FROM 	pmsdata.P0000000_20191218015019
+				WHERE 	DELETE_YN='N'
+			)PAT
+				WHERE B.RESCH_PAT_ID=PAT.RESCH_PAT_ID
+		)
+		ORDER BY B.`group` ASC
+	</select>
+	
+	<select id="selectOncoPrintCancerList" parameterType="map" resultType="hashmap">
+		SELECT	 B.`group` 
+				,B.RESCH_PAT_ID 
+				,(
+					SELECT	 MAX(ITM.NM)
+					  FROM	 pmsdev.MSMAMCAMN MCA
+							,pmsportal.CC_ITEM_CATE_ONCOTREE ITM
+					 WHERE	 MCA.ONCOTREE_CD = ITM.ID
+					   AND 	 ITM.`LEVEL` = 1
+					   AND 	 MCA.RESCH_PAT_ID = B.RESCH_PAT_ID
+				  ORDER BY	 MCA.CANCER_REG_DT DESC 
+				) AS "CANCER_TYPE"
+		  FROM(
+			SELECT	 A.`group` 
+					,A.RESCH_PAT_ID
+			  FROM
+			  (
+				SELECT	 mst.GENE_EXAM_SPCN_ID AS "group" 
+						,mst.RESCH_PAT_ID 
+						,mst.GENE_NM AS "variable" 
+						,mst.HGVSP_VAL AS "value" 
+						,mst.GENE_VARI_CLSF_NM AS "mutation"
+				  FROM	pmsdev.PMGERMUEM mst
+				 WHERE	1=1
+					AND mst.GENE_NM IN 
+						<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+		            		#{geneNm}
+		        		</foreach>
+				 UNION
+				SELECT	 mst.GENE_EXAM_SPCN_ID AS "group" 
+						,mst.RESCH_PAT_ID 
+						,mst.GENE_NM AS "variable" 
+						,CASE mst.CNV_STAT_NM 
+							WHEN 'Amplification' THEN 'Amp'
+							ELSE 'HomDel' 
+						 END AS "value" 
+						,'CNA' AS "mutation"
+				  FROM	pmsdev.PMGERCVEM mst
+				 WHERE	1=1
+				   AND mst.GENE_NM IN 
+				   		<foreach collection="geneNmList" item="geneNm" open="(" close=")" separator=",">
+		            		#{geneNm}
+		        		</foreach>
+			  )A
+			GROUP BY A.`group` 
+		)B
+		WHERE	1=1
+		  AND EXISTS(
+			SELECT 1
+			  FROM(
+				SELECT	RESCH_PAT_ID
+				  FROM	pmsdata.P0000000_20191218015019
+				 WHERE	DELETE_YN = 'N' 
+			  )PAT
+			WHERE B.RESCH_PAT_ID = PAT.RESCH_PAT_ID )
+		ORDER BY
+			B.`group` ASC
+	
+	</select>
+	
+
 
 </mapper>

@@ -129,40 +129,41 @@ function levelToggle(id){
 }
 
 var EVA;
-function pmidtooltip(id){
+function pmidtooltip(id, index){
 
-    console.log('id is ', id);
-    console.log('EVA is ', EVA);
+    console.log('id is ', id, index);
+//    console.log('EVA is ', EVA);
     var cache;
+    var key = id.substring(0,id.length-1);
     for(var i=0;i<EVA.length;i++) {
         _.map(EVA[i], function (v, k) {
-            console.log(k, id);
-            if ($.trim(k) === id) {
+            //console.log(k, id);
+            if ($.trim(k) === key) {
                 console.log('bingo');
                 cache = v.data.treatments.sensitivity;
+//                console.log(' bingo ', v.data.treatments);
             }
         });
     }
-    var data = cache[0];
+    var data = cache;
     console.log(' datais ', data);
-    var abstracts = data.abstracts;
-    var articles = data.articles;
-    var pmids = data.pmids;
-    var description = data.description;
+//    var abstracts = data.abstracts;
+    var articles = data[index].articles;
+    console.log('articles ', articles);
     var content = '<ul class="no-style-ul">';
     var abstract = '';
     var article = '';
-    console.log('abstracts is ', abstracts);
-    console.log('articles is ' , articles);
-    if(!_.isUndefined(abstracts) && abstracts.length>0) {
-        for(var i=0;i<abstracts.length;i++) {
-            abstract +=
-                '   <li class="list-group-item">\n' +
-                '    <span className="list-group-item-title"><a href="' + abstracts[i].link + '" target="_blank">' + abstracts[i].abstract + '</a></span>\n' +
-                '  </li>';
-        }
+//    console.log('abstracts is ', abstracts);
 
-    }
+//    if(!_.isUndefined(abstracts) && abstracts.length>0) {
+//        for(var i=0;i<abstracts.length;i++) {
+//            abstract +=
+//                '   <li class="list-group-item">\n' +
+//                '    <span className="list-group-item-title"><a href="' + abstracts[i].link + '" target="_blank">' + abstracts[i].abstract + '</a></span>\n' +
+//                '  </li>';
+//        }
+//
+//    }
     if(!_.isUndefined(articles) && articles.length>0){
         for(var i=0;i<articles.length;i++){
             if(articles[i].pmid==null)continue;
@@ -187,26 +188,37 @@ function pmidtooltip(id){
 
     content+=abstract+article+'</ul>';
 
-    console.log(id);
+//    console.log(id);
     //console.log(content);
 
     // $('#article_'+id+'').trigger('hover');
+    console.log('article-id ', id);
     $('#article_'+id+'').tooltipster({
         theme: 'tooltipster-shadow',
         contentAsHTML: true,
         interactive: true,
-        content : content
+        content : content,
+//        functionReady: function(){
+//          $('#'+ANNOTATIONTOOLTIP+'').tooltipster('close');
+//        }
+//        trigger: 'custom',
+//        triggerClose: {
+//            click: true,
+//            tap: true
+//        }
     });
     $('#article_'+id+'').tooltipster('open');
 
-    // new jBox('Tooltip', {
-    //     //$(this).jBox('Tooltip', {
-    //     attach: '#article_' + id + '',
-    //     width: 350,
-    //     closeOnMouseleave: true,
-    //     animation: 'move',
-    //     content: content,
-    // });
+//     var articlebox = new jBox('Tooltip', {
+//         //$(this).jBox('Tooltip', {
+//         attach: '#article_' + id + '',
+//         width: 350,
+//         closeOnMouseleave: true,
+//         animation: 'move',
+//         content: content,
+//         zIndex:999999,
+//     });
+//     articlebox.open();
 
     // $('#article_'+id+'').trigger('mouseover');
     // $('#article_'+id+'').trigger('mouseout');

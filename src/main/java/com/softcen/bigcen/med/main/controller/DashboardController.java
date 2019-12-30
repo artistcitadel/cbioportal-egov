@@ -150,12 +150,12 @@ public class DashboardController extends BigcenMedAbstractController{
 		
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 		
-		List tmpArr = (ArrayList)paramMap.get("TXTARR");
+		/*List tmpArr = (ArrayList)paramMap.get("TXTARR");
 		String patno = "''";
 		for(int i=0; i<tmpArr.size(); i++) {
 			patno += ",'"+tmpArr.get(i).toString()+"'";
-		}
-		paramMap.put("PATNO", patno);
+		}*/
+		paramMap.put("PATNO", paramMap.get("TXTARR"));
 		try{
 			if("patnoA".equals(paramMap.get("KIND"))) {
 				resultMap.put("selPatnoResultCheck", dashboardService.selectPatnoResultCheck(paramMap));
@@ -174,7 +174,45 @@ public class DashboardController extends BigcenMedAbstractController{
 		return resultMap;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/loadselectedCohort")
+	public Object loadselectedCohort(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- loadselectedCohort START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap = (HashMap)dashboardService.loadselectedCohort(paramMap);
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
 	
+	@ResponseBody
+	@RequestMapping(value="/selSavedCohortList")
+	public Object selSavedCohortList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selSavedCohortList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selSavedCohortList", dashboardService.selectSavedCohortList(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value="/selCateOncotreeList")
@@ -196,6 +234,46 @@ public class DashboardController extends BigcenMedAbstractController{
 		return resultMap;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/selCohortAnalysisPatno")
+	public Object selCohortAnalysisPatno(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCohortAnalysisPatno START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selCohortAnalysisPatno", dashboardService.selectCohortAnalysisPatno(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selCohortAnalysisPatnoByNo")
+	public Object selCohortAnalysisPatnoByNo(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selCohortAnalysisPatnoByNo START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+						
+			resultMap.put("selCohortAnalysisPatnoByNo", dashboardService.selectCohortAnalysisPatnoByNo(paramMap));
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value="/selMainPatientChart")
@@ -270,6 +348,34 @@ public class DashboardController extends BigcenMedAbstractController{
 	}
 	
 	/**
+	 * default chart
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/loadselectedChartDefault")
+	public Object loadselectedChartDefault(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- loadselectedChartDefault START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+
+			resultMap.put("loadselectedChartDefault", dashboardService.loadselectedChartDefault(paramMap));			
+
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
 	 * filtering chart
 	 * @param paramMap
 	 * @return
@@ -333,12 +439,12 @@ public class DashboardController extends BigcenMedAbstractController{
 		logger.debug("[--- selectChartList START ");
 		
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
-		
+		List cate = (ArrayList)paramMap.get("CATE_ID_KIND");
 		try{
 			
-			for(Object key : paramMap.keySet()) {
-				paramMap.put("ITEM_CATE_ID", paramMap.get(key));
-				resultMap.put(key, dashboardService.selectDashboardChartList(paramMap));
+			for(int i=0; i<cate.size(); i++) {
+				paramMap.put("ITEM_CATE_ID", cate.get(i));
+				resultMap.put(cate.get(i), dashboardService.selectDashboardChartList(paramMap));
 			}
 			
 

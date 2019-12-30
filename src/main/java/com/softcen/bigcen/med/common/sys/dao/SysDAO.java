@@ -214,4 +214,15 @@ public class SysDAO extends BigcenMedAbstractMapperDAO{
 		
 	}
 	
+	/**
+	 * Mutation condition list 
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	public Object selectItemContList(Map<String,Object> paramMap) throws Exception{
+		return sqlSession.selectList("common_sys.selectItemContList", paramMap);
+		
+	}
+	
 }

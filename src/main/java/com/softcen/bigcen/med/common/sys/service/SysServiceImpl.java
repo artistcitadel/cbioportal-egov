@@ -364,4 +364,8 @@ public class SysServiceImpl extends BigcenMedAbstractServiceImpl implements ISys
 		return sysDAO.updateItemMgmtSearchCnt(paramMap);
 	}
 	
+	public Object getItemContList(Map<String,Object> paramMap) throws Exception{
+		return sysDAO.selectItemContList(paramMap);
+	}
+	
 }

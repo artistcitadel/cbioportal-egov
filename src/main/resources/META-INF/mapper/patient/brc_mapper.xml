@@ -18,7 +18,6 @@
  FROM SATSMBASE a   -- S_조직세포접수기본
  join SATSMOGCD b on a.TISS_COLEC_CD = b.ORGAN_TISS_LCLAS_CD
                and a.CELL_ORGAN_DIV_CD = b.ORGAN_TISS_CD
-AND a.RESCH_PAT_ID != #{patientId}
-limit 10
+AND a.RESCH_PAT_ID = #{patientId}
     </select>
 </mapper>

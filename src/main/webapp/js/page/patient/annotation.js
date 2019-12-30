@@ -373,7 +373,7 @@ function Annotation() {
                  ' '+treatment[i].cancerType+ '\n' +
                  ' </div></td>';
              txt+='<td> <div style="whiteSpace: normal;lineHeight:1rem;">\n' +
-                 '<i id="article_'+id+'" onmouseover="pmidtooltip( \''+id+'\')" class="fa fa-book"></i>\n' +
+                 '<i id="article_'+(id+''+i)+'" onmouseover="pmidtooltip( \''+(id+''+i)+'\',\''+i+'\')" class="fa fa-book"></i>\n' +
                  ' </div></td>';
              txt+='</tr>';
          }

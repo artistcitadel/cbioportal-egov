@@ -121,18 +121,23 @@
               }
             });*/
             // tip.open();
-
-
-            $('#'+id+'').tooltipster({
+        	$('#'+id+'').tooltipster({
                 plugins: ['sideTip', 'scrollableTip'],
                 theme: 'tooltipster-shadow',
                 contentAsHTML: true,
                 interactive: true,
-                // positionTracker:true,
-                // trackOrigin:true,
-                // trackTooltip:true,
+//                positionTracker:true,
+//                trackOrigin:true,
+//                trackTooltip:true,
                 arrow: false,
-                content : buildAnnotation(v,id)
+                content : buildAnnotation(v,id),
+                
+//                trigger: 'custom',
+//                triggerClose: {
+//                    click: true,
+//                    tap: true
+//                }
+                
             });
             $('#'+id+'').tooltipster('open');
         }
@@ -184,9 +189,12 @@
 
         self.init = function (){
             // console.log('PatientViewMutationTable called');
+            $('.ttt').show();
+            $('#xgrid').hide();
             $("#mut_loader").show();
             $("#cna_loader").show();
             $("#st_loader").show();
+
 
             action = new Action();
             util = new Util();

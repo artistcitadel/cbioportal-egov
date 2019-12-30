@@ -96,7 +96,7 @@
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/tooltipster-scrollable.min.js"></script>
 
 <script>
-	var gvServer = gvSERVER;
+  var gvServer = gvSERVER;
 </script>
 </head>
 <%--<body class="hold-transition skin-black sidebar-mini fixed ">--%>

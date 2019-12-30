@@ -6,42 +6,53 @@ import java.util.Map;
 
 public interface IDashboardService {
 	
-	public Object selectPatnoResultCheck(Map<Object, Object> paramMap);
-	public Object selectReschPatnoResultCheck(Map<Object, Object> paramMap);
+	public Object selectSavedCohortList(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object selectMainPatientChart(Map<Object, Object> paramMap);
+	public Object loadselectedCohort(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object selectCateOncotreeList(Map<Object, Object> paramMap);
-	public Object insertCohortItemCont(Map<Object, Object> paramMap);
+	public Object selectCohortAnalysisPatno(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object selectfilterApply(Map<Object, Object> paramMap);
+	public Object selectCohortAnalysisPatnoByNo(Map<Object, Object> paramMap) throws Exception;
+	
+	public Object selectPatnoResultCheck(Map<Object, Object> paramMap) throws Exception;
+	
+	public Object selectReschPatnoResultCheck(Map<Object, Object> paramMap) throws Exception;
+	
+	public Object selectMainPatientChart(Map<Object, Object> paramMap) throws Exception;
+	
+	public Object selectCateOncotreeList(Map<Object, Object> paramMap) throws Exception;
 
+	public Object insertCohortItemCont(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object selectDashboardState(Map<Object, Object> paramMap);
+	public Object selectfilterApply(Map<Object, Object> paramMap) throws Exception;
+
+	public Object selectDashboardState(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object loadselectedChartFilter(Map<Object, Object> paramMap);
+	public Object loadselectedChartDefault(Map<Object, Object> paramMap) throws Exception;
 	
-	public Object loadselectedChart(Map<Object, Object> paramMap);
+	public Object loadselectedChartFilter(Map<Object, Object> paramMap) throws Exception;
+	
+	public Object loadselectedChart(Map<Object, Object> paramMap) throws Exception;
 	/**
 	 * 
 	 * @param paramMap
 	 * @return
 	 */
-	public Object selectDashboard(Map<Object, Object> paramMap);
+	public Object selectDashboard(Map<Object, Object> paramMap) throws Exception;
 	
 	/**
 	 * 
 	 * @param paramMap
 	 * @return
 	 */
-	public Object selectDashboardChart(Map<Object, Object> paramMap);
+	public Object selectDashboardChart(Map<Object, Object> paramMap) throws Exception;
 	
 	/**
 	 * 
 	 * @param paramMap
 	 * @return
 	 */
-	public Object selectDashboardBoard(Map<Object, Object> paramMap);
+	public Object selectDashboardBoard(Map<Object, Object> paramMap) throws Exception;
 	
 	/**
 	 * 

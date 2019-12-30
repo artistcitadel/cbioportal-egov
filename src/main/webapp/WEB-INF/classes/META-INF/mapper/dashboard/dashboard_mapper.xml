@@ -65,6 +65,7 @@
 		(
 			CONT_NM,
 			CONT_DESC,
+			SHARE_CD,
 			PER_CODE,
 			TABLE_NM,
 			CRT_ID,
@@ -76,6 +77,7 @@
 		(
 			#{CONT_NM},
 			#{CONT_DESC},
+			#{SHARE_CD},
 			#{PER_CODE},
 			#{TABLE_NM},
 			#{CRT_ID},
@@ -190,7 +192,9 @@
 	<select id="selectDashboardChartList" parameterType="map" resultType="hashmap"> 		
 		SELECT *
 		FROM CC_ITEM_MGMT
-		WHERE ITEM_CATE_ID = #{ITEM_CATE_ID}
+		WHERE 1=1
+		AND ITEM_CATE_ID = #{ITEM_CATE_ID}
+		AND PROGRM_ID = #{PROGRM_ID}
 		ORDER BY "ORDER"
  	</select>
  	

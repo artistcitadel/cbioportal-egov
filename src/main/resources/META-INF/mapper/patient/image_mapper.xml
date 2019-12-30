@@ -37,8 +37,7 @@
                               and S.PACS_EQUIP_DIV_CD = 'CT'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-    and a.RESCH_PAT_ID != #{patientId}
-    limit 30
+    and a.RESCH_PAT_ID = #{patientId}
 
     </select>
 

@@ -59,7 +59,7 @@
                         </div>
                     </div>--%>
 
-                        <div>
+                        <div class="ttt" style="display:none;">
                             <div>
                                 <i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i>
                                 <div style="display: inline-flex;">
@@ -86,19 +86,19 @@
                             <div class="row" id="row1">
                                 <div class="col-xs-3 col">
                                     <%--<input id="cate" type="button" value="항목관리" class="btn btn-link" data-toggle="modal" data-target="#contactModal" style="margin-right:3px;">--%>
-                                    <span class="label label-success" data-toggle="modal" data-target="#contactModal" style="cursor:pointer">항목관리</span>
+                                    <span class="label label-success ttt" data-toggle="modal" data-target="#contactModal" style="display:none;cursor:pointer">항목관리</span>
                                 </div>
                                 <div class="col-xs-3 col"></div>
                                 <div class="col-xs-3 col"></div>
                                 <div class="col-xs-3 col text-align-right">
                                     <label class="label-default" style="width: auto;text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
-                                    <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning" style="margin-right:3px;">
-                                    <input id="xgrid" type="button" value="Grid on" class="btn btn-sm btn-success">
+                                    <input id="reset" type="button" value="Reset" class="btn btn-sm btn-warning ttt" style="display:none;margin-right:3px;">
+                                    <input id="xgrid" type="button" value="Grid on" class="btn btn-sm btn-success ttt" style="display:none;">
                                     <%--<label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>--%>
                                     <%--<input id="zoomin" type="button" value="+">--%>
                                     <%--<input id="zoomout" type="button" value="-">--%>
-                                    <span id="zoomin" class="label label-success" style="cursor:pointer">+</span>
-                                    <span id="zoomout" class="label label-success" style="cursor:pointer">-</span>
+                                    <span id="zoomin" class="label label-success ttt" style="display:none;cursor:pointer">+</span>
+                                    <span id="zoomout" class="label label-success ttt" style="display:none;cursor:pointer">-</span>
                                 </div>
                             </div>
                             <div class="row" id="row2">
@@ -130,7 +130,7 @@
 
 
 
-                        <div class="container-fulid" align="right">
+                        <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
                                     <div  id="mut_loader" class="la-ball-elastic-dots" style="color: #5ddb28;display:none;">
@@ -206,7 +206,7 @@
 
 
 
-                        <div class="container-fulid" align="right">
+                        <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
                                     <div id="cna_loader" class="la-ball-elastic-dots" style="color: #ff192f;display:none;">
@@ -271,7 +271,7 @@
 
 
 
-                        <div class="container-fulid" align="right">
+                        <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <%--<div class="col-md-2">
                                     <div id="exp_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
@@ -334,7 +334,7 @@
 
 
 
-                                <div class="container-fulid" align="right">
+                                <div class="container-fulid ttt" align="right" style="display:none;">
                                     <div class="row" style="width:60%;float:right;">
                                         <div class="col-md-2">
                                             <div id="st_loader" class="la-ball-elastic-dots" style="color: #27176b;display:none;">
@@ -400,7 +400,7 @@
                    </div>
                 </div>
 <hr/>
-                <div class="box-footer text-align-center Footer-module">
+                <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
                     <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
                     <img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>
                 </div>
@@ -510,7 +510,7 @@
     console.log('pages ', pages);
     console.log('resch_pat_id ', resch_pat_id);
     console.log('patientId ', patientId);
-    // console.log('patients ' , patients);
+     console.log('patients ' , patients);
 
     if(patients=='') {
         getPatients();
@@ -554,18 +554,19 @@
 
     function getPatients(){
         // alert('getPatients');
-        console.log('getPatients called');
+        console.log('getPatients called',);
         var action = new Action();
         var ds_cond = {};
-        console.log('document.pform.QUERY.value',document.pform.QUERY.value);
-        ds_cond.data = {"queryId": "selectPatientz",'query':document.pform.query.value};
+        //console.log('document.pform.QUERY.value',document.pform.QUERY.value);
+        var query = document.pform.query.value;
+        ds_cond.data = {"queryId": "patient.selectPatientzz",'query':query};
         ds_cond.callback = setPatients;
         action.selectPatientz(ds_cond);
 
     }
     function setPatients(json){
         console.log('setPatients called');
-        // console.log(json);
+         console.log(json);
         var temp = [];
         for(var i=0;i<json.length;i++){
             temp.push(json[i].RESCH_PAT_ID);

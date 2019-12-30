@@ -97,5 +97,8 @@ public interface ISysService {
 	public Object updateItemMgmtSearchCnt(Map<Object,Object> paramMap) throws Exception;
 	
 	
+	public Object getItemContList(Map<String,Object> paramMap) throws Exception;
+	
+	
 
 }
