@@ -150,6 +150,7 @@
             //     animation: 'move',
             //     content: buildCivic(v,id, varient) ,
             // });
+            console.log('loadCivic', id);
             $('#'+id+'').tooltipster({
                     theme: 'tooltipster-shadow',
                     contentAsHTML: true,
@@ -258,12 +259,15 @@
 
             });
             $("#CNV_con").on("mouseover", "[id^='civic_']",function (e) {
-
+                // console.log('self.GENE[CNV]',self.GENE['CNV']);
                 var id = e.target.id;
                 var v = _.filter(self.GENE['CNV'], function(o){
-                    return o.query.hugoSymbol === id.split("_")[1];
+                    var alteration = id.split("_")[2];if(alteration=='LOSS')alteration="Deletion";else alteration="Amplification";
+                    // console.log(o.query.hugoSymbol === id.split("_")[1]) && ( o.query.alteration===alteration ,  o.query.hugoSymbol, alteration);
+                    return (o.query.hugoSymbol === id.split("_")[1]) && ( o.query.alteration===alteration );
                 })
                 console.log('vis ', v);
+                if(v.length===0)return;
                 getCivicVariants(self.CIVICGENE, v, true, showCivic , id);
             });
             $("#SV_con").on("mouseover", "[id^='civic_']",function (e) {
@@ -609,7 +613,7 @@
             // console.log('annotation list', self.annotationList);
             // console.log('civic list', self.civicList);
             var txt = '';
-
+ console.log('self.civicList ',self.civicList);
             _.forEach(json, function (v,i) {
 
                 txt += '<tr>';
@@ -625,8 +629,11 @@
                         return o.id == 'ann_'+v.geneNm+'_'+astoempty(v.hgvspVal);
                     });
                     var civic = _.filter(self.civicList,function(o){
-                        // console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
-                        return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
+                        // if(v.geneNm == 'AKT1') console.log(o.id, 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal));
+                        // var alteration = v.hgvspVal;
+                        // if(alteration=='LOSS')alteration="Deletion";if(alteration=='AMPLIFICATION') alteration="Amplification";
+                         return o.id == 'civic_'+v.geneNm+'_'+astoempty(v.hgvspVal);
+                        // return o.id == 'civic_'+v.geneNm+'_'+alteration;
                     });
                     // console.log('maatch ann', ann);
                     // console.log('match civic', civic);
@@ -648,18 +655,41 @@
                     if(ann.length>0) {
                        txt+= '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n' +
                              ' <i id="ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'" class="'+ann[0].class+'" ></i></span>&nbsp;&nbsp;';
-                   }
+                   }else{
+                        txt+='<span style="width: 20px;">&nbsp;</span>&nbsp;&nbsp;';
+                    }
+
                    if(civic.length>0) {
-                       // console.log('civic[0].id ',civic[0].id);
+                       //console.log('civic[0].id ',civic[0].id, getCivicEl(civic[0].id));
+                       var idx=0;
+                       var alteration = civic[0].id.split("_")[2];
+                       if(alteration=='LOSS')alteration="Deletion";else alteration="Amplification";
+                       if(alteration === 'Amplification' || alteration==='Deletion') {
+                           idx = _.findIndex(self.GENE['CNV'], function (o) {
+                               return (o.query.hugoSymbol === civic[0].id.split("_")[1]) && ( o.query.alteration===alteration );
+                           });
+                       }
+                       if(idx!==-1)
                        txt+=getCivicEl(civic[0].id)+'&nbsp;&nbsp;';
+                       else{
+                           txt+='<span style="width: 14px;">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                       }
+                   }else{
+                       txt+='<span style="width: 14px;">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;'
                    }
+
+
                    if(isHot)
                      txt+=getHotspot('hot_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'') +'&nbsp;&nbsp;';
-
+                   else{
+                       txt+='<span style="width: 14px;">&nbsp;</span>&nbsp;&nbsp;'
+                   }
                    // txt+='</span>&nbsp;';
 
                     if(hasCancerGenome!=-1){
                         txt+=getUserGenome('my_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'') +'&nbsp;&nbsp;';
+                    }else{
+                        txt+='<span style="width: 14px;">&nbsp;</span>&nbsp;&nbsp;'
                     }
 
                         // ' <span>\n' +
@@ -719,7 +749,7 @@
             self.CIVICGENE = civicGene;
             // console.log('setGeans called ',data);
             // console.log('evidence called ',evidence);
-            // console.log('civicGene called ',civicGene);
+            //  console.log('civicGene called ',civicGene);
             if(!_.isUndefined((data['MUTATIONS']))){
                 self.GENE['MUTATIONS'] = data['MUTATIONS'];
             }
@@ -790,6 +820,15 @@
             $("#CNV_t").show();
             // $("#EXPRESSION_t").show();
             $("#SV_t").show();
+
+            var mutcount = self.TABLE[self.NODES[0]].length;
+            var cnacount = self.TABLE[self.NODES[1]].length;
+            var expcount = self.TABLE[self.NODES[2]].length;
+            var svcount = self.TABLE[self.NODES[3]].length;
+            $("#mutcount").text(mutcount);
+            $("#cnacount").text(cnacount);
+            $("#expcount").text(expcount);
+            $("#svcount").text(svcount);
         }
 
 

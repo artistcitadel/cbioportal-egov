@@ -133,7 +133,9 @@
                         <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div  id="mut_loader" class="la-ball-elastic-dots" style="color: #5ddb28;display:none;">
+                                    <div id="mut_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                        <div></div>
+                                        <div></div>
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -141,10 +143,10 @@
                                         <div></div>
                                     </div>
                                 </div>
-                                <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
-                                    <div class="btn-group" style="width:60%;">
-                                        <button class="btn btn-success" type="button">
-                                            Create a new column entry
+                                <div class="col-md-5" align="right">
+                                    <div class="btn-group" style="width:auto;">
+                                        <button class="btn btn-success" type="button" style="width:auto;">
+                                            Columns
                                         </button>
                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
                                             <span class="caret"></span>
@@ -170,19 +172,22 @@
                                             <li role="presentation"><input id="cohort_MUTATIONS" type="checkbox"> Cohort</li>
                                             <li role="presentation"><input id="cosmic_MUTATIONS" type="checkbox"> COSMIC</li>
                                         </ul>
-
-                                        <form id="search" role="search" style="width:400px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-3" align="right">
+                                    <form role="search" style="width:210px;">
                                             <div class="input-group">
                                                 <input type="text" id="search_MUTATIONS" class="form-control" style="margin-left:8px;" placeholder="Search...">
                                                 <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
                                             </div>
                                         </form>
-
-                                    </div>
                                 </div>
-
                             </div>
+
                             <div class="row">
+                                <div class="col-xs-4 col" align="left" style="font-weight: bold;">
+                                    <span id="mutcount"></span> Mutations
+                                </div>
                                 <div class="col-xs-12 col">
                                     <div style="overflow-x:auto;">
                                         <table id="MUTATIONS_t" class="table table-bordered" style="display:none;">
@@ -209,7 +214,9 @@
                         <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div id="cna_loader" class="la-ball-elastic-dots" style="color: #ff192f;display:none;">
+                                    <div id="cna_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                        <div></div>
+                                        <div></div>
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -218,10 +225,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
-                                    <div class="btn-group" style="width:60%;">
-                                        <button class="btn btn-success" type="button">
-                                            Create a new column entry
+                                <div class="col-md-5" align="right">
+                                    <div class="btn-group" style="width:auto;">
+                                        <button class="btn btn-success" type="button" style="width:auto;">
+                                            Columns
                                         </button>
                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
                                             <span class="caret"></span>
@@ -235,19 +242,22 @@
                                             <li role="presentation"><input id="cytbNm_CNV" type="checkbox"> Cytoband</li>
                                             <li role="presentation"><input id="cohort_CNV" type="checkbox"> cohort</li>
                                         </ul>
-
-                                        <form role="search" style="width:400px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-3" align="right">
+                                        <form role="search" style="width:210px;">
                                             <div class="input-group">
                                                 <input type="text" id="search_CNV" class="form-control" style="margin-left:8px;" placeholder="Search...">
                                                 <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
                                             </div>
                                         </form>
-
-                                    </div>
                                 </div>
-
                             </div>
+
                             <div class="row">
+                                <div class="col-xs-4 col" align="left" style="font-weight: bold;">
+                                    <span id="cnacount"></span> Copy Number Alterlations
+                                </div>
                                 <div class="col-xs-12 col">
 
                                     <div style="overflow-x:auto;">
@@ -273,45 +283,39 @@
 
                         <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
-                                <%--<div class="col-md-2">
-                                    <div id="exp_loader" class="la-line-scale-pulse-out la-sm" style="color: #9988cd">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                </div>--%>
-                                <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
-                                    <div class="btn-group" style="width:60%;">
-                                        <button class="btn btn-success" type="button">
-                                            Create a new column entry
-                                        </button>
-                                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
-                                            <li role="presentation"><input id="geneNm_EXPRESSION" type="checkbox"> Gene</li>
-                                            <li role="presentation"><input id="geneExamMthNm_EXPRESSION" type="checkbox"> methods</li>
-                                            <li role="presentation"><input id="ptegGeneReadRsltVal_EXPRESSION" type="checkbox"> Expression Result</li>
-                                            <li role="presentation"><input id="gnex_EXPRESSION" type="checkbox"> Expression Value</li>
-                                            <li role="presentation"><input id="gnexMsrVal_EXPRESSION" type="checkbox"> Expression Unit</li>
-                                        </ul>
-
-                                        <form role="search" style="width:400px;">
-                                            <div class="input-group">
-                                                <input type="text" id="search_EXPRESSION" class="form-control" style="margin-left:8px;" placeholder="Search...">
-                                                <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>
-
+                              <div class="col-md-7" align="right">
+                                <div class="btn-group" style="width:auto;">
+                                  <button class="btn btn-success" type="button" style="width:auto;">
+                                     Columns
+                                  </button>
+                                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle dropdown</span>
+                                 </button>
+                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
+                                    <li role="presentation"><input id="geneNm_EXPRESSION" type="checkbox"> Gene</li>
+                                    <li role="presentation"><input id="geneExamMthNm_EXPRESSION" type="checkbox"> methods</li>
+                                    <li role="presentation"><input id="ptegGeneReadRsltVal_EXPRESSION" type="checkbox"> Expression Result</li>
+                                    <li role="presentation"><input id="gnex_EXPRESSION" type="checkbox"> Expression Value</li>
+                                    <li role="presentation"><input id="gnexMsrVal_EXPRESSION" type="checkbox"> Expression Unit</li>
+                                 </ul>
+                               </div>
+                              </div>
+                              <div class="col-md-3" align="right">
+                                <form role="search" style="width:210px;">
+                                  <div class="input-group">
+                                    <input type="text" id="search_EXPRESSION" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                                    <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
+                                  </div>
+                               </form>
+                             </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col">
+
+                        <div class="row">
+                          <div class="col-xs-4 col" align="left" style="font-weight: bold;">
+                              <span id="expcount"></span> Expressions
+                           </div>
+                           <div class="col-xs-12 col">
 
                                     <div style="overflow-x:auto;">
 
@@ -337,7 +341,9 @@
                                 <div class="container-fulid ttt" align="right" style="display:none;">
                                     <div class="row" style="width:60%;float:right;">
                                         <div class="col-md-2">
-                                            <div id="st_loader" class="la-ball-elastic-dots" style="color: #27176b;display:none;">
+                                            <div id="st_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                                <div></div>
+                                                <div></div>
                                                 <div></div>
                                                 <div></div>
                                                 <div></div>
@@ -345,10 +351,10 @@
                                                 <div></div>
                                             </div>
                                         </div>
-                                        <div class="col-md-10" style="width:80%;float:right;margin-right:20px;">
-                                            <div class="btn-group" style="width:60%;">
-                                                <button class="btn btn-success" type="button">
-                                                    Create a new column entry
+                                        <div class="col-md-5" align="right">
+                                            <div class="btn-group" style="width:auto;">
+                                                <button class="btn btn-success" type="button" style="width:auto;">
+                                                    Columns
                                                 </button>
                                                 <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
                                                     <span class="caret"></span>
@@ -364,21 +370,23 @@
                                                     <li role="presentation"><input id="cytbNm1_SV" type="checkbox"> Cytoband2</li>
                                                     <li role="presentation"><input id="cohort_SV" type="checkbox"> Chort</li>
                                                 </ul>
-
-                                                <form role="search" style="width:400px;">
-                                                    <div class="input-group">
-                                                        <input type="text" id="search_SV" class="form-control" style="margin-left:8px;" placeholder="Search...">
-                                                        <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
-                                                    </div>
-                                                </form>
-
                                             </div>
                                         </div>
+                                        <div class="col-md-3" align="right">
+                                          <form role="search" style="width:210px;">
+                                            <div class="input-group">
+                                               <input type="text" id="search_SV" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                                               <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
+                                            </div>
+                                          </form>
+                                        </div>
+                                     </div>
 
-                                    </div>
                                     <div class="row">
+                                        <div class="col-xs-4 col" align="left" style="font-weight: bold;">
+                                           <span id="svcount"></span> Svs
+                                        </div>
                                         <div class="col-xs-12 col">
-
                                             <div style="overflow-x:auto;">
 
                                                 <table id="SV_t" class="table table-bordered" style="display:none;">
@@ -402,7 +410,8 @@
 <hr/>
                 <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
                     <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
-                    <img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>
+                    <%--<img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>--%>
+                        Asan Cancer Center
                 </div>
 
 
@@ -510,7 +519,7 @@
     console.log('pages ', pages);
     console.log('resch_pat_id ', resch_pat_id);
     console.log('patientId ', patientId);
-     console.log('patients ' , patients);
+    // console.log('patients ' , patients);
 
     if(patients=='') {
         getPatients();

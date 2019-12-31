@@ -69,7 +69,7 @@ function Event() {
             tip += "<span>수술일자 : " + data[i].opDt + "</br>";
             tip += "<span>수술과  : " + data[i].opdpCdNm + "</br>";
             tip += "<span>원내수술코드 : " + data[i].inhospOpCd + "</br>";
-            tip += "<span>원내수술명 : " + data[i].inhospOpEngNm + "";
+            tip += "<span>원내수술명 : " + util.null2str(data[i].inhospOpEngNm) + "";
             tip += "<hr />";
         }
         return tip;

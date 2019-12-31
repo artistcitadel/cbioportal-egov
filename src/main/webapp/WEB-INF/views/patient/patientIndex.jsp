@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linespin.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/spinfade.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/ballelastic.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linescalepulseoutrapid.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/jqtip/jquery.qtip.min.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/jbox/jbox.all.min.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncob-styles/oncokb.css" type="text/css" />

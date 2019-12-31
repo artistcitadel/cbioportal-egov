@@ -271,4 +271,9 @@ function Util() {
         }
     }
 
+    self.null2str = function(data){
+        if(data==null)return "";
+        else return data;
+    }
+
 }

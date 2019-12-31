@@ -44,7 +44,15 @@
 </div>
 
 
-
+<div style="color: #1a21e6" class="la-line-scale-pulse-out-rapid la-ss">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
 
 
 </body>

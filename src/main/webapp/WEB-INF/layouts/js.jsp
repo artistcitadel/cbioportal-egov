@@ -17,7 +17,7 @@
 <!-- datepicker -->
 <script src="<c:url value="/js/plugins_adminLTE/datepicker/bootstrap-datepicker.js" />"></script>
 <!-- pace -->
-<script src="<c:url value="/js/plugins_adminLTE/pace/pace.js" />"></script>
+<%-- <script src="<c:url value="/js/plugins_adminLTE/pace/pace.js" />"></script> --%>
 <!-- Slimscroll -->
 <script src="<c:url value="/js/plugins_adminLTE/slimScroll/jquery.slimscroll.min.js" />"></script>
 <!-- FastClick -->
@@ -70,6 +70,8 @@
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxpanel.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxsortable.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxcombobox.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/jqxrangeselector.js" />"></script>
+
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/globalization/globalize.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/plugins/jqwidgets/jqwidgets-ver4.5.0/jqwidgets/globalization/globalize.culture.ko-KR.js" />"></script>
 
@@ -137,6 +139,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	//ajax loading bar
-	$(document).ajaxStart(function() { Pace.restart(); });
+	//$(document).ajaxStart(function() { Pace.restart(); });
 });
 </script>
