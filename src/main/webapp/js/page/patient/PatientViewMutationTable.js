@@ -613,7 +613,7 @@
             // console.log('annotation list', self.annotationList);
             // console.log('civic list', self.civicList);
             var txt = '';
- console.log('self.civicList ',self.civicList);
+ // console.log('self.annotationList ',self.annotationList);
             _.forEach(json, function (v,i) {
 
                 txt += '<tr>';
@@ -773,7 +773,12 @@
                   }
 
                   //console.log('id is ', id);
+                  // console.log('annotation className', className, v[i].query.hugoSymbol, v[i].query.alteration);
                   var className = util.annotationIconClassNames(v[i]);
+                  // if(_.isUndefined(className)){
+                  //     className='oncokb annotation-icon unknown no-level';
+                  //     console.log('annotation className process', className, v[i].query.hugoSymbol);
+                  // }
                   var annid =  "ann_"+id+"";
                   // console.log('ann_id', annid);
                   var annotationmap = {};

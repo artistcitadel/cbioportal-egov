@@ -118,9 +118,11 @@
                             <div class="row">
                                 <div class="col-xs-12 col">
 
+                                  <%--<div style="display:flex;">--%>
                                     <div style="overflow-x:auto;">
                                         <div id="genomicOverviewTracksContainer1" style="overflow-x:auto;"/>
                                     </div>
+                                  <%--</div>--%>
 
                                 </div>
                             </div>
@@ -575,7 +577,7 @@
     }
     function setPatients(json){
         console.log('setPatients called');
-         console.log(json);
+        //console.log(json);
         var temp = [];
         for(var i=0;i<json.length;i++){
             temp.push(json[i].RESCH_PAT_ID);
