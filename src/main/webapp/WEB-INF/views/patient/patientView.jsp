@@ -135,9 +135,16 @@
                         <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div id="mut_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
+                                    <%--<div id="mut_loader" style="color: #333;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
                                         <div></div>
                                         <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>--%>
+                                    <div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -216,9 +223,7 @@
                         <div class="container-fulid ttt" align="right" style="display:none;">
                             <div class="row" style="width:60%;float:right;">
                                 <div class="col-md-2">
-                                    <div id="cna_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
-                                        <div></div>
-                                        <div></div>
+                                    <div id="cna_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -343,9 +348,7 @@
                                 <div class="container-fulid ttt" align="right" style="display:none;">
                                     <div class="row" style="width:60%;float:right;">
                                         <div class="col-md-2">
-                                            <div id="st_loader" style="color: #1a21e6;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
-                                                <div></div>
-                                                <div></div>
+                                            <div id="st_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
                                                 <div></div>
                                                 <div></div>
                                                 <div></div>
@@ -532,7 +535,7 @@
 
     function buildPatient(){
         var patients = document.pform.patients.value;
-         if(pages==='1' && resch_pat_id.length>7 && resch_pat_id.length<15){
+         if( (pages==='1' && resch_pat_id.length>7 && resch_pat_id.length<15 ) && patientId.length!=10){
              patientId = resch_pat_id;
          }
         if(patientId==""){

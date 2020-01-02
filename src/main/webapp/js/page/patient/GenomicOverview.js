@@ -255,7 +255,7 @@ function GenomicOverview() {
     }
 
     var getMutationPixelMap = function(p,row) {
-        // console.log('getMutationPixelMap called');
+         console.log('getMutationPixelMap called');
         var mutObj = self.mutObjData;
         // console.log('mutObj ', mutObj);
 
@@ -295,10 +295,14 @@ function GenomicOverview() {
         drawPlot(pixelMap, p, row, len, v);
          ++row;
          len=0;
-
         });
 
-        getCnaPixelMap(p, row);// mut,sv,
+        getCnaPixelMap(p, row); //cna, sv,
+
+        /*if(mutObj.length>0){
+            var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
+            thumbnailExpandVAFPlot.init(self.mutObjData);
+        }*/
     }
 
 
@@ -424,8 +428,7 @@ function GenomicOverview() {
             ++row;
             len=0;
         });
-
-    }
+   }
     var drawPlotSt = function(pixelMap, p ,row, len,seq){
         var maxCount = 5; // set max height to 5 mutations
 
@@ -441,8 +444,8 @@ function GenomicOverview() {
                 //console.log( 'pixil ',pixil);
                 var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
                 var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h+2);
-                r.attr("fill","#0f0");
-                r.attr("stroke", "#0f0");
+                r.attr("fill","#8539b2");
+                r.attr("stroke", "#8539b2");
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);

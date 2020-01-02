@@ -98,7 +98,7 @@ function Event() {
         tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</br>";
         for(var i=0;i<data.length;i++) {
             // tip += "<hr />";
-            tip += "<span>처방부서  : " + data[i].cdValNm + "</br>";
+            tip += "<span>처방부서  : " + util.null2str(data[i].cdValNm) + "</br>";
             tip += "<span>처방일자 : " + data[i].clinicdate + "</br>";
             tip += "<span>MOD : " + data[i].modality + "</br>";
             tip += "<span>검사코드 : " + data[i].ordercode + "</br>";

@@ -18,8 +18,27 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * 1.업무명 : 환자관리시스템
+ * 2.단위업무명 : ONCO연계
+ * 3.프로그램명 : annotation
+ * 4.설명 : oncokb 지식정보 조회 Controller 클래스다.
+ *
+ * @Class  ProxyController.java
+ * @author
+ * @since   2019. 12. 07.
+ * @version 1.0
+ *
+ * @Copyright (c)
+ *------------------------------------------------------------------------
+ * Modification Information
+ *------------------------------------------------------------------------
+ * 수정일               수정자            수정내용
+ *------------------------------------------------------------------------
+ * 2019. 12. 07.     오세영          [환자진단진료조회시스템] 최초생성
+ */
 
 @Controller
 @RequestMapping(value="/proxy")
@@ -48,7 +67,7 @@ public class ProxyController {
   @RequestMapping(value="/searchGean")
   public String searchGean(@RequestBody(required = false) String body, HttpServletRequest request)
       throws URISyntaxException {
-//    System.err.println("ProxyController searchGean called " + body);
+    //System.err.println("ProxyController searchGean called " + body);
 
     URI uri = new URI("http://legacy.oncokb.org/api/v1/search");
     HttpHeaders httpHeaders = new HttpHeaders();

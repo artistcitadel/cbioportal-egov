@@ -22,6 +22,7 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/spinfade.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/ballelastic.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linescalepulseoutrapid.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/stylesmodule.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/jqtip/jquery.qtip.min.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/jbox/jbox.all.min.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/chromasome/oncob-styles/oncokb.css" type="text/css" />
@@ -86,6 +87,8 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/MutCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/CnaCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/svCohort.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/SampleLabel.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/ThumbnailExpandVAFPlot.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/blockUI.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/moment-with-locales.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphael.min.js"></script>

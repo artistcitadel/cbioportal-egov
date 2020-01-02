@@ -474,12 +474,12 @@ if (!isCna) {
 
 
 function addCivicVariant(variantMap, variantId, variantName, geneSymbol, geneId) {
-    console.log('addCivicVariant called');
-    console.log('varientMap ', variantMap);
-    console.log('variendId ', variantId);
-    console.log('varientName', variantName);
-    console.log('geneSymbol', geneSymbol);
-    console.log('geneId', geneId);
+    // console.log('addCivicVariant called');
+    // console.log('varientMap ', variantMap);
+    // console.log('variendId ', variantId);
+    // console.log('varientName', variantName);
+    // console.log('geneSymbol', geneSymbol);
+    // console.log('geneId', geneId);
 
     // getVariant(variantId, variantName, geneId);
     var id  = variantId;
