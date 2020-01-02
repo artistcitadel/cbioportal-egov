@@ -248,6 +248,14 @@ function GenomicOverview() {
         });
         var label = "MUT("+seq+")";
         var t = p.text(18,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+
+        t.node.setAttribute('id','mutTrack'+seq);
+        var $container = $('[id="mutTrack'+seq+'"]');
+        var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 5};
+        var $newContainer = $('<svg height="12" width="12" />').attr(pos);
+        $newContainer.append(getSampleLabel(seq));
+        $container.replaceWith($newContainer);
+
         t = p.text(xRightText(),yRow-self.rowHeight/2,len).attr({'text-anchor': 'start','font-weight': 'bold'});
         underlineText(t,p);
         var tip = "Number of mutation events.";
@@ -324,7 +332,7 @@ function GenomicOverview() {
                 )
         }
         var spcnSeq1 = _.uniq(spcnSeq);
-        // console.log('CNA spcnSeq ',spcnSeq1);
+         // console.log('CNA spcnSeq ',spcnSeq1);
 
         _.forEach(spcnSeq1, function (v) {
             // console.log(' vis ', v);
@@ -361,6 +369,14 @@ function GenomicOverview() {
             }
             var label = "CNA("+v+")";
             var t = p.text(16,yRow+self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+
+            t.node.setAttribute('id','cnaTrack'+v);
+            var $container = $('[id="cnaTrack'+v+'"]');
+            var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 5};
+            var $newContainer = $('<svg height="12" width="12" />').attr(pos);
+            $newContainer.append(getSampleLabel(v));
+            $container.replaceWith($newContainer);
+
 
             var label = genomeMeasured===0 ? 'N/A' : (100*genomeAltered/genomeMeasured).toFixed(1)+'%';
             var tip = genomeMeasured===0 ? 'Copy number segment data not available' :
@@ -460,6 +476,14 @@ function GenomicOverview() {
         });
         var label = "ST("+seq+")";
         var t = p.text(18,yRow-self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
+
+        t.node.setAttribute('id','svTrack'+seq);
+        var $container = $('[id="svTrack'+seq+'"]');
+        var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 5};
+        var $newContainer = $('<svg height="12" width="12" />').attr(pos);
+        $newContainer.append(getSampleLabel(seq));
+        $container.replaceWith($newContainer);
+
         t = p.text(xRightText(),yRow-self.rowHeight/2,len).attr({'text-anchor': 'start','font-weight': 'bold'});
         underlineText(t,p);
         var tip = "Number of mutation events.";

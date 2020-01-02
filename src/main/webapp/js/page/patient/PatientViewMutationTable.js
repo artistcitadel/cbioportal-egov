@@ -20,7 +20,7 @@
         self.QID = ['selectPatientMuList','selectPatientCNAList','selectPatientEXPRESSIONList','selectPatientSVList']
 
         self.mutMap = [
-           {id:'geneExamSpcnSeq', name:'TUMORS', show:false},
+           {id:'geneExamSpcnSeq', name:'Samples', show:false},
            {id:'geneNm',name:'GENE', show:true},
            {id:'geneExamMthNm', name:'METHODS', show:false},
            {id:'hgvspVal', name:'PROTEIN_CHANGE', show:false},
@@ -40,7 +40,7 @@
            {id:'cosmic', name:'COSMIC',show:false}
         ];
         self.cnaMap = [
-            {id:'geneExamSpcnSeq', name:'TUMORS', show:false},
+            {id:'geneExamSpcnSeq', name:'Samples', show:false},
             {id:'geneNm',name:'GENE', show:true},
             {id:'geneExamMthNm', name:'METHODS', show:false},
             {id:'annotation', name:'ANNOTATION',show:false},
@@ -57,7 +57,7 @@
             {id:'gnexMsrVal', name:'EXP_UNIT',show:false},
         ];
         self.svMap = [
-            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
+            {id:'geneExamSpcnSeq', name:'Samples', show:true},
             {id:'geneNm', name:'GENE1', show:true},
             {id:'geneNm1', name:'GENE2', show:true},
             {id:'geneExamMthNm', name:'METHODS',show:false},

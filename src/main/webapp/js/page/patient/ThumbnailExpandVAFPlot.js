@@ -9,7 +9,7 @@ function ThumbnailExpandVAFPlot(){
         var freq;
         for(var i=0;i< mergedMutations.length;i++) {
             mutation = mergedMutations[i];
-            //console.log("ThumbnailExpandVAFPlot computeMutationFrequencyBySample", mutation);
+            console.log("ThumbnailExpandVAFPlot computeMutationFrequencyBySample", mutation);
             var tumorRefCount = mutation.refAlleleReadCnt;
             var tumorAltCount = mutation.hgvspVal;
         }
