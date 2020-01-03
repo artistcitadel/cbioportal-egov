@@ -61,18 +61,36 @@
 
                         <div class="ttt" style="display:none;">
                             <div>
-                                <i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i>
+                                <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                                 <div style="display: inline-flex;">
                                     <table>
                                         <thead>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>Patient ID:
+                                            <td>Patient :
                                               <span id="patientage"></span>
                                             </td>
                                         </tr>
-                                        </tbody>
+                                        <tr>
+                                          <td id="divsample"><%--Samples: primary--%>
+                                                   <%--<span>
+                                                     <svg height="12" width="12">
+                                                       <svg width="12" height="12" class="case-label-header" data-test="sample-icon">
+                                                         <g transform="translate(6,6)">
+                                                           <circle r="6" fill="black" fill-opacity="1">
+                                                            </circle>
+                                                          </g>
+                                                          <g transform="translate(6,5.5)">
+                                                           <text y="4" text-anchor="middle" font-size="10" fill="white" style="cursor: default;">1</text>
+                                                         </g>
+                                                       </svg>
+                                                     </svg>
+                                                   </span>--%>
+
+                                          </td>
+                                         </tr>
+                                       </tbody>
                                     </table>
                                 </div>
                                 <div className="studyMetaBar"></div>
@@ -86,7 +104,7 @@
                             <div class="row" id="row1">
                                 <div class="col-xs-3 col">
                                     <%--<input id="cate" type="button" value="항목관리" class="btn btn-link" data-toggle="modal" data-target="#contactModal" style="margin-right:3px;">--%>
-                                    <span class="label label-success ttt" data-toggle="modal" data-target="#contactModal" style="display:none;cursor:pointer">항목관리</span>
+                                    <%--<span class="label label-success ttt" data-toggle="modal" data-target="#contactModal" style="display:none;cursor:pointer">항목관리</span>--%>
                                 </div>
                                 <div class="col-xs-3 col"></div>
                                 <div class="col-xs-3 col"></div>
@@ -97,8 +115,8 @@
                                     <%--<label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>--%>
                                     <%--<input id="zoomin" type="button" value="+">--%>
                                     <%--<input id="zoomout" type="button" value="-">--%>
-                                    <span id="zoomin" class="label label-success ttt" style="display:none;cursor:pointer">+</span>
-                                    <span id="zoomout" class="label label-success ttt" style="display:none;cursor:pointer">-</span>
+                                    <%--<span id="zoomin" class="label label-success ttt" style="display:none;cursor:pointer">+</span>
+                                    <span id="zoomout" class="label label-success ttt" style="display:none;cursor:pointer">-</span>--%>
                                 </div>
                             </div>
                             <div class="row" id="row2">
@@ -118,11 +136,13 @@
                             <div class="row">
                                 <div class="col-xs-12 col">
 
-                                  <%--<div style="display:flex;">--%>
+                                  <div style="display:flex;">
                                     <div style="overflow-x:auto;">
                                         <div id="genomicOverviewTracksContainer1" style="overflow-x:auto;"/>
                                     </div>
-                                  <%--</div>--%>
+                                      <div id="vafplot" style="display:inline;">
+                                      </div>
+                                  </div>
 
                                 </div>
                             </div>
@@ -244,6 +264,7 @@
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
                                             <li role="presentation"><input id="geneExamSpcnSeq_CNV" type="checkbox"> TUMORS</li>
                                             <li role="presentation"><input id="geneNm_CNV" type="checkbox"> Gene</li>
+                                            <li role="presentation"><input id="hgvspVal_CNV" type="checkbox"> CNA</li>
                                             <li role="presentation"><input id="geneExamMthNm_CNV" type="checkbox"> methods</li>
                                             <li role="presentation"><input id="annotation_CNV" type="checkbox"> Annotation</li>
                                             <li role="presentation"><input id="cytbNm_CNV" type="checkbox"> Cytoband</li>
@@ -328,7 +349,7 @@
 
                                         <table id="EXPRESSION_t" class="table table-bordered">
                                             <thead>
-                                            <tr id='EXPRESSION' class="warning">
+                                            <tr id='EXPRESSION' class="success">
                                             </tr>
                                             </thead>
                                             <tbody id="EXPRESSION_con">
@@ -396,7 +417,7 @@
 
                                                 <table id="SV_t" class="table table-bordered" style="display:none;">
                                                     <thead>
-                                                    <tr id='SV' class="danger">
+                                                    <tr id='SV' class="success">
                                                     </tr>
                                                     </thead>
                                                     <tbody id="SV_con">
@@ -416,7 +437,7 @@
                 <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
                     <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
                     <%--<img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>--%>
-                        Asan Cancer Center
+                        <strong>Asan Cancer Center</strong>
                 </div>
 
 
@@ -509,6 +530,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
+    var SAMPLES=[];
     var PATIENTID;
     var QUERY;
     var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';

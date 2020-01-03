@@ -6,18 +6,21 @@ function Event() {
     var util = new Util();
 
     self.getPlotColor = function(sub,id){
-        // console.log('pdata[i].subject ', sub,id);
-        return (sub === subject.pathology) ? '#3941FF':
-            (id === subject.tissue) ? '#ff8040' :
-            (id === subject.brc) ? '#81abf6' :
+        // console.log('pdata[i].subject ', sub, id);
+        var color =  (sub === subject.pathology) ? '#3941FF':
+            (id === subject.tissue) ? '#000' :
+            (id === subject.brc) ? '#8fe623' :
             (sub === subject.biopsy) ? '#b4c4cc' :
             (sub === subject.surgery) ? '#6ed2f6' :
-            (sub === subject.imaging) ? '#f6df23' :
+            // (sub === subject.imaging) ? '#f6df23' :
             (id === subject.ct) ? '#27176b' :
-            (id === subject.mri) ? '#e9a2e8' :
-            (id === subject.petct) ? '#f6f504' :
-            (id === subject.us) ? '#A0F682' :
+            (id === subject.mri) ? '#e97c18' :
+            (id === subject.petct) ? '#871982' :
+            (id === subject.us) ? '#1a21e6' :
             '';
+         if(id === subject.brc)
+             console.log('eventcolor', color);
+        return color;
     }
 
     self.classify_tissue= function(data,  UNIT) {

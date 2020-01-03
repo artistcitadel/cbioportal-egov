@@ -321,7 +321,7 @@ function TimeLine() {
                 OLINE.push(txt);
             }
         }
-        oline = drawLine(end - 1, yRuler, end - 1, 5, paper, '#000', 1);
+        oline = drawLine(end - 1, yRuler, end - 1, 5, paper, '#b2bccc', 1);
         OLINE.push(oline);
         COUNTMAP = countTime;
         // console.log(" COUNTMAP ", COUNTMAP);
@@ -540,7 +540,7 @@ function TimeLine() {
                 }
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
-                var r = p.circle(leftpadding, yRow - 4, pw);
+                var r = p.circle(leftpadding, yRow - 4, pw+2);
                 r.attr("fill", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke-width", pixelAry[i].stroke);
@@ -552,7 +552,7 @@ function TimeLine() {
                         this.transform('s1,1');
                     }
                 );
-                r.animate({ cx:position}, 1900);
+                r.animate({ cx:position}, 1100);
                 //r.transform('S'+tnumber,tnumber+'');
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
                 addToolTip(r.node, pixelAry[i].name, 100, '');
@@ -572,11 +572,12 @@ function TimeLine() {
             //console.log('label texting ', label.subject, subject.biopsy, subject.surgery);
             if (label.subject===subject.biopsy || label.subject === subject.surgery) {
                 console.log('label texting ', label.subject);
-                deep=2;
+                deep=1;
             }
             // console.log('label.id ', label.id, label.name);
             // console.log('show ', label, label.folder);
-            var ar = "❯ ";
+            var ar="";
+                // ar = "❯ ";  here
             //var ar = '開';
             //if (label.leaf) ar = '';
             //console.log(' label ', label.folder, label.name, label.leaf);
@@ -589,7 +590,7 @@ function TimeLine() {
                   r.attr("opacity", 0.5);
                   r.translate(0.5, 0.5);
                   ar='';*/
-                ar = '＋';
+                    // ar = '＋';  here
                 //ar ='﹀';//ar = '閉';//ar ='﹀';//
                 //console.log(label.folder);
                 //if (!label.folder) ar = "﹀ ";
@@ -597,23 +598,23 @@ function TimeLine() {
             } else ar = '';
 
             var lbl = label.name;
-            if(lbl.length>10)lbl=lbl.substring(0,10)+'...';
+            // if(lbl.length>10)lbl=lbl.substring(0,10)+'...'; here
             lbl = ar + lbl;
             //console.log('label_text length ', lbl.length);
             //var t = p.text((12 + Number(deep) * 8), yRow + 7 - (row + 8), lbl).attr({
             var t = p.text((12 + Number(deep) * 8), yRow, lbl).attr({
                 'text-anchor': 'start',
                 'fill': 'black',
-                'cursor': 'pointer',
+                // 'cursor': 'pointer',
                 'font-size': '12',
                 'font-family': 'Nanum Gothic, sans-serif'
             });
 
-            t.click(function () {
+            /*t.click(function () {
                 if (!label.leaf) {
                     setTreeNode(label.id);
                 }
-            });
+            });*/
             if(lbl.length>12)addToolTip(t.node, label.name, 100, '','qtip-light');
 
             //if(ar!=='')underlineText(t,p);
@@ -622,10 +623,11 @@ function TimeLine() {
             var ypos = yRow + 5;
             LASTYPOS = ypos;
             //var xgrid = drawLine('170', ypos, 1090+150, ypos, paper, '#ccc', 1);
-            var xgrid = drawLine(xt[0], ypos, LINEEND, ypos, paper, '#ccc', 1);
-            ////xgrid.hide();
+            var xgrid='';// var xgrid = drawLine(xt[0], ypos, LINEEND, ypos, paper, '#ccc', 1);// here
+            // xgrid.hide();
             //console.log(' LASTYPOS ', LASTYPOS);
-            XGRIDS.push(xgrid);
+            // XGRIDS.push(xgrid); here
+            XGRIDS=[];
         }
     }
 

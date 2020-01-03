@@ -251,7 +251,7 @@ function GenomicOverview() {
 
         t.node.setAttribute('id','mutTrack'+seq);
         var $container = $('[id="mutTrack'+seq+'"]');
-        var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 5};
+        var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 1};
         var $newContainer = $('<svg height="12" width="12" />').attr(pos);
         $newContainer.append(getSampleLabel(seq));
         $container.replaceWith($newContainer);
@@ -307,10 +307,10 @@ function GenomicOverview() {
 
         getCnaPixelMap(p, row); //cna, sv,
 
-        /*if(mutObj.length>0){
+        if(mutObj.length>0){
             var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
-            thumbnailExpandVAFPlot.init(self.mutObjData);
-        }*/
+            thumbnailExpandVAFPlot.init(spcnSeq, mutObj);
+        }
     }
 
 
@@ -372,7 +372,7 @@ function GenomicOverview() {
 
             t.node.setAttribute('id','cnaTrack'+v);
             var $container = $('[id="cnaTrack'+v+'"]');
-            var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 5};
+            var pos = {x: parseInt($container.attr('x')) - 9, y: parseInt($container.attr('y')) - 1};
             var $newContainer = $('<svg height="12" width="12" />').attr(pos);
             $newContainer.append(getSampleLabel(v));
             $container.replaceWith($newContainer);

@@ -6,6 +6,9 @@
     list-style-position: inside;
     padding-left: 0;
 }
+.invisible {
+    visibility: hidden;
+}
 /*
 .styles-module_centered-with-children {
     width: 600px;

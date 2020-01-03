@@ -17,36 +17,36 @@ function VAFPlot() {
     var init_show_histogram = true;
     var init_show_curve = true;
     var show_controls = false;
+    var state;
 
     self.init = function (props) {
-        var label_dist_to_axis = (this.props.xticks === 0) ? 13 : 30;
-
         var options = {
-            label_font_size: this.props.label_font_size,
-            xticks: this.props.xticks,
-            yticks: this.props.yticks,
-            nolegend: this.props.nolegend,
-            margin: {
-                top: this.props.margin_top,
-                left: this.props.margin_left,
-                right: this.props.margin_right,
-                bottom: this.props.margin_bottom
+            label_font_size: "6.5px",
+            xticks: 0,
+            yticks: 0,
+            nolegend: true,
+            margin:{
+                top: 20,
+                left: 50,
+                right: 30,
+                bottom: 15
             },
-            width: this.props.width,
-            height: this.props.height
+            width: 64,
+            height: 64
         };
+        var label_dist_to_axis = (options.xticks === 0) ? 13 : 30;
+
         // margin bottom must be computed before height because height computation makes use of it
         if (options.margin.bottom === undefined)
             options.margin.bottom = 30 + (label_dist_to_axis / 2);
         if (options.height === undefined && options.margin.top !== undefined)
             options.height = ((500 + label_dist_to_axis) / 2) - options.margin.top - options.margin.bottom;
-        var state = {
+        state = {
             show_histogram: !!props.init_show_histogram,
             show_curve: !!props.init_show_curve,
             options
         };
-        render();
-        AlleleFreqPlotMulti("vafplot", props.data, state.options, props.order, props.colors, props.labels);
+        render(props,options);
     }
 
 
@@ -85,10 +85,12 @@ function VAFPlot() {
     }
 
 
-    var render = function () {
-      var txt='';
-      txt+='<div id="vafplot" style="display:inline;"> \n';
-      txt+=histogramCheckbox();
+    var render = function (props,options) {
+      // var txt='';
+      // txt+='<div id="vafplot" style="display:inline;"> \n';
+      // txt+=histogramCheckbox();
+        $("#vafplot").html(histogramCheckbox());
+        AlleleFreqPlotMulti("vafplot", props.data, options, {}, props.colors, props.labels, {});
     }
 }
 

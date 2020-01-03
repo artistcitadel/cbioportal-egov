@@ -10,6 +10,7 @@
 .project
 .classpath
 /src/main/resources/bigcen.properties
+/src/main/webapp/WEB-INF/classes/
 /src/main/webapp/WEB-INF/classes/**/*
 pom.xml
 .gitignore

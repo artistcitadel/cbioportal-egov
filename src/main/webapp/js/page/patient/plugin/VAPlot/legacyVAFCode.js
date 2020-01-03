@@ -91,7 +91,7 @@ var AlleleFreqPlotUtils = (function() {
     };
 }());
 
-var AlleleFreqPlotMulti = function(id, data, options, order, colors, labels) {
+var AlleleFreqPlotMulti = function(id, data, options, order, colors, labels, genepanel_icon_data) {
     var div = $("#"+id+"");
     var histogram = $("#histogram");
     var curve = $("#curve");

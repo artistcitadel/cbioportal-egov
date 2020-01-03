@@ -89,6 +89,8 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/svCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/SampleLabel.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/ThumbnailExpandVAFPlot.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/VAFPlot.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/legacyVAFCode.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/blockUI.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/moment-with-locales.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/raphael/raphael.min.js"></script>

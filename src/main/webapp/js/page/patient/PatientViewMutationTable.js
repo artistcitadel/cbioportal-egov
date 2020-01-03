@@ -20,7 +20,7 @@
         self.QID = ['selectPatientMuList','selectPatientCNAList','selectPatientEXPRESSIONList','selectPatientSVList']
 
         self.mutMap = [
-           {id:'geneExamSpcnSeq', name:'Samples', show:false},
+           {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
            {id:'geneNm',name:'GENE', show:true},
            {id:'geneExamMthNm', name:'METHODS', show:false},
            {id:'hgvspVal', name:'PROTEIN_CHANGE', show:false},
@@ -40,10 +40,11 @@
            {id:'cosmic', name:'COSMIC',show:false}
         ];
         self.cnaMap = [
-            {id:'geneExamSpcnSeq', name:'Samples', show:false},
+            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
             {id:'geneNm',name:'GENE', show:true},
+            {id:'hgvspVal',name:'CNA', show:true},
             {id:'geneExamMthNm', name:'METHODS', show:false},
-            {id:'annotation', name:'ANNOTATION',show:false},
+            {id:'annotation', name:'ANNOTATION',show:true},
             {id:'cytbNm', name:'Cytoband',show:false},
             {id:'cohort', name:'COHORT',show:false},
         ];
@@ -57,7 +58,7 @@
             {id:'gnexMsrVal', name:'EXP_UNIT',show:false},
         ];
         self.svMap = [
-            {id:'geneExamSpcnSeq', name:'Samples', show:true},
+            {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
             {id:'geneNm', name:'GENE1', show:true},
             {id:'geneNm1', name:'GENE2', show:true},
             {id:'geneExamMthNm', name:'METHODS',show:false},
@@ -617,11 +618,53 @@
             _.forEach(json, function (v,i) {
 
                 txt += '<tr>';
-                (_includes(self.TH[self.NODE], 'geneExamSpcnSeq'))? (txt+='<td align="center"><span font-msmall">' + v.geneExamSpcnSeq + '</span></td>') : '';
-                (_includes(self.TH[self.NODE], 'geneNm'))? (txt+='<td align="center"><span font-msmall">' + v.geneNm + '</span></td>') : '';
-                (_includes(self.TH[self.NODE], 'geneNm1'))? (txt+='<td align="center"><span font-msmall">' + v.geneNm1 + '</span></td>') : '';
+                // (_includes(self.TH[self.NODE], 'geneExamSpcnSeq'))? (txt+='<td align="center"><span font-msmall">' + v.geneExamSpcnSeq + '</span></td>') : '';
+                if(_includes(self.TH[self.NODE], 'geneExamSpcnSeq')){
+                    // txt+='<td align="center"><span font-msmall">' + v.geneExamSpcnSeq + '</span></td>') : '';
+                    txt+='<td><div data-test="samples-cell" style="position: relative;">\n' +
+                        '   <ul class="list-inline list-unstyled" style="margin-bottom: 0px;">\n';
+
+                     var spcntemp=[];
+                     if(v.geneExamSpcnSeq.indexOf(",")===-1){
+                         spcntemp.push(parseInt($.trim(v.geneExamSpcnSeq)));
+                         if(!_.includes(SAMPLES,parseInt($.trim(v.geneExamSpcnSeq)))){
+                             SAMPLES.push(parseInt($.trim(v.geneExamSpcnSeq)));
+                         }
+                     }else{
+                         var spcnseqs = v.geneExamSpcnSeq.split(",");
+                         for(var j=0;j<spcnseqs.length;j++){
+                           spcntemp.push(parseInt($.trim(spcnseqs[j])));
+                             if(!_.includes(SAMPLES,parseInt($.trim(spcnseqs[j])))){
+                                 SAMPLES.push(parseInt($.trim(spcnseqs[j])));
+                             }
+                         }
+                     }
+                     for(var i=1; i<5; i++) {
+                         var clasz = 'invisible';
+                         if(spcntemp.indexOf(i)!==-1)
+                             clasz = '';
+                         txt += '  <li class="'+clasz+'">\n' +
+                             '       <svg height="12" width="12">\n' +
+                             '         <svg width="12" height="12" class="case-label-header" data-test="sample-icon">\n' +
+                             '           <g transform="translate(6,6)">\n' +
+                             '             <circle r="6" fill="black" fill-opacity="1"></circle>\n' +
+                             '           </g>\n' +
+                             '           <g transform="translate(6,5.5)">\n' +
+                             '             <text y="4" text-anchor="middle" font-size="10" fill="white" style="cursor: default;">'+i+'</text>\n' +
+                             '           </g>\n' +
+                             '        </svg>\n' +
+                             '      </svg>\n';
+                         '    </li>\n';
+                     }
+                    txt +='  </ul>\n' +
+                        '</div>' +
+                        '</td>';
+                }
+
+                (_includes(self.TH[self.NODE], 'geneNm'))? (txt+='<td align="left"><span font-msmall">' + v.geneNm + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'geneNm1'))? (txt+='<td align="left"><span font-msmall">' + v.geneNm1 + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="left"><span class="font-msmall" style="color:'+getCNAColor(v.hgvspVal)+';white-space: nowrap;"><strong>' + v.hgvspVal + '</strong></span></td>') : '';
                 (_includes(self.TH[self.NODE], 'geneExamMthNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneExamMthNm + '</span></td>') : '';
-                (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="center"><span class="font-msmall" style="white-space: nowrap;"><strong>' + v.hgvspVal + '</strong></span></td>') : '';
                 if(_includes(self.TH[self.NODE], 'annotation')){
                     // console.log('td annotation ','ann_'+v.geneNm+'_'+astoempty(v.hgvspVal)+'')
                     var ann = _.filter(self.annotationList,function(o){
@@ -712,7 +755,7 @@
                 (_includes(self.TH[self.NODE], 'refAlleleSqncVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleSqncVal + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'variAlleleSqncVal'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleSqncVal + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'ms'))? (txt+='<td align="center"><span class="font-msmall">' + v.ms + '</span></td>') : '';
-                (_includes(self.TH[self.NODE], 'geneVariClsfNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneVariClsfNm + '</span></td>') : '';
+                (_includes(self.TH[self.NODE], 'geneVariClsfNm'))? (txt+='<td align="left"><span class="font-msmall">' + v.geneVariClsfNm + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'variAlleleReadRt'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleReadRt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'variAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.variAlleleReadCnt + '</span></td>') : '';
                 (_includes(self.TH[self.NODE], 'refAlleleReadCnt'))? (txt+='<td align="center"><span class="font-msmall">' + v.refAlleleReadCnt + '</span></td>') : '';
@@ -834,6 +877,16 @@
             $("#cnacount").text(cnacount);
             $("#expcount").text(expcount);
             $("#svcount").text(svcount);
+
+            var txt='Samples : ';
+            for(var i=0;i<SAMPLES.length;i++){
+                txt+='<label class="label-default" style="width: auto;">';
+                txt+=getDivSample(SAMPLES[i]) +" ";
+                txt+=PATIENTID+','
+                if(i===0)txt+=' Primary'
+                txt+='</label>&nbsp;';
+            }
+            $("#divsample").html(txt);
         }
 
 
