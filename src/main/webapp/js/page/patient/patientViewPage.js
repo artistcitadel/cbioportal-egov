@@ -43,7 +43,8 @@ function PatientView(){
         var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
         // console.log('pat info ', txt);
         // $('.bio').html(txt);
-        $("#patientage").text(json[0].patientId + ' , '+txt);
+        var pid = '<span style="color:#3786C2">'+json[0].patientId+'</span>';
+        $("#patientage").html(pid + ' , '+txt);
     }
 
 

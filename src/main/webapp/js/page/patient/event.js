@@ -18,8 +18,8 @@ function Event() {
             (id === subject.petct) ? '#871982' :
             (id === subject.us) ? '#1a21e6' :
             '';
-         if(id === subject.brc)
-             console.log('eventcolor', color);
+         // if(id === subject.brc)
+         //     console.log('eventcolor', color);
         return color;
     }
 

@@ -1,6 +1,9 @@
 /**
  * @author 오세영
+ * based on the grch307 build
  */
+GENOMICOVERVIEWDATA = [];
+MUTATIONGENOMICDATA = [];
 function GenomicOverview() {
     var self = this;
     var util,action;
@@ -12,12 +15,13 @@ function GenomicOverview() {
         action.selectPatientMuList(ds_cond);
     }
     self.init = function(mutation) {
-        setWindowSize();
+        // setWindowSize();
         action = new Action();
         util = new Util();
         self.mutObjData = mutation['MUTATIONS'];
         self.cnaObjData = mutation['CNV'];
         self.stObjData = mutation['SV'];
+        MUTATIONGENOMICDATA = mutation;
         getXtAxis();
     }
 
@@ -77,12 +81,23 @@ function GenomicOverview() {
     }
 
 
+    self.redraw = function(xtjson){
+        if(xtjson.length===0)return;
+        action = new Action();
+        util = new Util();
+        self.mutObjData = MUTATIONGENOMICDATA['MUTATIONS'];
+        self.cnaObjData = MUTATIONGENOMICDATA['CNV'];
+        self.stObjData = MUTATIONGENOMICDATA['SV'];
+        setChromesome(xtjson);
+    }
     var setChromesome = function(xtjson){
+        if(GENOMICOVERVIEWDATA.length===0)
+            GENOMICOVERVIEWDATA= xtjson;
         self.dig = [];
         self.xt=[];
         self.m = [];
         self.chmName = [];
-        self.width = size.width-20;
+        self.width = window.innerWidth-160;
         self.wideGenePanelIcon = 20;
         self.heigthGenePanelIcon = 18;
         self.pixelsPerBinMut = 3;
@@ -460,15 +475,15 @@ function GenomicOverview() {
                 //console.log( 'pixil ',pixil);
                 var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
                 var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h+2);
-                r.attr("fill","#8539b2");
-                r.attr("stroke", "#8539b2");
+                r.attr("fill","#0f0");
+                r.attr("stroke", "#0f0");
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
                 addToolTip(r.node, arr.join("</br>"), 100, '');
 
                 if(j%2 !== 0) {
-                    drawLine(odd+1, yRow - h+2, pixil, yRow - h+2, p, '#000', 3);
+                    drawLine(odd+1, yRow - h+2, pixil, yRow - h+2, p, '#0f0', 3);
                 }
                 // console.log('jis ', j, pixil, odd);
                 ++j;

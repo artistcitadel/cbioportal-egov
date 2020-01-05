@@ -1,6 +1,11 @@
 /**
  * @author 오세영
  */
+TIMELINEDATA=[];
+PIXELMAPDATA=[];
+UNITDATA=[];
+TIMELINERAW=[];
+
 function TimeLine() {
     var self = this;
     var leftpadding = 90, lvalue = 90;
@@ -64,9 +69,9 @@ function TimeLine() {
     }
 
     function moveMutation(){
-        var pt = new PatientViewMutationTable();
-        pt.init();
-        ISROUNDMUTATION=true;
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
+        // ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {
         if(data.length<1){
@@ -100,7 +105,7 @@ function TimeLine() {
 
     function setTrack(data) {
         dig = data;
-        // console.log(' data is ', dig);
+        //console.log(' data is ', dig);
         var chmName = [];
         var temp = [];
         for (var i = 0; i < data.length; i++) {
@@ -135,6 +140,7 @@ function TimeLine() {
         }
 
         console.log(UNIT);
+        UNITDATA=UNIT;
 
         console.log('min ', min, max, size);
         if (UNIT === 'd') {
@@ -189,7 +195,8 @@ function TimeLine() {
             if (i > 0) xt[i] = xt[i - 1] + gap;
             if (i == 0) xt[i] = start;
         }
-        //alert(xt[xt.length-1]);
+        // xt[xt.length-1] = xt[xt.length-1]-(count*2*2);
+        // alert(xt[xt.length-1]);
         return xt;
     }
 
@@ -283,7 +290,8 @@ function TimeLine() {
                     console.log(temp);
                     //console.log(RAW);
                     var state = RAW;
-                    console.log(state);
+                    // console.log(state);
+
                     state = _.filter(state, function (o) {
                         var time = o.time;
                         if (UNIT === 'd') {
@@ -296,16 +304,25 @@ function TimeLine() {
                             return (time.substring(0, 4) === temp);
                         }
                     });
-                    console.log('state is ', state);
+                    //console.log('state is ', state);
                     if (state.length < 1) return;
                     var dat = [];
                     state = util.makeHrc(state, RAW, dat);
                     //state = _.reverse(state);
-                    var state = _.uniqBy(state, function (o) {
+                    // console.log('state', state);
+                    /*var state = _.uniqBy(state, function (o) {
+                        // console.log(o.id, util.nt(o.time));
                         return o.id + util.nt(o.time);
-                    })
-                    console.log('make hrc state ', state);
+                    })*/
+                    var stemp=[];
+                    var uniqstate=[];
+                    for(var i=0;i<state.length;i++){
+                        var txt = state[i].id+util.nt(state[i].time);
+                        if(!_.includes(stemp,txt)){stemp.push(txt);uniqstate.push(state[i]);}
+                    }
+                    // console.log('make hrc state ', state);
                     //return;
+                    // console.log('uniq state', uniqstate);
                     MODE = 'P';
 
                     $("#spinner1").show();
@@ -313,7 +330,7 @@ function TimeLine() {
                     _.delay(function () {
                         removeLine();
                         clearPaperPlotNode();
-                        setTimeLine('C', state);
+                        setTimeLine('C', uniqstate);
 
                     }, 1000);
                 });
@@ -403,6 +420,7 @@ function TimeLine() {
                 }
             }
         }
+        PIXELMAPDATA=pixelMap;
         // console.log('pixelMap ', pixelMap);
     }
 
@@ -412,6 +430,9 @@ function TimeLine() {
     }
 
     function makeEventBarChart() {
+
+        TIMELINEDATA = dig;
+
         setPlotAxis(dig);
         makeEventBarChartSub();
         //console.log('makeEventBarChart ', dig);
@@ -427,7 +448,6 @@ function TimeLine() {
 
     function makeEventBarChartSub() {
         // console.log('dig-> ', dig);
-
         $("#dhead").html("");
         var d = HMIN;
         console.log(HMIN);
@@ -459,9 +479,9 @@ function TimeLine() {
         //if(tdata.length<1)
         var tdata = util.arrayToTree(dig);
         console.log('tdata ', tdata);
+
         //console.log('tdata.data ', tdata[0]['data']);
         XGRIDS = [];
-
         for(var i=0;i<tdata.length;i++) {
             plotMuts(paper, ycnt, tdata[i]);
             if (tdata[i]['data'].length > 0)
@@ -469,7 +489,7 @@ function TimeLine() {
         }
 
         //console.log(' LASTYPOS ', LASTYPOS);
-        $('#genomicOverviewTracksContainer').children(1).css('height', LASTYPOS + 3 + 'px');
+        $('#timeLineContainer').children(1).css('height', LASTYPOS + 3 + 'px');
         MODE = 'N';
 
         util.hideLoader();
@@ -477,6 +497,7 @@ function TimeLine() {
         $('div.member').find('img').trigger('click');
         $('#timeline').scrollLeft(0);
         //console.log('last dig is ', dig);
+
         if (!ISROUNDMUTATION) {
             moveMutation();
             /*var pt = new PatientViewMutationTable();
@@ -487,7 +508,7 @@ function TimeLine() {
 
     function printPlot(paper, data) {
         // var data = _.uniqBy(tdata, 'id');
-        //console.log('data ', data);
+        // console.log('data ', data);
         for (var i = 0; i < data.length; i++) {
             plotMuts(paper, ycnt, data[i]);
             if (data[i].data.length > 0) {
@@ -540,10 +561,11 @@ function TimeLine() {
                 }
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
-                var r = p.circle(leftpadding, yRow - 4, pw+2);
+                var r = p.circle(leftpadding, yRow - 4, pw+1);
                 r.attr("fill", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke", event.getPlotColor(item.subject, item.id));
                 r.attr("stroke-width", pixelAry[i].stroke);
+                // r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);
                 r.hover(function () {
@@ -709,9 +731,47 @@ function TimeLine() {
         return p.path("M" + textBBox.x + " " + (textBBox.y + textBBox.height) + "L" + (textBBox.x + textBBox.width) + " " + (textBBox.y + textBBox.height));
     }
 
+    self.redrawing = function(){
+        if(TIMELINEDATA.length===0)return;
+        paperWidth = window.innerWidth-70;
+        paperHeight = 300;
+        RAW=TIMELINERAW;
+        paper = Raphael("timeLineContainer", paperWidth, paperHeight);
+        paper.scale({zoom: true});
+        var label = "Time since diagnosis";
+        var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
+        action = new Action();
+        util = new Util();
+        event = new Event();
+
+        console.log(paper);
+        XTREETEXTPADDING = 0;
+        leftpadding *= 2;
+        leftpadding += XTREETEXTPADDING;
+        UNIT = UNITDATA;
+        dig = TIMELINEDATA;
+        var start = leftpadding + XTREETEXTPADDING;
+        chmName = setTrack(dig);
+        xt = setXposition(start, chmName.length);
+        m = setXnamePosition(xt);
+        var end = xt[xt.length - 1];
+        var margin = paperWidth - end;
+        end += margin;
+        LINEEND = end;
+        drawTimeLine(start, chmName, xt, m, end);
+        makeEventBarChartCache();
+        /*ycnt = 0;
+        for(var i=0;i<TIMELINEDATA.length;i++) {
+            plotMuts(paper, ycnt, TIMELINEDATA[i]);
+            if (TIMELINEDATA[i]['data'].length > 0)
+                printPlot(paper, TIMELINEDATA[i]['data']);
+        }*/
+    }
+
 
     self.init = function () {
         // setWindowSize();
+        paperWidth = window.innerWidth-70;
         setDom(self);
         action = new Action();
         util = new Util();
@@ -719,12 +779,11 @@ function TimeLine() {
 
         util.showLoader();
         event = new Event();
-        paper = Raphael("genomicOverviewTracksContainer", paperWidth, paperHeight);
+        paper = Raphael("timeLineContainer", paperWidth, paperHeight);
         paper.scale({zoom: true});
 
         var label = "Time since diagnosis";
         var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
-
 
         var pathology = new Pathology();
         var specimen = new Specimen();
@@ -745,6 +804,7 @@ function TimeLine() {
             ++run;
             console.log('run ', run, pids.length);
             RAW = _.union(RAW, data);
+            TIMELINERAW=RAW;
             if(run===pids.length) {
                 // console.log('initRAW ', RAW);
                 setTimeLine('C', RAW);
@@ -812,7 +872,7 @@ function TimeLine() {
         var w = paperWidth;
         $('#zoomin').click(function () {
             $("#spinner1").show();
-            overview = $('#genomicOverviewTracksContainer').children(1);
+            overview = $('#timeLineContainer').children(1);
             //w = overview.attr('width');
             _.delay(function () {
                 scale = (TFORM * (zcnt + 1));

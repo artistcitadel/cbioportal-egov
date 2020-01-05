@@ -70,6 +70,19 @@
 		.qtip.my-qtip {
 			max-width: none;
 		}
+		.tooltip-content{
+			position: absolute;
+			padding : 10px;
+			border: 1px solid #dddddd;
+			/*top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;*/
+			width: 600px;
+			height: 474px;
+			z-index: 999;
+			background-color: white;
+		}
 	</style>
 
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jquery-ui-1.8.13.custom.min.js"></script>
@@ -89,6 +102,7 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/svCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/SampleLabel.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/ThumbnailExpandVAFPlot.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/d3/d3.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/VAFPlot.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/legacyVAFCode.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/blockUI.js"></script>

@@ -29,9 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 1.업무명 : 환자관리시스템
- * 2.단위업무명 : 환자조회
+ * 2.단위업무명 : 환자정보
  * 3.프로그램명 : 환자챠트
- * 4.설명 : 환자정보를 Controller 클래스다.
+ * 4.설명 : 환자정보를 조회하는 Controller 클래스다.
  *
  * @Class  PatientController.java
  * @author
@@ -111,10 +111,14 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		return "/patient/civic.tiles";
 	}
 
+	@RequestMapping(value="/patientAttr")
+	public String patientAttr(){
+		return "/patient/patientAttr.tiles";
+	}
 
 
 	/**
-	 * 환자 리스트 쿼리
+	 * 환자 리스트 조회
 	 * @param
 	 * @return
 	 */

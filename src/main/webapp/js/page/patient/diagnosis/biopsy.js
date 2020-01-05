@@ -70,7 +70,7 @@ function Biopsy() {
 
             crow.push(item);
         }
-        console.log('biopsy_setData => ', crow);
+        // console.log('biopsy_setData => ', crow);
         disposer();
     }
 

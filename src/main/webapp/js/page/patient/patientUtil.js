@@ -28,7 +28,8 @@ function Util() {
         var cYear = cMonth * 12;*/
         var date1 = moment(_date1);
         var date2 = moment(_date2);
-        if(node==='m') return date2.diff(date1,'M');
+
+        if(node==='m') return date2.diff(date1,'M')+1;
         if(node==='y') return date2.diff(date1,'years');
         if(node==='d') return date2.diff(date1,'days');
         // if(node==='m') return parseInt(dif / cMonth);

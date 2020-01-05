@@ -1,3 +1,5 @@
+SAMPLE_COLOR=['black','orange','red','blue'];
+
 Alterations = {
     Deletion : -2,
     Amplification : 2

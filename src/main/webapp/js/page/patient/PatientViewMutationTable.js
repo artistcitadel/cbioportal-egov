@@ -643,18 +643,19 @@
                          var clasz = 'invisible';
                          if(spcntemp.indexOf(i)!==-1)
                              clasz = '';
-                         txt += '  <li class="'+clasz+'">\n' +
-                             '       <svg height="12" width="12">\n' +
-                             '         <svg width="12" height="12" class="case-label-header" data-test="sample-icon">\n' +
-                             '           <g transform="translate(6,6)">\n' +
-                             '             <circle r="6" fill="black" fill-opacity="1"></circle>\n' +
-                             '           </g>\n' +
-                             '           <g transform="translate(6,5.5)">\n' +
-                             '             <text y="4" text-anchor="middle" font-size="10" fill="white" style="cursor: default;">'+i+'</text>\n' +
-                             '           </g>\n' +
-                             '        </svg>\n' +
-                             '      </svg>\n';
-                         '    </li>\n';
+                         txt += '  <li class="'+clasz+'">\n' ;
+                         txt+=getDivSample(i);
+                             // '       <svg height="12" width="12">\n' +
+                             // '         <svg width="12" height="12" class="case-label-header" data-test="sample-icon">\n' +
+                             // '           <g transform="translate(6,6)">\n' +
+                             // '             <circle r="6" fill="black" fill-opacity="1"></circle>\n' +
+                             // '           </g>\n' +
+                             // '           <g transform="translate(6,5.5)">\n' +
+                             // '             <text y="4" text-anchor="middle" font-size="10" fill="white" style="cursor: default;">'+i+'</text>\n' +
+                             // '           </g>\n' +
+                             // '        </svg>\n' +
+                             // '      </svg>\n';
+                         txt+='    </li>\n';
                      }
                     txt +='  </ul>\n' +
                         '</div>' +
@@ -879,11 +880,13 @@
             $("#svcount").text(svcount);
 
             var txt='Samples : ';
+            var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
             for(var i=0;i<SAMPLES.length;i++){
                 txt+='<label class="label-default" style="width: auto;">';
                 txt+=getDivSample(SAMPLES[i]) +" ";
-                txt+=PATIENTID+','
-                if(i===0)txt+=' Primary'
+                txt+=pid+'_';
+                txt+=(i+1);
+                // if(i===0)txt+=' Primary'
                 txt+='</label>&nbsp;';
             }
             $("#divsample").html(txt);
@@ -930,7 +933,7 @@
             var targetTable = self.NODE+"_t";
             //var $table3 = $('#t-1');
             var $table3 = $('#'+targetTable);
-            console.log('$table3 ', $table3);
+            // console.log('$table3 ', $table3);
             var rows = getMutation();
             var $headers = $table3.find('thead th').slice(0);
             $headers
