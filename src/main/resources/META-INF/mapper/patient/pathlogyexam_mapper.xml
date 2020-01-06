@@ -16,7 +16,8 @@
         from pmsdev.PMGEMEMTH a
         join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
         WHERE a.GENE_EXAM_MTH_NM != ''
-          and b.RESCH_PAT_ID = #{patientId}
+          and b.RESCH_PAT_ID != #{patientId}
+          limit 30
     </select>
 
     <select id="selectPathHrc" resultType="com.softcen.bigcen.med.patient.vo.Pathology">
@@ -36,10 +37,10 @@
        a.ORDR_DIRECT_DT time
        from pmsdev.OOODMEXAM a join pmsdev.PMGEMEMTH b on a.ORDR_CD = b.EXAM_CD
        WHERE b.GENE_EXAM_MTH_NM != ''
-       AND a.RESCH_PAT_ID = #{patientId}
+       AND a.RESCH_PAT_ID != #{patientId}
         <if test="inParam != null and inParam != ''">
             AND b.GENE_EXAM_MTH_NM IN( #{inParam} )
         </if>
-       /*limit 300*/
+       limit 30
     </select>
 </mapper>

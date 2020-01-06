@@ -4,9 +4,9 @@ function setWindowSize() {
         width: window.innerWidth,
         height: window.innerHeight
     };
-    console.log('setWindowSize ',size);
     if(document.readyState !== "complete")return false;
     if(_.isUndefined(size))return false;
+    console.log('setWindowSize ',size);
 
     $("#genomicOverviewTracksContainer1").empty();
     $("#vafplot1").empty();
@@ -22,4 +22,4 @@ function setWindowSize() {
     // var overview = $('#genomicOverviewTracksContainer1').children(1);
     // overview.css('width', size.width-140);
 }
-jQuery(window).on('resize', _.debounce(setWindowSize, 500));
+ jQuery(window).on('resize', _.debounce(setWindowSize, 500));

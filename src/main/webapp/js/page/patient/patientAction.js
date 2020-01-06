@@ -166,7 +166,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,
-            //timeout: 10000,
+            timeout: 10000,
             success: function (json) {
                 props.callback(json);
             },
@@ -188,7 +188,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,
-            //timeout: 10000,
+            timeout: 10000,
             success: function (json) {
                 props.callback(json);
             },

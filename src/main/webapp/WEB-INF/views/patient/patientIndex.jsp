@@ -94,14 +94,14 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/lodash.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientAction.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientUtil.js"></script>
-	<script type='text/javascript' src="<%=docRoot%>js/page/patient/WindowStore.js"></script>
-	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientEtc.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/FrequencyBar.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/MutCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/CnaCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/svCohort.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/SampleLabel.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/ThumbnailExpandVAFPlot.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientAttr.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientInfo.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/d3/d3.min.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/VAFPlot.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/VAPlot/legacyVAFCode.js"></script>

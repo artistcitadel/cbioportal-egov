@@ -116,6 +116,20 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		return "/patient/patientAttr.tiles";
 	}
 
+	@RequestMapping(value="/patientInfo")
+	public String patientInfo(){
+		return "/patient/patientInfo.tiles";
+	}
+
+	@RequestMapping(value="/patientSample")
+	public String patientSample(){
+		return "/patient/patientSample.tiles";
+	}
+
+	@RequestMapping(value="/patientSimilar")
+	public String patientSimilar(){
+		return "/patient/patientSimilar.tiles";
+	}
 
 	/**
 	 * 환자 리스트 조회

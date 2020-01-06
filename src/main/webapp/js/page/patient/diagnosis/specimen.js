@@ -36,13 +36,14 @@ function Specimen() {
         crow.push(htem);
     }
     var setTissue = function(json) {
-        if(json.length>0){
+        // if(json.length>0){
             setSpecimenHeader();
             tissue_setData(json);
-        }
-        if (plotFilter.searchPlotId(subject.brc) !== -1) {
-            round_brc();
-        }
+        // }
+        //   if (plotFilter.searchPlotId(subject.brc) !== -1) {
+        //       round_brc();
+        //   }
+
     }
 
     function round_brc(json) {
@@ -53,6 +54,7 @@ function Specimen() {
     }
 
     function tissue_setData(data) {
+        console.log('tissue_setData called');
         for (var i = 0; i < data.length; i++) {
             var item = {};
             item.subject = subject.specimen;
@@ -80,6 +82,11 @@ function Specimen() {
         }
         // console.log('round tissue => ', crow);
      //return crow;
+        if (plotFilter.searchPlotId(subject.brc) !== -1) {
+            round_brc();
+        }else{
+            disposer();
+        }
     }
 
     function brc_setData(data) {

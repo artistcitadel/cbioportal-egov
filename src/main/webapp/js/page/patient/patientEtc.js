@@ -7,6 +7,99 @@ $(document).ready(function () {
         }
     });
 
+    $("#cdata").on("click",function(){
+      document.pform.action='patientSample';
+      // alert(document.pform.patientId.value);
+      // alert(document.pform.pages.value);
+      // alert(document.pform.resch_pat_id.value);
+      // document.pform.mutationcount.value=MUTATIOINCOUNT;
+      console.log('SAMPLES ', SAMPLES);
+      document.pform.samples.value=SAMPLES.join(",");
+      console.log(document.pform.samples.value);
+      document.pform.target = "_blank";
+      console.log(SAMPLEPERMUTATION);
+      var samplespermutation = Object.values(SAMPLEPERMUTATION).join(",");
+      document.pform.samplespermutation.value=samplespermutation;
+
+      document.pform.sex.value=SEX;
+      document.pform.age.value=AGE;
+      document.pform.cancertype.value=CANCERTYPE;
+      document.pform.cancertypedetail.value=CANCERTYPEDETAIL;
+      document.pform.oncotreecode.value=ONCOTREECODE;
+      document.pform.submit();
+
+    });
+
+    $("#patientage").on("mouseover", "[id='patienthead']", function (e) {
+        var id = e.target.id;
+        var prop = {};
+        prop.sex = SEX;
+        prop.age = AGE;
+        prop.samplecount = SAMPLES.length;
+
+        var patientInfo = new PatientInfo();
+        $('#'+id+'').tooltipster({
+            theme: 'tooltipster-shadow',
+            contentAsHTML: true,
+            interactive: true,
+            arrow: true,
+            content: patientInfo.init(prop)
+        });
+        $('#'+id+'').tooltipster('open');
+    });
+
+    $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
+        var id = e.target.id;
+        loadSampleAttr(id);
+    });
+    /*$("#MUTATIONS_con").on("mouseover", "[id^='samplelabel_']", function (e) {
+        var id = e.target.id;
+        loadSampleAttr(id);
+    });
+    $("#CNV_con").on("mouseover", "[id^='samplelabel_']", function (e) {
+        var id = e.target.id;
+        loadSampleAttr(id);
+    });
+    $("#SV_con").on("mouseover", "[id^='samplelabel_']", function (e) {
+        var id = e.target.id;
+        loadSampleAttr(id);
+    });*/
+    var loadSampleAttr = function(id){
+        console.log('loadSampleAtrr called');
+        var prop = {};
+        // prop.cancertype = CANCERTYPE;
+        // prop.cancertypedetail = CANCERTYPEDETAIL;
+        // prop.oncotreecode = ONCOTREECODE;
+
+        var patientAttr = new PatientAttr();
+        $('#'+id+'').tooltipster({
+            theme: 'tooltipster-shadow',
+            contentAsHTML: true,
+            interactive: true,
+            arrow: true,
+            content: patientAttr.init(id)
+        });
+        $('#'+id+'').tooltipster('open');
+        /*$('#'+id+'').tooltipster({
+            theme: 'tooltipster-shadow',
+            contentAsHTML: true,
+            interactive: true,
+            arrow: true,
+            content:  'Loading...',
+            functionBefore: function(instance, helper) {
+                //var $origin = $(helper.origin);
+                //if ($origin.data('ajax') !== 'cached') {
+                    instance.content(patientAttr.init(id, prop));
+                  //  $origin.data('ajax', 'cached');
+                //}
+            },
+            functionAfter: function(instance) {
+
+            }
+        });
+        $('#'+id+'').tooltipster('open');*/
+    }
+
     //console.log('localStorage["digcategory"]) ',localStorage["digcategory"]);
     var digcategory=[];
     if(!_.isUndefined(localStorage["digcategory"]))
@@ -97,12 +190,6 @@ $(document).ready(function () {
         //console.log(digcategory);
         location.reload();
     });
-
-    var patientView = new TimeLine();
-    patientView.init();
-    // var pt = new PatientViewMutationTable();
-    // pt.init();
-
 });
 
 function tabToggle(seq,id){

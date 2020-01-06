@@ -1,9 +1,6 @@
 /**
  * @author 오세영
  */
-
-
-
 function PatientView(){
    var self = this;
    self.getPatientDescription = function (){
@@ -40,10 +37,17 @@ function PatientView(){
             cancerTypeDetail = cancerTypeDetail.substring(0, cancerTypeDetail.length-1);
         }
 
-        var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
+        AGE = json[0].age;
+        SEX = sex;
+        CANCERTYPE = cancerType;
+        CANCERTYPEDETAIL = cancerTypeDetail;
+        ONCOTREECODE = cancerMode;
+
+        // var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
+        var txt = json[0].age + ' years old, ' + sex + ', ' + cancerType;
         // console.log('pat info ', txt);
         // $('.bio').html(txt);
-        var pid = '<span style="color:#3786C2">'+json[0].patientId+'</span>';
+        var pid = '<span id="patienthead" style="color:#3786C2;cursor:default">'+json[0].patientId+'</span>';
         $("#patientage").html(pid + ' , '+txt);
     }
 

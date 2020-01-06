@@ -18,10 +18,11 @@ function getCNAColor(dat){
 
 }
 
-function getDivSample(label){
+function getDivSample(id, label){
+    // var id = 'samplelabel_'+idd+'_'+label;
     var color = (label===1)?'black':(label===2)?'orange':(label===3)?'red':'blue';
-    return '<span>\n' +
-        '     <svg height="12" width="12">\n' +
+    return '<span> \n' +
+        '     <svg id="samplelabel_'+id+'" height="12" width="12">\n' +
         '       <svg width="12" height="12" class="case-label-header" data-test="sample-icon">\n' +
         '         <g transform="translate(6,6)">\n' +
         '           <circle r="6" fill="'+color+'" fill-opacity="1">\n' +

@@ -68,7 +68,7 @@ function Sugery() {
 
                 crow.push(item);
         }
-        console.log('surgery_setData => ', crow);
+        // console.log('surgery_setData => ', crow);
         disposer();
     }
 

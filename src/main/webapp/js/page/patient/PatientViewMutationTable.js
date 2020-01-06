@@ -193,6 +193,7 @@
             // console.log('PatientViewMutationTable called');
             $('.ttt').show();
             $('#xgrid').hide();
+            $("#sample_loader").show();
             $("#mut_loader").show();
             $("#cna_loader").show();
             $("#st_loader").show();
@@ -644,7 +645,7 @@
                          if(spcntemp.indexOf(i)!==-1)
                              clasz = '';
                          txt += '  <li class="'+clasz+'">\n' ;
-                         txt+=getDivSample(i);
+                         txt+=getDivSample("td",i);
                              // '       <svg height="12" width="12">\n' +
                              // '         <svg width="12" height="12" class="case-label-header" data-test="sample-icon">\n' +
                              // '           <g transform="translate(6,6)">\n' +
@@ -778,7 +779,7 @@
                     // ' </div>\n' +
                     txt+='</span></td>';
                 }
-                (_includes(self.TH[self.NODE], 'cosmic'))? (txt+='<td align="center"><div id="cosmic_' + v.geneExamSpcnId + '"  data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '">' + null2str(v.cosmic) + '</div></td>'):'';
+                (_includes(self.TH[self.NODE], 'cosmic'))? (txt+='<td align="center"><div style="cursor:default;" id="cosmic_' + v.geneExamSpcnId + '"  data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '">' + null2str(v.cosmic) + '</div></td>'):'';
                 txt+='</tr>';
             });
             //console.log(txt);
@@ -861,6 +862,7 @@
 
             // $("[id^='ann_']").trigger('hover');
             // $("[id^='civic_']").trigger('hover');
+            $("#sample_loader").hide();
             $("#mut_loader").hide();
             $("#cna_loader").hide();
             // $("#exp_loader").hide();
@@ -874,6 +876,7 @@
             var cnacount = self.TABLE[self.NODES[1]].length;
             var expcount = self.TABLE[self.NODES[2]].length;
             var svcount = self.TABLE[self.NODES[3]].length;
+            MUTATIOINCOUNT = self.TABLE[self.NODES[0]].length+self.TABLE[self.NODES[1]].length+self.TABLE[self.NODES[2]].length+self.TABLE[self.NODES[3]].length;
             $("#mutcount").text(mutcount);
             $("#cnacount").text(cnacount);
             $("#expcount").text(expcount);
@@ -881,29 +884,29 @@
 
             var txt='Samples : ';
             var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
+            // console.log("SAMPLES ", SAMPLES);
             for(var i=0;i<SAMPLES.length;i++){
                 txt+='<label class="label-default" style="width: auto;">';
-                txt+=getDivSample(SAMPLES[i]) +" ";
+                txt+=getDivSample((PATIENTID+"_"+SAMPLES[i]) , SAMPLES[i]) +" ";
                 txt+=pid+'_';
                 txt+=(i+1);
                 // if(i===0)txt+=' Primary'
                 txt+='</label>&nbsp;';
             }
             $("#divsample").html(txt);
-        }
+           }
 
+            var buildRowsMutation = function(json, dirty) {
+                // console.log('buildRowMutation called ',self.ROUNDCNT, json);
 
-        var buildRowsMutation = function(json, dirty) {
-            // console.log('buildRowMutation called ',self.ROUNDCNT, json);
+                buildTd(json);
 
-            buildTd(json);
-
-            //var gene = new GenomicOverview(LASTYPOS);
-            /*if(!self.ISROUNDMUTATION) {
-                var gene = new GenomicOverview();
-                gene.init(getMutation());
-            }
-            self.ISROUNDMUTATION = true;*/
+                //var gene = new GenomicOverview(LASTYPOS);
+                /*if(!self.ISROUNDMUTATION) {
+                    var gene = new GenomicOverview();
+                    gene.init(getMutation());
+                }
+                self.ISROUNDMUTATION = true;*/
 
             //console.log('self.TABLE[self.NODE].length ', self.NODE);
             var pager = new Pager();

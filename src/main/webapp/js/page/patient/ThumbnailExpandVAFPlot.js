@@ -177,7 +177,7 @@ function ThumbnailExpandVAFPlot() {
 
         console.log('computeMutationFrequencyBySample', ret);
        // return ret;
-        console.log('freq data',ret);
+       //  console.log('freq data',ret);
         var options={};
         var props = {};
         props.colors = colors;

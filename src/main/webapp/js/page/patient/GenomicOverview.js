@@ -298,7 +298,7 @@ function GenomicOverview() {
         // console.log('MUT spcnSeq ',spcnSeq);
 
         _.forEach(spcnSeq, function (v) {
-            // console.log(' vis ', v);
+             // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             for (var i = 0; i < mutObj.length; i++) {
@@ -311,6 +311,7 @@ function GenomicOverview() {
                     if (pixelMap[xBin] == null) pixelMap[xBin] = [];
                     pixelMap[xBin].push(mutObj[i].geneNm + ": " + mutObj[i].hgvspVal);
                     ++len;
+                    SAMPLEPERMUTATION[v]+=1;
                 }
             }
 
@@ -357,7 +358,7 @@ function GenomicOverview() {
             var genomeAltered = 0;
             var yRow = self.yRow(row)+self.rowHeight;
             for (var i = 0; i < cnaObj.length; i++) {
-                // if (cnaObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
+              if (cnaObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
                 var chm = translateChm(cnaObj[i].chrnNo);
                 var start = Number(cnaObj[i].geneVariStLocVal);
                 var end = Number(cnaObj[i].geneVariEndLocVal);
@@ -380,7 +381,8 @@ function GenomicOverview() {
                 var tip = "Mean copy number log2 value: "+segMean+"<br/>from "+loc2string(chm,start)+"<br/>to "+loc2string(chm,end);
                 addToolTip(r.node,tip, '', '');
                 ++len;
-                // }
+                SAMPLEPERMUTATION[v]+=1;
+              }
             }
             var label = "CNA("+v+")";
             var t = p.text(16,yRow+self.rowHeight/2,label).attr({'text-anchor': 'center', 'fill':'black'});
@@ -448,9 +450,8 @@ function GenomicOverview() {
                     var xBin1 = x1 - x1 % 1;
                     if (pixelMap[xBin1] == null) pixelMap[xBin1] = [];
                     pixelMap[xBin1].push(mutObj[i].geneNm1 + ": " + mutObj[i].cytbNm1);
-
                     ++len;
-
+                    SAMPLEPERMUTATION[v]+=1;
                 }
             }
 

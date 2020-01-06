@@ -69,7 +69,7 @@ function Pathology() {
             if (plotFilter.searchPlotId(item.id) !== -1)
               crow.push(item);
         }
-        console.log('path_setData => ', crow);
+        // console.log('path_setData => ', crow);
         disposer();
     }
 

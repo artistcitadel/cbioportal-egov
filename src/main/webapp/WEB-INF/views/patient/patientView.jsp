@@ -25,12 +25,12 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;">
     <!-- Content Header (Page header) -->
-    <section class="content-header" style="background-color: aliceblue;">
+    <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
             &nbsp;
-            <small>Summary</small>
-            <a href="#"><small>Clinical Data</small></a>
-            <a href="#"><small>Similar Patients</small></a>
+            <small style="color:#3786C2;">Summary</small>
+            <a id="cdata" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
+            <a href="#"><small style="color:#3786C2;">Similar Patients</small></a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> </a></li>
@@ -76,7 +76,14 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="divsample"><%--Samples: primary--%>
+                                    <td class="ttt" id="divsample"><%--Samples: primary--%>
+                                        <div id="sample_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
                                         <%--<span>
                                           <svg height="12" width="12">
                                             <svg width="12" height="12" class="case-label-header" data-test="sample-icon">
@@ -437,6 +444,7 @@
                     <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
                     <%--<img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>--%>
                         <strong>Asan Cancer Center</strong>
+                    </span>
                 </div>
             </div>
         </div>
@@ -509,8 +517,16 @@
     <input type="hidden" name="resch_pat_id" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
     <input type="hidden" name="pages" id="pages" value="${pages}"/>
     <input type="hidden" name="patientId" id="patientId" value="${patientId}"/>
-</form>
 
+    <input type="hidden" name="samplespermutation" id="samplespermutation" value="" />
+    <input type="hidden" name="samples" id="samples" value="" />
+    <input type="hidden" name="age" id="age" value="" />
+    <input type="hidden" name="sex" id="sex" value="" />
+    <input type="hidden" name="cancertype" id="cancertype" value="" />
+    <input type="hidden" name="cancertypedetail" id="cancertypedetail" value="" />
+    <input type="hidden" name="oncotreecode" id="oncotreecode" value="" />
+</form>
+<script src="<c:url value="/js/page/patient/WindowStore.js" />"></script>
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
 <script src="<c:url value="/js/page/patient/oncokbUtil.js" />"></script>
 <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
@@ -522,12 +538,24 @@
 <script src="<c:url value="/js/page/patient/diagnosis/biopsy.js" />"></script>
 <script src="<c:url value="/js/page/patient/plotFilter.js" />"></script>
 <script src="<c:url value="/js/page/patient/event.js" />"></script>
+<script src="<c:url value="/js/page/patient/patientEtc.js" />"></script>
 <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
 <script src="<c:url value="/js/page/patient/annotation.js" />"></script>
 <script src="<c:url value="/js/page/patient/civic.js" />"></script>
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
+    // var MUTATIOINCOUNT;
+    var AGE;
+    var SEX;
+    var CANCERTYPE;
+    var CANCERTYPEDETAIL;
+    var ONCOTREECODE;
+
+    var SAMPLEPERMUTATION = {};
+    SAMPLEPERMUTATION["1"]=0;SAMPLEPERMUTATION["2"]=0;SAMPLEPERMUTATION["3"]=0;SAMPLEPERMUTATION["4"]=0;
+
+    var SAMPLECOUNT;
     var SAMPLES=[];
     var PATIENTID;
     var QUERY;
@@ -553,9 +581,12 @@
         buildPatient();
     }
 
+    var isSelectPatient=false;
     function buildPatient(){
         var patients = document.pform.patients.value;
         if( (pages==='1' && resch_pat_id.length>7 && resch_pat_id.length<15 ) && patientId.length!=10){
+            // alert(patients.indexOf(resch_pat_id));
+            isSelectPatient = true;
             patientId = resch_pat_id;
         }
         if(patientId==""){
@@ -564,21 +595,33 @@
         PATIENTID = patientId;
         QUERY = document.pform.query.value;
 
+        document.pform.patientId.value = patientId;
+
         $("#patientname").text(patientId);
         var pager = new Pager();
         var sel = $("#summary_pageview");
         var udata = [];
+        if(isSelectPatient)udata.push(PATIENTID);
+        // console.log('udata ', udata[0]);
         if(patients.indexOf(",")!==-1){
             var ps = patients.split(",");
             for(var i=0;i<ps.length;i++){
-                udata.push(ps[i]);
+                if(isSelectPatient && ps[i]===PATIENTID)continue;
+                else udata.push(ps[i]);
             }
         }else{
             udata.push(patients);
         }
+        if(isSelectPatient)document.pform.patients.value=udata.join(',');
+        // console.log('udata ', udata[0]);
 
         var patientView = new PatientView();
         patientView.getPatientDescription();
+
+        var timeLine = new TimeLine();
+        timeLine.init();
+        // var pt = new PatientViewMutationTable();
+        // pt.init();
 
         var tpage = udata.length;
         var page = parseInt(pages);

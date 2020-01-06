@@ -69,9 +69,9 @@ function TimeLine() {
     }
 
     function moveMutation(){
-        // var pt = new PatientViewMutationTable();
-        // pt.init();
-        // ISROUNDMUTATION=true;
+        var pt = new PatientViewMutationTable();
+        pt.init();
+        ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {
         if(data.length<1){
@@ -89,7 +89,7 @@ function TimeLine() {
         var start = leftpadding + XTREETEXTPADDING;
         (node === 'C') ? chmName = setTrack(data) : null;
         //paperWidth = chmName.length * dynamicWidthPartial;
-        console.log(chmName);
+        // console.log(chmName);
         xt = setXposition(start, chmName.length);
         // console.log('xt is ', xt);
         m = setXnamePosition(xt);
@@ -160,7 +160,7 @@ function TimeLine() {
         for (var k = 0; k < size; k++) {
             chmName.push(getChmDay(min, k, UNIT));
         }
-        console.log('chmName is ' , chmName);
+        // console.log('chmName is ' , chmName);
         (INITUNIT == null) ? INITUNIT = UNIT : INITUNIT;
         return chmName;
     }
@@ -475,10 +475,10 @@ function TimeLine() {
         //console.log('dig is ', dig);
         ycnt = 0
         dig = _.uniqBy(dig, 'id');
-        console.log('uniq dig is ', dig);
+        // console.log('uniq dig is ', dig);
         //if(tdata.length<1)
         var tdata = util.arrayToTree(dig);
-        console.log('tdata ', tdata);
+        // console.log('tdata ', tdata);
 
         //console.log('tdata.data ', tdata[0]['data']);
         XGRIDS = [];
@@ -798,7 +798,6 @@ function TimeLine() {
         pids.push('PATHOLOGY_EXAM');
         pids.push('IMAGING');
         var run=0;
-
         specimen.init(findLevel, exist, setSpecimenData);
         function setRound(data){
             ++run;
