@@ -94,7 +94,7 @@
                       , GMU.TOT_ALLELE_READ_CNT            -- 총대립유전자리드수 (화면표시X Allele Freq 마우스 오버 사용)
                       , GMU.VARI_ALLELE_READ_CNT           -- Variant Reads
                       , GMU.REF_ALLELE_READ_CNT            -- Ref Reads
-                      , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS COPY   -- Copy #
+                      , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE GCV.CNV_STAT_NM END AS COPY   -- Copy # (해당 유전자가 CNA에도 있으면 CNV_STAT_NM 표시, 없으면 Diploid 표시)
                       , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM                              ) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
                       , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
                       , SUM(MCS.GENE_VARI_OCCUR_CNT) AS OCCUR_CNT  -- COSMIC

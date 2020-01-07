@@ -69,6 +69,7 @@ function TimeLine() {
     }
 
     function moveMutation(){
+        if(!hasgenomicoverview)return;
         var pt = new PatientViewMutationTable();
         pt.init();
         ISROUNDMUTATION=true;
@@ -768,8 +769,9 @@ function TimeLine() {
         }*/
     }
 
-
-    self.init = function () {
+    var hasgenomicoverview=false;
+    self.init = function (hasgenomicoverviewp) {
+        hasgenomicoverview = hasgenomicoverviewp;
         // setWindowSize();
         paperWidth = window.innerWidth-70;
         setDom(self);

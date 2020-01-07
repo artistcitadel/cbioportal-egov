@@ -7,28 +7,32 @@ $(document).ready(function () {
         }
     });
 
-    $("#cdata").on("click",function(){
+    $("#cview").on("click",function(){
       document.pform.action='patientSample';
-      // alert(document.pform.patientId.value);
-      // alert(document.pform.pages.value);
-      // alert(document.pform.resch_pat_id.value);
-      // document.pform.mutationcount.value=MUTATIOINCOUNT;
-      console.log('SAMPLES ', SAMPLES);
-      document.pform.samples.value=SAMPLES.join(",");
-      console.log(document.pform.samples.value);
-      document.pform.target = "_blank";
-      console.log(SAMPLEPERMUTATION);
-      var samplespermutation = Object.values(SAMPLEPERMUTATION).join(",");
-      document.pform.samplespermutation.value=samplespermutation;
-
-      document.pform.sex.value=SEX;
-      document.pform.age.value=AGE;
-      document.pform.cancertype.value=CANCERTYPE;
-      document.pform.cancertypedetail.value=CANCERTYPEDETAIL;
-      document.pform.oncotreecode.value=ONCOTREECODE;
-      document.pform.submit();
-
+        moveTab();
     });
+    $("#sview").on("click",function(){
+        document.pform.action='patientResemble';
+        moveTab();
+    });
+
+    var moveTab = function(){
+        console.log('SAMPLES ', SAMPLES);
+        document.pform.samples.value=SAMPLES.join(",");
+        console.log(document.pform.samples.value);
+        document.pform.target = "_blank";
+        console.log(SAMPLEPERMUTATION);
+        var samplespermutation = Object.values(SAMPLEPERMUTATION).join(",");
+        document.pform.samplespermutation.value=samplespermutation;
+
+        document.pform.mutationcount.value=MUTATIOINCOUNT;
+        document.pform.sex.value=SEX;
+        document.pform.age.value=AGE;
+        document.pform.cancertype.value=CANCERTYPE;
+        document.pform.cancertypedetail.value=CANCERTYPEDETAIL;
+        document.pform.oncotreecode.value=ONCOTREECODE;
+        document.pform.submit();
+    }
 
     $("#patientage").on("mouseover", "[id='patienthead']", function (e) {
         var id = e.target.id;
@@ -48,10 +52,15 @@ $(document).ready(function () {
         $('#'+id+'').tooltipster('open');
     });
 
-    $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
-        var id = e.target.id;
-        loadSampleAttr(id);
+    $("#divsample").on("mouseover", function (e) {
+        //console.log($(this).find('svg').attr('id'));
+        loadSampleAttr($(this).find('svg').attr('id'));
     });
+
+    // $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
+    //     var id = e.target.id;
+    //     loadSampleAttr(id);
+    // });
     /*$("#MUTATIONS_con").on("mouseover", "[id^='samplelabel_']", function (e) {
         var id = e.target.id;
         loadSampleAttr(id);
@@ -65,7 +74,7 @@ $(document).ready(function () {
         loadSampleAttr(id);
     });*/
     var loadSampleAttr = function(id){
-        console.log('loadSampleAtrr called');
+        // console.log('loadSampleAtrr called');
         var prop = {};
         // prop.cancertype = CANCERTYPE;
         // prop.cancertypedetail = CANCERTYPEDETAIL;

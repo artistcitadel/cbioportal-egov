@@ -28,9 +28,9 @@
     <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
             &nbsp;
-            <small style="color:#3786C2;">Summary</small>
-            <a id="cdata" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
-            <a href="#"><small style="color:#3786C2;">Similar Patients</small></a>
+            <small style="color:#000;">Summary</small>
+            <a id="cview" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
+            <a id="sview" href="#"><small style="color:#3786C2;">유사환자</small></a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> </a></li>
@@ -518,6 +518,7 @@
     <input type="hidden" name="pages" id="pages" value="${pages}"/>
     <input type="hidden" name="patientId" id="patientId" value="${patientId}"/>
 
+    <input type="hidden" name="mutationcount" id="mutationcount" value="" />
     <input type="hidden" name="samplespermutation" id="samplespermutation" value="" />
     <input type="hidden" name="samples" id="samples" value="" />
     <input type="hidden" name="age" id="age" value="" />
@@ -545,7 +546,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
-    // var MUTATIOINCOUNT;
+    var MUTATIOINCOUNT;
     var AGE;
     var SEX;
     var CANCERTYPE;
@@ -618,8 +619,9 @@
         var patientView = new PatientView();
         patientView.getPatientDescription();
 
+        var hasgenomicoverview = true;
         var timeLine = new TimeLine();
-        timeLine.init();
+        timeLine.init(hasgenomicoverview);
         // var pt = new PatientViewMutationTable();
         // pt.init();
 

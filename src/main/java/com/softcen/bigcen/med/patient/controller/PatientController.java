@@ -74,7 +74,8 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	public String patientView(HttpServletRequest request, HttpServletResponse response,
 														Model model , @RequestParam(value="QUERY", defaultValue="SELECT RESCH_PAT_ID\n" +
 			" FROM \n" +
-			"pmsdata.P0000001\n" +
+			//"pmsdata.P0000001\n" +
+			"pmsdata.P0000\n" +
 			" WHERE \n" +
 			"1=1\n" +
 			" AND DELETE_YN = 'N'") String QUERY, @RequestParam(value="RESCH_PAT_ID",defaultValue="48321932") String RESCH_PAT_ID,
@@ -126,9 +127,9 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		return "/patient/patientSample.tiles";
 	}
 
-	@RequestMapping(value="/patientSimilar")
+	@RequestMapping(value="/patientResemble")
 	public String patientSimilar(){
-		return "/patient/patientSimilar.tiles";
+		return "/patient/patientResemble.tiles";
 	}
 
 	/**

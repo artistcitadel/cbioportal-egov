@@ -25,12 +25,12 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;">
     <!-- Content Header (Page header) -->
-    <section class="content-header" style="background-color: aliceblue;">
+    <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
             &nbsp;
             <a id="pview" href="#"><small style="color:#3786C2;">Summary</small></a>
-            <small style="color:#000">Clinical Data</small>
-            <a id="sview" href="#"><small style="color:#3786C2;">유사환자</small></a>
+            <a id="cview" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
+            <small style="color:#000;">유사환자</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> </a></li>
@@ -40,17 +40,11 @@
     </section>
 
 
-
-
-    <%--<section class="content">--%>
-    <!-- Default box -->
     <div class="box">
-        <%--<div class="box-header with-border">
-            <h3 class="box-title"></h3>
-        </div>--%>
         <div class="box-body">
             <div id="container">
-                <div>
+
+                <div class="ttt" style="display:none;">
                     <div>
                         <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                         <div style="display: inline-flex;">
@@ -64,114 +58,73 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="divsample"><%--Samples: primary--%>
+                                    <td id="divsample">
+                                        <div id="sample_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div className="studyMetaBar"></div>
-
                     </div>
                 </div>
                 <hr />
+
+                <div class="container-fulid ttt" style="display:none;">
+                    <table id="tresemble" class="table table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="active">patient</th>
+                            <th scope="col">age</th>
+                            <th scope="col">sex</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>patient</td>
+                            <td>age</td>
+                            <td>sex</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div id="resemble_pageview" class="com-paging">
+                    </div>
+                </div>
+
+                <hr/>
 
                 <div class="container-fulid">
-                    <div class="col-xs-4 col " align="left" style="font-weight:bold;">
-                        <span style="color:#3786C2">Patient</span>
+                    <div class="row" id="row1">
+                        <div class="col-xs-3 col">
+                        </div>
+                        <div class="col-xs-3 col"></div>
+                        <div class="col-xs-3 col"></div>
+                        <div class="col-xs-3 col text-align-right">
+                            <label class="label-default" style="width: auto;text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
+                            <input id="reset" type="button" value="Reset" class="btn btn-sm btn-default" style="display:none;margin-right:3px;">
+                            <input id="xgrid" type="button" value="Grid on" class="btn btn-sm btn-success" style="display:none;">
+                        </div>
                     </div>
-                    <br/>
-                    <table id="patient_t" class="table table-bordered">
-                        <thead>
-                        <tr class="success">
-                            <th>Attribute</th>
-                            <th width="500px">Value</th>
-                        </tr>
-                        </thead>
-                        <tbody id="patient_con">
-                          <tr>
-                              <td>Overrall Survival Status</td>
-                              <td>Unknown</td>
-                          </tr>
-                          <tr>
-                              <td>Diagnosis Age</td>
-                              <td id="age0">Unknown</td>
-                          </tr>
-                          <tr>
-                              <td>Number of Sample Per Patient</td>
-                              <td id="numberofsample">Unknown</td>
-                          </tr>
-                          <tr>
-                              <td>Overrall Survival(Months)</td>
-                              <td>Unknown</td>
-                          </tr>
-                          <tr>
-                              <td>Sex</td>
-                              <td id="sex0">Unknown</td>
-                          </tr>
-                        </tbody>
-                    </table>
                 </div>
 
                 <hr />
-                   <div class="col-xs-4 col" align="left" style="font-weight: bold;">
-                       <span style="color:#3786C2">Samples</span>
+                <div class="container-fulid">
+                    <div id="timeline" style="display:flex;">
+                        <div id="timeLineContainer"></div>
                     </div>
-                    <br/>
-                    <table id="samples_t" class="table table-bordered">
-                        <thead>
-                        <tr class="success">
-                            <th>Attribute</th>
-                            <th width="500px" id="sample1">Value</th>
-                        </tr>
-                        </thead>
-                        <tbody id="samples_con">
-                        <tr>
-                            <td>Mutation Count</td>
-                            <td id="mcount1"></td>
-                        </tr>
-                        <tr>
-                            <td>Sample Type</td>
-                            <td id="sampletype1"></td>
-                        </tr>
-                        <tr>
-                            <td>1q/19q Status</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Cancer Types</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Cancer Type Detailed</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>IDH1 Mutation</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>MGMT Status</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Neoplasm Histologic Grade</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Non-slilent mutations in TP53, ATRX, CIC, FUBP1</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Oncotree Code</td>
-                            <td>Unknown</td>
-                        </tr>
-                        <tr>
-                            <td>Somatic Status</td>
-                            <td>Unknown</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                </div>
+                <hr />
+
+                <div>
+                    <div id="grch137" style="display:flex;">
+                        <div id="genomicOverviewTracksContainer1"></div>
+                    </div>
                 </div>
 
                 <hr />
@@ -184,6 +137,24 @@
             </div>
         </div>
     </div>
+    <div id="spinner" style="zIndex:100;position:relative;display:none;">
+        <div class="centered" >
+            <div class="sk-spinner la-line-scale-pulse-out big">
+                <%--<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">--%>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <iframe id="ifr"
+                style="width:100%;position:relative;zIndex:100;border:none;"
+                src=""
+        >
+        </iframe>
+    </div>
+
 
     <div id="spinner1" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
@@ -193,15 +164,14 @@
         </div>
     </div>
 
-    <form name="dform" id="pform" method="post" action="/pmp/patient/patientView">
+    <form name="dform" id="dform" method="post" action="/pmp/patient/patientView">
         <input type="hidden" name="patients" value=""/>
         <input type="hidden" name="pages"  value=""/>
         <input type="hidden" name="patientId"  value=""/>
         <input type="hidden" name="resch_pat_id" value=""/>
     </form>
 
-    <form name="pform" id="pform" method="post" action="/pmp/patient/patientResemble">
-
+    <form name="pform" id="pform" method="post" action="/pmp/patient/patientSample">
         <input type="hidden" name="patients" id="patients" value=""/>
         <input type="hidden" name="pages" id="pages" value=""/>
         <input type="hidden" name="patientId" id="patientId" value=""/>
@@ -217,8 +187,21 @@
         <input type="hidden" name="oncotreecode" id="oncotreecode" value="" />
 
     </form>
-    <script src="<c:url value="/js/page/patient/patientSample.js" />"></script>
+
+    <script src="<c:url value="/js/page/patient/WindowDriver.js" />"></script>
+    <script src="<c:url value="/js/page/patient/const.js" />"></script>
+    <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
     <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
+    <script src="<c:url value="/js/page/patient/Timeline.js" />"></script>
+    <script src="<c:url value="/js/page/patient/diagnosis/pathology.js" />"></script>
+    <script src="<c:url value="/js/page/patient/diagnosis/specimen.js" />"></script>
+    <script src="<c:url value="/js/page/patient/diagnosis/image.js" />"></script>
+    <script src="<c:url value="/js/page/patient/diagnosis/sugery.js" />"></script>
+    <script src="<c:url value="/js/page/patient/diagnosis/biopsy.js" />"></script>
+    <script src="<c:url value="/js/page/patient/plotFilter.js" />"></script>
+    <script src="<c:url value="/js/page/patient/event.js" />"></script>
+    <script src="<c:url value="/js/page/patient/patientResemble.js" />"></script>
+
     <script>
         var MUTATIOINCOUNT  = '<%=(request.getParameter("mutationcount") == null) ? "" : request.getParameter("mutationcount")%>';
         var AGE  = '<%=(request.getParameter("age") == null) ? "" : request.getParameter("age")%>';
@@ -289,8 +272,8 @@
         $("#sampletype3").text(SAMPLE[2]);
         $("#sampletype4").text(SAMPLE[3]);
 
-        $("#sex0").text(sex);
-        $("#age0").text(age);
+        $("#sex").text(sex);
+        $("#age").text(age);
         // $("#cancertype1").text(cancertype);
         // $("#cancertypedetail").text(cancertypedetail);
         // $("#oncotreecode1").text(oncotreecode);
@@ -309,6 +292,13 @@
             txt+='</label>&nbsp;';
         }
         $("#divsample").append(txt);
+
+        var hasgenomicoverview=false;
+        var timeLine = new TimeLine();
+        timeLine.init(hasgenomicoverview);
+        setTimeout(function() {
+            $(".ttt").show();
+        }, 2000);
     </script>
 
 </div>
