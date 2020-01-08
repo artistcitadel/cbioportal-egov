@@ -1,8 +1,10 @@
 var filterApplyYN = false;
 var dataClinical = []; // chart data
 var cohortTablePatnoList = [];
+var filterApplyResult = [];
 var cohortQuery = '';
 var cohortFilterQuery = '';
+var cohortFilterAllQuery = '';
 var currentCohortTab = '1';
 var dashboardTabNo;
 var selectedCohort = '';
@@ -46,13 +48,10 @@ function analysisInit(){
 	setCohortFilterBox();
 	
 	setChartAddList();
-
 	
 	checkDefaultChart();
 	
-	
 	getCohortTable();
-	
 	
 
 	//setCohortAnalysisData();
@@ -304,9 +303,20 @@ function setCohortFilterBox(){
 
 function setCohortKindBox(){
 
-	if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+	if(dashboardTabNo == "1"){
 		var html = '';
 		html +=		'<div class="btn-group label-group margin-left-10" id="btnSelectedCohortModal">';
+		html += 		'<small class="label bg-orange">';
+		html +=  			"New Cohort";
+		html += 		'</small>';
+		html += 	'</div>';
+		
+		$('#cohort-grouop').append(html);
+		
+	}
+	if(dashboardTabNo == "2"){
+		var html = '';
+		html +=		'<div class="btn-group label-group margin-left-10" id="btnSelectedPatientModal">';
 		html += 		'<small class="label bg-orange">';
 		html +=  			"New Cohort";
 		html += 		'</small>';
@@ -325,14 +335,19 @@ function setCohortKindBox(){
 			html += 	'</div>';
 			
 			$('#cohort-grouop').append(html);
+			
+			$('#txtDashboardCohortSub').append(savedMyCohort[i].CONT_NM + " ");
 		}
+
 	}
 }
 
-function plotHighlight(filterArray){
+function plotHighlight(filterArray, seq){
 	
 	for(var i=0; i<filterArray.length; i++){
 		var tmpMap = filterArray[i];
+		if(tmpMap.SEQ != seq) continue;
+		
 		var seq = tmpMap.SEQ;
 		var myPlot = "boxChart"+seq;
 		var filteridx = [];
@@ -350,6 +365,40 @@ function plotHighlight(filterArray){
 		}
 		
 		var update = {'marker':{ colors: colorBox, line: {width : intBox}}};
+		Plotly.restyle(myPlot, update, []);
+	}
+}
+
+function plotHighlightBar(filterArray, seq){
+	
+	for(var i=0; i<filterArray.length; i++){
+		var tmpMap = filterArray[i];
+		if(tmpMap.SEQ != seq) continue;
+		
+		var seq = tmpMap.SEQ;
+		var myPlot = "boxChart"+seq;
+		var filteridx = [];
+		var widths = [];
+		
+		var plotMap = $('#'+myPlot)[0].data;
+		var plotIdArr = plotMap[0].ids;
+
+		var plotMin = tmpMap.CONDITION[0];
+		var plotMax = tmpMap.CONDITION[1];
+		var selectedArr = plotMap[0].selectedpoints;
+		var colorBox =  Array.apply(null, new Array(plotIdArr.length)).map(function(item) {return "silver"});
+		var lineBox =  Array.apply(null, new Array(plotIdArr.length)).map(function(item) {return "silver"});
+		var intBox =  Array.apply(null, new Array(plotIdArr.length)).map(Number.prototype.valueOf,0);
+		var selectedpoints = [];
+		for(var j=0; j<plotIdArr.length; j++){
+			if(plotIdArr[j] > plotMin && plotIdArr[j] <plotMax){
+				colorBox[j] = 'rgb(31, 119, 180)';
+				lineBox[j] = 'black';
+				intBox[j] = '3';
+			}
+		}
+		
+		var update = {'marker' : {color: colorBox } };
 		Plotly.restyle(myPlot, update, []);
 	}
 }
@@ -383,10 +432,29 @@ function getSelectedChartList(){
 			selectedArr.push(rowData);
 		}
 	}
+	selectedArr.sort(function(a,b){
+		return a.ORDER - b.ORDER
+		});
+	/*rows = $('#').jqxGrid('getrows');
+	for(var i=0; i<rows.length; i++){
+		var rowData = rows[i];
+		var chk = rows[i].DEFAULT_YN;
+		if(chk == true){
+			selectedArr.push(rowData);
+		}
+	}
+	rows = $('#').jqxGrid('getrows');
+	for(var i=0; i<rows.length; i++){
+		var rowData = rows[i];
+		var chk = rows[i].DEFAULT_YN;
+		if(chk == true){
+			selectedArr.push(rowData);
+		}
+	}*/
 	return selectedArr;
-	//var rowData = $('#subClinical').jqxGrid('getrowdata',rowBoundIndex);
 }
-function getSelectedChartDefault(rowData, sb){
+
+function getSelectedChartDefault(rowData, sb, filterArray){
 	var seq = rowData.SEQ;
 	
 	var itemTarget = $('#box_item_'+seq).children('.box')[0];
@@ -396,13 +464,20 @@ function getSelectedChartDefault(rowData, sb){
 	var dataSet = {};
 	dataSet.ROW = rowData;
 	dataSet.SUB_QUERY = sb;
-	
+	if(dashboardTabNo == "1"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
+	else if(dashboardTabNo == "2"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
+	else if(dashboardTabNo == "3"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
 	console.log(dataSet);
 	var promise = http('dashboard/loadselectedChartFilter', 'post', true , dataSet);
     promise.then(function(result){
     	spinner.stop();
     	console.log(rowData.ITEM_NM,result);
-    	
 
     	var resultData = result.loadselectedChartFilter.CHART;
     	
@@ -411,11 +486,12 @@ function getSelectedChartDefault(rowData, sb){
 			  makeTableChart(resultData, rowData, seq, 'boxChart'+seq, idx);
 			  makePieChart(resultData, rowData, seq, 'boxChart'+seq, idx);
 			  $('#boxChart'+seq+'_jqx').css('display','none');
-			  
+			  if(!isNullOrEmpty(filterArray)) plotHighlight(filterArray, seq);
 			  //$('#boxChart'+seq).css('display','none');
 		  }
 		  else if(rowData.CHART_TYPE == 'BAR'){
-			  makeBarChart(resultData, rowData, seq, 'boxChart'+seq, idx);	    		  
+			  makeBarChart(resultData, rowData, seq, 'boxChart'+seq, idx);	   
+			  if(!isNullOrEmpty(filterArray)) plotHighlightBar(filterArray, seq);
 		  }
 		  else if(rowData.CHART_TYPE == 'GRD'){
 			  makeTableChart(resultData, rowData, seq, 'boxChart'+seq, idx);
@@ -439,10 +515,12 @@ function filteringAfterCheck(){
 		var $this = $(this);
 		var itemId = this.getAttribute('name');
 		var seq = this.id.replace('filter_','');
+		var cate = this.getAttribute('cate');
 		var tmpArray = [];
 		var tmpMap = {};
 		
 		$jqx = $('#boxChart'+seq+'_jqx');
+		$cate = getItemCateId(cate);
 		
 		var rowData = $('#subClinical').jqxGrid('getrowdatabyid',seq);
 		var type = rowData.CHART_TYPE;
@@ -508,11 +586,19 @@ function getSelectedChartFilter(rowData, sb, filterArray){
 	var dataSet = {};
 	dataSet.ROW = rowData;
 	dataSet.SUB_QUERY = sb;
-	
+	if(dashboardTabNo == "1"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
+	else if(dashboardTabNo == "2"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
+	else if(dashboardTabNo == "3"){
+		dataSet.CohortTable = "pmsdata.P" + $.session.get("PER_CODE");
+	}
 	console.log(dataSet);
 	var promise = http('dashboard/loadselectedChartFilter', 'post', true , dataSet);
     promise.then(function(result){
-    	console.log(result);
+    	console.log(rowData.ITEM_NM,result);
     	spinner.stop();
 
     	var resultData = result.loadselectedChartFilter.CHART;
@@ -521,7 +607,7 @@ function getSelectedChartFilter(rowData, sb, filterArray){
     		var $chart = $('#boxChart'+rowData.SEQ);
     		var data = setPieChartdataform(resultData);
     		Plotly.react('boxChart'+rowData.SEQ,data,pieLayout,config);
-			plotHighlight(filterArray);
+			plotHighlight(filterArray, rowData.SEQ);
 
     		var $jqx = $('#boxChart'+rowData.SEQ+'_jqx');
     		$jqx.jqxGrid('source')._source.localdata = resultData;
@@ -531,6 +617,8 @@ function getSelectedChartFilter(rowData, sb, filterArray){
     		var $chart = $('#boxChart'+rowData.SEQ);
     		var data = setBarChartdataform(resultData);
     		Plotly.react('boxChart'+rowData.SEQ,data,barLayout,config);
+    		
+    		plotHighlightBar(filterArray, rowData.SEQ);
     	}
     	else if(rowData.CHART_TYPE == 'GRD'){
     		var $jqx = $('#boxChart'+rowData.SEQ+'_jqx');
@@ -570,12 +658,13 @@ function getFilterBoxGroup(){
 		var tmpArray = [];
 		var tmpMap = {};
 		var itemCol = '';
-
+		var cate = this.getAttribute('cate');
+		$cate = getItemCateId(cate);
 		
 		var rowData = $('#subClinical').jqxGrid('getrowdatabyid',seq);
 		var type = rowData.CHART_TYPE;
 		if(!isNullOrEmpty(rowData.ITEM_LABEL)){
-			itemCol = rowData.ITEM_COLUMN.split(',');
+			itemCol = rowData.ITEM_COLUMN.split('|');
 		}
 		
 		if(type == 'PIE'){
@@ -632,22 +721,22 @@ function setDrawChart(rowData){
 	
 
 	if(rowData.CHART_TYPE == 'PIE'){			 
-	  html = makeChartBox(null, rowData.ITEM_NM, 'PIE', seq, idx); 
+	  html = makeChartBox(null, rowData.ITEM_NM, 'PIE', seq, idx ,rowData.ITEM_CATE_ID); 
 	  $('#item_'+idx).append(html);
 
 	}
 	else if(rowData.CHART_TYPE == 'BAR'){
-	  html = makeChartBox(null, rowData.ITEM_NM, 'BAR', seq, idx);
+	  html = makeChartBox(null, rowData.ITEM_NM, 'BAR', seq, idx ,rowData.ITEM_CATE_ID);
 	  $('#item_'+idx).append(html);
 
 	}
 	else if(rowData.CHART_TYPE == 'GRD'){
-	  html = makeChartBox(null, rowData.ITEM_NM, 'GRD', seq, idx); 
+	  html = makeChartBox(null, rowData.ITEM_NM, 'GRD', seq, idx ,rowData.ITEM_CATE_ID); 
 	  $('#item_'+idx).append(html);
 
 	}
 	else if(rowData.CHART_TYPE == 'GAO'){
-		html = makeChartBox(null, rowData.ITEM_NM, 'GAO', seq, idx); 
+		html = makeChartBox(null, rowData.ITEM_NM, 'GAO', seq, idx ,rowData.ITEM_CATE_ID); 
 		$('#item_'+idx).append(html);
 	}
 	var itemTarget = $('#box_item_'+seq).children('.box')[0];
@@ -663,15 +752,30 @@ function setDrawChart(rowData){
 }
 
 function getItemCateId(cate){
+	var jqxcateStr = '';
 	
+	if(cate == 'CLINICAL'){
+		jqxcateStr = 'subClinical';
+	}
+	else if(cate == 'GENOMIC'){
+		jqxcateStr = 'subGenomic';
+	}
+	else if(cate == 'ETC'){
+		jqxcateStr = 'subEtc';
+	}
+	
+	return jqxcateStr;
 }
 
 
 function checkDefaultChart(){
 	
-	for(var i=0; i<dataClinical.length; i++){
+	var selectedArr = [];
+	selectedArr = getSelectedChartList();
+	
+	for(var i=0; i<selectedArr.length; i++){
 		
-		var rowData = dataClinical[i];
+		var rowData = selectedArr[i];
 		
 		
 		if(rowData.DEFAULT_YN == 'Y' || rowData.DEFAULT_YN == true){
@@ -683,7 +787,8 @@ function checkDefaultChart(){
 	
 }
 function setChartAddList(){
-	
+	var loadChartList = [];
+	var loadChartListSeq = [];
 	dataClinical = [];
 	
 	var dataSet = {};
@@ -702,6 +807,34 @@ function setChartAddList(){
 		console.log(e);
 	});
 	
+	
+	if(dashboardTabNo == "3"){
+		var dataSet2 = {};
+		var savedMyCohortSeq = [];
+		for(var i=0; i<savedMyCohort.length; i++){
+			savedMyCohortSeq.push(savedMyCohort[i].SEQ);
+		}
+		dataSet2.PER_CODE = $.session.get("PER_CODE");
+		dataSet2.CONT_SEQ = savedMyCohortSeq.toString();
+		
+		var promise2 = http('cohort/selContChartList', 'post', false , dataSet2);
+		promise2.then(function(result){
+			console.log(result);
+			var dataView = result.selContChartList;
+			
+			loadChartList = dataView;
+			for(var i=0; i<dataView.length; i++){
+				loadChartListSeq.push(dataView[i].CHART_SEQ);
+			}
+			
+			
+		});
+		promise2.fail(function(e){
+			console.log(e);
+		});
+	}
+	
+	
 	 var source =
 	   {
 	       localdata: dataClinical,
@@ -714,7 +847,7 @@ function setChartAddList(){
 	           { name: 'ITEM_ID', type: 'string' },
 	           { name: 'ITEM_NM', type: 'string' },
 	           { name: 'ITEM_DESC', type: 'string' },
-	           { name: 'ORDER', type: 'int' },
+	           { name: 'ORDER', type: 'number' },
 	           { name: 'SEARCH_YN', type: 'string' },
 	           { name: 'DEFAULT_YN', type: 'string' },
 	           { name: 'ITEM_TYPE', type: 'string' },
@@ -737,14 +870,14 @@ function setChartAddList(){
 	  
 
 	  $("#subClinical").on("bindingcomplete", function (event){
-		
+		  //$("#subClinical").jqxGrid('sortby', 'ORDER', 'asc');
 	  });
 	  
 	  var dataAdapter = new $.jqx.dataAdapter(source, {
 		 beforeLoadComplete: function (records) {
-		        var data = new Array();
-		        // update the loaded records. Dynamically add EmployeeName and EmployeeID fields. 
-		        for (var i = 0; i < records.length; i++) {
+			 var data = new Array();
+			 if(loadChartList.length == 0){
+				 for (var i = 0; i < records.length; i++) {
 		            var tmp = records[i];
 		            
 		            if(tmp.DEFAULT_YN == 'Y'){
@@ -754,8 +887,26 @@ function setChartAddList(){
 		            	tmp.DEFAULT_YN = false;
 		            }
 		            data.push(tmp);
-		        }
-		        return data;
+				 } 
+			 }
+			 else{
+				 for (var i = 0; i < records.length; i++) {
+		            var tmp = records[i];
+		            
+		            if(loadChartListSeq.indexOf(tmp.SEQ) != -1){
+		            	tmp.DEFAULT_YN = true;
+		            } 
+		            else{
+		            	tmp.DEFAULT_YN = false;
+		            }
+		            data.push(tmp);
+				 }
+			 }
+			 
+			 	
+	        // update the loaded records. Dynamically add EmployeeName and EmployeeID fields. 
+	        
+	        return data;
 	     },
 	     loadComplete: function (data) 
 	     {
@@ -823,16 +974,16 @@ function setChartAddList(){
     		  var seq = rowData.SEQ;
     		  var html = '';
     		  if(rowData.CHART_TYPE == 'PIE'){			 
-    			  html = makeChartBox(null, rowData.ITEM_NM, 'PIE', seq, idx);    			  
+    			  html = makeChartBox(null, rowData.ITEM_NM, 'PIE', seq, idx,"CLINICAL");    			  
     		  }
     		  else if(rowData.CHART_TYPE == 'BAR'){
-    			  html = makeChartBox(null, rowData.ITEM_NM, 'BAR', seq, idx);   			  
+    			  html = makeChartBox(null, rowData.ITEM_NM, 'BAR', seq, idx,"CLINICAL");   			  
     		  }
     		  else if(rowData.CHART_TYPE == 'GRD'){
-    			  html = makeChartBox(null, rowData.ITEM_NM, 'GRD', seq, idx);   			  
+    			  html = makeChartBox(null, rowData.ITEM_NM, 'GRD', seq, idx,"CLINICAL");   			  
     		  }
     		  else if(rowData.CHART_TYPE == 'GAO'){
-    			  html = makeChartBox(null, rowData.ITEM_NM, 'GAO', seq, idx); 
+    			  html = makeChartBox(null, rowData.ITEM_NM, 'GAO', seq, idx,"CLINICAL"); 
 			  }
 			  $('#item_'+idx).append(html);
 
@@ -853,6 +1004,7 @@ function setChartAddList(){
 	    	  console.log("false");
 	    	  if($('#filter_'+rowData.SEQ).length != 0 ){
 	    		  $('#filter_'+rowData.SEQ).remove();
+	    		  $('#btnDashboardFilterApply').trigger('click');
 	    	  }
 	    	  $('#box_item_'+rowData.SEQ).remove();
 	    	  
@@ -880,7 +1032,7 @@ function getParent($this) {
 function getCohortTable(){
 	
 	
-	if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+	if(dashboardTabNo == "1" || dashboardTabNo == "2" || dashboardTabNo == "3"){
 		var dataSet = {};
 		dataSet.PER_CODE = $.session.get("PER_CODE");
 		
@@ -894,6 +1046,8 @@ function getCohortTable(){
 			cohortTablePatnoList = dataView;
 			cohortQuery = result.CohortTableQuery;
 			cohortFilterQuery = result.CohortTableQuery;
+			cohortFilterAllQuery = result.CohortTableAllQuery;
+			
 			var selectedArr = [];
 			selectedArr = getSelectedChartList();
 			
@@ -907,10 +1061,10 @@ function getCohortTable(){
 		});
 		
 		//모달 트리
-		initTreeC(selectedCohort);
+		if(dashboardTabNo == "1") initTreeC(selectedCohort);
 		
 	}
-	else if(dashboardTabNo == "3"){
+	/*else if(dashboardTabNo == "3"){
 		var tableList = [];
 		for(var i=0; i<savedMyCohort.length; i++){
 			tableList.push(savedMyCohort[i].TABLE_NM);
@@ -930,6 +1084,8 @@ function getCohortTable(){
 			cohortTablePatnoList = dataView;
 			cohortQuery = result.CohortTableQuery;
 			cohortFilterQuery = result.CohortTableQuery;
+			cohortFilterAllQuery = result.CohortTableQueryAll;
+			
 			var selectedArr = [];
 			selectedArr = getSelectedChartList();
 			
@@ -941,7 +1097,7 @@ function getCohortTable(){
 			}
 			
 		});
-	}
+	}*/
 	
 	
 }
@@ -1230,10 +1386,53 @@ function analysisInitEvent(){
 		console.log(e);
 		currentCohortTab = $(this).attr("pageNum");
 		if(currentCohortTab == '1'){
+			$('#deletePatientList').hide();
+			$('#mainChartAdd').show();
+			/*$('#btnPatientView').show();
+			$('#btnMutationView').show();*/
 			
 			$('.sortable_area').empty();
+			
 			checkDefaultChart();
-			var selectedArr = [];
+			
+			var dataSet = {};
+			dataSet.FILTER = filterApplyResult;
+			dataSet.PER_CODE = $.session.get("PER_CODE");
+			dataSet.CREATEDTABLE = "P"+$.session.get("PER_CODE");
+
+			var promise = http('dashboard/filterApply', 'post', true, dataSet);
+			promise.then(function(result){
+
+				console.log(result);
+
+				var selectedArr = [];
+				selectedArr = getSelectedChartList();
+				var dataView = result.filterApply;
+				var resultKeys = Object.keys(dataView);
+				var resultVals = Object.values(dataView);
+
+				cohortFilterQuery = dataView.all;
+				cohortFilterAllQuery = dataView.sbQueryAll;
+				for(var i=0; i<selectedArr.length; i++){
+					
+					var row = selectedArr[i];
+					var idx = resultKeys.indexOf(row.SEQ.toString());
+					if( idx != -1 ){
+						if(isNullOrEmpty(resultVals[idx])) continue;
+						getSelectedChartDefault(row, resultVals[idx], filterApplyResult);
+					}
+					else{
+						getSelectedChartDefault(row, dataView.all, filterApplyResult);
+					}
+				}
+				$('#filterApplyBefore').css('display','none');
+				$('#filterApplyAfter').css('display','inline-block');
+				filterApplyYN = true;
+				
+				
+			});
+	
+			/*var selectedArr = [];
 			selectedArr = getSelectedChartList();
 			
 			
@@ -1241,13 +1440,13 @@ function analysisInitEvent(){
 				
 				var row = selectedArr[i];
 				getSelectedChartDefault(row, cohortFilterQuery);
-			}
-			
+			}*/
 			
 		}
 		else if(currentCohortTab == '2'){
-			
-			setCohortAnalysisData(cohortFilterQuery);
+			$('#deletePatientList').show();
+			$('#mainChartAdd').hide();
+			setCohortAnalysisData(cohortFilterAllQuery);
 
 			
 		}
@@ -1294,7 +1493,6 @@ function analysisInitEvent(){
 			$('#hiddenCohortMyCohort').val('null');
 			
 			$('#hiddenCohortQuery').val(cohortFilterQuery);
-			
 			$('#hiddenCohortTreeModal').val($('#divSelectedCohort').html());
 			
 			$('#frmCohortAnalysis').attr('target', "_blank");
@@ -1332,6 +1530,11 @@ function analysisInitEvent(){
 		filterApplyYN = false;
 	});
 	
+	$(document).on('change',$('.filter-box > btn-group'), function(){
+		$('#btnDashboardFilterApply').trigger('click');
+	})
+	
+	
 	$('#btnDashboardFilterApply').on('click',function(){
 		
 		var filterArray = [];
@@ -1340,6 +1543,8 @@ function analysisInitEvent(){
 			$('.filter-box').each(function(key,value){
 				var $this = $(this);
 				var itemId = this.getAttribute('name');
+				var cate = this.getAttribute('cate');
+				$cate = getItemCateId(cate);
 				var seq = this.id.replace('filter_','');
 				var baseTable = this.getAttribute('table');
 				var tmpArray = [];
@@ -1349,7 +1554,7 @@ function analysisInitEvent(){
 				var type = rowData.CHART_TYPE;
 				var itemCol = '';
 				if(!isNullOrEmpty(rowData.ITEM_LABEL)){
-					itemCol = rowData.ITEM_COLUMN.split(',');
+					itemCol = rowData.ITEM_COLUMN.split('|');
 				}
 				
 				if(type == 'PIE'){
@@ -1387,16 +1592,18 @@ function analysisInitEvent(){
 				tmpMap.ITEM_ID = itemId;
 				tmpMap.BASE_TABLE = baseTable;
 				tmpMap.SEQ = seq;
+				tmpMap.EXEC_SQL = rowData.EXEC_SQL;
 				filterArray.push(tmpMap);
 			});
 		}
 		var dataSet = {};
 		console.log(filterArray);
+		filterApplyResult = filterArray;
 		dataSet.FILTER = filterArray;
 		dataSet.COHORTSET = cohortQuery;
 		dataSet.PER_CODE = $.session.get("PER_CODE");
 		dataSet.CREATEDTABLE = "P"+$.session.get("PER_CODE");
-		
+
 		var promise = http('dashboard/filterApply', 'post', true, dataSet);
 		promise.then(function(result){
 
@@ -1409,7 +1616,7 @@ function analysisInitEvent(){
 			var resultVals = Object.values(dataView);
 
 			cohortFilterQuery = dataView.all;
-			
+			cohortFilterAllQuery = dataView.sbQueryAll;
 			for(var i=0; i<selectedArr.length; i++){
 				
 				var row = selectedArr[i];
@@ -1494,7 +1701,7 @@ function analysisInitEvent(){
 			return ;
 		}
 		
-		if(dashboardTabNo == "1" || dashboardTabNo == "2"){
+		if(dashboardTabNo == "1" || dashboardTabNo == "2" || dashboardTabNo == "3"){
 			var dataSet = {};
 			//dataSet.SEQ = $('input[name="itemCate_tree"]:checked').attr('seq');
 			//dataSet.MID_SEQ = $('input[name="itemCate_tree"]:checked').val();
@@ -1505,6 +1712,8 @@ function analysisInitEvent(){
 			dataSet.UDT_ID = $.session.get('PER_CODE');
 			dataSet.CRT_ID = $.session.get('PER_CODE');
 			dataSet.SHARE_CD = "CO";
+			dataSet.TABNO = dashboardTabNo;
+			dataSet.TABLENAME = cohortFilterAllQuery;
 			var selectedArr = getSelectedChartList();
 			dataSet.SELECTED_CHART = selectedArr;
 			
@@ -1524,6 +1733,7 @@ function analysisInitEvent(){
 				console.log(e)
 			})
 		}
+		
 	});
 	
 
@@ -1555,11 +1765,13 @@ function analysisInitEvent(){
 	$(document).on('click','.box-delete',function(){
 		
 		var gridId = $(this).parents('li').attr('num');
+		var cate = $(this).parents('li').attr('cate');
+		$cate = getItemCateId(cate);
+		
 		var gridIdx = $('#subClinical').jqxGrid('getrowboundindexbyid',gridId);
+		
 		$("#subClinical").jqxGrid('setcellvaluebyid',gridId,'DEFAULT_YN',false);
-		//$('#subClinical').jqxGrid('unselectrow',gridIdx);
-		//$(this).parents('li').remove();
-		//$("#subClinical").jqxGrid('refresh');
+
 		
 	});
 	
@@ -1677,12 +1889,15 @@ function analysisInitEvent(){
 	
 	$(document).on('click','.btn-or-select',function(){
 		var seq = $(this).parents('li').attr('num');
+		var cate = $(this).parents('li').attr('cate');
+		$cate = getItemCateId(cate);
+		
 		var graphNM = 'boxChart'+seq;
 		var divId = 'boxChart'+seq;
 		var item = $('#subClinical').jqxGrid('getrowdatabyid',seq);
 		var rowLen = $('#'+graphNM+'_jqx').jqxGrid('getrows').length;
 		var itemLabel = item.ITEM_LABEL.split(',');
-		var itemCol = item.ITEM_COLUMN.split(',');
+		var itemCol = item.ITEM_COLUMN.split('|');
 		var name = item.ITEM_NM;;
 		
 		var selectedGAOArr = [];
@@ -1716,7 +1931,7 @@ function analysisInitEvent(){
 			for(var i=0; i<selectedGAOArr.length; i++){
 				//var html2 = '';
 				var rowData = selectedGAOArr[i];
-				var rowDataIdCol = rowData.CKEY.split(',');
+				var rowDataIdCol = rowData.CKEY.split('|');
 				
 				if($('button[name="'+seq+'_'+rowData.uid+'"]').length != 0) continue ;
 				
@@ -1759,7 +1974,7 @@ function analysisInitEvent(){
 			for(var i=0; i<selectedGAOArr.length; i++){
 				//var html2 = '';
 				var rowData = selectedGAOArr[i];
-				var rowDataIdCol = rowData.CKEY.split(',');
+				var rowDataIdCol = rowData.CKEY.split('|');
 				if($('button[name="'+seq+'_'+rowData.uid+'"]').length != 0) continue ;
 				
 				if(!isNullOrEmpty(html)) html += '<label>or</label>';

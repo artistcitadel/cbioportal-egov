@@ -23,4 +23,7 @@ public class PatientsInfoServiceImpl extends RkServiceImpl
     public Result<List> fetchPatients(String mappingName, Map<String,String> vo) throws Exception {
     return super.fetch(mappingName, vo);
   }
+    public int insertBrc(String mappingName, Map<String,String> vo) throws Exception {
+      return super.register(mappingName, vo);
+    }
 }

@@ -546,6 +546,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
+    var perCode = '<%=request.getSession().getAttribute("PER_CODE")%>';
     var MUTATIOINCOUNT;
     var AGE;
     var SEX;

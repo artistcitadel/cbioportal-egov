@@ -167,10 +167,7 @@
                       , GMU.TOT_ALLELE_READ_CNT
                       , GMU.VARI_ALLELE_READ_CNT
                       , GMU.REF_ALLELE_READ_CNT
-               ) BAS, (
-                        ${query}
-                      ) STUDY
-              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
+               ) BAS
          GROUP BY
                BAS.GENE_NM
              , BAS.GENE_EXAM_MTH_NM
@@ -254,10 +251,7 @@
         ) PAT
         WHERE GCV.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         AND GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        ) BAS, (
-                        ${query}
-                      ) STUDY
-              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
+        ) BAS
         GROUP BY
         BAS.GENE_NM
         , BAS.GENE_EXAM_MTH_NM
@@ -401,10 +395,7 @@ SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS
           WHERE GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
             AND GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
             AND GSV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
-       ) BAS, (
-                        ${query}
-                      ) STUDY
-              WHERE BAS.RESCH_PAT_ID = STUDY.RESCH_PAT_ID
+       ) BAS
       GROUP BY
        BAS.GENE_NM1
      , BAS.GENE_NM2

@@ -248,13 +248,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 		<div class="box-footer">
-			<div class="btn-group pull-right">
-			 	<button type="button" class="btn btn-danger btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
-			 </div>
-			 <div class="btn-group pull-right">
-			 	<button type="button" class="btn btn-primary btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
-			 </div>
-			 <div class="btn-group pull-right open">
+			<div class="btn-group pull-right open">
 				<button type="button" class="btn bg-orange btn-sm" style="margin-left:10px;" id="mainSaveAdd"> 저장 </button>
 				<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainSaveAdd" id="divmainSaveAdd" style="width:400px; z-index:-1;">
 					<div class="box-body">
@@ -275,6 +269,13 @@ $(document).ready(function(){
 					</div>
 			     </div>
 		     </div>
+			<div class="btn-group pull-right">
+			 	<button type="button" class="btn btn-danger btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
+			 </div>
+			 <div class="btn-group pull-right">
+			 	<button type="button" class="btn btn-primary btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
+			 </div>
+			 
 		</div>
 	</section>
 	
@@ -298,10 +299,11 @@ $(document).ready(function(){
 						</li>
 						<div class="btn-group pull-right open" style="margin-right:10px; margin-top: 10px;">
 							
-							<button type="button" class="btn bg-silver btn-sm" style="margin-left:10px;" id="deletePatientList"> 환자 삭제 </button>
-							<button type="button" class="btn bg-orange btn-sm" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
+							<button type="button" class="btn bg-silver btn-sm" style="margin-left:10px; display:none;" id="deletePatientList"> 환자 삭제 </button>
 							<button type="button" class="btn btn-primary btn-sm" style="margin-left:10px;" id="btnPatientView">Patient View</button>
 							<button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;" id="btnMutationView">Mutation View</button>
+							<button type="button" class="btn bg-orange btn-sm pull-right" style="margin-left:10px;" id="mainChartAdd"> 차트 추가 </button>
+							
 							<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mainChartAdd" id="divmainChartAdd" style="width:600px; z-index:-1;"> 
 						     	<div class="box-body">
 						     		<nav class="navbar navbar-light navbar-background-color margin-top-10" >

@@ -111,15 +111,15 @@
 												<div class="box" style="background:#f9f9f9;">
 													<div class="box-body">
 														<div class="form-group pull-right">
-										                  <div class="btn-group">
+										                  <!-- <div class="btn-group">
 										                    <label>
-										                      <input type="radio" name="patnoRadios" id="optionsRadiosA" value="patnoA" checked="">
+										                      <input type="radio" name="patnoRadios" id="optionsRadiosA" value="patnoA" >
 										                      	진료용 환자
 										                    </label>
-										                  </div>
+										                  </div> -->
 										                  <div class="btn-group">
 										                    <label>
-										                      <input type="radio" name="patnoRadios" id="optionsRadiosb" value="patnoB" selected>
+										                      <input type="radio" name="patnoRadios" id="optionsRadiosb" value="patnoB" checked="true">
 										                      	연구용 환자
 										                    </label>
 										                  </div>

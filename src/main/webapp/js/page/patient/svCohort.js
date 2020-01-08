@@ -2,7 +2,8 @@
       Author 오세영
      */
 var renderSvCohort = function(data, obj) {
-    var totalCount = data.length;
+    // var totalCount = data.length;
+    var totalCount = parseInt(document.pform.patients.value.length);
     var numberOfSampleWithGeneWithkeyword = 0;
     var numberOfSampleWithGeneWithGene = 0;
     for (var i = 0; i < data.length; i++) {

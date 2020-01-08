@@ -632,7 +632,7 @@ function initTreeEvent(){
 			dataSet.currentTab = currentDashboardTab;
 			dataSet.PER_CODE = $.session.get('PER_CODE');
 			
-			/*$('#hiddenDashboardTab').val('');
+/*			$('#hiddenDashboardTab').val('');
 			$('#hiddenDashboardTab').val(currentDashboardTab);
 			$('#hiddenSelectedCancer').val('');
 			$('#hiddenSelectedCancer').val(nvl(JSON.stringify(selectedTreeArr),""));
@@ -695,6 +695,7 @@ function initTreeEvent(){
 			var contSeq = [];
 			for(var i=0; i<chkCohort.length; i++) contSeq.push(chkCohort[i].value);
 			var dataSet = {};
+			dataSet.PER_CODE = $.session.get('PER_CODE');
 			dataSet.CONT_SEQ = contSeq;
 			var promise = http('dashboard/selSavedCohortList', 'post', true , dataSet);
 			

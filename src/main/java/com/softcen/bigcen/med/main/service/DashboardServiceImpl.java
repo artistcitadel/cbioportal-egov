@@ -161,6 +161,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		Map<String,String> paramMap2 = new HashMap<String,String>();
 		
 		StringBuffer sbQuery = new StringBuffer();
+		StringBuffer sbQueryAll = new StringBuffer();
 		List paramArray = new ArrayList();
 		paramArray = (ArrayList)paramMap.get("FILTER");
 		
@@ -174,45 +175,37 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		joinTableQuery.append(createdtable + SQL.AS + "sb0");
 		
 		//전체 쿼리
-		//sbQuery.append(SQL.SEPERATE + paramMap.get("COHORTSET"));
   		for(int i=0; i<paramArray.size(); i++) {
   			Map tmpMap = (HashMap)paramArray.get(i);
   			  			
-  			//String BASE_SCHEMA = "pmsdev";
-  			String BASE_TABLE = tmpMap.get("BASE_TABLE").toString();
-  			String ITEM_ID = tmpMap.get("ITEM_ID").toString();
-  			String schmatable = BASE_TABLE;
-  			
-  			if(tableList.indexOf(schmatable) == -1) {
-  				tableList.add(schmatable);
-  				int tListsz = tableList.indexOf(schmatable);
-				String tAlias = "sb" + tListsz;
-				joinTableQuery.append(SQL.SEPERATE + SQL.JOIN + schmatable + SQL.AS + tAlias);
-				joinwhereQuery.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
-				joinwhereQuery.append(setjoinwhereQuery(tmpMap, tAlias));
-				
-  			}else {
-  				int tListsz = tableList.indexOf(schmatable);
-				String tAlias = "sb" + tListsz;
-	  			joinwhereQuery.append(setjoinwhereQuery(tmpMap, tAlias));
-
+  			int tListsz = i+1;
+  			String tAlias = "sb" + tListsz;
+  			String EXEC_SQL = tmpMap.get("EXEC_SQL").toString(); 
+  			if(EXEC_SQL.contains("#{CohortTable}")) {
+  				EXEC_SQL = EXEC_SQL.replace("#{CohortTable}", createdtable);
   			}
   			
+  			joinTableQuery.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+  			joinTableQuery.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+  			joinTableQuery.append(SQL.SEPERATE + SQL.ON + "1=1");
+  			joinTableQuery.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
+  			  			
 		}
-  		sbQuery.append(SQL.SEPERATE + SQL.SELECT + "sb0.RESCH_PAT_ID");
+  		sbQuery.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID");
   		sbQuery.append(SQL.SEPERATE + SQL.FROM);
-  		sbQuery.append(SQL.SEPERATE + joinTableQuery);
-  		if(tableList.size() > 1 ) sbQuery.append(SQL.SEPERATE + SQL.ON + "1=1");
-  		sbQuery.append(SQL.SEPERATE + joinwhereQuery);
+  		sbQuery.append(joinTableQuery);
   		sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
   		sbQuery.append(SQL.AND + "sb0.DELETE_YN = 'N'");
+
   		
-  		
-  		
+  		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID," + "sb0.DELETE_YN");
+  		sbQueryAll.append(SQL.SEPERATE + SQL.FROM);
+  		sbQueryAll.append(joinTableQuery);
+  		sbQueryAll.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 		System.out.println(sbQuery.toString());
 		paramMap2.put("FILTER_QUERY", sbQuery.toString());
 		resultMap.put("all",sbQuery.toString());
-		
+		resultMap.put("sbQueryAll",sbQueryAll.toString());
 		
 		//개별 쿼리
 		for(int i=0; i<paramArray.size(); i++) {
@@ -226,47 +219,33 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			joinTableQuery2.append(SQL.SEPERATE + createdtable + SQL.AS + "sb0");
 			
 			StringBuffer sbQuery2 = new StringBuffer();
-			//sbQuery2.append(SQL.SEPERATE + paramMap.get("COHORTSET"));
 			for(int j=0; j<paramArray.size(); j++) {
 				if(j==i) continue;
 				Map tmpMap = (HashMap)paramArray.get(j);
 		
-				//String BASE_SCHEMA = "pmsdev";
-	  			String BASE_TABLE = tmpMap.get("BASE_TABLE").toString();
-	  			String ITEM_ID = tmpMap.get("ITEM_ID").toString();
-	  			String schmatable = BASE_TABLE;
-	  			
-	  			if(tableList2.indexOf(schmatable) == -1) {
-	  				tableList2.add(schmatable);
-	  				int tListsz = tableList.indexOf(schmatable);
-					String tAlias = "sb" + tListsz;
-					joinTableQuery2.append(SQL.SEPERATE + SQL.JOIN + schmatable + SQL.AS + tAlias);
-					joinwhereQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
-					joinwhereQuery2.append(setjoinwhereQuery(tmpMap, tAlias));
-					
-	  			}else {
-	  				int tListsz = tableList.indexOf(schmatable);
-					String tAlias = "sb" + tListsz;
-		  			joinwhereQuery2.append(setjoinwhereQuery(tmpMap, tAlias));
-
+				int tListsz = j+1;
+	  			String tAlias = "sb" + tListsz;
+	  			String EXEC_SQL = tmpMap.get("EXEC_SQL").toString(); 
+	  			if(EXEC_SQL.contains("#{CohortTable}")) {
+	  				EXEC_SQL = EXEC_SQL.replace("#{CohortTable}", createdtable);
 	  			}
+	  			joinTableQuery2.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+	  			joinTableQuery2.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+	  			joinTableQuery2.append(SQL.SEPERATE + SQL.ON + "1=1");
+	  			joinTableQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
 
 			}
 			
-			sbQuery2.append(SQL.SEPERATE + SQL.SELECT + "sb0.RESCH_PAT_ID");
+			sbQuery2.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID");
 	  		sbQuery2.append(SQL.SEPERATE + SQL.FROM);
-	  		sbQuery2.append(SQL.SEPERATE + joinTableQuery2);
-	  		if(tableList2.size() > 1 ) sbQuery2.append(SQL.SEPERATE + SQL.ON + "1=1");
-	  		sbQuery2.append(SQL.SEPERATE + joinwhereQuery2);
+	  		sbQuery2.append(joinTableQuery2);
 	  		sbQuery2.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-	  		sbQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.DELETE_YN = 'N'");
-	  		
+	  		sbQuery2.append(SQL.AND + "sb0.DELETE_YN = 'N'");
+			
 			System.out.println(sbQuery2.toString());
 			
 			Map<String,String> paramMap3 = new HashMap<String,String>();
 			paramMap3.put("FILTER_QUERY", sbQuery2.toString());
-/*			List resultArr2 = new ArrayList();
-			resultArr2 = (ArrayList)dashboardDAO.selectfilterApply(paramMap3);*/
 			
 			Map tmpiMap = (HashMap)paramArray.get(i);
 			resultMap.put(tmpiMap.get("SEQ").toString(), sbQuery2.toString());
@@ -285,6 +264,9 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		Map<Object,Object> paramMap2 = new HashMap<Object,Object>();
 
 		String originQuery = tmpMap.get("ORIGIN_SQL").toString();
+		if(originQuery.contains("#{CohortTable}")) {
+			originQuery = originQuery.replace("#{CohortTable}", paramMap.get("CohortTable").toString());
+		}
 		String subQuery = paramMap.get("SUB_QUERY").toString();
 		String paramChartType = tmpMap.get("CHART_TYPE").toString();
 		String ITEM_COLUMN = tmpMap.get("ITEM_COLUMN").toString();
@@ -298,7 +280,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		
 		if(paramChartType.equals("GAO")) {
 			String ITEM_LABEL = tmpMap.get("ITEM_LABEL").toString();
-			String[] columnStr = ITEM_COLUMN.split(",");
+			String[] columnStr = ITEM_COLUMN.split("\\|");
 			String[] labelStr = ITEM_LABEL.split(",");
 			sbQuery.append(originQuery);
 			sbQuery.append(SQL.SEPERATE + ")" + SQL.AS + "F1");
@@ -365,6 +347,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		
 		String CHART_TYPE = chartMap.get("CHART_TYPE").toString();
 		String ITEM_COLUMN = chartMap.get("ITEM_COLUMN").toString();
+		String EXEC_SQL = chartMap.get("EXEC_SQL").toString();
 		
 		if(CHART_TYPE.equals("PIE")) {
 			
@@ -388,96 +371,8 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 					SQL.BETWEEN + tmpArr.get(0) + SQL.AND + tmpArr.get(1));
 		}
 		else if(CHART_TYPE.equals("GAO")) {
-			String[] columnStr = ITEM_COLUMN.split(",");
+			String[] columnStr = ITEM_COLUMN.split("\\|");
 
-			for(int j=0; j<tmpArr.size(); j++){
-				List tmpArrOr = (ArrayList)tmpArr.get(j);
-				sbQuery.append(SQL.SEPERATE + SQL.AND);
-				//if(j!=0) sbQuery.append(SQL.OR);
-				sbQuery.append(SQL.SEPERATE  + "(");
-				for(int k=0; k<columnStr.length; k++) {
-					if(k!=0) sbQuery.append(SQL.AND);
-					sbQuery.append(SQL.SEPERATE + tAlias + "." + columnStr[k] + SQL.IN) ;
-					sbQuery.append("(");
-					for(int z=0; z<tmpArrOr.size(); z++) {
-						if(z!=0) sbQuery.append(",");
-						Map orMap = (HashMap)tmpArrOr.get(z);
-						sbQuery.append( "'" +orMap.get(columnStr[k]).toString() + "'");
-					}
-					sbQuery.append(")");
-				}
-				sbQuery.append( " ) ");	
-			}
-			
-		}
-		
-		return sbQuery;
-	}
-	
-	public StringBuffer setFilteringChartQuerySec(Map tmpMap) {
-		StringBuffer sbQuery = new StringBuffer();
-		
-		List tmpArr = (ArrayList)tmpMap.get("CONDITION");
-		String BASE_TABLE = tmpMap.get("BASE_TABLE").toString();
-		String ITEM_ID = tmpMap.get("ITEM_ID").toString();
-		
-		Map chartMap = (HashMap)dashboardDAO.selectDashboardChartDetl(tmpMap);
-		
-		String CHART_TYPE = chartMap.get("CHART_TYPE").toString();
-		String ITEM_COLUMN = chartMap.get("ITEM_COLUMN").toString();
-		
-		
-		
-		
-
-		
-		if(CHART_TYPE.equals("PIE")) {
-			sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-			sbQuery.append(SQL.SEPERATE + "RESCH_PAT_ID");
-			sbQuery.append(SQL.SEPERATE + SQL.FROM);
-			sbQuery.append(SQL.SEPERATE + "pmsdev" + "." + BASE_TABLE);
-			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-			sbQuery.append(SQL.SEPERATE + SQL.AND + ITEM_COLUMN + SQL.IN + "(");
-			for(int j=0; j<tmpArr.size(); j++){
-				if(j!=0) sbQuery.append( "," );
-				sbQuery.append( "'" + tmpArr.get(j).toString() + "'");					
-			}
-			sbQuery.append( " ) ");	
-		}
-		else if(CHART_TYPE.equals("GRD")) {
-			if(BASE_TABLE.equals("GLIS_SV")) {
-				sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-				sbQuery.append(SQL.SEPERATE + "T2.PATIENT_ID AS RESCH_PAT_ID");
-				sbQuery.append(SQL.SEPERATE + SQL.FROM);
-				sbQuery.append(SQL.SEPERATE + "pmsdev" + "." + BASE_TABLE + SQL.AS +"T1");
-				sbQuery.append(SQL.SEPERATE + SQL.JOIN + "pmsdev.GLIS_CI" +  SQL.AS + "T2");
-				sbQuery.append(SQL.SEPERATE + SQL.ON + "T1.SMP_ID" + SQL.EQUAL + "T2.SAMPLE_ID");
-				sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-				sbQuery.append(SQL.SEPERATE + SQL.AND + ITEM_COLUMN + SQL.IN + "(");
-				for(int j=0; j<tmpArr.size(); j++){
-					if(j!=0) sbQuery.append( "," );
-					sbQuery.append( "'" + tmpArr.get(j).toString() + "'");					
-				}
-				sbQuery.append( " ) ");			
-			}
-		}
-		else if(CHART_TYPE.equals("BAR")) {
-			sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-			sbQuery.append(SQL.SEPERATE + "RESCH_PAT_ID");
-			sbQuery.append(SQL.SEPERATE + SQL.FROM);
-			sbQuery.append(SQL.SEPERATE + "pmsdev" + "." + BASE_TABLE);
-			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-			sbQuery.append(SQL.SEPERATE + SQL.AND + ITEM_COLUMN + SQL.BETWEEN + tmpArr.get(0) + SQL.AND + tmpArr.get(1));
-		}
-		else if(CHART_TYPE.equals("GAO")) {
-			String[] columnStr = ITEM_COLUMN.split(",");
-
-			sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-			sbQuery.append(SQL.SEPERATE + "RESCH_PAT_ID" + SQL.AS + "RESCH_PAT_ID");
-			sbQuery.append(SQL.SEPERATE + SQL.FROM);
-			sbQuery.append(SQL.SEPERATE + "pmsdev" + "." + BASE_TABLE);
-			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-			sbQuery.append(SQL.SEPERATE);
 			for(int j=0; j<tmpArr.size(); j++){
 				List tmpArrOr = (ArrayList)tmpArr.get(j);
 				sbQuery.append(SQL.SEPERATE + SQL.AND);
@@ -501,7 +396,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		
 		return sbQuery;
 	}
-
+	
 	@Override
 	public Object insertCohortItemCont(Map<Object, Object> paramMap) {
 		// TODO Auto-generated method stub
@@ -513,12 +408,16 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		Date dt = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss"); 
 		String schema = "pmsdata";
-		String tableName = schema +"."+"P"+paramMap.get("PER_CODE").toString();
-		String newTableName = tableName +"_"+sdf.format(dt).toString();
+		String tableName;
+		String newTableName;
+		String tableQuery;
+		tableName = schema +"."+"P"+paramMap.get("PER_CODE").toString();
+		newTableName = tableName +"_"+sdf.format(dt).toString();
+		tableQuery = "("+paramMap.get("TABLENAME").toString() + ")";
 		
 		//날짜이름테이블 생성
 		Map tableMap = new HashMap();
-		tableMap.put("tableName", tableName);
+		tableMap.put("tableName", tableQuery);
 		tableMap.put("newTableName", newTableName);
 		dashboardDAO.createCohortTable(tableMap);
 	
@@ -582,7 +481,6 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 				}
 				else {
 					Map<Object, Object> detlMap = new HashMap<Object,Object>();
-					//Map filterDetlMap = (HashMap)conditionArr.get(j);
 					detlMap.put("CONT_FILTER_SEQ", dataMap.get("SEQ"));
 					detlMap.put("CHART_SEQ", filterMap.get("SEQ"));
 					detlMap.put("FILTER_VALUE", conditionArr.get(j));
@@ -628,11 +526,6 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 	@Override
 	public Object selectCohortAnalysisPatnoByNo(Map<Object, Object> paramMap) {
 		
-		/*List tmpArr = (ArrayList)paramMap.get("TXTARR");
-		String patno = "''";
-		for(int i=0; i<tmpArr.size(); i++) {
-			patno += ",'"+tmpArr.get(i).toString()+"'";
-		}*/
 		paramMap.put("PATNO", paramMap.get("TXTARR"));
 		
 		
@@ -703,9 +596,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			dropMap.put("PatnoQuery", sbdropQuery);
 			dashboardDAO.selectCohortAnalysisPatno(dropMap);
 		}
-		
-		
-		
+
 		StringBuffer sbQuery = new StringBuffer();
 		
 		if(flag.equals("1")) {
@@ -794,10 +685,29 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		
 		paramMap.put("DATAQUERY", sbQuery);
 		
+		StringBuffer sbQuery2 = new StringBuffer();
+		
+		for(int i=0; i<tableList.size(); i++) {
+			
+			if(i==0) {
+				sbQuery2.append(SQL.SEPERATE + SQL.SELECT + selectCol + ",DELETE_YN");
+				sbQuery2.append(SQL.SEPERATE + SQL.FROM + tableList.get(i));
+				sbQuery2.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+			}
+			else {
+				sbQuery2.append(SQL.SEPERATE + SQL.UNION);
+				
+				sbQuery2.append(SQL.SEPERATE + SQL.SELECT + selectCol + ",DELETE_YN");
+				sbQuery2.append(SQL.SEPERATE + SQL.FROM + tableList.get(i));
+				sbQuery2.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+			}
+		}
+		
 		Map resultMap = new HashMap();
 		resultMap.put("loadselectedCohort", dashboardDAO.loadselectedChart(paramMap));
 		resultMap.put("CohortTableQuery", sbQuery);
-		
+		resultMap.put("CohortTableQueryAll", sbQuery2);
+
 		return resultMap;
 	}
 
@@ -810,6 +720,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 	@Override
 	public Object selectSavedCohortList(Map<Object, Object> paramMap) throws Exception {
 		// TODO Auto-generated method stub
+
 		List cohortList = (ArrayList)paramMap.get("CONT_SEQ");
 		List resultList = new ArrayList();
 		
@@ -818,6 +729,60 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			tmpMap.put("SEQ", cohortList.get(i));
 			resultList.add(dashboardDAO.selectSavedCohortList(tmpMap));
 		}
+		
+		StringBuffer sbQueryUnion = new StringBuffer();
+		
+		for(int i=0; i<resultList.size(); i++) {
+			Map svCohortMap = (HashMap)resultList.get(i);
+			
+			if(i==0) {
+				sbQueryUnion.append(SQL.SEPERATE + SQL.SELECT + "*");
+				sbQueryUnion.append(SQL.SEPERATE + SQL.FROM + svCohortMap.get("TABLE_NM"));
+				sbQueryUnion.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+			}
+			else {
+				sbQueryUnion.append(SQL.SEPERATE + SQL.UNION);
+
+				sbQueryUnion.append(SQL.SEPERATE + SQL.SELECT + "*");
+				sbQueryUnion.append(SQL.SEPERATE + SQL.FROM + svCohortMap.get("TABLE_NM"));
+				sbQueryUnion.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+			}
+		}
+	
+		String flag;
+		String tableNM = "P"+paramMap.get("PER_CODE").toString();
+		Map chkMap = new HashMap();
+		chkMap.put("SCHEMA", "pmsdata");
+		chkMap.put("TABLE", tableNM);
+		
+		flag = (String)dashboardDAO.selectCheckCohortTable(chkMap);
+		
+		if(flag.equals("1")) {
+			StringBuffer sbdropQuery = new StringBuffer();
+			sbdropQuery.append(SQL.SEPERATE + "TRUNCATE" + SQL.TABLE + "pmsdata." + tableNM);
+			Map dropMap = new HashMap();
+			dropMap.put("PatnoQuery", sbdropQuery);
+			dashboardDAO.selectCohortAnalysisPatno(dropMap);
+		}
+		StringBuffer sbQuery = new StringBuffer();
+
+		if(flag.equals("1")) {
+			sbQuery.append(SQL.SEPERATE + SQL.INSERT_INTO + "pmsdata.P"+paramMap.get("PER_CODE").toString());
+		}
+		else {
+			sbQuery.append(SQL.SEPERATE + SQL.CREATE + SQL.TABLE + "pmsdata.P"+paramMap.get("PER_CODE").toString() + SQL.AS);
+		}
+		//sbQuery.append(SQL.SEPERATE + "(");
+		sbQuery.append(sbQueryUnion);
+		//sbQuery.append(SQL.SEPERATE + ")");
+		System.out.println(sbQuery);
+		
+		paramMap.put("PatnoQuery", sbQuery);
+		dashboardDAO.selectCohortAnalysisPatno(paramMap);
+		
+		
+		
+		
 		
 		return resultList;
 	}

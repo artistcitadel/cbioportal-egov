@@ -238,5 +238,33 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		}
 	}
 
+	/**
+	 * BRC등록
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/insertBrc")
+	public void insertBrc(HttpServletResponse response, @RequestBody Map<String,String> param){
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+
+		try{
+			ObjectMapper mapper = new ObjectMapper();
+			String queryid = param.get("queryId");
+			String query = param.get("query");
+			int result = patientsInfoService.insertBrc(queryid, param);
+			System.err.println(result);
+			String jdata = "";
+			jdata = "success";
+			logger.debug(" result is " + jdata);
+			response.setContentType("text/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(jdata);
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+	}
+
 }
 

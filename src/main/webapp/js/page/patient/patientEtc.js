@@ -338,3 +338,7 @@ function addpmidToolTip(node, tip, showDelay, position, theme) {
     $('#'+node+'').qtip(param);
 }
 
+function regBrc(patientId, examNo){
+
+
+}

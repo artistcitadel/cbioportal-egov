@@ -201,6 +201,26 @@ public class CohortcpmController extends BigcenMedAbstractController{
 		return resultMap;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/selContChartList")
+	public Object selContChartList(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- selContChartList START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			resultMap.put("selContChartList", cohortcpmService.selectContChartList(paramMap));			
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
 }
 
 	

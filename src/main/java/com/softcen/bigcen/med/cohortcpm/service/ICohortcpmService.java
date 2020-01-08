@@ -15,4 +15,6 @@ public interface ICohortcpmService {
 	public Object selectCohortFilteringTable(Map<Object, Object> paramMap);
 	
 	public void updateCohortPatientList(Map<Object, Object> paramMap);
+	
+	public Object selectContChartList(Map<Object, Object> paramMap);
 }

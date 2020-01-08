@@ -6,6 +6,16 @@
  
  <mapper namespace="cohort">
  	
+ 	<select id="selectContChartList" parameterType="map" resultType="hashmap"> 		
+		SELECT *
+		FROM CC_ITEM_CONT_CHART
+		WHERE 1=1
+		AND CONT_SEQ in (${CONT_SEQ})
+		AND CRT_ID = #{PER_CODE}
+		group by CHART_SEQ
+ 	</select>
+ 	
+ 	
  	<select id="selectCohortContList" parameterType="map" resultType="hashmap"> 		
 		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT
 		FROM pmsportal.CC_ITEM_CONT
@@ -21,7 +31,7 @@
  	<select id="selectCohortPatientDataList" parameterType="map" resultType="hashmap"> 		
 
 		select a.*, b.SEX_CD, (YEAR(MAKEDATE(0, DATEDIFF(CURDATE(), b.PAT_BIRTHDT)))-2000) AS AGE, b.ABO_BLTY, b.DEATH_YN, b.DEATH_DT, b.INHOSP_DEATH_DT, b.UCOD_DIAG_CD, b.INHOSP_DEATH_DIAG_NM, b.CANCER_REG_YN , c.SPCN_CNT , c.MUT_CNT, d.CNV_CNT, e.SV_CNT, f.EXP_CNT, g.CANCER_TYPE, g.CANCER_DETAIL
-		from ${TABLENAME} a
+		from (${TABLE}) a
 		join pmsdev.WPPIMINFO b on a.RESCH_PAT_ID = b.RESCH_PAT_ID
 		left outer join (
 		               select a.RESCH_PAT_ID, count(distinct b.GENE_EXAM_SPCN_ID) as SPCN_CNT, count(distinct b.GENE_NM) as MUT_CNT

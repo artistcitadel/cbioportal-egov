@@ -56,7 +56,7 @@
  	<select id="createCohortTable" parameterType="map" resultType="hashmap">
  		CREATE TABLE ${newTableName}
  		AS ( SELECT * 
- 			FROM ${tableName} 
+ 			FROM ${tableName} c1
  			)
  	</select>
  	

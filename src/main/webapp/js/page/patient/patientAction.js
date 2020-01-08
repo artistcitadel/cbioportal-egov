@@ -79,7 +79,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.body),
             callback: props.disposer,
-            //timeout: 10000,
+            timeout: 10000,
             success: function (json) {
                 props.callback(json, data);
             },
@@ -220,4 +220,27 @@ function Action() {
             }
         });
     }
+
+    self.regBrc = function (props){
+        $.ajax({
+            type: "post",
+            /*headers: {
+                Authorization: apiKey
+            },*/
+            dataType: "json",
+            cache: false,
+            url: gvSERVER+"/patient/regBrc",
+            contentType: "application/json",
+            data: JSON.stringify(props.data),
+            callback: props.disposer,
+            //timeout: 10000,
+            success: function (json) {
+                props.callback(json, arg);
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
 }

@@ -41,10 +41,19 @@ public class CohortcpmServiceImpl extends BigcenMedAbstractServiceImpl implement
 		sbQuery.append(SQL.SEPERATE + "1=1");
 		sbQuery.append(SQL.SEPERATE + SQL.AND + "DELETE_YN = 'N'");
 		
+		StringBuffer sbQueryAll = new StringBuffer();
+		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + "RESCH_PAT_ID , DELETE_YN" );
+		sbQueryAll.append(SQL.SEPERATE + SQL.FROM);
+		sbQueryAll.append(SQL.SEPERATE + "pmsdata." + tableNM);
+		sbQueryAll.append(SQL.SEPERATE + SQL.WHERE);
+		sbQueryAll.append(SQL.SEPERATE + "1=1");
+		
 		paramMap.put("CohortTableQuery", sbQuery);
 		
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("CohortTableQuery", sbQuery);
+		resultMap.put("CohortTableAllQuery", sbQueryAll);
+
 		resultMap.put("selectCohortTable", cohortcpm.selectCohortTable(paramMap));
 		
 		return resultMap;
@@ -71,6 +80,12 @@ public class CohortcpmServiceImpl extends BigcenMedAbstractServiceImpl implement
 	public void updateCohortPatientList(Map<Object, Object> paramMap) {
 		// TODO Auto-generated method stub
 		cohortcpm.updateCohortPatientList(paramMap);
+	}
+
+	@Override
+	public Object selectContChartList(Map<Object, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return cohortcpm.selectContChartList(paramMap);
 	}
 	
 
