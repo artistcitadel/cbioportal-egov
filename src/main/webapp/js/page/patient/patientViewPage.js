@@ -44,11 +44,11 @@ function PatientView(){
         ONCOTREECODE = cancerMode;
 
         // var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
-        var txt = json[0].age + ' years old, ' + sex + ', ' + cancerType;
+        var txt = json[0].age + ' years old ' + sex + ' ' + cancerType;
         // console.log('pat info ', txt);
         // $('.bio').html(txt);
         var pid = '<span id="patienthead" style="color:#3786C2;cursor:default">'+json[0].patientId+'</span>';
-        $("#patientage").html(pid + ' , '+txt);
+        $("#patientage").html(pid + '  '+txt);
     }
 
 

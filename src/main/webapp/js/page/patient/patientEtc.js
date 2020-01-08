@@ -19,6 +19,7 @@ $(document).ready(function () {
     var moveTab = function(){
         console.log('SAMPLES ', SAMPLES);
         document.pform.samples.value=SAMPLES.join(",");
+        document.pform.samplenames.value=SAMPLENAMES.join(",");
         console.log(document.pform.samples.value);
         document.pform.target = "_blank";
         console.log(SAMPLEPERMUTATION);
@@ -52,15 +53,24 @@ $(document).ready(function () {
         $('#'+id+'').tooltipster('open');
     });
 
-    $("#divsample").on("mouseover", function (e) {
-        //console.log($(this).find('svg').attr('id'));
-        loadSampleAttr($(this).find('svg').attr('id'));
+    // $("#divsample").on("mouseover", function (e) {
+    //     //console.log($(this).find('svg').attr('id'));
+    //     loadSampleAttr($(this).find('svg').attr('id'));
+    // });
+
+    // $("#divsample").on('click', function (e) {
+    $("#divsample").on("click", "[id^='samplespan_']", function (e) {
+        // var id = $(this).find('text').attr('id');
+        var id = e.target.id;
+        document.pform.sampleId.value = id.split("_")[1];
+        // alert(document.pform.sampleId.value);
+        document.pform.submit();
     });
 
-    // $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
-    //     var id = e.target.id;
-    //     loadSampleAttr(id);
-    // });
+    $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
+        var id = e.target.id;
+        loadSampleAttr(id);
+    });
     /*$("#MUTATIONS_con").on("mouseover", "[id^='samplelabel_']", function (e) {
         var id = e.target.id;
         loadSampleAttr(id);
@@ -80,13 +90,14 @@ $(document).ready(function () {
         // prop.cancertypedetail = CANCERTYPEDETAIL;
         // prop.oncotreecode = ONCOTREECODE;
 
+        var sname = PATIENTID+"_"+SAMPLENAMES[parseInt(id.split("_")[2])-1];
         var patientAttr = new PatientAttr();
         $('#'+id+'').tooltipster({
             theme: 'tooltipster-shadow',
             contentAsHTML: true,
             interactive: true,
             arrow: true,
-            content: patientAttr.init(id)
+            content: patientAttr.init(id,sname)
         });
         $('#'+id+'').tooltipster('open');
         /*$('#'+id+'').tooltipster({
@@ -339,6 +350,16 @@ function addpmidToolTip(node, tip, showDelay, position, theme) {
 }
 
 function regBrc(patientId, examNo){
-
-
+    var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
+  console.log('regBrc ',perCode, patientId, eno);
+  var action = new patientAction();
+    var ds_cond = {};
+    ds_cond.perCode = perCode;
+    ds_cond.patientId = patientId;
+    ds_cond.examNo = eno;
+    ds_cond.data = {"queryId": "insertBrc"};
+    ds_cond.callback = postRegBrc;
+    action.regBrc(ds_cond);
+}
+function postRegBrc(res){
 }

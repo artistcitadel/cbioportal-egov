@@ -162,6 +162,12 @@
           ${query}
     </select>
 
+    <insert id="insertBrc" parameterType="map">
+          INSERT INTO pmsportal.CC_RSCH_BRC
+          (PER_CODE, RESCH_PAT_ID, EXAM_NO, APRY_YN, APRY_DT)
+          values( #{perCode}, #{patientId}, #{examNo} )
+    </insert>
+
 </mapper>
 
 

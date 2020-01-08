@@ -107,7 +107,7 @@
                         <div id="summary_pageview" class="com-paging"></div>
                     </div>
                 </div>
-                <hr />
+                <hr calss="ttt" style="display:none;" />
 
 
                 <div class="container-fulid">
@@ -141,7 +141,7 @@
                     </div>--%>
                 </div>
 
-                <hr />
+                    <hr calss="ttt" style="display:none;" />
                     <%--<div class="container-fulid">
                         <div class="row" id="row2">
                             <div class="col-xs-12 col">
@@ -267,7 +267,7 @@
                     </table>
                 </div>
 
-                <hr />
+                <hr calss="ttt" style="display:none;" />
 
 
                 <div class="container-fluid">
@@ -330,7 +330,7 @@
                     <div id="CNV_pageview" class="com-paging"></div>
                 </div>
 
-                <hr />
+                <hr calss="ttt" style="display:none;" />
 
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
@@ -378,7 +378,7 @@
                     <div id="EXPRESSION_pageview" class="com-paging"></div>
                 </div>
 
-                <hr />
+                <hr calss="ttt" style="display:none;" />
 
 
                 <div class="container-fluid">
@@ -518,14 +518,18 @@
     <input type="hidden" name="pages" id="pages" value="${pages}"/>
     <input type="hidden" name="patientId" id="patientId" value="${patientId}"/>
 
+    <input type="hidden" name="sampleId" id="sampleId" value="" />
+
     <input type="hidden" name="mutationcount" id="mutationcount" value="" />
     <input type="hidden" name="samplespermutation" id="samplespermutation" value="" />
     <input type="hidden" name="samples" id="samples" value="" />
+    <input type="hidden" name="samplenames" id="samplenames" value="" />
     <input type="hidden" name="age" id="age" value="" />
     <input type="hidden" name="sex" id="sex" value="" />
     <input type="hidden" name="cancertype" id="cancertype" value="" />
     <input type="hidden" name="cancertypedetail" id="cancertypedetail" value="" />
     <input type="hidden" name="oncotreecode" id="oncotreecode" value="" />
+
 </form>
 <script src="<c:url value="/js/page/patient/WindowStore.js" />"></script>
 <script src="<c:url value="/js/page/patient/const.js" />"></script>
@@ -546,7 +550,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
-    var perCode = '<%=request.getSession().getAttribute("PER_CODE")%>';
+    var perCode = '<%=(request.getSession().getAttribute("PER_CODE") == null) ? " " : request.getSession().getAttribute("PER_CODE")%>';
     var MUTATIOINCOUNT;
     var AGE;
     var SEX;
@@ -559,13 +563,15 @@
 
     var SAMPLECOUNT;
     var SAMPLES=[];
+    var SAMPLENAMES=[];
     var PATIENTID;
     var QUERY;
     var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';
     var patients  = '<%=(request.getParameter("patients") == null) ? "" : request.getParameter("patients")%>';
     var patientId = '<%=(request.getParameter("patientId") == null) ? "" : request.getParameter("patientId")%>';
     var pages     = '<%=(request.getParameter("pages") == null) ? "1" : request.getParameter("pages")%>'
-
+    var SAMPLEID     = '<%=(request.getParameter("sampleId") == null) ? "" : request.getParameter("sampleId")%>'
+    document.pform.sampleId.value = SAMPLEID;
     document.pform.patients.value = patients;
     document.pform.patientId.value = patientId;
     document.pform.pages.value = pages;
@@ -634,7 +640,7 @@
 
     function getPatients(){
         // alert('getPatients');
-        console.log('getPatients called',);
+        console.log('getPatients called');
         var action = new Action();
         var ds_cond = {};
         //console.log('document.pform.QUERY.value',document.pform.QUERY.value);

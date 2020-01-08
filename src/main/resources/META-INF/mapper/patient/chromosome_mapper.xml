@@ -52,6 +52,7 @@
           -- , GROUP_CONCAT(BAS.EXAM_NO            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_NO             -- 검사번호
           -- , GROUP_CONCAT(BAS.EXAM_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_DT             -- 검사일자
              , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnSeq  -- Tumors
+             , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnNm
              , BAS.GENE_NM  geneNm  -- Gene (Annotation OncoKB 사용)
              , BAS.GENE_EXAM_MTH_NM geneExamMthNm     -- Methods
              , BAS.HGVSP_VAL  hgvspVal            -- Protein Change (Annotation OncoKB 사용)
@@ -79,7 +80,14 @@
                       , RS1.RSLT_CNFM_DT AS SPCN_DT        -- 유전자검사검체일자
                       , GMU.EXAM_NO                        -- 검사번호
                       , RS2.RSLT_CNFM_DT AS EXAM_DT        -- 검사일자
-                      , CASE WHEN GMU.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        <choose>
+        <when test="sampleId != null and sampleId != ''">
+                      , CASE WHEN GMU.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </when>
+        <otherwise>
+            , CASE WHEN GMU.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </otherwise>
+        </choose>
                       , GMU.GENE_NM                        -- Gene (Annotation OncoKB 사용)
                       , GMU.GENE_EXAM_MTH_NM               -- Methods
                       , UPPER(GMU.HGVSP_VAL) AS HGVSP_VAL  -- Protein Change (Annotation OncoKB 사용)
@@ -146,6 +154,9 @@
                   WHERE GMU.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
                     AND CAN.RESCH_PAT_ID = CAN.RESCH_PAT_ID
                     AND GMU.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+        <if test="sampleId != null and sampleId != ''">
+            AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
+        </if>
                GROUP BY GMU.MTTN_EXAM_RSLT_ID
                       , CAN.OCT_CD
                       , GMU.GENE_EXAM_SPCN_ID
@@ -179,6 +190,7 @@
         SELECT LEFT(GROUP_CONCAT(BAS.CNV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)  AS geneExamSpcnId    -- 돌연변이검사결과ID (화면표시X)
         , BAS.TUMOR_NM  tumorType        -- 암종 (화면표시X Annotation OncoKB 사용)
         , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnSeq  -- Tumors
+        , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnNm
         -- , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID  ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_ID   -- 유전자검사검체ID   (화면표시X)
         -- , GROUP_CONCAT(BAS.SPCN_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_DT   -- 유전자검사검체일자 (화면표시X)
         -- , GROUP_CONCAT(BAS.EXAM_NO            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_NO             -- 검사번호 (화면표시X)
@@ -204,7 +216,14 @@
         , RS1.RSLT_CNFM_DT AS SPCN_DT           -- 유전자검사검체일자
         , GCV.EXAM_NO                           -- 검사번호
         , RS2.RSLT_CNFM_DT AS EXAM_DT           -- 검사일자
-        , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        <choose>
+        <when test="sampleId != null and sampleId != ''">
+            , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </when>
+        <otherwise>
+            , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </otherwise>
+        </choose>
         , GCV.GENE_NM                           -- Gene (Annotation OncoKB 사용)
         , GCV.GENE_EXAM_MTH_NM                  -- Methods
         , UPPER(GCV.CNV_STAT_NM) AS CNA         -- CNA  (Annotation OncoKB 사용)
@@ -251,6 +270,9 @@
         ) PAT
         WHERE GCV.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         AND GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        <if test="sampleId != null and sampleId != ''">
+            AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
+        </if>
         ) BAS
         GROUP BY
         BAS.GENE_NM
@@ -314,6 +336,7 @@
 SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO), 13)       AS GENE_EXAM_SPCN_ID   -- 돌연변이검사결과ID (화면표시X)
      , BAS.TUMOR_NM          -- 암종 (화면표시X Annotation OncoKB 사용)
      , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_SEQ ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS geneExamSpcnSeq  -- Tumors
+     , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') geneExamSpcnNm
   -- , GROUP_CONCAT(BAS.GENE_EXAM_SPCN_ID  ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_ID   -- 유전자검사검체ID
   -- , GROUP_CONCAT(BAS.SPCN_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS GENE_EXAM_SPCN_DT   -- 유전자검사검체일자
   -- , GROUP_CONCAT(BAS.EXAM_NO            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_NO             -- 검사번호
@@ -342,7 +365,14 @@ SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS
               , RS1.RSLT_CNFM_DT AS SPCN_DT  -- 유전자검사검체일자
               , GSV.EXAM_NO                  -- 검사번호
               , RS2.RSLT_CNFM_DT AS EXAM_DT  -- 검사일자
-              , CASE WHEN GSV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        <choose>
+        <when test="sampleId != null and sampleId != ''">
+            , CASE WHEN GSV.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </when>
+         <otherwise>
+             , CASE WHEN GSV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+        </otherwise>
+        </choose>
               , GSV.GENE_NM1                 -- Gene1 (Annotation OncoKB 사용)
               , GSV.GENE_NM2                 -- Gene2 (Annotation OncoKB 사용)
               , GSV.GENE_EXAM_MTH_NM         -- Methods
@@ -395,6 +425,9 @@ SELECT LEFT(GROUP_CONCAT(BAS.SV_EXAM_RSLT_ID ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS
           WHERE GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
             AND GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
             AND GSV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+         <if test="sampleId != null and sampleId != ''">
+           AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
+         </if>
        ) BAS
       GROUP BY
        BAS.GENE_NM1

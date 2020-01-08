@@ -8,6 +8,26 @@ public class PatientMut  extends RkCmmnVO {
     private String ms;
     private String copy;
 
+  public String getSampleId() {
+    return sampleId;
+  }
+
+  public void setSampleId(String sampleId) {
+    this.sampleId = sampleId;
+  }
+
+  private String sampleId;
+
+  public String getGeneExamSpcnNm() {
+    return geneExamSpcnNm;
+  }
+
+  public void setGeneExamSpcnNm(String geneExamSpcnNm) {
+    this.geneExamSpcnNm = geneExamSpcnNm;
+  }
+
+  private String geneExamSpcnNm;
+
   public String getQuery() {
     return query;
   }

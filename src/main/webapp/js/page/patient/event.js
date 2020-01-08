@@ -39,11 +39,12 @@ function Event() {
 
     self.classify_brc = function(data,  UNIT) {
         var tip = '';
-        tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "&nbsp;&nbsp; <input id ='lent' type='button' value='분양' onClick='regBrc("+PATIENTID+","+data[i].dpSpcnNo+")'></p>";
+        tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</p>";
         for(var i=0;i<data.length;i++) {
             tip += "<span>검체번호 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].dpSpcnNo + "</br>";
             tip += "<span>검체형태 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].tissColecCd + "</br>";
-            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "";
+            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "</br>";
+            tip += "<input class='btn-link' type='button' value='분양' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].dpSpcnNo,' ','_')+"')>";
             tip += "<hr />";
         }
         return tip;

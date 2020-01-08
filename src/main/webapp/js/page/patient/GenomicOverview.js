@@ -296,6 +296,7 @@ function GenomicOverview() {
         }
         spcnSeq = _.uniq(spcnSeq);
         // console.log('MUT spcnSeq ',spcnSeq);
+        // spcnSeq = util.spcnSeqFilter(spcnSeq, SAMPLEID);
 
         _.forEach(spcnSeq, function (v) {
              // console.log(' vis ', v);
@@ -349,6 +350,7 @@ function GenomicOverview() {
         }
         var spcnSeq1 = _.uniq(spcnSeq);
          // console.log('CNA spcnSeq ',spcnSeq1);
+        // spcnSeq1 = util.spcnSeqFilter(spcnSeq1, SAMPLEID);
 
         _.forEach(spcnSeq1, function (v) {
             // console.log(' vis ', v);
@@ -431,6 +433,8 @@ function GenomicOverview() {
         }
         spcnSeq = _.uniq(spcnSeq);
         // console.log('ST spcnSeq ',spcnSeq);
+
+        // spcnSeq = util.spcnSeqFilter(spcnSeq, SAMPLEID);
 
         _.forEach(spcnSeq, function (v) {
             // console.log(' vis ', v);

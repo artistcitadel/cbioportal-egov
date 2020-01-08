@@ -6,9 +6,9 @@ function PatientAttr() {
     var action;
     var util;
 
-    self.init = function (id) {
+    self.init = function (id,title) {
         var label = id.split("_")[2];
-        var title = id.split("_")[1]+'_'+id.split("_")[2];
+        // var title = id.split("_")[1]+'_'+id.split("_")[2];
         var color = (label==='1')?'black':(label==='2')?'orange':(label==='3')?'red':'blue';
 
         var txt = '<div id="'+id+'" class="rc-tooltip-inner" role="tooltip">\n' +

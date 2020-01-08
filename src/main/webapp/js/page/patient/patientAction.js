@@ -199,7 +199,6 @@ function Action() {
     }
 
     self.selectPatientMuList = function (props, arg) {
-
         $.ajax({
             type: "post",
             /*headers: {

@@ -277,4 +277,11 @@ function Util() {
         else return data;
     }
 
+    self.spcnSeqFilter = function(arr, filter){
+        filter = $.trim(filter);
+        var fid = arr.indexOf(filter);
+        // console.log(arr, fid, filter);
+        if(fid!==-1){var temp=[]; temp.push(arr[fid]); return temp;}
+        else arr;
+    }
 }

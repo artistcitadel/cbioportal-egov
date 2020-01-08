@@ -12,6 +12,7 @@ $(document).ready(function () {
     var moveTab = function(){
         // document.pform.target = "_blank";
         document.pform.samples.value=samples;
+        document.pform.samplenames.value=samplenames;
         document.pform.samplespermutation.value=samplespermutation;
         document.pform.mutationcount.value=MUTATIOINCOUNT;
         document.pform.sex.value=SEX;

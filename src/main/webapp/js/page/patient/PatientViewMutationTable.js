@@ -420,7 +420,7 @@
             //console.log("getMutation ", self.NODE);
             // console.log(QUERY);
             var ds_cond = {};
-            ds_cond.data = {"queryId": qid, "patientId": PATIENTID, 'query':QUERY};
+            ds_cond.data = {"queryId": qid, "patientId": PATIENTID, "sampleId": SAMPLEID, "query" : QUERY};
             ds_cond.callback = mutation_disposer;
             action.selectPatientMuList(ds_cond);
         }
@@ -448,7 +448,7 @@
             getMutationList(self.QID[self.ROUNDCNT]);
         }
         var mutation_disposer = function(json) {
-            // console.log('mutation_disposer ', self.NODE);
+             // console.log('mutation_disposer ', self.NODE,json);
             self.TABLE[self.NODE] = json;
 
             setTh();
@@ -630,13 +630,16 @@
                          spcntemp.push(parseInt($.trim(v.geneExamSpcnSeq)));
                          if(!_.includes(SAMPLES,parseInt($.trim(v.geneExamSpcnSeq)))){
                              SAMPLES.push(parseInt($.trim(v.geneExamSpcnSeq)));
+                             SAMPLENAMES.push($.trim(v.geneExamSpcnNm));
                          }
                      }else{
                          var spcnseqs = v.geneExamSpcnSeq.split(",");
+                         var spcnseqNm = v.geneExamSpcnNm.split(",");
                          for(var j=0;j<spcnseqs.length;j++){
                            spcntemp.push(parseInt($.trim(spcnseqs[j])));
                              if(!_.includes(SAMPLES,parseInt($.trim(spcnseqs[j])))){
                                  SAMPLES.push(parseInt($.trim(spcnseqs[j])));
+                                 SAMPLENAMES.push($.trim(spcnseqNm[j]));
                              }
                          }
                      }
@@ -884,12 +887,14 @@
 
             var txt='Samples : ';
             var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
-            // console.log("SAMPLES ", SAMPLES);
+            // console.log("SAMPLES ", SAMPLENAMES);
             for(var i=0;i<SAMPLES.length;i++){
-                txt+='<label class="label-default" style="width: auto;">';
-                txt+=getDivSample((PATIENTID+"_"+SAMPLES[i]) , SAMPLES[i]) +" ";
-                txt+=pid+'_';
-                txt+=(i+1);
+                txt+='<label id="samplespan_'+SAMPLES[i]+'" class="label-default" style="width:auto;cursor:pointer;">';
+                // txt+=getDivSample((PATIENTID+"_"+SAMPLES[i]) , SAMPLES[i]) +" ";
+                txt+=getDivSample("head_"+SAMPLES[i], SAMPLES[i] ) +" ";
+                txt+=SAMPLENAMES[i];
+                // txt+=pid+'_';
+                // txt+=(i+1);
                 // if(i===0)txt+=' Primary'
                 txt+='</label>&nbsp;';
             }

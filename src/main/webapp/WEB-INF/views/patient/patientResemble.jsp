@@ -180,6 +180,7 @@
         <input type="hidden" name="mutationcount" id="mutationcount" value="" />
         <input type="hidden" name="samplespermutation" id="samplespermutation" value="" />
         <input type="hidden" name="samples" id="samples" value="" />
+        <input type="hidden" name="samplenames" id="samplenames" value="" />
         <input type="hidden" name="age" id="age" value="" />
         <input type="hidden" name="sex" id="sex" value="" />
         <input type="hidden" name="cancertype" id="cancertype" value="" />
@@ -218,6 +219,7 @@
 
         var samplespermutation     = '<%=(request.getParameter("samplespermutation") == null) ? "" : request.getParameter("samplespermutation")%>';
         var samples     = '<%=(request.getParameter("samples") == null) ? "" : request.getParameter("samples")%>';
+        var samplenames     = '<%=(request.getParameter("samples") == null) ? "" : request.getParameter("samplenames")%>';
 
         var sex     = '<%=(request.getParameter("sex") == null) ? "" : request.getParameter("sex")%>';
         var age     = '<%=(request.getParameter("age") == null) ? "" : request.getParameter("age")%>';
@@ -244,13 +246,16 @@
         var mcount4=0;
 
         var SAMPLE=[];
+        var SAMPLENAMES=[];
         if(samples.indexOf(",") === -1) {
             numberofsample = 1;
             mcount1=samplespermutation[0];
             SAMPLE.push(samples);
+            SAMPLENAMES.push(samplenames);
         }
         else {
             var s = samples.split(",");
+            var s1 = samplenames.split(",");
             numberofsample = s.length;
             mcount1 = samplespermutation[0];
             mcount2 = samplespermutation[1];
@@ -259,6 +264,7 @@
 
             for(var i=0; i<s.length;i++){
                 SAMPLE.push(s[i])
+                SAMPLENAMES.push(s1[i]);
             }
         }
         $("#numberofsample").text(numberofsample);
@@ -285,9 +291,11 @@
         var txt='';
         for(var i=0;i<SAMPLE.length;i++){
             txt+='<label class="label-default" style="width: auto;">';
-            txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
-            txt+=PATIENTID+'_';
-            txt+=(i+1);
+            // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
+            txt+=getDivSample((SAMPLENAMES[i]) , parseInt(SAMPLE[i])) +" ";
+            // txt+=PATIENTID+'_';
+            txt+=SAMPLENAMES[i];
+            // txt+=(i+1);
             // if(i===0)txt+=' Primary'
             txt+='</label>&nbsp;';
         }
