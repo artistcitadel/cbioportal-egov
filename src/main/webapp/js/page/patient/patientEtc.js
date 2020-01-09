@@ -350,16 +350,17 @@ function addpmidToolTip(node, tip, showDelay, position, theme) {
 }
 
 function regBrc(patientId, examNo){
-    var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
-  console.log('regBrc ',perCode, patientId, eno);
-  var action = new patientAction();
-    var ds_cond = {};
-    ds_cond.perCode = perCode;
-    ds_cond.patientId = patientId;
-    ds_cond.examNo = eno;
-    ds_cond.data = {"queryId": "insertBrc"};
-    ds_cond.callback = postRegBrc;
-    action.regBrc(ds_cond);
+    if (window.confirm("분양신청 하시겠습니까?")) {
+        var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
+        console.log('regBrc ',perCode, PATIENTID, eno);
+        var action = new Action();
+        var ds_cond = {};
+        ds_cond.data = {"queryId": "patient.insertBrc",'perCode':perCode,'patientId':patientId,'examNo':eno};
+        ds_cond.callback = postRegBrc;
+        action.regBrc(ds_cond);
+    }
+
 }
 function postRegBrc(res){
+    alert('신청되었습니다');
 }

@@ -509,8 +509,6 @@
         </div>
     </div>
 
-
-
 <form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
     <input type="hidden" name="patients" id="patients" value="${patients}"/>
     <input type="hidden" name="query" id="QUERY" value="${QUERY}"/>
@@ -550,7 +548,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
-    var perCode = '<%=(request.getSession().getAttribute("PER_CODE") == null) ? " " : request.getSession().getAttribute("PER_CODE")%>';
+    var perCode = '<%=(request.getSession().getAttribute("PER_CODE") == null) ? "0000" : request.getSession().getAttribute("PER_CODE")%>';
     var MUTATIOINCOUNT;
     var AGE;
     var SEX;
@@ -699,6 +697,13 @@
             document.pform.submit();
         }
     }
+
+    $('#confirm').modal({
+        show: false,
+        backdrop: 'static',
+        keyboard: true
+    });
+
 </script>
 
 </div>

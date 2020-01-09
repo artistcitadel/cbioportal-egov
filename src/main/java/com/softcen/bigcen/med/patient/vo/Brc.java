@@ -1,14 +1,14 @@
 package com.softcen.bigcen.med.patient.vo;
 
 public class Brc extends Event {
-  private String dpSpcnNo;
+  private String spcnNo;
 
-  public String getDpSpcnNo() {
-    return dpSpcnNo;
+  public String getspcnNo() {
+    return spcnNo;
   }
 
-  public void setDpSpcnNo(String dpSpcnNo) {
-    this.dpSpcnNo = dpSpcnNo;
+  public void setSpcnNo(String spcnNo) {
+    this.spcnNo = spcnNo;
   }
 
   public String getTissColecCd() {

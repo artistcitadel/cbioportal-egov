@@ -6,7 +6,7 @@ function setWindowSize() {
     };
     if(document.readyState !== "complete")return false;
     if(_.isUndefined(size))return false;
-    console.log('setWindowSize ',size);
+    // console.log('setWindowSize ',size);
 
     $("#genomicOverviewTracksContainer1").empty();
     $("#vafplot1").empty();

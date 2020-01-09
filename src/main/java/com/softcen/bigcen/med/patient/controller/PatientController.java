@@ -253,9 +253,10 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 			String queryid = param.get("queryId");
 			String query = param.get("query");
 			int result = patientsInfoService.insertBrc(queryid, param);
-			System.err.println(result);
+//			System.err.println(result);
 			String jdata = "";
-			jdata = "success";
+//			jdata = "success : "+ result;
+			jdata = mapper.writeValueAsString(result);
 			logger.debug(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");

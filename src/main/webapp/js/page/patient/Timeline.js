@@ -387,6 +387,7 @@ function TimeLine() {
                         //console.log('temp_name',temp_name[0].subject , subject.sugery);
                         item.id = temp_name[0].id;
                         item.time = temp_name[0].time;
+                        item.isSample = _.includes(SAMPLENAMES,temp_name[0].spcnNo);
                         item.name =
                             (temp_name[0].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                             (temp_name[0].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
@@ -405,6 +406,7 @@ function TimeLine() {
                         temp_name.push(pdata[i]);
                         item.id = pdata[i].id;
                         item.time = pdata[i].time;
+                        item.isSample = _.includes(SAMPLENAMES,pdata[i].spcnNo);
                         item.name =
                             (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                             (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
@@ -540,7 +542,7 @@ function TimeLine() {
 
     function plotMuts(p, row, item) {
         if (!item.show) return;
-        //console.log('--> ', item.id, row);
+        // console.log('--> ', item, row);
         var yRow = fyRow(row) + 20 - 6;
         ++ycnt;
         if (item.leaf) {
@@ -551,6 +553,8 @@ function TimeLine() {
 
             // console.log('pixelAry is ', pixelAry);
             //var tcnt = 0;
+
+            // (item.id !== subject.tissue && _.includes(SAMPLENAMES, item.spcnNo)) ? (
             var plen = pixelAry.length;
             for (var i = 0; i < pixelAry.length; i++) {
                 var position = pixelAry[i].axis;
@@ -563,37 +567,16 @@ function TimeLine() {
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
 
-                var r;
-                var tissue_seq="0";
-                if(item.id === subject.tissue) {
-                    tissue_seq = util.getExamNo(SAMPLES, SAMPLENAMES, item.spcnNo);
-                    console.log('TISSUE1 ', item.id , subject.tissue, item);
-                }
-                  if(tissue_seq!=="0"){
-                    r = p.circle(leftpadding, yRow - 4, pw+2);
-                    var tissue_text = p.text(position, yRow - 4, util.getExamNo(SAMPLES, SAMPLENAMES, item.spcnNo)).attr({
-                        'text-anchor': 'middle',
-                        'fill': 'white',
-                        'cursor': 'default',
-                        'font-size': '9',
-                        'stroke' : 1,
-                        'font-family': 'Nanum Gothic, sans-serif'
-                    });
-                    r.attr('text', tissue_text);
-                    r.attr("fill", "#000");
-                    r.attr("stroke", "#000");
-                    r.attr("stroke-width", 5);
-                    r.attr("opacity", 0.5);
-                    r.translate(0.5, 0.5);
-                }else {
-                    r = p.circle(leftpadding, yRow - 4, pw+1);
-                    r.attr("fill", event.getPlotColor(item.subject, item.id));
-                    r.attr("stroke", event.getPlotColor(item.subject, item.id));
+                var plotcolor =event.getPlotColor(item.subject, item.id);
+                if(pixelAry[i].isSample)plotcolor="#000";
+                var r = p.circle(leftpadding, yRow - 4, pw+1);
+                    r.attr("fill", plotcolor),
+                    r.attr("stroke", plotcolor)
                     r.attr("stroke-width", pixelAry[i].stroke);
                     // r.attr("stroke-width", 1);
                     r.attr("opacity", 0.5);
                     r.translate(0.5, 0.5);
-                }
+
 
                 r.hover(function () {
                         this.transform('S1.5,1.5');

@@ -103,7 +103,7 @@ function Specimen() {
             item.id = data[i].id;
             item.name = data[i].name;
 
-            item.dpSpcnNo = data[i].dpSpcnNo;
+            item.spcnNo = data[i].spcnNo;
             item.tissColecCd = data[i].tissColecCd;
             item.cellOrganDiyCd = data[i].cellOrganDiyCd;
             item.cdNm = data[i].cdNm;

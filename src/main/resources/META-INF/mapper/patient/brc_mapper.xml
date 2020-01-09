@@ -11,7 +11,7 @@
        'BRC' id,
        'BRC' name,
        a.RCEP_DT time,
-       a.DP_SPCN_NO dpSpcnNo, -- 검체번호
+       a.DP_SPCN_NO spcnNo, -- 검체번호
        CASE WHEN a.TISS_COLEC_CD = 'A1' THEN 'Tissue' WHEN a.TISS_COLEC_CD = 'A2' THEN 'Blood' END tissColecCd,-- 검체형태
        a.CELL_ORGAN_DIV_CD cellOrganDiyCd, -- 장기코드
        b.CD_NM cdNm

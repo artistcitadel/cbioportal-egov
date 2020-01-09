@@ -221,6 +221,7 @@ function Action() {
     }
 
     self.regBrc = function (props){
+        console.log(props.data);
         $.ajax({
             type: "post",
             /*headers: {
@@ -228,13 +229,13 @@ function Action() {
             },*/
             dataType: "json",
             cache: false,
-            url: gvSERVER+"/patient/regBrc",
+            url: gvSERVER+"/patient/insertBrc",
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,
             //timeout: 10000,
             success: function (json) {
-                props.callback(json, arg);
+                props.callback(json);
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

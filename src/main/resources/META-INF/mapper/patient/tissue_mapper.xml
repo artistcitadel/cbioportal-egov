@@ -18,6 +18,5 @@
        SPCN_EXAM_ORDR_TYP_CD spcnExamOrdrTypCd -- 검체검사처방유형코드
 FROM SSSPMORDR  -- 검체검사처방기본
 WHERE RESCH_PAT_ID = #{patientId}
-
     </select>
 </mapper>

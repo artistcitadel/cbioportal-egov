@@ -38,15 +38,15 @@ function PatientAttr() {
             '                    </tr>\n' +
             '                    </thead>\n' +
             '                    <tbody>\n' +
-            '                    <tr class="success">\n' +
+            '                    <tr>\n' +
             '                        <td><span>Mutation Count</span></td>\n' +
             '                        <td><span>'+MUTATIOINCOUNT+'</span></td>\n' +
             '                    </tr>\n' +
-            '                    <tr class="info">\n' +
+            '                    <tr>\n' +
             '                        <td><span>Sample Type</span></td>\n' +
             '                        <td><span>'+label+'</span></td>\n' +
             '                    </tr>\n' +
-            '                    <tr class="warning">\n' +
+            '                    <tr>\n' +
             '                        <td><span>1p/19q Status</span></td>\n' +
             '                        <td><span>Unknown</span></td>\n' +
             '                    </tr>\n' +
