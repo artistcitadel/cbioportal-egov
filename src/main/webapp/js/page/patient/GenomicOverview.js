@@ -4,6 +4,8 @@
  */
 GENOMICOVERVIEWDATA = [];
 MUTATIONGENOMICDATA = [];
+MERGEDMUTATION=[];
+// MERGEDSEQ=[];
 function GenomicOverview() {
     var self = this;
     var util,action;
@@ -295,6 +297,10 @@ function GenomicOverview() {
                 )
         }
         spcnSeq = _.uniq(spcnSeq);
+
+         // MERGEDSEQ = MERGEDSEQ.concat(spcnSeq);
+         MERGEDMUTATION = MERGEDMUTATION.concat(mutObj);
+
         // console.log('MUT spcnSeq ',spcnSeq);
         // spcnSeq = util.spcnSeqFilter(spcnSeq, SAMPLEID);
 
@@ -324,10 +330,10 @@ function GenomicOverview() {
 
         getCnaPixelMap(p, row); //cna, sv,
 
-        if(mutObj.length>0){
-            var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
-            thumbnailExpandVAFPlot.init(spcnSeq, mutObj);
-        }
+        // if(mutObj.length>0){
+        //     var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
+        //     thumbnailExpandVAFPlot.init(spcnSeq, mutObj);
+        // }
     }
 
 
@@ -351,6 +357,9 @@ function GenomicOverview() {
         var spcnSeq1 = _.uniq(spcnSeq);
          // console.log('CNA spcnSeq ',spcnSeq1);
         // spcnSeq1 = util.spcnSeqFilter(spcnSeq1, SAMPLEID);
+
+         // MERGEDSEQ = MERGEDSEQ.concat(spcnSeq1);
+         MERGEDMUTATION = MERGEDMUTATION.concat(cnaObj);
 
         _.forEach(spcnSeq1, function (v) {
             // console.log(' vis ', v);
@@ -434,6 +443,9 @@ function GenomicOverview() {
         spcnSeq = _.uniq(spcnSeq);
         // console.log('ST spcnSeq ',spcnSeq);
 
+         // MERGEDSEQ = MERGEDSEQ.concat(spcnSeq);
+         MERGEDMUTATION = MERGEDMUTATION.concat(mutObj);
+
         // spcnSeq = util.spcnSeqFilter(spcnSeq, SAMPLEID);
 
         _.forEach(spcnSeq, function (v) {
@@ -464,6 +476,15 @@ function GenomicOverview() {
             ++row;
             len=0;
         });
+
+        if(MERGEDMUTATION.length>0){
+          // MERGEDSEQ = _.uniq(MERGEDSEQ);
+            // console.log('MERGEDSEQ ',MERGEDSEQ);
+            // console.log('MERGEDMUTATION ',MERGEDMUTATION);
+          var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
+          thumbnailExpandVAFPlot.init(SAMPLES, MERGEDMUTATION);
+        }
+
    }
     var drawPlotSt = function(pixelMap, p ,row, len,seq){
         var maxCount = 5; // set max height to 5 mutations

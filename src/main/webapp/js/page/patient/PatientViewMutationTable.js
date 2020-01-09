@@ -509,7 +509,6 @@
                 var gene = new GenomicOverview();
                 gene.init(self.TABLE);
 
-
                 var temp = {};
                 temp['MUTATIONS'] = self.TABLE['MUTATIONS'];
                 temp['CNV'] = self.TABLE['CNV'];
@@ -628,19 +627,19 @@
                      var spcntemp=[];
                      if(v.geneExamSpcnSeq.indexOf(",")===-1){
                          spcntemp.push(parseInt($.trim(v.geneExamSpcnSeq)));
-                         if(!_.includes(SAMPLES,parseInt($.trim(v.geneExamSpcnSeq)))){
-                             SAMPLES.push(parseInt($.trim(v.geneExamSpcnSeq)));
-                             SAMPLENAMES.push($.trim(v.geneExamSpcnNm));
-                         }
+                         // if(!_.includes(SAMPLES,parseInt($.trim(v.geneExamSpcnSeq)))){
+                         //     SAMPLES.push(parseInt($.trim(v.geneExamSpcnSeq)));
+                         //     SAMPLENAMES.push($.trim(v.geneExamSpcnNm));
+                         // }
                      }else{
                          var spcnseqs = v.geneExamSpcnSeq.split(",");
                          var spcnseqNm = v.geneExamSpcnNm.split(",");
                          for(var j=0;j<spcnseqs.length;j++){
                            spcntemp.push(parseInt($.trim(spcnseqs[j])));
-                             if(!_.includes(SAMPLES,parseInt($.trim(spcnseqs[j])))){
-                                 SAMPLES.push(parseInt($.trim(spcnseqs[j])));
-                                 SAMPLENAMES.push($.trim(spcnseqNm[j]));
-                             }
+                             // if(!_.includes(SAMPLES,parseInt($.trim(spcnseqs[j])))){
+                             //     SAMPLES.push(parseInt($.trim(spcnseqs[j])));
+                             //     SAMPLENAMES.push($.trim(spcnseqNm[j]));
+                             // }
                          }
                      }
                      for(var i=1; i<5; i++) {
@@ -885,7 +884,8 @@
             $("#expcount").text(expcount);
             $("#svcount").text(svcount);
 
-            var txt='Samples : ';
+
+            /*var txt='Samples : ';
             var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
             // console.log("SAMPLES ", SAMPLENAMES);
             for(var i=0;i<SAMPLES.length;i++){
@@ -898,10 +898,11 @@
                 // if(i===0)txt+=' Primary'
                 txt+='</label>&nbsp;';
             }
-            $("#divsample").html(txt);
+            $("#divsample").html(txt);*/
+
            }
 
-            var buildRowsMutation = function(json, dirty) {
+           var buildRowsMutation = function(json, dirty) {
                 // console.log('buildRowMutation called ',self.ROUNDCNT, json);
 
                 buildTd(json);

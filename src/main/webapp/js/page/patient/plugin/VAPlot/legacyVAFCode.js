@@ -98,7 +98,8 @@ var AlleleFreqPlotUtils = (function() {
 }());
 
  var AlleleFreqPlotMulti = function(component, id, data, options, order, colors, labels, genepanel_icon_data) {
-      // console.log('order', order);
+       // console.log('order', order);
+       // console.log('labels', labels);
          var div = component.div;
          // var histogram = $("#histogram");
          // var curve = $("#curve");
@@ -392,7 +393,6 @@ d3.legend = function(component, g, font_size, labels, order, genepanel_icon_data
         });
 
         items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
-        //console.log('items',items);
         var maxLabelLength = 10;
         var spacing = 0.4;
 
@@ -420,7 +420,7 @@ d3.legend = function(component, g, font_size, labels, order, genepanel_icon_data
         ;
 
         // sample index icon text
-        //console.log('Object.keys(items)',Object.keys(items), items);
+        // console.log('Object.keys(items)',Object.keys(items), items);
         for (var i=0; i<items.length; i++) {
             li.append("text")
                 .attr("x",0.4+GENEPANEL_ICON_WIDTH+'em')

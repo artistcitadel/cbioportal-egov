@@ -2,7 +2,10 @@ function ThumbnailExpandVAFPlot() {
     var self = this;
     var LOADTOOLTIP=false;
     var LEAVETOOLTIP=true;
+    var sampleMap;
     self.init = function (samples, mutObj) {
+        var util = new Util();
+        sampleMap = util.getSamples(mutObj);
         self.samples=samples;
         self.mutObj = mutObj;
         computeMutationFrequencyBySample(samples, mutObj,false);
@@ -145,7 +148,7 @@ function ThumbnailExpandVAFPlot() {
         var count=0;
         var max=0;
         _.forEach(samples, function(value) {
-            console.log('sample value', value);
+            // console.log('sample value', value);
             var temp=[];
             for (var i = 0; i < mergedMutations.length; i++) {
                 mutation = mergedMutations[i];
@@ -161,10 +164,24 @@ function ThumbnailExpandVAFPlot() {
                 }
             }
             if(max<temp.length)max=temp.length;
-            ret[PATIENTID+"_"+value] = temp;
+            /*ret[PATIENTID+"_"+value] = temp;
             colors[PATIENTID+"_"+value] = SAMPLE_COLOR[count];
-            labels[PATIENTID+"_"+value] = PATIENTID+"_"+value;
-            orders[PATIENTID+"_"+value] = count;
+            // labels[PATIENTID+"_"+value] = PATIENTID+"_"+value;
+            // console.log('sampleMap', sampleMap, sampleMap.samplenames, value);
+            // console.log(sampleMap.samplenames[parseInt(value)-1]);
+            // labels[PATIENTID+"_"+value] = sampleMap.samplenames[parseInt(value)-1];
+            labels[PATIENTID+"_"+value] = sampleMap.samplenames[parseInt(value)-1];
+            orders[PATIENTID+"_"+value] = count;*/
+
+            ret[sampleMap.samplenames[parseInt(value)-1]] = temp;
+            colors[sampleMap.samplenames[parseInt(value)-1]] = SAMPLE_COLOR[count];
+            // labels[PATIENTID+"_"+value] = PATIENTID+"_"+value;
+            // console.log('sampleMap', sampleMap, sampleMap.samplenames, value);
+            // console.log(sampleMap.samplenames[parseInt(value)-1]);
+            // labels[PATIENTID+"_"+value] = sampleMap.samplenames[parseInt(value)-1];
+            labels[sampleMap.samplenames[parseInt(value)-1]] = sampleMap.samplenames[parseInt(value)-1];
+            orders[sampleMap.samplenames[parseInt(value)-1]] = count;
+
             ++count;
         });
         _.map(ret, function(v, k){
@@ -175,7 +192,7 @@ function ThumbnailExpandVAFPlot() {
             }
         });
 
-        console.log('computeMutationFrequencyBySample', ret);
+       // console.log('computeMutationFrequencyBySample', ret);
        // return ret;
        //  console.log('freq data',ret);
         var options={};
@@ -220,6 +237,7 @@ function ThumbnailExpandVAFPlot() {
             };
         }
         props.options = options;
+        // console.log('props.labels ', props.labels);
         var vAFPlot = new VAFPlot();
         vAFPlot.init(props);
     }

@@ -120,8 +120,8 @@
                         <div class="col-xs-3 col"></div>
                         <div class="col-xs-3 col text-align-right">
                             <label class="label-default" style="width: auto;text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
-                            <input id="reset" type="button" value="Reset" class="btn btn-sm btn-default ttt" style="display:none;margin-right:3px;">
                             <input id="xgrid" type="button" value="Grid on" class="btn btn-sm btn-success ttt" style="display:none;">
+                            <input id="reset" type="button" value="Reset" class="btn btn-sm btn-default ttt" style="display:none;margin-right:3px;">
                             <%--<label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>--%>
                             <%--<input id="zoomin" type="button" value="+">--%>
                             <%--<input id="zoomout" type="button" value="-">--%>
@@ -566,7 +566,7 @@
     var SAMPLENAMES=[];
     var PATIENTID;
     var QUERY;
-    var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';
+    var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "1140374940" : request.getParameter("RESCH_PAT_ID")%>';
     var patients  = '<%=(request.getParameter("patients") == null) ? "" : request.getParameter("patients")%>';
     var patientId = '<%=(request.getParameter("patientId") == null) ? "" : request.getParameter("patientId")%>';
     var pages     = '<%=(request.getParameter("pages") == null) ? "1" : request.getParameter("pages")%>'
@@ -635,6 +635,7 @@
         var tpage = udata.length;
         var page = parseInt(pages);
         pager.buildPage(page, tpage, sel, new Noop, udata, 'simple');
+        buildSample();
     }
 
 
@@ -659,6 +660,32 @@
         }
         document.pform.patients.value = temp.join(",");
         buildPatient();
+    }
+
+    function buildSample(){
+        var action = new Action();
+        var ds_cond = {};
+        ds_cond.data = {"queryId": "selectPatientMutSample", "patientId": PATIENTID, "sampleId":SAMPLEID};
+        ds_cond.callback = sampleTitleDisposer;
+        action.selectPatientMuList(ds_cond);
+    }
+    var sampleTitleDisposer = function(samples) {
+        var txt='Samples : ';
+        var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
+        // console.log("sampleTitleDisposer ", samples);
+        for(var i=0;i<samples.length;i++){
+            SAMPLES.push(samples[i].geneExamSpcnSeq);
+            SAMPLENAMES.push(samples[i].geneExamSpcnNm);
+            txt+='<label id="samplespan_'+samples[i].geneExamSpcnSeq+'" class="label-default" style="width:auto;cursor:pointer;">';
+            // txt+=getDivSample((PATIENTID+"_"+SAMPLES[i]) , SAMPLES[i]) +" ";
+            txt+=getDivSample("head_"+samples[i].geneExamSpcnSeq, parseInt(samples[i].geneExamSpcnSeq) ) +" ";
+            txt+=samples[i].geneExamSpcnNm;
+            // txt+=pid+'_';
+            // txt+=(i+1);
+            // if(i===0)txt+=' Primary'
+            txt+='</label>&nbsp;';
+        }
+        $("#divsample").html(txt);
     }
 
     function Noop(){

@@ -284,4 +284,43 @@ function Util() {
         if(fid!==-1){var temp=[]; temp.push(arr[fid]); return temp;}
         else arr;
     }
+
+    self.getSamples = function(arr) {
+        var SAMPLES=[];
+        var SAMPLENAMES =[];
+        for (var i = 0; i < arr.length; i++) {
+            var v = arr[i];
+            if (v.geneExamSpcnSeq.indexOf(",") === -1) {
+                if (!_.includes(SAMPLES, parseInt($.trim(v.geneExamSpcnSeq)))) {
+                    SAMPLES.push(parseInt($.trim(v.geneExamSpcnSeq)));
+                    SAMPLENAMES.push($.trim(v.geneExamSpcnNm));
+                }
+            } else {
+                var spcnseqs = v.geneExamSpcnSeq.split(",");
+                var spcnseqNm = v.geneExamSpcnNm.split(",");
+                for (var j = 0; j < spcnseqs.length; j++) {
+                    if (!_.includes(SAMPLES, parseInt($.trim(spcnseqs[j])))) {
+                        SAMPLES.push(parseInt($.trim(spcnseqs[j])));
+                        SAMPLENAMES.push($.trim(spcnseqNm[j]));
+                    }
+                }
+            }
+        }
+        var prop = {};
+        prop.samples = SAMPLES;
+        prop.samplenames = SAMPLENAMES;
+        return prop;
+    }
+
+    self.getExamNo = function(samples, samplenames, spcnNo) {
+        spcnNo = spcnNo.replace(' ','_');
+        console.log(spcnNo);
+        var seq  = "0";
+        for(var i=0;i<samples.length;i++){
+            var s = samplenames[i].replace(' ','_');
+            console.log(s, spcnNo);
+            if(s===spcnNo){seq = samples[i]; break;}
+        }
+        return seq;
+    }
 }

@@ -562,13 +562,39 @@ function TimeLine() {
                 }
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
-                var r = p.circle(leftpadding, yRow - 4, pw+1);
-                r.attr("fill", event.getPlotColor(item.subject, item.id));
-                r.attr("stroke", event.getPlotColor(item.subject, item.id));
-                r.attr("stroke-width", pixelAry[i].stroke);
-                // r.attr("stroke-width", 1);
-                r.attr("opacity", 0.5);
-                r.translate(0.5, 0.5);
+
+                var r;
+                var tissue_seq="0";
+                if(item.id === subject.tissue) {
+                    tissue_seq = util.getExamNo(SAMPLES, SAMPLENAMES, item.spcnNo);
+                    console.log('TISSUE1 ', item.id , subject.tissue, item);
+                }
+                  if(tissue_seq!=="0"){
+                    r = p.circle(leftpadding, yRow - 4, pw+2);
+                    var tissue_text = p.text(position, yRow - 4, util.getExamNo(SAMPLES, SAMPLENAMES, item.spcnNo)).attr({
+                        'text-anchor': 'middle',
+                        'fill': 'white',
+                        'cursor': 'default',
+                        'font-size': '9',
+                        'stroke' : 1,
+                        'font-family': 'Nanum Gothic, sans-serif'
+                    });
+                    r.attr('text', tissue_text);
+                    r.attr("fill", "#000");
+                    r.attr("stroke", "#000");
+                    r.attr("stroke-width", 5);
+                    r.attr("opacity", 0.5);
+                    r.translate(0.5, 0.5);
+                }else {
+                    r = p.circle(leftpadding, yRow - 4, pw+1);
+                    r.attr("fill", event.getPlotColor(item.subject, item.id));
+                    r.attr("stroke", event.getPlotColor(item.subject, item.id));
+                    r.attr("stroke-width", pixelAry[i].stroke);
+                    // r.attr("stroke-width", 1);
+                    r.attr("opacity", 0.5);
+                    r.translate(0.5, 0.5);
+                }
+
                 r.hover(function () {
                         this.transform('S1.5,1.5');
                     }, function () {

@@ -6,7 +6,7 @@
 
 <mapper namespace="patient">
     <select id="selectTissueList" resultType="com.softcen.bigcen.med.patient.vo.Tissue">
-       select distinct 'SPECIMEN' subject,
+       SELECT DISTINCT 'SPECIMEN' subject,
        '1' pid,
        'TISSUE'  id,
        'TISSUE'  name,
@@ -16,8 +16,8 @@
        EXAM_NO examNo, -- 검사번호,
        SPCN_NO spcnNo,  -- 검체번호,
        SPCN_EXAM_ORDR_TYP_CD spcnExamOrdrTypCd -- 검체검사처방유형코드
-from SSSPMORDR a -- 검체검사처방기본
-where a.RESCH_PAT_ID = #{patientId}
+FROM SSSPMORDR  -- 검체검사처방기본
+WHERE RESCH_PAT_ID = #{patientId}
 
     </select>
 </mapper>
