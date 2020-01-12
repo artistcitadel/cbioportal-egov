@@ -449,12 +449,13 @@ function GenomicOverview() {
         // spcnSeq = util.spcnSeqFilter(spcnSeq, SAMPLEID);
 
         _.forEach(spcnSeq, function (v) {
-            // console.log(' vis ', v);
+             // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             for (var i = 0; i < mutObj.length; i++) {
                 if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
-
+                    pixelMap=[];
+                   // console.log('geneNm ', mutObj[i].geneNm, mutObj[i].geneNm1);
                     var chm = translateChm(mutObj[i].chrnNo);
                     var x = Math.round(loc2xpixil(chm, (Number(mutObj[i].geneVariStLocVal) + Number(mutObj[i].geneVariStLocVal)) / 2));
                     var xBin = x - x % 1;
@@ -469,12 +470,15 @@ function GenomicOverview() {
                     ++len;
                     SAMPLEPERMUTATION[v]+=1;
                 }
+                drawPlotSt(pixelMap, p, row, len, v);
+                ++row;
+                len=0;
             }
 
             // console.log('ST pixelMap ', pixelMap);
-            drawPlotSt(pixelMap, p, row, len, v);
-            ++row;
-            len=0;
+            // drawPlotSt(pixelMap, p, row, len, v);
+            // ++row;
+            // len=0;
         });
 
         if(MERGEDMUTATION.length>0){
@@ -498,11 +502,14 @@ function GenomicOverview() {
                 if(j%2 === 0){
                     odd=pixil;
                 }
-                //console.log( 'pixil ',pixil);
+                // console.log( 'pixil ',pixil);
+                // for(var j=0;j<arr.length;j++){
+                //     var t = arr[i].split(":")
+                // }
                 var h = arr.length>maxCount ? self.rowHeight : (self.rowHeight*arr.length/maxCount);
                 var r = p.rect(pixil,yRow-h,self.pixelsPerBinMut,h+2);
-                r.attr("fill","#0f0");
-                r.attr("stroke", "#0f0");
+                r.attr("fill","#ff0000");
+                r.attr("stroke", "#ff0000");
                 r.attr("stroke-width", 1);
                 r.attr("opacity", 0.5);
                 r.translate(0.5, 0.5);

@@ -285,7 +285,7 @@ function TimeLine() {
                 txt.data({id: chmName[txtCnt]});
                 //addToolTip(txt.node, '클릭하여 확대', 100, '');
                 txt.click(function () {
-                    if (UNIT === 'd') return;
+                	if (UNIT === 'd') return;
                     //var temp = dunformat(this.attr('text'));
                     var temp = this.data('id');
                     console.log(temp);
@@ -743,6 +743,7 @@ function TimeLine() {
 
     self.redrawing = function(){
         if(TIMELINEDATA.length===0)return;
+        setDom(self);
         paperWidth = window.innerWidth-70;
         paperHeight = 300;
         RAW=TIMELINERAW;
@@ -758,7 +759,8 @@ function TimeLine() {
         XTREETEXTPADDING = 0;
         leftpadding *= 2;
         leftpadding += XTREETEXTPADDING;
-        UNIT = UNITDATA;
+//        UNIT = UNITDATA;
+        INITUNIT = UNITDATA;
         dig = TIMELINEDATA;
         var start = leftpadding + XTREETEXTPADDING;
         chmName = setTrack(dig);
@@ -865,7 +867,7 @@ function TimeLine() {
         }
     }
     self.setreset = function(){
-        if (INITUNIT == null || INITUNIT === UNIT) return;
+    	if (INITUNIT == null || INITUNIT === UNIT) return;
         $("#spinner1").show();
         _.delay(function () {
             MODE = 'N';

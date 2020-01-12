@@ -79,7 +79,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.body),
             callback: props.disposer,
-            timeout: 10000,
+            timeout: 50000,
             success: function (json) {
                 props.callback(json, data);
             },

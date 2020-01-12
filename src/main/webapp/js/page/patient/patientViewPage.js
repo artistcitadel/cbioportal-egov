@@ -38,6 +38,7 @@ function PatientView(){
         }
 
         AGE = json[0].age;
+        if(json.length>1)AGE=json[1].age;
         SEX = sex;
         CANCERTYPE = cancerType;
         CANCERTYPEDETAIL = cancerTypeDetail;
