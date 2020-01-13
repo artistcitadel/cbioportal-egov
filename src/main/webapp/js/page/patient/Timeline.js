@@ -71,7 +71,7 @@ function TimeLine() {
     function moveMutation(){
         if(!hasgenomicoverview)return;
         var pt = new PatientViewMutationTable();
-        pt.init();
+        pt.init(true);
         ISROUNDMUTATION=true;
     }
     function setTimeLine(node, data) {

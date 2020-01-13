@@ -63,3 +63,38 @@ subject = {
            petct : "PET-CT",
            us : "UTRASONO"
 };
+
+onco_colors = {
+    ADRENAL_GRAND   :   "purple",
+    AMPULLA_OF_VATER  :  "purple",
+    BILIARY_TRACT  :   "green",
+    BLADDER    :   "yellow",
+    BONE       :   "white",
+    BOWEL      :   "saddleBrown",
+    BREAST     :   "HotPink",
+    BRAIN      :   "Gray",
+    CERVIX     :   "Teal",
+    STOMACH    :   "LightSkyBlue",
+    EYE        :   "Green",
+    HEAD_NECK  :   "DarkRed",
+    KIDNEY     :   "Orange",
+    LIVER      :   "MediumSeaGreen",
+    LUNG       :   "GainsBoro",
+    LYMPH      :   "LimeGreen",
+    MYELOID    :   "LightSalmon",
+    OTHER      :   "Black",
+    OVARY      :   "LightBlue",
+    PANCREAS   :   "Purple",
+    PENIS      :   "Blue",
+    PNS        :   "Gray",
+    PERITONEUM :   "Green",
+    PLEURA     :   "Blue",
+    PROSTATE   :   "Cyan",
+    SKIN        :   "Black",
+    SOFT_TISSUE :   "LightYellow",
+    TESTIS     :   "Red",
+    THYMUS     :   "Purple",
+    THYROID    :   "Teal",
+    UTERUS     :   "PeachPuff",
+    VULVA      :   "Purple"
+}

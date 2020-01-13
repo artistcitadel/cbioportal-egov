@@ -7,6 +7,12 @@ $(document).ready(function () {
         }
     });
 
+    $("#pat_inquiry").on("click",function(){
+        var v = $.trim(document.patientsearchform.search_PAT.value);
+        if(v.length!=10){alert('10자리수를 입력하세요');return;}
+        document.location.href='/pmp/patient/patientView?RESCH_PAT_ID='+v;
+    });
+
     $("#cview").on("click",function(){
       document.pform.action='patientSample';
         moveTab();

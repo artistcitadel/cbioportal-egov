@@ -3,6 +3,7 @@
  */
     function PatientViewMutationTable() {
         var self = this;
+        var HASOVERVIEW;
         var action,util, annotation;
         self.EVIDENCE = [];
         self.CIVICGENE = [];
@@ -189,7 +190,8 @@
             $('#'+id+'').tooltipster('open');
         }
 
-        self.init = function (){
+        self.init = function (gooverview){
+            HASOVERVIEW = gooverview;
             // console.log('PatientViewMutationTable called');
             $('.ttt').show();
             $('#xgrid').hide();
@@ -355,6 +357,33 @@
                 prop.protein = protein;
                 prop.temp = temp;
                 prop.id = id;
+
+                $('#'+id+'').closest().tooltipster({
+                    content: "Loading...",
+                    updateAnimation: false,
+                    /*functionBefore: function(instance, helper) {
+                        var $origin = $(helper.origin);
+                        if ($origin.data('ajax') !== 'cached') {
+                            /!*var ds_cond = {};
+                            ds_cond.data = {"queryId": "selectPatientMuCosmic", "patientId": PATIENTID};
+                            ds_cond.callback = cosmic_disposer;
+                            action.selectPatientMuList(ds_cond, prop);
+                            var cosmic_disposer = function(json, prop) {
+                                setCosmic(json, prop);
+                            }
+                            var setCosmic = function(data, prop){
+                                instance.content(loadCosmic(data, prop));
+                                // roundRobin();
+                           }*!/
+                            $origin.data('ajax', 'cached');
+                            instance.content(getMutationCosmic(prop));
+                        }
+                    },
+                    functionAfter: function(instance) {
+                    }*/
+                });
+                // $('#'+id+'').tooltipster('open');
+
                 getMutationCosmic(prop);
 
                 /*var id = e.target.id;
@@ -506,8 +535,10 @@
                 //console.log('ROUNCCNT ', self.ROUNDCNT);
                 roundRobin();
             }else{
-                var gene = new GenomicOverview();
-                gene.init(self.TABLE);
+                // if(HASOVERVIEW) {
+                    var gene = new GenomicOverview();
+                    gene.init(self.TABLE);
+                // }
 
                 var temp = {};
                 temp['MUTATIONS'] = self.TABLE['MUTATIONS'];
@@ -871,7 +902,7 @@
             $("#st_loader").hide();
             $("#MUTATIONS_t").show();
             $("#CNV_t").show();
-            // $("#EXPRESSION_t").show();
+            $("#EXPRESSION_t").show();
             $("#SV_t").show();
 
             var mutcount = self.TABLE[self.NODES[0]].length;

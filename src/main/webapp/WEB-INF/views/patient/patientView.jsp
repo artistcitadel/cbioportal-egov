@@ -49,7 +49,7 @@
             <h3 class="box-title"></h3>
         </div>--%>
         <div class="box-body">
-            <div id="container">
+            <div id="container-fluid">
                 <%--<div class="team">
                     <div class="member">
                         <img class="avatar" src="/pmp/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
@@ -60,8 +60,11 @@
                         </p>
                     </div>
                 </div>--%>
+                    <%--<div class="row" id="row1">--%>
+                    <div class="row ttt" style="display:none;">
+                       <div class="col-xs-10 col">
 
-                <div class="ttt" style="display:none;">
+                <div>
                     <%--<div style="background-color: #fcf8e3;">--%>
                     <div>
                         <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
@@ -104,11 +107,38 @@
                             </table>
                         </div>
                         <div className="studyMetaBar"></div>
-                        <div id="summary_pageview" class="com-paging"></div>
+                        <%--<div id="summary_pageview" class="com-paging"></div>--%>
                     </div>
                 </div>
-                <hr calss="ttt" style="display:none;" />
 
+               </div>
+
+              <div class="col-xs-2 col">
+                  <div class="btn-group" style="width:auto;">
+                  <button id='pat_inquiry' class="btn btn-success" type="button" style="width:auto;">
+                      Search
+                  </button>
+                  <form name="patientsearchform" role="search" style="width:auto;">
+                      <div class="input-group">
+                          <input type="text" name="search_PAT" id="search_PAT" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                          <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
+                      </div>
+                  </form>
+                </div>
+              </div>
+
+             </div>
+
+              <%--<br/>--%>
+                    <div class="container-fulid page-center ttt">
+                        <%--<div class="row page-center">
+                            <div class="col-xs-10 col">--%>
+                                <div id="summary_pageview" class="com-paging"></div>
+                            <%--</div>
+                        </div>--%>
+                    </div>
+
+               <hr calss="ttt" style="display:none;" />
 
                 <div class="container-fulid">
                     <div class="row" id="row1">
@@ -140,7 +170,7 @@
                         </div>
                     </div>--%>
                 </div>
-
+<p/>
                     <hr calss="ttt" style="display:none;" />
                     <%--<div class="container-fulid">
                         <div class="row" id="row2">
@@ -250,22 +280,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="container-fluid">
-                    <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
-                        <span id="mutcount"></span> Mutations
+
+                    <div class="container-fulid">
+                        <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
+                            <span id="mutcount"></span> Mutations
+                        </div>
+                        <br/>
+                        <table id="MUTATIONS_t" class="table table-bordered" style="display:none;">
+                            <thead>
+                            <tr id='MUTATIONS' class="success">
+                            </tr>
+                            </thead>
+                            <tbody id="MUTATIONS_con">
+                            </tbody>
+                        </table>
+                        <div id="MUTATIONS_pageview" class="com-paging">
+                        </div>
                     </div>
-                    <br/>
-                    <table id="MUTATIONS_t" class="table table table-bordered">
-                        <thead>
-                        <tr class="success" id='MUTATIONS'>
 
-                        </tr>
-                        </thead>
-                        <tbody id="MUTATIONS_con">
 
-                        </tbody>
-                    </table>
-                </div>
+
 
                 <hr calss="ttt" style="display:none;" />
 
@@ -367,7 +401,7 @@
                         <span id="expcount"></span> Expressions
                     </div>
                     <br/>
-                    <table id="EXPRESSION_t" class="table table-bordered">
+                    <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
                         <thead>
                         <tr id='EXPRESSION' class="success">
                         </tr>

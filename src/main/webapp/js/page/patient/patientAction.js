@@ -4,6 +4,7 @@
 
 function Action() {
     var self = this;
+    var TIMEOUT = 50000;
     var gvSERVER  = gvServer;
     gvSERVER = '/pmp';
     self.getPatientList = function (props) {
@@ -79,12 +80,16 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.body),
             callback: props.disposer,
-            timeout: 50000,
+            timeout: TIMEOUT,
             success: function (json) {
                 props.callback(json, data);
             },
             error: function (request, status, error) {
-                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                //console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert('ONCOKB 정보를 가져오는 도중 네트워크 지연이 발생하였습니다. 잠시후 다시 시도해 주시기 바랍니다');
+                var util = new Util();
+                util.hideLoader();
+                util.showInLoader();
             }
         });
     }
@@ -100,7 +105,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props),
             callback: props.disposer,
-            timeout: 10000,
+            timeout: TIMEOUT,
             success: function (json) {
               //  console.log(json);
                 props.callback(json);
@@ -166,7 +171,7 @@ function Action() {
             contentType: "application/json",
             data: JSON.stringify(props.data),
             callback: props.disposer,
-            timeout: 10000,
+            timeout: TIMEOUT,
             success: function (json) {
                 props.callback(json);
             },
@@ -194,6 +199,10 @@ function Action() {
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert('타임라인 이벤트 리스트를 가져오는 도중 지연이 발생하였습니다 DBA에 문의해 주시기 바랍니다');
+                var util = new Util();
+                util.hideLoader();
+                util.showInLoader();
             }
         });
     }

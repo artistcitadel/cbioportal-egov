@@ -71,3 +71,8 @@
 .sk-spinner {
     color: #333;
 }*/
+
+.page-center {
+    margin-left:auto;
+    margin-right:auto;
+}

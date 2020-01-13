@@ -323,4 +323,16 @@ function Util() {
         }
         return seq;
     }
+
+    self.showInLoader = function(){
+        $("#sample_loader").hide();
+        $("#mut_loader").hide();
+        $("#cna_loader").hide();
+        $("#st_loader").hide();
+        $("#MUTATIONS_t").show();
+        $("#CNV_t").show();
+        $("#SV_t").show();
+        $(".ttt").show();
+        $("#xgrid").hide();
+    }
 }
