@@ -6,8 +6,15 @@ function PatientAttr() {
     var action;
     var util;
 
-    self.init = function (id,title) {
+    //self.init = function (id,title) {
+    self.init = function (props) {
+    	var id = props.id;
+    	var title = props.sname;
         var label = id.split("_")[2];
+        var cancerType = (_.isUndefined(props.cancerType))? "Unknown": props.cancerType;
+        var cancerTypeDetail = (_.isUndefined(props.cancerTypeDetail))? "Unknown": props.cancerTypeDetail;
+        var oncotreecode = (_.isUndefined(props.oncotreecode))? "Unknown": props.oncotreecode;
+
         // var title = id.split("_")[1]+'_'+id.split("_")[2];
         var color = (label==='1')?'black':(label==='2')?'orange':(label==='3')?'red':'blue';
 
@@ -40,7 +47,7 @@ function PatientAttr() {
             '                    <tbody>\n' +
             '                    <tr>\n' +
             '                        <td><span>Mutation Count</span></td>\n' +
-            '                        <td><span>'+MUTATIOINCOUNT+'</span></td>\n' +
+            '                        <td><span>'+MUTATIONCOUNT+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td><span>Sample Type</span></td>\n' +
@@ -52,11 +59,11 @@ function PatientAttr() {
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td><span>Cancer Type</span></td>\n' +
-            '                        <td><span>Unknown</span></td>\n' +
+            '                        <td><span>'+cancerType+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td><span>Cancer Type Detailed</span></td>\n' +
-            '                        <td><span>Unknown</span></td>\n' +
+            '                        <td><span>'+cancerTypeDetail+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td><span>IDH1 Mutation</span></td>\n' +
@@ -74,7 +81,7 @@ function PatientAttr() {
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td class="danger"><span>Oncotree Code</span></td>\n' +
-            '                        <td><span>Unknown</span></td>\n' +
+            '                        <td><span>'+oncotreecode+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +
             '                        <td><span>Somatic Status</span></td>\n' +

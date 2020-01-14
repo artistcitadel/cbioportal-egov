@@ -28,9 +28,19 @@
     <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
             &nbsp;
-            <small style="color:#000;">Summary</small>
-            <a id="cview" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
-            <a id="sview" href="#"><small style="color:#3786C2;">유사환자</small></a>
+            <%--<small class="tsmall">Loading...</small>--%>
+            <small class="tsmall">
+            <div style="color: #98bff6" class="la-ball-circus">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            </small>
+            <small class="thead"  style="color:#000;display:none;">Summary</small>
+            <a id="cview" href="#" class="thead" style="display:none;"><small style="color:#3786C2;">Clinical Data</small></a>
+            <a id="sview" href="#" class="thead" style="display:none;"><small style="color:#3786C2;">유사환자</small></a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> </a></li>
@@ -80,13 +90,14 @@
                                 </tr>
                                 <tr>
                                     <td class="ttt" id="divsample"><%--Samples: primary--%>
-                                        <div id="sample_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
+                                        <%--<div id="sample_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
                                             <div></div>
                                             <div></div>
                                             <div></div>
                                             <div></div>
                                             <div></div>
-                                        </div>
+                                        </div>--%>
+                                        <div id="sample_loader">Sample Loading...</div>
                                         <%--<span>
                                           <svg height="12" width="12">
                                             <svg width="12" height="12" class="case-label-header" data-test="sample-icon">
@@ -130,7 +141,7 @@
              </div>
 
               <%--<br/>--%>
-                    <div class="container-fulid page-center ttt">
+                    <div class="container-fulid page-center ttt" style="display:none;">
                         <%--<div class="row page-center">
                             <div class="col-xs-10 col">--%>
                                 <div id="summary_pageview" class="com-paging"></div>
@@ -220,24 +231,15 @@
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
                         <div class="col-md-2">
-                            <%--<div id="mut_loader" style="color: #333;display:none;" class="la-line-scale-pulse-out-rapid la-sm">
-                                <div></div>
-                                <div></div>
+                            <%--<div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:inline-block;">
                                 <div></div>
                                 <div></div>
                                 <div></div>
                                 <div></div>
                                 <div></div>
                             </div>--%>
-                            <div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
                         </div>
-                        <div class="col-md-5 ttt" align="right" style="float:right;display:none;">
+                        <div class="col-md-5" align="right" id="mutcolcontainer" style="float:right;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -282,6 +284,13 @@
                 </div>
 
                     <div class="container-fulid">
+                        <div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="margin:20px;display:none;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                         <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
                             <span id="mutcount"></span> Mutations
                         </div>
@@ -316,7 +325,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5 ttt" align="right" style="float:right;display:none;">
+                        <div class="col-md-5" align="right" id="cnacolcontainer" style="float:right;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -368,7 +377,7 @@
 
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
-                        <div class="col-md-7 ttt" align="right" style="float:right;display:none;">
+                        <div class="col-md-7" id="expcolcontainer" align="right" style="float:right;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -426,7 +435,7 @@
                                 <div></div>
                             </div>
                         </div>
-                        <div class="col-md-5 ttt" align="right" style="float:right;display:none;">
+                        <div class="col-md-5" id="svcolcontainer" align="right" style="float:right;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -564,7 +573,6 @@
 
 </form>
 <script src="<c:url value="/js/page/patient/WindowStore.js" />"></script>
-<script src="<c:url value="/js/page/patient/const.js" />"></script>
 <script src="<c:url value="/js/page/patient/oncokbUtil.js" />"></script>
 <script src="<c:url value="/js/page/patient/pagination.js" />"></script>
 <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
@@ -583,7 +591,7 @@
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
     var perCode = '<%=(request.getSession().getAttribute("PER_CODE") == null) ? "0000" : request.getSession().getAttribute("PER_CODE")%>';
-    var MUTATIOINCOUNT;
+    var MUTATIONCOUNT;
     var AGE;
     var SEX;
     var CANCERTYPE;
@@ -591,7 +599,8 @@
     var ONCOTREECODE;
 
     var SAMPLEPERMUTATION = {};
-    SAMPLEPERMUTATION["1"]=0;SAMPLEPERMUTATION["2"]=0;SAMPLEPERMUTATION["3"]=0;SAMPLEPERMUTATION["4"]=0;
+    // SAMPLEPERMUTATION["1"]=0;SAMPLEPERMUTATION["2"]=0;SAMPLEPERMUTATION["3"]=0;SAMPLEPERMUTATION["4"]=0;
+    var SAMPLETEXT;
 
     var SAMPLECOUNT;
     var SAMPLES=[];
@@ -701,7 +710,9 @@
         ds_cond.callback = sampleTitleDisposer;
         action.selectPatientMuList(ds_cond);
     }
-    var sampleTitleDisposer = function(samples) {
+
+    function sampleTitleDisposer(samples) {
+        if(samples.length<1)return;
         var txt='Samples : ';
         var pid = '<span style="color:#3786C2">'+PATIENTID+'</span>';
         // console.log("sampleTitleDisposer ", samples);
@@ -717,7 +728,8 @@
             // if(i===0)txt+=' Primary'
             txt+='</label>&nbsp;';
         }
-        $("#divsample").html(txt);
+        // $("#divsample").html(txt);
+        SAMPLETEXT = txt;
     }
 
     function Noop(){
@@ -728,6 +740,7 @@
             document.pform.patientId.value=patients.split(",")[parseInt(page)-1];
             // console.log(patients);
             // alert(document.pform.patientId.value);
+            document.pform.action='<%=docRoot%>/patient/patientView';
             document.pform.submit();
         }
     }

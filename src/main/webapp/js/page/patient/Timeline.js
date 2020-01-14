@@ -457,7 +457,8 @@ function TimeLine() {
         d = util.setDateTitle(UNIT, d);
         d = "" + d + "";
         //alert(d);
-        if (UNIT === 'm') {
+        // if (UNIT === 'm') {
+        if (UNIT !== 'y') {
             var d1 = HMAX;
             d1 = util.setDateTitle(UNIT, d1);
             d1 = "" + d1 + "";

@@ -308,6 +308,7 @@ function GenomicOverview() {
              // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
+            SAMPLEPERMUTATION[v] = null2zero(SAMPLEPERMUTATION[v]);
             for (var i = 0; i < mutObj.length; i++) {
                 if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
                     var chm = translateChm(mutObj[i].chrnNo);
@@ -362,12 +363,13 @@ function GenomicOverview() {
          MERGEDMUTATION = MERGEDMUTATION.concat(cnaObj);
 
         _.forEach(spcnSeq1, function (v) {
-            // console.log(' vis ', v);
+            //console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             var genomeMeasured = 0;
             var genomeAltered = 0;
             var yRow = self.yRow(row)+self.rowHeight;
+            SAMPLEPERMUTATION[v] = null2zero(SAMPLEPERMUTATION[v]);
             for (var i = 0; i < cnaObj.length; i++) {
               if (cnaObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
                 var chm = translateChm(cnaObj[i].chrnNo);
@@ -452,6 +454,7 @@ function GenomicOverview() {
              // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
+            SAMPLEPERMUTATION[v] = null2zero(SAMPLEPERMUTATION[v]);
             for (var i = 0; i < mutObj.length; i++) {
                 if (mutObj[i].geneExamSpcnSeq.indexOf(v) !== -1) {
                     pixelMap=[];
@@ -593,4 +596,9 @@ function GenomicOverview() {
         return strX;
     }
 
+    function null2zero(dat){
+        if(Number.isNaN(dat) || _.isUndefined(dat)){
+            return 0;
+        }else return dat;
+    }
 }

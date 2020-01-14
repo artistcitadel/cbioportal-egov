@@ -1,5 +1,6 @@
 $(document).ready(function () {
-
+    var PINFO;
+    var SINFO={};
     // var pager = new Pager();
     // var el = $("#tresemble");
     // var tpage = Math.ceil(getMutation().length/10);
@@ -34,39 +35,47 @@ $(document).ready(function () {
         var prop = {};
         prop.sex = SEX;
         prop.age = AGE;
-        prop.samplecount = samples.length;
+        prop.samplecount = SAMPLE.length;
 
         var patientInfo = new PatientInfo();
-        $('#' + id + '').tooltipster({
-            theme: 'tooltipster-shadow',
-            contentAsHTML: true,
-            interactive: true,
-            arrow: true,
-            content: patientInfo.init(prop)
-        });
+        if(_.isUndefined(PINFO)) {
+            PINFO = $('#' + id + '').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: true,
+                content: patientInfo.init(prop)
+            });
+        }
         $('#' + id + '').tooltipster('open');
     });
 
     $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
-        var id = e.target.id;
-        loadSampleAttr(id);
+        var id = this.id;
+        loadSampleAttr(id, id.split("_")[2]);
     });
 
-    var loadSampleAttr = function (id) {
-        // console.log('loadSampleAtrr called');
+    var loadSampleAttr = function (idd,id) {
+        console.log('loadSampleAtrr called',id);
         var prop = {};
-        // prop.cancertype = CANCERTYPE;
-        // prop.cancertypedetail = CANCERTYPEDETAIL;
-        // prop.oncotreecode = ONCOTREECODE;
-
+        prop.id = idd;
+        prop.cancerType = CANCERTYPE;
+        prop.cancerTypeDetail = CANCERTYPEDETAIL;
+        prop.oncotreecode = ONCOTREECODE;
+        var sname = PATIENTID+"_"+SAMPLENAMES[parseInt(id)-1];
+        prop.sname=sname;
         var patientAttr = new PatientAttr();
-        $('#' + id + '').tooltipster({
-            theme: 'tooltipster-shadow',
-            contentAsHTML: true,
-            interactive: true,
-            arrow: true,
-            content: patientAttr.init(id)
-        });
-        $('#' + id + '').tooltipster('open');
+        // console.log(prop);
+        if(_.isUndefined(SINFO[idd])) {
+            SINFO[idd] = $('#' + idd + '').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: true,
+                //content: patientAttr.init(id,sname)
+                content: patientAttr.init(prop)
+            });
+        }
+        $('#'+idd+'').tooltipster('open');
     }
 });

@@ -197,8 +197,9 @@
             $('#xgrid').hide();
             $("#sample_loader").show();
             $("#mut_loader").show();
-            $("#cna_loader").show();
-            $("#st_loader").show();
+
+            // $("#cna_loader").show();
+            // $("#st_loader").show();
 
 
             action = new Action();
@@ -536,8 +537,10 @@
                 roundRobin();
             }else{
                 // if(HASOVERVIEW) {
-                    var gene = new GenomicOverview();
-                    gene.init(self.TABLE);
+                   if(MUTATIONCOUNT>0) {
+                       var gene = new GenomicOverview();
+                       gene.init(self.TABLE);
+                   }
                 // }
 
                 var temp = {};
@@ -895,25 +898,33 @@
 
             // $("[id^='ann_']").trigger('hover');
             // $("[id^='civic_']").trigger('hover');
-            $("#sample_loader").hide();
-            $("#mut_loader").hide();
-            $("#cna_loader").hide();
-            // $("#exp_loader").hide();
-            $("#st_loader").hide();
-            $("#MUTATIONS_t").show();
-            $("#CNV_t").show();
-            $("#EXPRESSION_t").show();
-            $("#SV_t").show();
 
             var mutcount = self.TABLE[self.NODES[0]].length;
             var cnacount = self.TABLE[self.NODES[1]].length;
             var expcount = self.TABLE[self.NODES[2]].length;
             var svcount = self.TABLE[self.NODES[3]].length;
-            MUTATIOINCOUNT = self.TABLE[self.NODES[0]].length+self.TABLE[self.NODES[1]].length+self.TABLE[self.NODES[2]].length+self.TABLE[self.NODES[3]].length;
-            $("#mutcount").text(mutcount);
-            $("#cnacount").text(cnacount);
-            $("#expcount").text(expcount);
-            $("#svcount").text(svcount);
+            MUTATIONCOUNT = self.TABLE[self.NODES[0]].length+self.TABLE[self.NODES[1]].length+self.TABLE[self.NODES[2]].length+self.TABLE[self.NODES[3]].length;
+
+            $("#mutcount").text(zerotext(mutcount));
+            $("#cnacount").text(zerotext(cnacount));
+            $("#expcount").text(zerotext(expcount));
+            $("#svcount").text(zerotext(svcount));
+
+            $("#mut_loader").hide();$("#mut_loader1").hide();
+            $("#cna_loader").hide();
+            // $("#exp_loader").hide();
+            $("#st_loader").hide();
+
+            if(mutcount>0){$("#MUTATIONS_t").show();$("#mutcolcontainer").show();}
+            if(cnacount>0){$("#CNV_t").show();$("#cnacolcontainer").show();}
+            if(expcount>0){$("#EXPRESSION_t").show();$("#expcolcontainer").show();}
+            if(svcount>0){$("#SV_t").show();$("#svcolcontainer").show();}
+
+            $(".tsmall").hide();
+            $("#sample_loader").hide();
+            $("#divsample").show();
+            $("#divsample").html(SAMPLETEXT);
+            $(".thead").show();
 
 
             /*var txt='Samples : ';
@@ -1017,6 +1028,10 @@
 
         var moveSanger = function(id) {
             window.open('https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=' + id + '');
+        }
+
+        var zerotext = function(dat){
+            return (dat===0)? 'There are no ': dat;
         }
 
     }

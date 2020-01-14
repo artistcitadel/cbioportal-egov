@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/civic/civicCard.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/style.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/indicator.css" type="text/css" />
+	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/ballcircus.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/linepulse.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/squarejelly.css" type="text/css" />
 	<link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/loader/ballclip.css" type="text/css" />
@@ -92,6 +93,7 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jqtip/jquery.qtip.min.js"></script>
     <script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/js/tooltipster.bundle.min.js" ></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/lodash.min.js"></script>
+	<script type='text/javascript' src="<%=docRoot%>js/page/patient/const.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientAction.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/patientUtil.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/FrequencyBar.js"></script>

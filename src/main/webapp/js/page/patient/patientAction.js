@@ -199,9 +199,10 @@ function Action() {
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                alert('타임라인 이벤트 리스트를 가져오는 도중 지연이 발생하였습니다 DBA에 문의해 주시기 바랍니다');
+                alert('타임라인 이벤트 리스트를 가져오는 도중 지연이 발생하였습니다 시스템 관리자에 문의해 주시기 바랍니다');
                 var util = new Util();
                 util.hideLoader();
+                $("#tsmall").hide();
                 util.showInLoader();
             }
         });

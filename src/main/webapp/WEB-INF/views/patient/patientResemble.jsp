@@ -80,16 +80,48 @@
                     <table id="tresemble" class="table table table-bordered">
                         <thead>
                         <tr>
-                            <th scope="col" class="active">patient</th>
-                            <th scope="col">age</th>
-                            <th scope="col">sex</th>
+                            <th scope="col" class="active">Patient</th>
+                            <th scope="col">Overrall Survival Status</th>
+                            <th scope="col">Diagnosis Age</th>
+                            <th scope="col">Number of Sample Per Patient</th>
+                            <th scope="col">Overrall Survival(Months)</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>patient</td>
-                            <td>age</td>
-                            <td>sex</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                        </tr>
+                        <tr>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                        </tr>
+                        <tr>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                        </tr>
+                        <tr>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                        </tr>
+                        <tr>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
+                            <td>UnKnown</td>
                         </tr>
                         </tbody>
                     </table>
@@ -233,6 +265,8 @@
         document.pform.resch_pat_id.value = resch_pat_id;
 
         console.log('resch_pat_id ', resch_pat_id);
+        console.log("cancerType", CANCERTYPE);
+        console.log('cancerTypeDetail ', CANCERTYPEDETAIL);
         console.log('pages ', pages);
         console.log('patientId ', patientId);
         // console.log('patients ' , patients);
@@ -240,49 +274,30 @@
         console.log('samplespermutation ', samplespermutation);
 
         var numberofsample=0;
-        var mcount1=0;
-        var mcount2=0;
-        var mcount3=0;
-        var mcount4=0;
 
         var SAMPLE=[];
         var SAMPLENAMES=[];
+        var SAMPLEPERMUTATIONZ = [];
+
         if(samples.indexOf(",") === -1) {
             numberofsample = 1;
-            mcount1=samplespermutation[0];
+
             SAMPLE.push(samples);
             SAMPLENAMES.push(samplenames);
         }
         else {
             var s = samples.split(",");
             var s1 = samplenames.split(",");
+            var samplespermutations = samplespermutation.split(",");
             numberofsample = s.length;
-            mcount1 = samplespermutation[0];
-            mcount2 = samplespermutation[1];
-            if(numberofsample>2)mcount3 = samplespermutation[2];
-            if(numberofsample>3)mcount4 = samplespermutation[3];
 
             for(var i=0; i<s.length;i++){
                 SAMPLE.push(s[i])
                 SAMPLENAMES.push(s1[i]);
             }
         }
-        $("#numberofsample").text(numberofsample);
-        $("#mcount1").text(mcount1);
-        $("#mcount2").text(mcount2);
-        $("#mcount3").text(mcount3);
-        $("#mcount4").text(mcount4);
 
-        $("#sampletype1").text(SAMPLE[0]);
-        $("#sampletype2").text(SAMPLE[1]);
-        $("#sampletype3").text(SAMPLE[2]);
-        $("#sampletype4").text(SAMPLE[3]);
 
-        $("#sex").text(sex);
-        $("#age").text(age);
-        // $("#cancertype1").text(cancertype);
-        // $("#cancertypedetail").text(cancertypedetail);
-        // $("#oncotreecode1").text(oncotreecode);
 
         PATIENTID = patientId;
         var pv = new PatientView();
@@ -292,7 +307,7 @@
         for(var i=0;i<SAMPLE.length;i++){
             txt+='<label class="label-default" style="width: auto;">';
             // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
-            txt+=getDivSample((SAMPLENAMES[i]) , parseInt(SAMPLE[i])) +" ";
+            txt+=getDivSample("head_"+SAMPLE[i], parseInt(SAMPLE[i] )) +" ";
             // txt+=PATIENTID+'_';
             txt+=SAMPLENAMES[i];
             // txt+=(i+1);

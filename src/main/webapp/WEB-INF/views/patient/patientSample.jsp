@@ -120,55 +120,55 @@
                     <br/>
                     <table id="samples_t" class="table table-bordered">
                         <thead>
-                        <tr class="success">
-                            <th>Attribute</th>
-                            <th width="500px" id="sample1">Value</th>
+                        <tr class="success" id="th_con">
+                            <%--<th>Attribute</th>
+                            <th width="500px" id="sample1">Value</th>--%>
                         </tr>
                         </thead>
                         <tbody id="samples_con">
-                        <tr>
-                            <td>Mutation Count</td>
-                            <td id="mcount1"></td>
+                        <tr id="mcount">
+                            <%--<td>Mutation Count</td>
+                            <td id="mcount1"></td>--%>
                         </tr>
-                        <tr>
-                            <td>Sample Type</td>
-                            <td id="sampletype1"></td>
+                        <tr id="sampleType">
+                            <%--<td>Sample Type</td>
+                            <td id="sampletype1"></td>--%>
                         </tr>
-                        <tr>
-                            <td>1q/19q Status</td>
-                            <td>Unknown</td>
+                        <tr id="status">
+                            <%--<td>1q/19q Status</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Cancer Types</td>
-                            <td>Unknown</td>
+                        <tr id="cType">
+                            <%--<td>Cancer Types</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Cancer Type Detailed</td>
-                            <td>Unknown</td>
+                        <tr id="cTypeDetail">
+                            <%--<td>Cancer Type Detailed</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>IDH1 Mutation</td>
-                            <td>Unknown</td>
+                        <tr id="idh1">
+                            <%--<td>IDH1 Mutation</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>MGMT Status</td>
-                            <td>Unknown</td>
+                        <tr id="mgmt">
+                            <%--<td>MGMT Status</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Neoplasm Histologic Grade</td>
-                            <td>Unknown</td>
+                        <tr id="grade">
+                            <%--<td>Neoplasm Histologic Grade</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Non-slilent mutations in TP53, ATRX, CIC, FUBP1</td>
-                            <td>Unknown</td>
+                        <tr id="nonslilentmutation">
+                            <%--<td>Non-slilent mutations in TP53, ATRX, CIC, FUBP1</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Oncotree Code</td>
-                            <td>Unknown</td>
+                        <tr id="ccode">
+                            <%--<td>Oncotree Code</td>
+                            <td>Unknown</td>--%>
                         </tr>
-                        <tr>
-                            <td>Somatic Status</td>
-                            <td>Unknown</td>
+                        <tr id="samaticstatus">
+                            <%--<td>Somatic Status</td>
+                            <td>Unknown</td>--%>
                         </tr>
                         </tbody>
                     </table>
@@ -193,7 +193,7 @@
         </div>
     </div>
 
-    <form name="dform" id="pform" method="post" action="/pmp/patient/patientView">
+    <form name="dform" id="dform" method="post" action="/pmp/patient/patientView">
         <input type="hidden" name="patients" value=""/>
         <input type="hidden" name="pages"  value=""/>
         <input type="hidden" name="patientId"  value=""/>
@@ -220,6 +220,8 @@
     </form>
     <script src="<c:url value="/js/page/patient/patientSample.js" />"></script>
     <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
+    <script src="<c:url value="/js/page/patient/patientViewPage.js" />"></script>
+
     <script>
         var MUTATIOINCOUNT  = '<%=(request.getParameter("mutationcount") == null) ? "" : request.getParameter("mutationcount")%>';
         var AGE  = '<%=(request.getParameter("age") == null) ? "" : request.getParameter("age")%>';
@@ -257,43 +259,97 @@
         console.log('samplespermutation ', samplespermutation);
 
         var numberofsample=0;
-        var mcount1=0;
-        var mcount2=0;
-        var mcount3=0;
-        var mcount4=0;
 
         var SAMPLE=[];
         var SAMPLENAMES=[];
+        var SAMPLEPERMUTATIONZ = [];
+
         if(samples.indexOf(",") === -1) {
             numberofsample = 1;
-            mcount1=samplespermutation[0];
+
             SAMPLE.push(samples);
             SAMPLENAMES.push(samplenames);
+            SAMPLEPERMUTATIONZ.push(samplespermutation);
         }
         else {
             var s = samples.split(",");
             var s1 = samplenames.split(",");
+            var samplespermutations = samplespermutation.split(",");
             numberofsample = s.length;
-            mcount1 = samplespermutation[0];
-            mcount2 = samplespermutation[1];
-            if(numberofsample>2)mcount3 = samplespermutation[2];
-            if(numberofsample>3)mcount4 = samplespermutation[3];
+
+            /*mcount1 = samplespermutations[0];
+            mcount2 = samplespermutations[1];
+            if(numberofsample>2)mcount3 = samplespermutations[2];
+            if(numberofsample>3)mcount4 = samplespermutations[3];*/
 
             for(var i=0; i<s.length;i++){
                 SAMPLE.push(s[i])
                 SAMPLENAMES.push(s1[i]);
+                SAMPLEPERMUTATIONZ.push(samplespermutations[i]);
             }
         }
-        $("#numberofsample").text(numberofsample);
-        $("#mcount1").text(mcount1);
-        $("#mcount2").text(mcount2);
-        $("#mcount3").text(mcount3);
-        $("#mcount4").text(mcount4);
 
-        $("#sampletype1").text(SAMPLE[0]);
-        $("#sampletype2").text(SAMPLE[1]);
-        $("#sampletype3").text(SAMPLE[2]);
-        $("#sampletype4").text(SAMPLE[3]);
+        var thtxt='';
+        var mcounttxt='';
+        var sampleTypetxt='';
+        var statustxt='';
+        var cTypetxt='';
+        var cTypeDetailtxt='';
+        var idh1txt='';
+        var mgmttxt='';
+        var gradetxt='';
+        var nonslilentmutationtxt='';
+        var ccodetxt='';
+        var samaticstatustxt='';
+        for(var i=0;i<SAMPLE.length;i++){
+
+          thtxt+=' <th width="auto">Attribute</th>\n' +
+                 ' <th width="auto">Value</th>';
+          mcounttxt +='<td>Mutation Count</td>\n' +
+                 ' <td>'+MUTATIOINCOUNT+'</td>';
+          sampleTypetxt += '<td>Sample Count</td>\n' +
+                 ' <td>'+SAMPLEPERMUTATIONZ[i]+'</td>'
+          statustxt +='<td>1q/19q Status</td> \n' +
+                          ' <td>Unknown</td>';
+         cTypetxt +='<td>Cancer Types</td> \n' +
+                ' <td>'+CANCERTYPE+'</td>';
+         cTypeDetailtxt +='<td>Cancer Type Detailed</td> \n' +
+                ' <td>'+CANCERTYPEDETAIL+'</td>';
+         idh1txt+='<td>IDH1 Mutation</td>\n' +
+                '                            <td>Unknown</td>';
+         mgmttxt+='<td>MGMT Status</td>\n' +
+             '                            <td>Unknown</td>';
+         gradetxt+='<td>Neoplasm Histologic Grade</td>\n' +
+             '                            <td>Unknown</td>';
+         nonslilentmutationtxt+='<td>Non-slilent mutations in TP53, ATRX, CIC, FUBP1</td>\n' +
+             '                            <td>Unknown</td>';
+         ccodetxt+='<td>Oncotree Code</td>\n' +
+                '                            <td>'+ONCOTREECODE+'</td>';
+         samaticstatustxt+='<td>Somatic Status</td>\n' +
+             '                            <td>Unknown</td>';
+        }
+        $("#th_con").append(thtxt);
+        $("#mcount").append(mcounttxt);
+        $("#sampleType").append(sampleTypetxt);
+        $("#cType").append(cTypetxt);
+        $("#cTypeDetail").append(cTypeDetailtxt);
+        $("#idh1").append(idh1txt);
+        $("#mgmt").append(mgmttxt);
+        $("#grade").append(gradetxt);
+        $("#nonslilentmutation").append(nonslilentmutationtxt);
+        $("#ccode").append(ccodetxt);
+        $("#samaticstatus").append(samaticstatustxt);
+
+        // $("#numberofsample").text(numberofsample);
+        // $("#mcount1").text(mcount1);
+        // $("#mcount2").text(mcount2);
+        // $("#mcount3").text(mcount3);
+        // $("#mcount4").text(mcount4);
+        //
+        // $("#sampletype1").text(SAMPLE[0]);
+        // $("#sampletype2").text(SAMPLE[1]);
+        // $("#sampletype3").text(SAMPLE[2]);
+        // $("#sampletype4").text(SAMPLE[3]);
 
         $("#sex0").text(sex);
         $("#age0").text(age);

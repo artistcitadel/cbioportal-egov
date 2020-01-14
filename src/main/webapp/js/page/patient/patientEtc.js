@@ -7,6 +7,8 @@ $(document).ready(function () {
         }
     });
 
+    var PINFO;
+
     $("#pat_inquiry").on("click",function(){
         var v = $.trim(document.patientsearchform.search_PAT.value);
         if(v.length!=10){alert('10자리수를 입력하세요');return;}
@@ -28,11 +30,11 @@ $(document).ready(function () {
         document.pform.samplenames.value=SAMPLENAMES.join(",");
         console.log(document.pform.samples.value);
         document.pform.target = "_blank";
-        console.log(SAMPLEPERMUTATION);
+        console.log('SAMPLEPERMUTATION',SAMPLEPERMUTATION);
         var samplespermutation = Object.values(SAMPLEPERMUTATION).join(",");
         document.pform.samplespermutation.value=samplespermutation;
 
-        document.pform.mutationcount.value=MUTATIOINCOUNT;
+        document.pform.mutationcount.value=MUTATIONCOUNT;
         document.pform.sex.value=SEX;
         document.pform.age.value=AGE;
         document.pform.cancertype.value=CANCERTYPE;
@@ -47,15 +49,17 @@ $(document).ready(function () {
         prop.sex = SEX;
         prop.age = AGE;
         prop.samplecount = SAMPLES.length;
-
+        
         var patientInfo = new PatientInfo();
-        $('#'+id+'').tooltipster({
-            theme: 'tooltipster-shadow',
-            contentAsHTML: true,
-            interactive: true,
-            arrow: true,
-            content: patientInfo.init(prop)
-        });
+        if(_.isUndefined(PINFO)) {
+            PINFO = $('#' + id + '').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: true,
+                content: patientInfo.init(prop)
+            });
+        }
         $('#'+id+'').tooltipster('open');
     });
 
@@ -74,8 +78,8 @@ $(document).ready(function () {
     });
 
     $("#divsample").on("mouseover", "[id^='samplelabel_']", function (e) {
-        var id = e.target.id;
-        loadSampleAttr(id);
+    	var id = e.target.id;
+    	loadSampleAttr(id);
     });
     /*$("#MUTATIONS_con").on("mouseover", "[id^='samplelabel_']", function (e) {
         var id = e.target.id;
@@ -92,18 +96,21 @@ $(document).ready(function () {
     var loadSampleAttr = function(id){
         // console.log('loadSampleAtrr called');
         var prop = {};
-        // prop.cancertype = CANCERTYPE;
-        // prop.cancertypedetail = CANCERTYPEDETAIL;
-        // prop.oncotreecode = ONCOTREECODE;
+        prop.id = id;
+        prop.cancertype = CANCERTYPE;
+        prop.cancertypedetail = CANCERTYPEDETAIL;
+        prop.oncotreecode = ONCOTREECODE;
 
         var sname = PATIENTID+"_"+SAMPLENAMES[parseInt(id.split("_")[2])-1];
+        prop.sname=sname;
         var patientAttr = new PatientAttr();
         $('#'+id+'').tooltipster({
             theme: 'tooltipster-shadow',
             contentAsHTML: true,
             interactive: true,
             arrow: true,
-            content: patientAttr.init(id,sname)
+            //content: patientAttr.init(id,sname)
+            content: patientAttr.init(prop)
         });
         $('#'+id+'').tooltipster('open');
         /*$('#'+id+'').tooltipster({
@@ -145,7 +152,7 @@ $(document).ready(function () {
         item.idd = 'UTRASONO';item.pid='IMAGING';digcategory.push(item);item = {};
         localStorage.setItem("digcategory",JSON.stringify(digcategory));
     }
-    console.log('digcategory ', digcategory);
+    // console.log('digcategory ', digcategory);
     var cindex = [];
     var action = new Action();
     var util = new Util();

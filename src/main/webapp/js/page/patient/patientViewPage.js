@@ -23,9 +23,13 @@ function PatientView(){
         var cancerType='';
         var cancerMode = '';
         var cancerTypeDetail='';
+        var ctype='';
         if(json.length>0){
             for(var i=0;i<json.length;i++){
-                cancerType += json[i].cancerType;
+                //cancerType += json[i].cancerType;
+                ctype += json[i].cancerType;
+                ctype +=',';
+            	cancerType += "<span style='color:"+onco_colors[json[i].cancerType]+";'>"+json[i].cancerType+"</span>";
                 cancerType+=',';
                 cancerMode += json[i].cancerMode;
                 cancerMode+=',';
@@ -40,7 +44,7 @@ function PatientView(){
         AGE = json[0].age;
         if(json.length>1)AGE=json[1].age;
         SEX = sex;
-        CANCERTYPE = cancerType;
+        CANCERTYPE = ctype;
         CANCERTYPEDETAIL = cancerTypeDetail;
         ONCOTREECODE = cancerMode;
 
