@@ -1,7 +1,7 @@
 # cancer bioportal
 ```
-<img src="https://user-images.githubusercontent.com/39664374/72439060-8a92b700-37e9-11ea-9f26-abe8ee46f0d2.PNG" />
+![1](https://user-images.githubusercontent.com/39664374/72439822-fa557180-37ea-11ea-9e29-dbb8173db42d.PNG)
 
-<img src="https://user-images.githubusercontent.com/39664374/72439176-c594ea80-37e9-11ea-8d80-121669c65beb.PNG" />
+![2](https://user-images.githubusercontent.com/39664374/72439864-13f6b900-37eb-11ea-85b5-4f06a620e688.PNG)
 
-<img src="https://user-images.githubusercontent.com/39664374/72439214-d7768d80-37e9-11ea-848b-ccbd2c26851d.PNG" />
+![3](https://user-images.githubusercontent.com/39664374/72439873-16f1a980-37eb-11ea-90c2-ea36ff4e8763.PNG)
