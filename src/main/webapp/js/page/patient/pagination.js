@@ -23,7 +23,7 @@ function Pager() {
         var id = self.el.prop('id');
        $("#"+id+" > *").remove();
         if (totalPage > 1) {
-            console.log("self.el ",self.el);
+            // console.log("self.el ",self.el);
             self.el.append(prev);
             self.el.append(before);
             self.el.append(str);

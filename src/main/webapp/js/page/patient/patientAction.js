@@ -86,10 +86,11 @@ function Action() {
             },
             error: function (request, status, error) {
                 //console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                alert('ONCOKB 정보를 가져오는 도중 네트워크 지연이 발생하였습니다. 잠시후 다시 시도해 주시기 바랍니다');
+                /*alert('ONCOKB 정보를 가져오는 도중 네트워크 지연이 발생하였습니다. 잠시후 다시 시도해 주시기 바랍니다');
                 var util = new Util();
                 util.hideLoader();
-                util.showInLoader();
+                util.showInLoader();*/
+                props.callback(["-1"], data);
             }
         });
     }

@@ -796,8 +796,8 @@ function TimeLine() {
         paper = Raphael("timeLineContainer", paperWidth, paperHeight);
         paper.scale({zoom: true});
 
-        var label = "Time since diagnosis";
-        var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
+        // var label = "Time since diagnosis";
+        // var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
 
         var pathology = new Pathology();
         var specimen = new Specimen();
@@ -820,6 +820,8 @@ function TimeLine() {
             TIMELINERAW=RAW;
             if(run===pids.length) {
                 // console.log('initRAW ', RAW);
+                var label = "Time since diagnosis";
+                var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
                 setTimeLine('C', RAW);
             }
         }

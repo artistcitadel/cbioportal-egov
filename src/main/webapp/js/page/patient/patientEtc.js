@@ -6,7 +6,9 @@ $(document).ready(function () {
             return false;
         }
     });
-
+    // $(document.body).click(function(e) {
+    //     console.log(e.target);
+    // });
     var PINFO;
 
     $("#pat_inquiry").on("click",function(){
@@ -313,21 +315,32 @@ function pmidtooltip(id, index){
 
     // $('#article_'+id+'').trigger('hover');
     console.log('article-id ', id);
-    $('#article_'+id+'').tooltipster({
+    //$(".tooltipstered").tooltipster('destroy');
+    //var instances = $.tooltipster.instancesLatest();
+    var artiletip = $('#article_'+id+'').tooltipster({
         theme: 'tooltipster-shadow',
         contentAsHTML: true,
         interactive: true,
+        distance: 0,
         content : content,
-//        functionReady: function(){
-//          $('#'+ANNOTATIONTOOLTIP+'').tooltipster('close');
-//        }
-//        trigger: 'custom',
-//        triggerClose: {
-//            click: true,
-//            tap: true
-//        }
+        // trigger: 'custom',
+        // triggerOpen: {
+        //     mouseenter: true
+        // },
+        // triggerClose: {
+        //     mouseleave: true
+        // },
+
     });
-    $('#article_'+id+'').tooltipster('open');
+    artiletip.on('mouseover', function() {
+        $(this).tooltipster('instance').open();
+    }).on('mouseout', function() {
+        //console.log($(this).find('.tooltipstered'));
+        //$(this).tooltipster('instance').close();
+        //$("#ann_PIK3CA_Q546H").tooltipster('close');
+    });
+    //$('#article_'+id+'').tooltipster('open');
+    artiletip.tooltipster('open');
 
 //     var articlebox = new jBox('Tooltip', {
 //         //$(this).jBox('Tooltip', {

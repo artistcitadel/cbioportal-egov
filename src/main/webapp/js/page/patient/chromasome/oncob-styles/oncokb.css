@@ -52,6 +52,7 @@
 }
 .oncokb.annotation-icon.oncogenic {
     background-position-y: -9px;
+    /*background-position-y: -15px;*/
 }
 .oncokb.annotation-icon.neutral {
     background-position-y: -39px;
@@ -64,9 +65,11 @@
 }
 .oncokb.annotation-icon.unknown {
     background-position-y: -129px;
+    /*background-position-y: -136px;*/
 }
 .oncokb.annotation-icon.no-level {
     background-position-x: -9px;
+    background-position-y: -15px;
 }
 .oncokb.annotation-icon.level-1 {
     background-position-x: -39px;

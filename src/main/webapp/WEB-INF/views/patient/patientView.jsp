@@ -97,7 +97,7 @@
                                             <div></div>
                                             <div></div>
                                         </div>--%>
-                                        <div id="sample_loader">Sample Loading...</div>
+                                        <%--<div id="sample_loader"></div>--%>
                                         <%--<span>
                                           <svg height="12" width="12">
                                             <svg width="12" height="12" class="case-label-header" data-test="sample-icon">
@@ -226,7 +226,43 @@
                 </div>
                 <hr />--%>
 
-
+                    <div id="mut_loader" class="container-fluid" align="center" style="display:none;">
+                        <%--<div class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="margin:20px;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>--%>
+                            <div style="color: #98bff6" class="la-ball-circus">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div style="color: #98bff6" class="la-ball-circus">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div style="color: #98bff6" class="la-ball-circus">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div style="color: #98bff6" class="la-ball-circus">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                    </div>
 
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
@@ -284,15 +320,15 @@
                 </div>
 
                     <div class="container-fulid">
-                        <div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="margin:20px;display:none;">
+                        <%--<div id="mut_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="margin:20px;display:none;">
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
-                        </div>
+                        </div>--%>
                         <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
-                            <span id="mutcount"></span> Mutations
+                            <span id="mutcount"></span> <span id="txtmutations" style="display:none;">Mutations</span>
                         </div>
                         <br/>
                         <table id="MUTATIONS_t" class="table table-bordered" style="display:none;">
@@ -311,7 +347,6 @@
 
 
                 <hr calss="ttt" style="display:none;" />
-
 
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
@@ -358,7 +393,7 @@
                 </div>
                 <div class="container-fulid">
                     <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
-                        <span id="cnacount"></span> Copy Number Alterlations
+                        <span id="cnacount"></span> <span id="txtcna" style="display:none;">Copy Number Alterlations</span>
                     </div>
                     <br/>
                     <table id="CNV_t" class="table table-bordered" style="display:none;">
@@ -407,7 +442,7 @@
 
 
                     <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
-                        <span id="expcount"></span> Expressions
+                        <span id="expcount"></span> <span id="txtexpressions" style="display:none;">Expressions</span>
                     </div>
                     <br/>
                     <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
@@ -466,7 +501,7 @@
                 </div>
                 <div class="container-fulid">
                     <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
-                        <span id="svcount"></span> Svs
+                        <span id="svcount"></span> <span id="txtsvs" style="display:none;">Svs</span>
                     </div>
                     <br/>
                     <table id="SV_t" class="table table-bordered" style="display:none;">
@@ -492,16 +527,38 @@
             </div>
         </div>
     </div>
+
     <div id="spinner" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
-            <div class="sk-spinner la-line-scale-pulse-out big">
-                <%--<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">--%>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <%--<div class="sk-spinner la-line-scale-pulse-out big">
+                &lt;%&ndash;<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">&ndash;%&gt;
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>--%>
         </div>
         <iframe id="ifr"
                 style="width:100%;position:relative;zIndex:100;border:none;"
@@ -740,7 +797,8 @@
             document.pform.patientId.value=patients.split(",")[parseInt(page)-1];
             // console.log(patients);
             // alert(document.pform.patientId.value);
-            document.pform.action='<%=docRoot%>/patient/patientView';
+            document.pform.action='<%=docRoot%>patient/patientView';
+            document.pform.target="_self";
             document.pform.submit();
         }
     }

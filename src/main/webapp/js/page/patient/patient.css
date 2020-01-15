@@ -9,6 +9,28 @@
 .invisible {
     visibility: hidden;
 }
+
+.annotationli {
+    padding-left:0px;
+    padding-right:0px;
+}
+
+.annotation-module_annotation-item {
+    width: 22px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.annotation-module_annotation-item-load {
+    color: #AAAAAA;
+    height: 18px;
+}
+
+.pull-left {
+    float: left !important;
+}
+
 /*
 .styles-module_centered-with-children {
     width: 600px;

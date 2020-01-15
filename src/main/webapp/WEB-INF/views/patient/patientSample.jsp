@@ -288,7 +288,7 @@
                 SAMPLEPERMUTATIONZ.push(samplespermutations[i]);
             }
         }
-
+        if(SAMPLE[0]!="") {
         var thtxt='';
         var mcounttxt='';
         var sampleTypetxt='';
@@ -340,39 +340,31 @@
         $("#ccode").append(ccodetxt);
         $("#samaticstatus").append(samaticstatustxt);
 
-        // $("#numberofsample").text(numberofsample);
-        // $("#mcount1").text(mcount1);
-        // $("#mcount2").text(mcount2);
-        // $("#mcount3").text(mcount3);
-        // $("#mcount4").text(mcount4);
-        //
-        // $("#sampletype1").text(SAMPLE[0]);
-        // $("#sampletype2").text(SAMPLE[1]);
-        // $("#sampletype3").text(SAMPLE[2]);
-        // $("#sampletype4").text(SAMPLE[3]);
+        var txt='';
+            for (var i = 0; i < SAMPLE.length; i++) {
+                txt += '<label class="label-default" style="width: auto;">';
+                // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
+                txt += getDivSample((SAMPLENAMES[i]), parseInt(SAMPLE[i])) + " ";
+                txt += SAMPLENAMES[i];
+                // txt+=PATIENTID+'_';
+                // txt+=(i+1);
+                // if(i===0)txt+=' Primary'
+                txt += '</label>&nbsp;';
+            }
+            $("#divsample").append(txt);
+        }else{
+            var txt=' <th width="auto">Attribute</th>\n' +
+                ' <th width="auto">Value</th>';
+            $("#th_con").append(txt);
+        }
 
         $("#sex0").text(sex);
         $("#age0").text(age);
-        // $("#cancertype1").text(cancertype);
-        // $("#cancertypedetail").text(cancertypedetail);
-        // $("#oncotreecode1").text(oncotreecode);
 
         PATIENTID = patientId;
         var pv = new PatientView();
         pv.getPatientDescription();
 
-        var txt='';
-        for(var i=0;i<SAMPLE.length;i++){
-            txt+='<label class="label-default" style="width: auto;">';
-            // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
-            txt+=getDivSample((SAMPLENAMES[i]) , parseInt(SAMPLE[i])) +" ";
-            txt+=SAMPLENAMES[i];
-            // txt+=PATIENTID+'_';
-            // txt+=(i+1);
-            // if(i===0)txt+=' Primary'
-            txt+='</label>&nbsp;';
-        }
-        $("#divsample").append(txt);
     </script>
 
 </div>

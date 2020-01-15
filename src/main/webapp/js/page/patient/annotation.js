@@ -131,30 +131,42 @@ function Annotation() {
     }
     var setEvidence = function (json, data) {
         // console.log('setEvidence', json);
-        var evidenceMap = processEvidence(json);
-        var cache={};
-        for (var id in evidenceMap) {
-            if (evidenceMap.hasOwnProperty(id))
-            {
-                // cache[id] = {
-                //     status: "complete",
-                //     data: evidenceMap[id]
-                // };
-                cache[id] = {
-                       id:data.query.entrezGeneId,
-                       data: evidenceMap[id]
-                    };
-            }
-        }
-        // console.log('evidence cache',cache);
-        EVIDENCE.push(cache);
-        ++CNT;
-        if(CNT===SIZE){
-            // console.log('CNT,EVIDENCE', CNT,EVIDENCE);
-           // self.callback(oncology,EVIDENCE);
+        var cache = {};
+        if(json[0]==='-1'){
+            // alert('ONCOKB 정보를 가져오는 도중 네트워크 지연이 발생하였습니다. 잠시후 다시 시도해 주시기 바랍니다');
+            console.log('ONCOKB 정보를 가져오는 도중 네트워크 지연이 발생하였습니다. 잠시후 다시 시도해 주시기 바랍니다');
 
-            getCivic();
+            cache[0] = {
+                id: "",
+                data: ""
+            };
+
+        }else {
+            var evidenceMap = processEvidence(json);
+            // var cache = {};
+            for (var id in evidenceMap) {
+                if (evidenceMap.hasOwnProperty(id)) {
+                    // cache[id] = {
+                    //     status: "complete",
+                    //     data: evidenceMap[id]
+                    // };
+                    cache[id] = {
+                        id: data.query.entrezGeneId,
+                        data: evidenceMap[id]
+                    };
+                }
+            }
+            // console.log('evidence cache',cache);
         }
+            EVIDENCE.push(cache);
+            ++CNT;
+            if (CNT === SIZE) {
+                // console.log('CNT,EVIDENCE', CNT,EVIDENCE);
+                // self.callback(oncology,EVIDENCE);
+
+                getCivic();
+            }
+
 
     }
 

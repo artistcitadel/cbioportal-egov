@@ -13,8 +13,8 @@
        ORDR_DIRECT_DT time,
        ORDR_CD ordrCd,  -- 처방코드
        EXAM_CD examCd,  -- 검사코드,
-       EXAM_NO examNo, -- 검사번호,
-       SPCN_NO spcnNo,  -- 검체번호,
+       IFNULL(EXAM_NO,'Unknwon') examNo, -- 검사번호,
+       IFNULL(SPCN_NO,'Unknwon') spcnNo,  -- 검체번호,
        SPCN_EXAM_ORDR_TYP_CD spcnExamOrdrTypCd -- 검체검사처방유형코드
 FROM SSSPMORDR  -- 검체검사처방기본
 WHERE RESCH_PAT_ID = #{patientId}

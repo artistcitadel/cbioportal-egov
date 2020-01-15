@@ -171,14 +171,35 @@
     </div>
     <div id="spinner" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
-            <div class="sk-spinner la-line-scale-pulse-out big">
-                <%--<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">--%>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div style="color: #9784ed" class="la-ball-circus la-2x">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <%--<div class="sk-spinner la-line-scale-pulse-out big">
+                &lt;%&ndash;<div class="la-line-scale-pulse-out la-2x" style="color: #3941ff">&ndash;%&gt;
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>--%>
         </div>
         <iframe id="ifr"
                 style="width:100%;position:relative;zIndex:100;border:none;"
@@ -303,18 +324,20 @@
         var pv = new PatientView();
         pv.getPatientDescription();
 
-        var txt='';
-        for(var i=0;i<SAMPLE.length;i++){
-            txt+='<label class="label-default" style="width: auto;">';
-            // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
-            txt+=getDivSample("head_"+SAMPLE[i], parseInt(SAMPLE[i] )) +" ";
-            // txt+=PATIENTID+'_';
-            txt+=SAMPLENAMES[i];
-            // txt+=(i+1);
-            // if(i===0)txt+=' Primary'
-            txt+='</label>&nbsp;';
+        if(SAMPLE[0]!="") {
+            var txt = '';
+            for (var i = 0; i < SAMPLE.length; i++) {
+                txt += '<label class="label-default" style="width: auto;">';
+                // txt+=getDivSample((PATIENTID+"_"+SAMPLE[i]) , parseInt(SAMPLE[i])) +" ";
+                txt += getDivSample("head_" + SAMPLE[i], parseInt(SAMPLE[i])) + " ";
+                // txt+=PATIENTID+'_';
+                txt += SAMPLENAMES[i];
+                // txt+=(i+1);
+                // if(i===0)txt+=' Primary'
+                txt += '</label>&nbsp;';
+            }
+            $("#divsample").append(txt);
         }
-        $("#divsample").append(txt);
 
         var hasgenomicoverview=false;
         var timeLine = new TimeLine();
