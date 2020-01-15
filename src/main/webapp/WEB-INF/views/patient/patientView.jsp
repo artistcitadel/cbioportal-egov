@@ -530,21 +530,21 @@
 
     <div id="spinner" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
-            <div style="color: #9784ed" class="la-ball-circus la-2x">
+            <div style="color: #98bff6" class="la-ball-circus la-2x">
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
-            <div style="color: #9784ed" class="la-ball-circus la-2x">
+            <div style="color: #98bff6" class="la-ball-circus la-2x">
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
-            <div style="color: #9784ed" class="la-ball-circus la-2x">
+            <div style="color: #98bff6" class="la-ball-circus la-2x">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -647,6 +647,7 @@
 <script src="<c:url value="/js/page/patient/PatientViewMutationTable.js" />"></script>
 <script src="<c:url value="/js/page/patient/GenomicOverview.js" />"></script>
 <script>
+    var TOOLTIPINSTANCE=false;
     var perCode = '<%=(request.getSession().getAttribute("PER_CODE") == null) ? "0000" : request.getSession().getAttribute("PER_CODE")%>';
     var MUTATIONCOUNT;
     var AGE;
@@ -664,7 +665,7 @@
     var SAMPLENAMES=[];
     var PATIENTID;
     var QUERY;
-    var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "1140374940" : request.getParameter("RESCH_PAT_ID")%>';
+    var resch_pat_id = '<%=(request.getParameter("RESCH_PAT_ID") == null) ? "48321932" : request.getParameter("RESCH_PAT_ID")%>';
     var patients  = '<%=(request.getParameter("patients") == null) ? "" : request.getParameter("patients")%>';
     var patientId = '<%=(request.getParameter("patientId") == null) ? "" : request.getParameter("patientId")%>';
     var pages     = '<%=(request.getParameter("pages") == null) ? "1" : request.getParameter("pages")%>'

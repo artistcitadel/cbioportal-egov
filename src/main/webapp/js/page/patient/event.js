@@ -51,12 +51,40 @@ function Event() {
                 tip+=getDivSample("plot_"+tissue_seq, parseInt(tissue_seq) ) +"</span>";
             }
             tip += "</br><span>검체형태 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].tissColecCd + "</span></br>";
-            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "</span></br>";
+            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "</span>";
             // tip += "<input class='btn-link' type='button' value='분양' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')>";
-            tip+="<button class='btn-xs btn-danger' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')> \n" +
+            tip+="<button style='float:right;' class='btn-xs btn-danger' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')> \n" +
                 "            분양\n" +
                 "        </button>";
-            tip += "</span></span><hr />";
+            tip += "</span></span>";
+            tip+='<div class="table-responsive">\n' +
+                '<table class="table table table-bordered">\n' +
+                '    <thead>\n' +
+                '    <tr>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Attr</th>\n' +
+                '    </tr>\n' +
+                '    </thead>\n' +
+                '    <tbody>\n' +
+                '    <tr>\n' +
+                '        <td><label><input type="checkbox" id="b1" name="b1"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b2" name="b2"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b3" name="b3"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b4" name="b4"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b5" name="b5"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b6" name="b6"> 55</label></td>\n' +
+                '    </tr>\n' +
+                '    </tbody>\n' +
+                '</table>\n' +
+                '</div>';
+            // tip+="<button class='btn-xs btn-danger' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')> \n" +
+            //     "            분양\n" +
+            //     "        </button>";
+            // tip += "</span></span><hr />";
         }
         return tip;
     }

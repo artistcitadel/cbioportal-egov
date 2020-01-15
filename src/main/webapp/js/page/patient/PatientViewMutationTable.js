@@ -108,7 +108,7 @@ function PatientViewMutationTable() {
     var loadAnnotation = function(id, v){
         if(v.length<1)return;
         console.log('loadAnnotation ', id);
-        if($(".tooltipstered"))$(".tooltipstered").tooltipster('destroy');
+        if(_.isUndefined($(".tooltipstered")))$(".tooltipstered").tooltipster('destroy');
         var annotationtip = $('#'+id+'').tooltipster({
             plugins: ['sideTip', 'scrollableTip'],
             theme: 'tooltipster-shadow',
@@ -120,27 +120,18 @@ function PatientViewMutationTable() {
             arrow: false,
             content : buildAnnotation(v,id),
 
-           trigger: 'custom',
-            triggerOpen: {
-                mouseenter: true
-            },
-            triggerClose: {
-                mouseleave: false,
-                click: true
-            },
-
-            // functionReady: function(instance, helper){
-            //     $(".tooltip-template-div").hide();
-            //     $('.tooltip-template-span').click();
-            //     instance.content($('#tooltip-template').html());
-            // }
-//                triggerClose: {
-//                    click: true,
-//                    tap: true
-//                }
+            functionReady: function(instance, helper) {
+                var stop_close = false;
+                $(helper.tooltip).on("mouseenter", function() {
+                });
+                instance.on('close', function(event) {
+                    console.log('TOOLTIPINSTANCE',TOOLTIPINSTANCE);
+                    if(TOOLTIPINSTANCE)event.stop();
+                    else event.preventDefault();
+                });
+            }
 
         });
-
         annotationtip.tooltipster('open');
         // $('#'+id+'').tooltipster('open');
     }

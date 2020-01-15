@@ -37,8 +37,8 @@
                               and S.PACS_EQUIP_DIV_CD = 'CT'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-    and a.RESCH_PAT_ID = #{patientId}
-
+    and a.RESCH_PAT_ID != #{patientId}
+limit 10
     </select>
 
     <select id="selectMriList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -73,8 +73,8 @@
                           and S.PACS_EQUIP_DIV_CD = 'MR'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                           and O.ORDR_CD = S.EXAM_CD
                         )
-    and a.RESCH_PAT_ID = #{patientId}
-
+    and a.RESCH_PAT_ID != #{patientId}
+limit 10
     </select>
 
     <select id="selectPetCtList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -109,8 +109,8 @@
                               and S.PACS_EQUIP_DIV_CD = 'NM'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-        and a.RESCH_PAT_ID = #{patientId}
-
+        and a.RESCH_PAT_ID != #{patientId}
+limit 10
     </select>
 
     <select id="selectUsList" resultType="com.softcen.bigcen.med.patient.vo.Image">
@@ -145,8 +145,8 @@
                               and S.PACS_EQUIP_DIV_CD = 'US'  -- 행위수행파트 : NM(핵의학영상) => CT, MR, US
                               and O.ORDR_CD = S.EXAM_CD
                             )
-        and a.RESCH_PAT_ID = #{patientId}
-
+        and a.RESCH_PAT_ID != #{patientId}
+limit 10
     </select>
 
 </mapper>

@@ -50,7 +50,7 @@ function PatientAttr() {
             '                        <td><span>'+MUTATIONCOUNT+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +
-            '                        <td><span>Sample Type</span></td>\n' +
+            '                        <td><span>Sample Count</span></td>\n' +
             '                        <td><span>'+label+'</span></td>\n' +
             '                    </tr>\n' +
             '                    <tr>\n' +

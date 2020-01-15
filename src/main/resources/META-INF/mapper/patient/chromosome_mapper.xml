@@ -430,7 +430,7 @@
 
     </select>
 
-     <select id="selectPatientMuCosmic" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
+    <select id="selectPatientMuCosmic" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         /*SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
         , MCS.MTTN_EXAM_RSLT_ID mttnExamRsltId
         , MCS.HGVSP_VAL hgvspVal               -- Protein Change
@@ -513,7 +513,7 @@
     </select>
 
     <select id="selectPatientMutSample" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
-      /* 유전자검사검체 리스트 - Sample List */
+        /* 유전자검사검체 리스트 - Sample List */
         SELECT SMP.GENE_EXAM_SPCN_SEQ geneExamSpcnSeq -- 유전자검사검체순번 (Sample 순번)
         , SMP.GENE_EXAM_SPCN_ID geneExamSpcnNm  -- 유전자검사검체ID (Sample ID)
         FROM ( SELECT SPC.GENE_EXAM_SPCN_ID

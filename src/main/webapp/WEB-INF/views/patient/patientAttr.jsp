@@ -103,5 +103,31 @@
         </div>
     </div>
   </div>
+
+<div class="table-responsive">
+<table class="table table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">Attr</th>
+        <th scope="col">Attr</th>
+        <th scope="col">Attr</th>
+        <th scope="col">Attr</th>
+        <th scope="col">Attr</th>
+        <th scope="col">Attr</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span><input type="checkbox" id="b1" name="b1"/></span><span>55</span></td>
+        <td><input type="checkbox" id="b2" name="b2"/><span> 55</span></td>
+        <td><input type="checkbox" id="b3" name="b3"/><span> 55</span></td>
+        <td><input type="checkbox" id="b4" name="b4"/><span> 55</span></td>
+        <td><input type="checkbox" id="b5" name="b5"/><span> 55</span></td>
+        <td><input type="checkbox" id="b6" name="b6"/><span> 55</span></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
 </body>
 </html>

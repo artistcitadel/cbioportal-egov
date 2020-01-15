@@ -230,8 +230,8 @@ function Annotation() {
                 '                       <span>\n' +
                 '                           <div class="tabs-wrapper">\n' +
                 /*'                               <div class="title" style="background-color: #a03f61;">'+data.query.hugoSymbol+' '+data.query.alteration+' in '+data.query.tumorType+'</div>\n' +*/
-                '                               <div class="title" style="background-color: #8539b2;">'+data.query.hugoSymbol+' '+data.query.alteration+'</div>\n' +
-                '                               <div class="tabs" style="background-color: rgba(8,3,5,0.96);">\n' +
+                '                               <div class="title" style="background-color: #1C75CD;">'+data.query.hugoSymbol+' '+data.query.alteration+'</div>\n' +
+                '                               <div class="tabs" style="background-color: #064785;">\n' +
                 '                                   <div class="tab enable-hover">\n' +
                 '                                       <a onClick="tabToggle(1,\''+id+'\');" class="oncogenicity tab-title-a enable-hover-a enable-hover-active">\n' +
                 '                                           <span class="tab-title">clinical implications</span>\n' +
@@ -370,7 +370,7 @@ function Annotation() {
     var OncoKbTreatmentTable = function(treatments, id){
         var treatment = generateTreatments(treatments);
         var txt = '';
-        console.log('treatment ', treatment);
+        // console.log('treatment ', treatment);
          for(var i=0;i<treatment.length;i++){
              var classn = levelIconClassNames(treatment[i].level);
              var alterrations = "Oncogenic Mutations"; //mergeAlterations(treatment[i].approvedIndications);

@@ -310,35 +310,26 @@ function pmidtooltip(id, index){
 
     content+=abstract+article+'</ul>';
 
-//    console.log(id);
-    //console.log(content);
-
+    //console.log(id);
     // $('#article_'+id+'').trigger('hover');
-    console.log('article-id ', id);
-    //$(".tooltipstered").tooltipster('destroy');
-    //var instances = $.tooltipster.instancesLatest();
+    // console.log('article-id ', id);
     var artiletip = $('#article_'+id+'').tooltipster({
         theme: 'tooltipster-shadow',
         contentAsHTML: true,
         interactive: true,
         distance: 0,
         content : content,
-        // trigger: 'custom',
-        // triggerOpen: {
-        //     mouseenter: true
-        // },
-        // triggerClose: {
-        //     mouseleave: true
-        // },
+        functionReady: function(instance1, helper1) {
+            $(helper1.tooltip).on("mouseenter", function() {
+                TOOLTIPINSTANCE = true;
+            });
+            instance1.on('close', function(event) {
+                console.log('close1');
+                TOOLTIPINSTANCE = false;
+            });
+        }
+    });
 
-    });
-    artiletip.on('mouseover', function() {
-        $(this).tooltipster('instance').open();
-    }).on('mouseout', function() {
-        //console.log($(this).find('.tooltipstered'));
-        //$(this).tooltipster('instance').close();
-        //$("#ann_PIK3CA_Q546H").tooltipster('close');
-    });
     //$('#article_'+id+'').tooltipster('open');
     artiletip.tooltipster('open');
 
