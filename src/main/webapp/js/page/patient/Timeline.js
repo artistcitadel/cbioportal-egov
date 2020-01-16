@@ -99,7 +99,7 @@ function TimeLine() {
         var margin = paperWidth - end;
         end += margin;
         LINEEND = end;
-        console.log('xt[xt.length-1] ', end);
+        // console.log('xt[xt.length-1] ', end);
         drawTimeLine(start, chmName, xt, m, end);
         (node !== 'R') ? makeEventBarChart() : makeEventBarChartCache();
     }
@@ -155,7 +155,7 @@ function TimeLine() {
             size = util.monthAndYearDiff(min, max, 'y') + 1;
             if (size > 1) size += 1;
         }
-        console.log(' size ', size);
+        // console.log(' size ', size);
 
         //size+=2;
         for (var k = 0; k < size; k++) {
@@ -186,11 +186,11 @@ function TimeLine() {
     }
 
     function setXposition(start, count) {
-        console.log('setXposition is ', start, count);
+        // console.log('setXposition is ', start, count);
         var xt = [];
 
         var gap = (paperWidth - start) / count / 2;
-        console.log('gap ', gap);
+        // console.log('gap ', gap);
 
         for (var i = 0; i < count * 2; i++) {
             if (i > 0) xt[i] = xt[i - 1] + gap;
@@ -242,7 +242,7 @@ function TimeLine() {
             return o.time != 'undefined';
         });
         // console.log('countTime ', countTime);
-        console.log('start ', yRuler, start, end);
+        // console.log('start ', yRuler, start, end);
 
         var startXruler = end;
         var oline = drawLine(start, yRuler, end, yRuler, paper, '#000', 1);
@@ -309,6 +309,7 @@ function TimeLine() {
                     if (state.length < 1) return;
                     var dat = [];
                     state = util.makeHrc(state, RAW, dat);
+                    // console.log('state', state);
                     //state = _.reverse(state);
                     // console.log('state', state);
                     /*var state = _.uniqBy(state, function (o) {
@@ -316,13 +317,21 @@ function TimeLine() {
                         return o.id + util.nt(o.time);
                     })*/
                     var stemp=[];
-                    var uniqstate=[];
-                    for(var i=0;i<state.length;i++){
+                   // var uniqstate=[];
+                    /*for(var i=0;i<state.length;i++){
                         var txt = state[i].id+util.nt(state[i].time);
                         if(!_.includes(stemp,txt)){stemp.push(txt);uniqstate.push(state[i]);}
-                    }
-                    // console.log('make hrc state ', state);
+                    }*/
+                    var head = _.filter(state,function(o){
+                        return o.pid==='0';
+                    });
+                    var body = _.filter(state,function(o){
+                        return o.pid!=='0';
+                    });
+                    var uniqstate = head.concat(body);
+                      // console.log('make hrc state ', state);
                     //return;
+                    //console.log('state', state);
                     // console.log('uniq state', uniqstate);
                     MODE = 'P';
 
@@ -332,7 +341,6 @@ function TimeLine() {
                         removeLine();
                         clearPaperPlotNode();
                         setTimeLine('C', uniqstate);
-
                     }, 1000);
                 });
                 ++txtCnt;
@@ -359,13 +367,14 @@ function TimeLine() {
 
 // -- event bar chart -- //
     function setPlotAxis(pdata) {
+        //console.log('pdata',pdata);
         pixelMap = [];
         //pdata = _.sortBy(pdata,['time']);
         // console.log('pdata is ', pdata);
         // console.log('xt ', xt);
         // console.log('m ', m);
         // console.log('chmName ', chmName);
-        // console.log(' COUNTMAP ', COUNTMAP);
+        //  console.log(' COUNTMAP ', COUNTMAP);
         var temp_name = [];
         var item = {};
         for (var i = 0; i < pdata.length; i++) {
@@ -376,6 +385,10 @@ function TimeLine() {
 
                 if( ( (i+1) < pdata.length) && pdata[i].id === pdata[i+1].id && pdata[i].time === pdata[i+1].time) {
                     temp_name.push(pdata[i]);//temp_name.push(pdata[i+1]);
+                    // if(pdata[i].id==='TISSUE'){
+                    //     console.log('setPlotAxis',pdata[i].id, pdata[i].time);
+                    //     console.log('setPlotAxis1',pdata[i+1].id, pdata[i+1].time);
+                    // }
                     continue;
                 }
                 else {
@@ -424,7 +437,7 @@ function TimeLine() {
             }
         }
         PIXELMAPDATA=pixelMap;
-        // console.log('pixelMap ', pixelMap);
+         // console.log('pixelMap ', pixelMap);
     }
 
     function getDpTime(d) {
@@ -433,9 +446,8 @@ function TimeLine() {
     }
 
     function makeEventBarChart() {
-
         TIMELINEDATA = dig;
-
+        //console.log('pixelMap.length',pixelMap.length);
         setPlotAxis(dig);
         makeEventBarChartSub();
         //console.log('makeEventBarChart ', dig);
@@ -453,7 +465,7 @@ function TimeLine() {
         // console.log('dig-> ', dig);
         $("#dhead").html("");
         var d = HMIN;
-        console.log(HMIN);
+        // console.log(HMIN);
         d = util.setDateTitle(UNIT, d);
         d = "" + d + "";
         //alert(d);
@@ -476,8 +488,8 @@ function TimeLine() {
     var ycnt = 0;
 
     function plotdrawing(dig) {
-        //console.log('dig is ', dig);
-        ycnt = 0
+        // console.log('dig is ', dig);
+        ycnt = 0;
         dig = _.uniqBy(dig, 'id');
         // console.log('uniq dig is ', dig);
         //if(tdata.length<1)
@@ -486,6 +498,7 @@ function TimeLine() {
 
         //console.log('tdata.data ', tdata[0]['data']);
         XGRIDS = [];
+
         for(var i=0;i<tdata.length;i++) {
             plotMuts(paper, ycnt, tdata[i]);
             if (tdata[i]['data'].length > 0)
@@ -549,8 +562,11 @@ function TimeLine() {
         if (item.leaf) {
             var maxCount = 6;
             var pw = 3;
-            var tnumber = _.round(Number(XSCALE));
+            //var tnumber = _.round(Number(XSCALE));
+            //console.log('tnumber ', tnumber);
+            //console.log('pixelMap ', pixelMap);
             var pixelAry = _.filter(pixelMap, {'id': item.id});
+            //console.log('pixelAry ', pixelAry);
 
             // console.log('pixelAry is ', pixelAry);
             //var tcnt = 0;
@@ -565,17 +581,20 @@ function TimeLine() {
                 // if (UNIT === 'y') {
                 //    pw = (plen > 100) ? 2 : (plen > 200) ? 1 : (plen > 300) ? 0.5 : 3;
                 // }
-                pw=3;
+                if (UNIT === 'y') {
+                   pw = (plen > 100) ? 1 : (plen > 200) ? 0.5 : (plen > 300) ? 1 : 2;
+                }
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
 
                 var plotcolor =event.getPlotColor(item.subject, item.id);
                 if(pixelAry[i].isSample)plotcolor="#000";
+                var stroke_width = (pixelAry[i].stroke>16)?16:pixelAry[i].stroke;
                 var r = p.circle(leftpadding, yRow - 4, pw+1);
                     r.attr("fill", plotcolor),
                     r.attr("stroke", plotcolor)
-                    r.attr("stroke-width", pixelAry[i].stroke);
-                    // r.attr("stroke-width", 1);
+                    r.attr("stroke-width", stroke_width);
+                    //r.attr("stroke-width", pw);
                     r.attr("opacity", 0.5);
                     r.translate(0.5, 0.5);
 
@@ -605,7 +624,7 @@ function TimeLine() {
             //console.log("label texting ",  label.subject);
             //console.log('label texting ', label.subject, subject.biopsy, subject.surgery);
             if (label.subject===subject.biopsy || label.subject === subject.surgery) {
-                console.log('label texting ', label.subject);
+                // console.log('label texting ', label.subject);
                 deep=1;
             }
             // console.log('label.id ', label.id, label.name);

@@ -99,7 +99,8 @@ function GenomicOverview() {
         self.xt=[];
         self.m = [];
         self.chmName = [];
-        self.width = window.innerWidth-160;
+        // self.width = window.innerWidth-160;
+        self.width = window.innerWidth-114;
         self.wideGenePanelIcon = 20;
         self.heigthGenePanelIcon = 18;
         self.pixelsPerBinMut = 3;

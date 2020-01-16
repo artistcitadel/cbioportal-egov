@@ -23,7 +23,7 @@
 
 
 <!-- Content Wrapper. Contains page content -->
-<div <%--class="content-wrapper"--%> style="margin-left:0px;overflow-y: hidden;">
+<div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;background-color: white;">
     <!-- Content Header (Page header) -->
     <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
@@ -193,11 +193,11 @@
                             </div>
                         </div>
                     </div>--%>
-                    <div class="container-fulid">
+                    <%--<div class="container-fulid">--%>
                     <div id="timeline" style="display:flex;">
                         <div id="timeLineContainer"></div>
                     </div>
-                </div>
+                <%--</div>--%>
                 <hr />
 
                 <div>
@@ -570,9 +570,37 @@
 
     <div id="spinner1" style="zIndex:100;position:relative;display:none;">
         <div class="centered" >
-            <div class="la-ball-clip-rotate la-3x" style="color: #87c4a3">
+            <div style="color: #98bff6" class="la-ball-circus">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
                 <div></div>
             </div>
+            <div style="color: #98bff6" class="la-ball-circus">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div style="color: #98bff6" class="la-ball-circus">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div style="color: #98bff6" class="la-ball-circus">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <%--<div class="la-ball-clip-rotate la-3x" style="color: #98bff6">
+                <div></div>
+            </div>--%>
         </div>
     </div>
     <!-- CATE MODAL -->
