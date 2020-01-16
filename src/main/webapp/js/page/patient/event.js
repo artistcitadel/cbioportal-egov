@@ -24,9 +24,11 @@ function Event() {
     }
 
     self.classify_tissue= function(data,  UNIT) {
+        // console.log('classify_tissue', data);
         var tip = '';
-        tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</p>";
+        //tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</p>";
         for(var i=0;i<data.length;i++) {
+            tip += "<span>" + util.dateFormat(UNIT, data[i].time) + "</p>";
             tip += "<span>처방코드 &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;" + data[i].ordrCd + "</span></br>";
             tip += "<span>검사코드 &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;" + data[i].examCd + "</span></br>";
             tip += "<span>검사번호 &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;" + data[i].examNo + "</span></br>";
@@ -57,26 +59,26 @@ function Event() {
                 "            분양\n" +
                 "        </button>";
             tip += "</span></span>";
-            tip+='<div class="table-responsive">\n' +
+            tip+='<div class="table-responsive" style="overflow-x: visible;">\n' +
                 '<table class="table table table-bordered">\n' +
                 '    <thead>\n' +
                 '    <tr>\n' +
-                '        <th scope="col">Attr</th>\n' +
-                '        <th scope="col">Attr</th>\n' +
-                '        <th scope="col">Attr</th>\n' +
-                '        <th scope="col">Attr</th>\n' +
-                '        <th scope="col">Attr</th>\n' +
-                '        <th scope="col">Attr</th>\n' +
+                '        <th scope="col">Tumor Tissue</th>\n' +
+                '        <th scope="col">Normal Tissue</th>\n' +
+                '        <th scope="col">Plasma</th>\n' +
+                '        <th scope="col">Buffy Coat</th>\n' +
+                '        <th scope="col">Fluid</th>\n' +
+                '        <th scope="col">Urine</th>\n' +
                 '    </tr>\n' +
                 '    </thead>\n' +
                 '    <tbody>\n' +
                 '    <tr>\n' +
-                '        <td><label><input type="checkbox" id="b1" name="b1"> 55</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b2" name="b2"> 55</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b3" name="b3"> 55</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b4" name="b4"> 55</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b5" name="b5"> 55</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b6" name="b6"> 55</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b1" name="b1"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b2" name="b2"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b3" name="b3"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b4" name="b4"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b5" name="b5"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b6" name="b6"> 0</label></td>\n' +
                 '    </tr>\n' +
                 '    </tbody>\n' +
                 '</table>\n' +

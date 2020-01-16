@@ -116,6 +116,7 @@
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/mycancergenome.js"></script>
 	<script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/cancergenome.js"></script>
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/tooltipster-scrollable.min.js"></script>
+	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/notify.min.js"></script>
 
 <script>
   var gvServer = gvSERVER;

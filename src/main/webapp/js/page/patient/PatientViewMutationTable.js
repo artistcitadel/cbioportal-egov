@@ -346,7 +346,8 @@ function PatientViewMutationTable() {
             var count = $(this).text();
             var geneNm = $(this).data("geneNm");
             var protein = $(this).data("protein");
-            var temp = getCosmic(id.split("_")[1]);
+            // var temp = getCosmic(id.split("_")[1]);
+            var temp = '';
             var prop = {};
             prop.count  = count;
             prop.geneNm = geneNm;
@@ -354,33 +355,33 @@ function PatientViewMutationTable() {
             prop.temp = temp;
             prop.id = id;
 
-            $('#'+id+'').closest().tooltipster({
-                content: "Loading...",
-                updateAnimation: false,
-                /*functionBefore: function(instance, helper) {
+            //getMutationCosmic(prop);
+            if($('#' + id + '').hasClass("tooltipstered")){
+                $('#' + id + '').tooltipster('open');
+                return;
+            }
+            $('#' + id + '').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true,
+                interactive: true,
+                arrow: true,
+                content: 'Loading...',
+                functionBefore: function(instance, helper) {
                     var $origin = $(helper.origin);
-                    if ($origin.data('ajax') !== 'cached') {
-                        /!*var ds_cond = {};
-                        ds_cond.data = {"queryId": "selectPatientMuCosmic", "patientId": PATIENTID};
-                        ds_cond.callback = cosmic_disposer;
-                        action.selectPatientMuList(ds_cond, prop);
-                        var cosmic_disposer = function(json, prop) {
-                            setCosmic(json, prop);
-                        }
-                        var setCosmic = function(data, prop){
-                            instance.content(loadCosmic(data, prop));
-                            // roundRobin();
-                       }*!/
-                        $origin.data('ajax', 'cached');
-                        instance.content(getMutationCosmic(prop));
+                    if ($origin.data('loaded') !== true) {
+                        var ds_cond = {};
+                        ds_cond.data = {"queryId": "selectPatientMuCosmic", "geneExamSpcnId": id.split("_")[1]};
+                        action.selectPatientMuListCosmic(ds_cond, prop).then(function(data){
+                            var cosmic = buildCosmic(prop.count, prop.geneNm, prop.protein, data);
+                            instance.content(cosmic);
+                        });
+                        $origin.data('loaded', true);
                     }
-                },
-                functionAfter: function(instance) {
-                }*/
+                }
             });
-            // $('#'+id+'').tooltipster('open');
+            $('#' + id + '').tooltipster('open');
 
-            getMutationCosmic(prop);
+            // getMutationCosmic(prop);
 
             /*var id = e.target.id;
             var count = $(this).text();
@@ -420,15 +421,23 @@ function PatientViewMutationTable() {
 
     var loadCosmic = function(cosmic, prop){
         var cosmic = buildCosmic(prop.count, prop.geneNm, prop.protein, prop.temp);
-        $('#'+prop.id+'').tooltipster({
+        console.log(cosmic);
+        return cosmic;
+        // if( $('#' + prop.id + '').hasClass("tooltipstered")) {
+        //     $('#' + prop.id + '').tooltipster('open');
+        //     return;
+        // }
+        $('#' + prop.id + '').tooltipster('content', cosmic);
+        return;
+        var cosmictooltip = $('#' + prop.id + '').tooltipster({
             theme: 'tooltipster-shadow',
             contentAsHTML: true,
             interactive: true,
             arrow: false,
             content: cosmic,
         });
-        $('#'+prop.id+'').tooltipster('open');
-
+        // $('#'+prop.id+'').tooltipster('open');
+        cosmictooltip.tooltipster('open');
         // new jBox('Tooltip', {
         //     //$(this).jBox('Tooltip', {
         //     attach: '#' + id + '',
@@ -437,7 +446,6 @@ function PatientViewMutationTable() {
         //     animation: 'move',
         //     content: cosmic
         // });
-
     }
 
     getMutationList = function(qid) {
@@ -577,7 +585,7 @@ function PatientViewMutationTable() {
             ' <tbody id="cosmic_con">\n';
 
         _.forEach(data, function (v) {
-            str += '<tr><td style="cursor:pointer;color:blue;" onClick="moveSanger(\' + v.csmcId + \')">' + v.csmcId + '</td>\n' +
+            str += '<tr><td style="cursor:pointer;color:blue;" onClick="moveSanger('+v.csmcId+')">' + v.csmcId + '</td>\n' +
                 '<td>' + v.hgvspVal + '</td>\n' +
                 '<td>' + count + '</td>\n' +
                 '</tr>\n';
@@ -593,7 +601,7 @@ function PatientViewMutationTable() {
         var item = _.filter(self.COSMIC, function (v) {
             return id === v.mttnExamRsltId;
         });
-        console.log('result ', item);
+        // console.log('result ', item);
         return item;
     }
 
@@ -1061,14 +1069,14 @@ function PatientViewMutationTable() {
 
     }
 
-    var moveSanger = function(id) {
-        window.open('https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=' + id + '');
-    }
-
     var zerotext = function(dat){
         return (dat===0)? 'There are no ': dat;
     }
 
+}
+
+var moveSanger = function(id) {
+    window.open('https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=' + id + '');
 }
 
 var astoempty = function(dat){

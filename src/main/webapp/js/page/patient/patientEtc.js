@@ -367,7 +367,20 @@ function addpmidToolTip(node, tip, showDelay, position, theme) {
 }
 
 function regBrc(patientId, examNo){
-    if (window.confirm("분양신청 하시겠습니까?")) {
+    var ischk=false;
+    for(var i=1;i<7; i++){
+        if($("#b"+i).prop("checked")){
+            ischk=true;
+            break;
+        }
+    }
+    console.log(ischk);
+    if(!ischk){
+       // alert('선택된 검체가 없습니다');
+        $.notify('선택된 검체가 없습니다');
+        return;
+    }
+    if (window.confirm("집도의 동의 서명이 필요합니다 분양신청 하시겠습니까?")) {
         var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
         console.log('regBrc ',perCode, PATIENTID, eno);
         var action = new Action();

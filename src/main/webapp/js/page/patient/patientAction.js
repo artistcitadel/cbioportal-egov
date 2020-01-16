@@ -254,4 +254,17 @@ function Action() {
         });
     }
 
+    self.selectPatientMuListCosmic = function (props, arg) {
+        return $.ajax({
+            type: "post",
+            /*headers: {
+                Authorization: apiKey
+            },*/
+            dataType: "json",
+            cache: false,
+            url: gvSERVER+"/patient/selectPatientMuList",
+            contentType: "application/json",
+            data: JSON.stringify(props.data)
+        });
+    }
 }

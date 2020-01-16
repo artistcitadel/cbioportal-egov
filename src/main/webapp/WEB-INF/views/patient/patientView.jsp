@@ -23,7 +23,7 @@
 
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;">
+<div <%--class="content-wrapper"--%> style="margin-left:0px;overflow-y: hidden;">
     <!-- Content Header (Page header) -->
     <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
@@ -54,11 +54,11 @@
 
     <%--<section class="content">--%>
     <!-- Default box -->
-    <div class="box">
+    <div <%--class="box"--%>>
         <%--<div class="box-header with-border">
             <h3 class="box-title"></h3>
         </div>--%>
-        <div class="box-body">
+        <div <%--class="box-body"--%>>
             <div id="container-fluid">
                 <%--<div class="team">
                     <div class="member">
@@ -327,7 +327,7 @@
                             <div></div>
                             <div></div>
                         </div>--%>
-                        <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
+                        <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
                             <span id="mutcount"></span> <span id="txtmutations" style="display:none;">Mutations</span>
                         </div>
                         <br/>
@@ -392,7 +392,7 @@
                     </div>
                 </div>
                 <div class="container-fulid">
-                    <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
+                    <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
                         <span id="cnacount"></span> <span id="txtcna" style="display:none;">Copy Number Alterlations</span>
                     </div>
                     <br/>
@@ -441,7 +441,7 @@
                 <div class="container-fulid">
 
 
-                    <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
+                    <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
                         <span id="expcount"></span> <span id="txtexpressions" style="display:none;">Expressions</span>
                     </div>
                     <br/>
@@ -500,7 +500,7 @@
                     </div>
                 </div>
                 <div class="container-fulid">
-                    <div class="col-xs-4 col ttt" align="left" style="font-weight: bold;display:none;">
+                    <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
                         <span id="svcount"></span> <span id="txtsvs" style="display:none;">Svs</span>
                     </div>
                     <br/>

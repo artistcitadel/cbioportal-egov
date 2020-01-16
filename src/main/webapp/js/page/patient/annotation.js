@@ -193,9 +193,9 @@ function Annotation() {
     }
 
     self.buildToolbox = function(data, id, cache, sample){
-        console.log('annotation buildToolBox ', data);
-        console.log('annotation buildToolBox ', cache);
-        console.log('annotation buildToolBox ', sample, id);
+        // console.log('annotation buildToolBox ', data);
+        // console.log('annotation buildToolBox ', cache);
+        // console.log('annotation buildToolBox ', sample, id);
         // console.log(data.geneExist, id);
         // console.log('cache.treatments ',cache.treatments);
         var oncogenic = (data.oncogenic=='')?"Unknown" : data.oncogenic;

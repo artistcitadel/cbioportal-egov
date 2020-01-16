@@ -16,8 +16,7 @@
         from pmsdev.PMGEMEMTH a
         join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
         WHERE a.GENE_EXAM_MTH_NM != ''
-          and b.RESCH_PAT_ID != #{patientId}
-          limit 10
+          and b.RESCH_PAT_ID = #{patientId}
 
     </select>
 

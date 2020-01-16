@@ -75,9 +75,7 @@
         FROM ( SELECT GMU.MTTN_EXAM_RSLT_ID              -- 돌연변이검사결과ID (화면표시X COSMIC 마우스 오버 시 사용)
         , CAN.OCT_CD AS TUMOR_NM             -- 암종 (Annotation OncoKB 사용)
         , GMU.GENE_EXAM_SPCN_ID              -- 유전자검사검체ID (Sample ID)
-        , RS1.RSLT_CNFM_DT AS SPCN_DT        -- 유전자검사검체일자
-        , GMU.EXAM_NO                        -- 검사번호
-        , RS2.RSLT_CNFM_DT AS EXAM_DT        -- 검사일자
+        , GMU.EXAM_NO                        -- 검사번호 (화면표시X)
         <choose>
             <when test="sampleId != null and sampleId != ''">
                 , CASE WHEN GMU.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
@@ -101,58 +99,58 @@
         , GMU.VARI_ALLELE_READ_CNT           -- Variant Reads
         , GMU.REF_ALLELE_READ_CNT            -- Ref Reads
         , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE GCV.CNV_STAT_NM END AS COPY   -- Copy # (해당 유전자가 CNA에도 있으면 CNV_STAT_NM 표시, 없으면 Diploid 표시)
-        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM                              ) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
-        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
         , SUM(MCS.GENE_VARI_OCCUR_CNT) OVER(PARTITION BY GMU.MTTN_EXAM_RSLT_ID) AS OCCUR_CNT  -- COSMIC
         FROM pmsdev.PMGERMUEM GMU
         LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
-        ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
+        ON GMU.MTTN_EXAM_RSLT_ID  = MCS.MTTN_EXAM_RSLT_ID
         LEFT OUTER JOIN pmsdev.PMGEMMUST MST
-        ON GMU.MTTN_STAT_NO      = MST.MTTN_STAT_NO
+        ON GMU.MTTN_STAT_NO       = MST.MTTN_STAT_NO
         LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
-        ON GMU.RESCH_PAT_ID      = GCV.RESCH_PAT_ID       -- 연구환자ID
-        AND GMU.GENE_EXAM_SPCN_ID = GCV.GENE_EXAM_SPCN_ID  -- 유전자검사검체ID
-        AND GMU.GENE_NM           = GCV.GENE_NM            -- 유전자명
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
-        ON GMU.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
-        ON GMU.EXAM_NO = RS2.EXAM_RSLT_NO
-        , ( SELECT SPC.GENE_EXAM_SPCN_ID
-        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
-        FROM ( SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERMUEM   -- Mutations
-        WHERE RESCH_PAT_ID = #{patientId}
+        ON GMU.RESCH_PAT_ID       = GCV.RESCH_PAT_ID        -- 연구환자ID
+        AND GMU.GENE_EXAM_SPCN_ID  = GCV.GENE_EXAM_SPCN_ID   -- 유전자검사검체ID
+        AND GMU.GENE_NM            = GCV.GENE_NM             -- 유전자명
+        AND GMU.GENE_READ_RSLT_VAL = GCV.GENE_READ_RSLT_VAL  -- 유전자판독결과값
+        LEFT OUTER JOIN ( SELECT SPC.GENE_EXAM_SPCN_ID
+        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ  -- 검체채취일자 및 검체채취시각 순서로 넘버링 처리
+        FROM ( SELECT DISTINCT
+        GESP.GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        , PSCN.SPCN_COLEC_DT      -- 검체채취일자
+        , MIN(PSCN.SPCN_COLEC_TM) OVER(PARTITION BY GESP.GENE_EXAM_SPCN_ID, PSCN.SPCN_COLEC_DT) AS SPCN_COLEC_TM  -- 검체채취시각
+        FROM ( SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERMUEM  -- Mutations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERCVEM   -- Copy Number Alterations
-        WHERE RESCH_PAT_ID = #{patientId}
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERCVEM  -- Copy Number Alterations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERSVEM   -- Structural Variations
-        WHERE RESCH_PAT_ID = #{patientId}
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERSVEM  -- Structural Variations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERGNEX   -- Expression
-        WHERE RESCH_PAT_ID = #{patientId}
-        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERGNEX  -- Expression
+        ) GESP
+        LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
+        ON GESP.GENE_EXAM_SPCN_ID = PERC.EXAM_NO  -- 검사번호
+        LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
+        ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
+        WHERE 1=1
+        AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
+        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
-        , ( SELECT COUNT(DISTINCT PAL.RESCH_PAT_ID) AS PAT_CNT   -- Cohort 계산을 위한 모수
-        FROM pmsdev.MSMAMCAMN PAL  -- Cohort 조건 선택 시 동적으로 생성되는 대상자 테이블 사용
-        , pmsdev.PMGERMUEM MUT
-        WHERE PAL.RESCH_PAT_ID = MUT.RESCH_PAT_ID
-        ) PAT
-        , ( SELECT ONCO.RESCH_PAT_ID
+        ON GMU.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        LEFT OUTER JOIN ( SELECT ONCO.RESCH_PAT_ID
         , CASE WHEN ONCO.OCT_CD LIKE '%/%' THEN NULL ELSE ONCO.OCT_CD END AS OCT_CD  -- 2개 이상의 암종은 NULL 처리
         FROM ( SELECT RESCH_PAT_ID
         , GROUP_CONCAT(PAL.ONCOTREE_CD ORDER BY PAL.CANCER_REG_NO, PAL.CANCER_REG_DT SEPARATOR '/') AS OCT_CD  -- Oncotree 암종코드
         FROM pmsdev.MSMAMCAMN PAL        -- 암등록관리기본
-        WHERE RESCH_PAT_ID = #{patientId}
+        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         AND VALD_YN = 'Y'
         GROUP BY RESCH_PAT_ID ) ONCO
         ) CAN
-        WHERE GMU.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        AND GMU.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        ON GMU.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        WHERE 1=1
+        AND GMU.GENE_READ_RSLT_VAL = 'Positive'  -- 유전자판독결과값
         AND GMU.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
@@ -162,6 +160,7 @@
         BAS.GENE_NM
         , BAS.GENE_EXAM_MTH_NM
         , BAS.HGVSP_VAL
+
     </select>
 
     <select id="selectPatientCNAList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
@@ -184,17 +183,12 @@
         , BAS.END_POS geneVariEndLocVal   -- End Pos    (화면표시X)
         , BAS.BNLG_RT segCol   -- Log2       (화면표시X)
         , ' ' chort
-        -- , BAS.COHORT_1          -- Cohort (밝은색)
-        --  , BAS.COHORT_2          -- Cohort (진한색)
         ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.CNV_EXAM_RSLT_ID and RESCH_PAT_ID =  #{patientId} )  geneVariClsfNm
         FROM ( SELECT GCV.CNV_EXAM_RSLT_ID                  -- 복제수변이검사결과ID (화면표시X)
         , CAN.OCT_CD AS TUMOR_NM                -- 암종 (Annotation OncoKB 사용)
-        , GCV.GENE_EXAM_SPCN_ID                 -- 유전자검사검체ID (Sample ID)
-        , RS1.RSLT_CNFM_DT AS SPCN_DT           -- 유전자검사검체일자
-        , GCV.EXAM_NO                           -- 검사번호
-        , RS2.RSLT_CNFM_DT AS EXAM_DT           -- 검사일자
+        , GCV.GENE_EXAM_SPCN_ID                 -- 유전자검사검체ID (Sample ID) (화면표시X)
+        , GCV.EXAM_NO                           -- 검사번호 (화면표시X)
         <choose>
-
             <when test="sampleId != null and sampleId != ''">
                 , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
             </when>
@@ -202,7 +196,6 @@
                 , CASE WHEN GCV.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
             </otherwise>
         </choose>
-
         , GCV.GENE_NM                           -- Gene (Annotation OncoKB 사용)
         , GCV.GENE_EXAM_MTH_NM                  -- Methods
         , UPPER(GCV.CNV_STAT_NM) AS CNA         -- CNA  (Annotation OncoKB 사용)
@@ -211,39 +204,38 @@
         , GCV.CHRM_SGMN_ST_LOC_VAL  AS ST_POS   -- Start Pos  (화면표시X)
         , GCV.CHRM_SGMN_END_LOC_VAL AS END_POS  -- End Pos    (화면표시X)
         , GCV.BNLG_RT                           -- Log2       (화면표시X)
-        , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM                                  ) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
-        , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERCVEM WHERE GENE_NM = GCV.GENE_NM AND CNV_STAT_NM = GCV.CNV_STAT_NM) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
+
         FROM pmsdev.PMGERCVEM GCV
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
-        ON GCV.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
-        ON GCV.EXAM_NO = RS2.EXAM_RSLT_NO
-        , ( SELECT SPC.GENE_EXAM_SPCN_ID
-        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
-        FROM ( SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERMUEM   -- Mutations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+        LEFT OUTER JOIN ( SELECT SPC.GENE_EXAM_SPCN_ID
+        , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ  -- 검체채취일자 및 검체채취시각 순서로 넘버링 처리
+        FROM ( SELECT DISTINCT
+        GESP.GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        , PSCN.SPCN_COLEC_DT      -- 검체채취일자
+        , MIN(PSCN.SPCN_COLEC_TM) OVER(PARTITION BY GESP.GENE_EXAM_SPCN_ID, PSCN.SPCN_COLEC_DT) AS SPCN_COLEC_TM  -- 검체채취시각
+        FROM ( SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERMUEM  -- Mutations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERCVEM   -- Copy Number Alterations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERCVEM  -- Copy Number Alterations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERSVEM   -- Structural Variations
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERSVEM  -- Structural Variations
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
-        FROM pmsdev.PMGERGNEX   -- Expression
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
-        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        FROM pmsdev.PMGERGNEX  -- Expression
+        ) GESP
+        LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
+        ON GESP.GENE_EXAM_SPCN_ID = PERC.EXAM_NO  -- 검사번호
+        LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
+        ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
+        WHERE 1=1
+        AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
+        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
-        , ( SELECT COUNT(DISTINCT PAL.RESCH_PAT_ID) AS PAT_CNT   -- Cohort 계산을 위한 모수
-        FROM pmsdev.MSMAMCAMN PAL  -- Cohort 조건 선택 시 동적으로 생성되는 대상자 테이블 사용
-        , pmsdev.PMGERCVEM CNV
-        WHERE PAL.RESCH_PAT_ID = CNV.RESCH_PAT_ID
-        ) PAT
-        , ( SELECT ONCO.RESCH_PAT_ID
+        ON GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        LEFT OUTER JOIN ( SELECT ONCO.RESCH_PAT_ID
         , CASE WHEN ONCO.OCT_CD LIKE '%/%' THEN NULL ELSE ONCO.OCT_CD END AS OCT_CD  -- 2개 이상의 암종은 NULL 처리
         FROM ( SELECT RESCH_PAT_ID
         , GROUP_CONCAT(PAL.ONCOTREE_CD ORDER BY PAL.CANCER_REG_NO, PAL.CANCER_REG_DT SEPARATOR '/') AS OCT_CD  -- Oncotree 암종코드
@@ -252,8 +244,9 @@
         AND VALD_YN = 'Y'
         GROUP BY RESCH_PAT_ID ) ONCO
         ) CAN
-        WHERE GCV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        AND GCV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        ON GCV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        WHERE 1=1
+        AND GCV.GENE_READ_RSLT_VAL = 'Positive'  -- 유전자판독결과값
         AND GCV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
@@ -278,10 +271,8 @@
         , BAS.PTEG_GENE_READ_RSLT_VAL ptegGeneReadRsltVal -- Expression Result
         , BAS.GNEX  gnex                    -- Expression Value
         , BAS.GNEX_MSR_VAL gnexMsrVal             -- Expression Unit
-        FROM (  SELECT GEX.GENE_EXAM_SPCN_ID          -- 유전자검사검체ID (Sample ID)
-        , RS1.RSLT_CNFM_DT AS SPCN_DT    -- 유전자검사검체일자
-        , GEX.EXAM_NO                    -- 검사번호
-        , RS2.RSLT_CNFM_DT AS EXAM_DT    -- 검사일자
+        FROM ( SELECT GEX.GENE_EXAM_SPCN_ID          -- 유전자검사검체ID (Sample ID) (화면표시X)
+        , GEX.EXAM_NO                    -- 검사번호 (화면표시X)
         <choose>
             <when test="sampleId != null and sampleId != ''">
                 , CASE WHEN GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
@@ -296,32 +287,38 @@
         , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS GNEX  -- Expression Value
         , GEX.GNEX_MSR_VAL               -- Expression Unit
         FROM pmsdev.PMGERGNEX GEX
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
-        ON GEX.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
-        ON GEX.EXAM_NO = RS2.EXAM_RSLT_NO
-        , ( SELECT SPC.GENE_EXAM_SPCN_ID
+        LEFT OUTER JOIN ( SELECT SPC.GENE_EXAM_SPCN_ID
         , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
-        FROM ( SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        FROM ( SELECT DISTINCT
+        GESP.GENE_EXAM_SPCN_ID
+        , PSCN.SPCN_COLEC_DT  -- 검체채취일자
+        , MIN(PSCN.SPCN_COLEC_TM) OVER(PARTITION BY GESP.GENE_EXAM_SPCN_ID, PSCN.SPCN_COLEC_DT) AS SPCN_COLEC_TM  -- 검체채취시각
+        FROM ( SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERMUEM   -- Mutations
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERCVEM   -- Copy Number Alterations
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
-        WHERE RESCH_PAT_ID =  #{patientId} -- 연구환자ID (조회조건)
-        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        ) GESP
+        LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
+        ON GESP.GENE_EXAM_SPCN_ID = PERC.EXAM_NO  -- 검사번호
+        LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
+        ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
+        WHERE 1=1
+        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
+        ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
-        WHERE GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        AND GEX.RESCH_PAT_ID =  #{patientId}  -- 연구환자ID (조회조건)
+        ON GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        WHERE 1=1
+        AND GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive'  -- 병리검사유전자판독결과값
+        AND GEX.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
         </if>
@@ -329,6 +326,7 @@
         GROUP BY
         BAS.GENE_NM
         , BAS.GENE_EXAM_MTH_NM
+
     </select>
 
     <select id="selectPatientSVList" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
@@ -352,18 +350,14 @@
         , BAS.CHRM_NO2 chrnNo1          -- Chromosome (화면표시X)
         , BAS.ST_POS2  geneVariEndLocVal -- Pos1       (화면표시X)
         , ' ' cohort
-        , BAS.COHORT_1          -- Cohort (밝은색)
-        -- , BAS.COHORT_2          -- Cohort (진한색)
         ,(select HGVSP_VAL from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM1 and RESCH_PAT_ID = ${patientId} ) hgvspVal
         ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM1 and RESCH_PAT_ID = ${patientId} ) geneVariClsfNm
         ,(select HGVSP_VAL from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM2 and RESCH_PAT_ID = ${patientId} ) hgvspVal1
         ,(select GENE_VARI_CLSF_NM from PMGERMUEM where MTTN_EXAM_RSLT_ID = BAS.SV_EXAM_RSLT_ID and GENE_NM = BAS.GENE_NM2 and RESCH_PAT_ID = ${patientId} ) geneVariClsfNm1
         FROM ( SELECT GSV.SV_EXAM_RSLT_ID          -- 구조변이검사결과ID (화면표시X)
         , CAN.OCT_CD AS TUMOR_NM       -- 암종 (Annotation OncoKB 사용)
-        , GSV.GENE_EXAM_SPCN_ID        -- 유전자검사검체ID (Sample ID)
-        , RS1.RSLT_CNFM_DT AS SPCN_DT  -- 유전자검사검체일자
-        , GSV.EXAM_NO                  -- 검사번호
-        , RS2.RSLT_CNFM_DT AS EXAM_DT  -- 검사일자
+        , GSV.GENE_EXAM_SPCN_ID        -- 유전자검사검체ID (Sample ID) (화면표시X)
+        , GSV.EXAM_NO                  -- 검사번호 (화면표시X)
         <choose>
             <when test="sampleId != null and sampleId != ''">
                 , CASE WHEN GSV.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
@@ -381,39 +375,38 @@
         , GSV.CHRM_SGMN_END_LOC_VAL1 AS END_POS1 -- Pos1        (화면표시X)
         , GSV.CHRM_NO2                           -- Chromosome2 (화면표시X)
         , GSV.CHRM_SGMN_ST_LOC_VAL2  AS ST_POS2  -- Pos2        (화면표시X)
-        , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERSVEM WHERE GENE_NM1 = GSV.GENE_NM1 AND GENE_NM2 = GSV.GENE_NM2) / PAT.PAT_CNT * 100, 1) AS COHORT_1  -- Cohort1 (밝은색)
-        -- , ROUND((SELECT COUNT(*) FROM pmsdev.PMGERSVEM WHERE GENE_NM1 = GSV.GENE_NM1 AND GENE_NM2 = GSV.GENE_NM2) / PAT.PAT_CNT * 100, 1) AS COHORT_2  -- Cohort2 (진한색)
+
         FROM pmsdev.PMGERSVEM GSV
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS1
-        ON GSV.GENE_EXAM_SPCN_ID = RS1.EXAM_RSLT_NO
-        LEFT OUTER JOIN pmsdev.SSPRMRSIF RS2
-        ON GSV.EXAM_NO = RS2.EXAM_RSLT_NO
-        , ( SELECT SPC.GENE_EXAM_SPCN_ID
+        LEFT OUTER JOIN ( SELECT SPC.GENE_EXAM_SPCN_ID
         , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
-        FROM ( SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        FROM ( SELECT DISTINCT
+        GESP.GENE_EXAM_SPCN_ID
+        , PSCN.SPCN_COLEC_DT  -- 검체채취일자
+        , MIN(PSCN.SPCN_COLEC_TM) OVER(PARTITION BY GESP.GENE_EXAM_SPCN_ID, PSCN.SPCN_COLEC_DT) AS SPCN_COLEC_TM  -- 검체채취시각
+        FROM ( SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERMUEM   -- Mutations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERCVEM   -- Copy Number Alterations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
-        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        ) GESP
+        LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
+        ON GESP.GENE_EXAM_SPCN_ID = PERC.EXAM_NO  -- 검사번호
+        LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
+        ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
+        WHERE 1=1
+        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
+        ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
-        , ( SELECT COUNT(DISTINCT PAL.RESCH_PAT_ID) AS PAT_CNT   -- Cohort 계산을 위한 모수
-        FROM pmsdev.MSMAMCAMN PAL  -- Cohort 조건 선택 시 동적으로 생성되는 대상자 테이블 사용
-        , pmsdev.PMGERSVEM SV
-        WHERE PAL.RESCH_PAT_ID = SV.RESCH_PAT_ID
-        ) PAT
-        , ( SELECT ONCO.RESCH_PAT_ID
+        ON GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
+        LEFT OUTER JOIN ( SELECT ONCO.RESCH_PAT_ID
         , CASE WHEN ONCO.OCT_CD LIKE '%/%' THEN NULL ELSE ONCO.OCT_CD END AS OCT_CD  -- 2개 이상의 암종은 NULL 처리
         FROM ( SELECT RESCH_PAT_ID
         , GROUP_CONCAT(PAL.ONCOTREE_CD ORDER BY PAL.CANCER_REG_NO, PAL.CANCER_REG_DT SEPARATOR '/') AS OCT_CD  -- Oncotree 암종코드
@@ -422,8 +415,9 @@
         AND VALD_YN = 'Y'
         GROUP BY RESCH_PAT_ID ) ONCO
         ) CAN
-        WHERE GSV.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
-        AND GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        ON GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
+        WHERE 1=1
+        AND GSV.GENE_READ_RSLT_VAL = 'Positive'  -- 유전자판독결과값
         AND GSV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
@@ -433,87 +427,16 @@
         BAS.GENE_NM1
         , BAS.GENE_NM2
         , BAS.GENE_EXAM_MTH_NM
+
     </select>
 
     <select id="selectPatientMuCosmic" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
-        /*SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
+        SELECT MCS.CSMC_ID csmcId                -- COSMIC ID
         , MCS.MTTN_EXAM_RSLT_ID mttnExamRsltId
         , MCS.HGVSP_VAL hgvspVal               -- Protein Change
         , MCS.GENE_VARI_OCCUR_CNT geneVariOccurCnt     -- Occurrence
         FROM pmsdev.PMGERMUCS MCS
-        WHERE MCS.MTTN_EXAM_RSLT_ID = 'SNM0000039124'      -- 돌연변이검사결과ID (조회조건)*/
-
-        WITH
-        T1
-        AS (
-        SELECT MCS.CSMC_ID,
-        MCS.MTTN_EXAM_RSLT_ID,
-        MCS.HGVSP_VAL,
-        MCS.GENE_VARI_OCCUR_CNT
-        FROM pmsdev.PMGERMUCS MCS
-        )
-        ,
-        T2 AS (
-        SELECT GMU.MTTN_EXAM_RSLT_ID         -- 돌연변이검사결과ID (화면표시X)
-        , GMU.GENE_NM                   -- Gene (Annotation OncoKB 사용)
-        , GMU.GENE_EXAM_MTH_NM          -- Methods
-        , UPPER(GMU.HGVSP_VAL) AS HGVSP -- Protein Change (Annotation OncoKB 사용)
-        , GMU.CHRM_NO                   -- Chromosome
-        , GMU.GENE_VARI_ST_LOC_VAL      -- Start Pos
-        , GMU.GENE_VARI_END_LOC_VAL     -- End Pos
-        , GMU.REF_ALLELE_SQNC_VAL       -- Ref
-        , GMU.VARI_ALLELE_SQNC_VAL      -- Var
-        , MST.MTTN_STAT_NM              -- MS
-        , GMU.GENE_VARI_CLSF_NM         -- Mutation Type
-        , GMU.VARI_ALLELE_READ_RT       -- Allele Freq
-        , GMU.TOT_ALLELE_READ_CNT       -- 총대립유전자리드수 (화면표시X Allele Freq 마우스 오버 사용)
-        , GMU.VARI_ALLELE_READ_CNT      -- Variant Reads
-        , GMU.REF_ALLELE_READ_CNT       -- Ref Reads
-        , CASE WHEN GCV.GENE_NM IS NULL THEN 'Diploid' ELSE 'Amplification' END AS COPY   -- Copy #
-        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM) / PAT.PAT_CNT * 100, 1) AS COHORT_1   -- Cohort (밝은색)
-        , ROUND((SELECT COUNT(DISTINCT RESCH_PAT_ID) FROM pmsdev.PMGERMUEM WHERE GENE_NM = GMU.GENE_NM AND HGVSP_VAL = GMU.HGVSP_VAL) / PAT.PAT_CNT * 100, 1) AS COHORT_2   -- Cohort (진한색)
-        , SUM(MCS.GENE_VARI_OCCUR_CNT)  -- COSMIC
-        , NULL                          -- 암종 (화면표시X Annotation OncoKB 사용)
-        FROM pmsdev.PMGERMUEM GMU
-        LEFT OUTER JOIN pmsdev.PMGERMUCS MCS
-        ON GMU.MTTN_EXAM_RSLT_ID = MCS.MTTN_EXAM_RSLT_ID
-        LEFT OUTER JOIN pmsdev.PMGEMMUST MST
-        ON GMU.MTTN_STAT_NO = MST.MTTN_STAT_NO
-        LEFT OUTER JOIN pmsdev.PMGERCVEM GCV
-        ON GMU.RESCH_PAT_ID = GCV.RESCH_PAT_ID
-        AND GMU.GENE_NM      = GCV.GENE_NM
-        , ( SELECT COUNT(*) AS PAT_CNT   -- 전체환자수
-        FROM ( SELECT RESCH_PAT_ID FROM pmsdev.PMGERMUEM
-        UNION
-        SELECT RESCH_PAT_ID FROM pmsdev.PMGERCVEM
-        UNION
-        SELECT RESCH_PAT_ID FROM pmsdev.PMGERSVEM
-        UNION
-        SELECT RESCH_PAT_ID FROM pmsdev.PMGERGNEX ) PAT_ALL
-        ) PAT
-         WHERE GMU.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
-        GROUP BY
-        GMU.MTTN_EXAM_RSLT_ID
-        , GMU.GENE_NM
-        , GMU.GENE_EXAM_MTH_NM
-        , GMU.HGVSP_VAL
-        , GMU.CHRM_NO
-        , GMU.GENE_VARI_ST_LOC_VAL
-        , GMU.GENE_VARI_END_LOC_VAL
-        , GMU.REF_ALLELE_SQNC_VAL
-        , GMU.VARI_ALLELE_SQNC_VAL
-        , MST.MTTN_STAT_NM
-        , GMU.GENE_VARI_CLSF_NM
-        , GMU.VARI_ALLELE_READ_RT
-        , GMU.VARI_ALLELE_READ_CNT
-        , GMU.REF_ALLELE_READ_CNT
-        )
-        SELECT T1.CSMC_ID  csmcId,
-        T1.MTTN_EXAM_RSLT_ID  mttnExamRsltId,
-        T1.HGVSP_VAL hgvspVal,
-        T1.GENE_VARI_OCCUR_CNT geneVariOccurCnt
-        FROM T1, T2
-        WHERE T1.MTTN_EXAM_RSLT_ID = T2.MTTN_EXAM_RSLT_ID
+        WHERE MCS.MTTN_EXAM_RSLT_ID = #{geneExamSpcnId}    -- 돌연변이검사결과ID (조회조건)
 
     </select>
 
@@ -523,26 +446,34 @@
         , SMP.GENE_EXAM_SPCN_ID geneExamSpcnNm  -- 유전자검사검체ID (Sample ID)
         FROM ( SELECT SPC.GENE_EXAM_SPCN_ID
         , @ROWNUM := @ROWNUM + 1 AS GENE_EXAM_SPCN_SEQ
-        FROM ( SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        FROM ( SELECT DISTINCT
+        GESP.GENE_EXAM_SPCN_ID
+        , PSCN.SPCN_COLEC_DT  -- 검체채취일자
+        , MIN(PSCN.SPCN_COLEC_TM) OVER(PARTITION BY GESP.GENE_EXAM_SPCN_ID, PSCN.SPCN_COLEC_DT) AS SPCN_COLEC_TM  -- 검체채취시각
+        FROM ( SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERMUEM   -- Mutations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERCVEM   -- Copy Number Alterations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
         UNION
-        SELECT GENE_EXAM_SPCN_ID  -- 유전자검사검체ID (Sample ID)
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
-        ORDER BY GENE_EXAM_SPCN_ID ASC ) SPC
+        ) GESP
+        LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
+        ON GESP.GENE_EXAM_SPCN_ID = PERC.EXAM_NO  -- 검사번호
+        LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
+        ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
+        WHERE 1=1
+        AND GESP.RESCH_PAT_ID = #{patientId}      -- 연구환자ID (조회조건)
+        AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
+        ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SMP
         <if test="sampleId != null and sampleId != ''">
-            AND SMP.GENE_EXAM_SPCN_SEQ = #{sampleId}
+            WHERE SMP.GENE_EXAM_SPCN_SEQ = #{sampleId}
         </if>
     </select>
 </mapper>

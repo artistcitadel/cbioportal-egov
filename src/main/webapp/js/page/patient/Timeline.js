@@ -562,9 +562,10 @@ function TimeLine() {
 
                 var size = pixelAry[i].count;
 
-                if (UNIT === 'y') {
-                   pw = (plen > 100) ? 2 : (plen > 200) ? 1 : (plen > 300) ? 0.5 : 3;
-                }
+                // if (UNIT === 'y') {
+                //    pw = (plen > 100) ? 2 : (plen > 200) ? 1 : (plen > 300) ? 0.5 : 3;
+                // }
+                pw=3;
                 position = getPositionSpec(position, size, pixelAry[i].time);
                 var h = maxCount;
 
@@ -785,7 +786,8 @@ function TimeLine() {
     self.init = function (hasgenomicoverviewp) {
         hasgenomicoverview = hasgenomicoverviewp;
         // setWindowSize();
-        paperWidth = window.innerWidth-70;
+        //paperWidth = window.innerWidth-70;
+        paperWidth = window.innerWidth-20;
         setDom(self);
         action = new Action();
         util = new Util();
