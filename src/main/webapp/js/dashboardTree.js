@@ -12,10 +12,20 @@ $(document).ready(function(){
 	//setMainPatientPieChart();
 	
 	initTreeEvent();
+	
+	iniDashboard();
 	//$(".js-range-slider").ionRangeSlider();
 });
 
-
+function iniDashboard(){
+	
+	var dashboardTab = gvPERINX.DASHBOARD_TAB*1;
+	
+	$('input[name="inputDashboardRadio"][value="'+dashboardTab+'"]').prop('checked',true);
+	
+	dashboardTab = dashboardTab - 1;
+	$('#myTab li:eq('+dashboardTab+') a').tab('show');
+}
 
 
 function setTreeData(){
@@ -40,7 +50,7 @@ function setTreeData(){
 }
 
 function initTreeC(dataTree){
-
+	var cnt = 0;
 	var width = 1400;
 	var height = 1000;
 	var dx = 24;
@@ -77,9 +87,11 @@ function initTreeC(dataTree){
 		    d.id = i;
 		    d._children = d.children;
 		    d.checked = false;
+		    d.search = false;
 		    if (d.depth && d.data.ID.length !== 1) d.children = null;
 	 });
 
+	
 	const svg = d3.select(".cancer-tree").append("svg")
     .attr("viewBox", [-margin.left, -margin.top, width, dx])
     .style("font", "13px sans-serif")
@@ -119,20 +131,96 @@ function initTreeC(dataTree){
     	$('#rangeScaleVal').text((sz*100).toFixed(2)+"%")
     })
     
-/*    $(document).on('change','.input-check-tree',function(){
-		console.log(this);
-		var d = d3.select($(this).parent()[0]).data()[0];
+    $("#customText1").keydown(function(key) {
+    	if (key.keyCode == 13) {
+
+    		collapseAll();
+	    	
+			cnt = 0;
+        	var searchStr = $('#customText1').val();
+	    	if(isNullOrEmpty(searchStr)) return ;
+	    	if(searchStr.length <= 2){
+	    		showAlert('알림','3 글자 이상만 검색가능합니다.',null);
+	    	}
+	    	//root = $.extend(true, {}, originRoot);
+	    	
+			var paths = searchTree(root,searchStr,[]);
+			$('#spanSearchResult').text(cnt + ' results');
+			paths = Array.from(new Set(paths));
+			//alert(cnt + "개를 찾았습니다.");
+			
+			if(typeof(paths) !== "undefined"){
+				openPaths(paths);
+			}
+			gNode.selectAll('text').style('fill',d=>{
+				if(d.search==="found"){
+					return "blue";
+				}
+				else{
+					return "black";
+				}
+			});
+			
+		}	
+	});
+
+    $("#btnTreeSearchText1").on("click", function() {
+    		
+    	collapseAll();
+    	
+		cnt = 0;
+    	var searchStr = $('#customText1').val();
+    	if(isNullOrEmpty(searchStr)) return ;
+    	if(searchStr.length <= 2){
+    		showAlert('알림','3 글자 이상만 검색가능합니다.',null);
+    	}
+    	//var root = $.extend(true, {}, root);
+    	
+		var paths = searchTree(root,searchStr,[]);
+		$('#spanSearchResult').text(cnt + ' results');
+		paths = Array.from(new Set(paths));
+		//alert(cnt + "개를 찾았습니다.");
 		
-	});*/
+		if(typeof(paths) !== "undefined"){
+			openPaths(paths);
+		}
+		gNode.selectAll('text').style('fill',d=>{
+			if(d.search==="found"){
+				return "blue";
+			}
+			else{
+				return "black";
+			}
+		});
+        	
+    	
+	});
     
-	/*	
-	svg.selectAll("circle")
-    .data(dataTree)
-    .enter()
-    .append("circle")
-    //.attr(circleAttrs)  // Get attributes from circleAttrs var
-    .on("mouseover", handleMouseOver)
-    .on("mouseout", handleMouseOut);*/
+    $("#collapse_button").click(function(){
+        root.children.forEach(collapse);
+        update(root);
+    });
+    
+    $('#btnTreeCenter').on('click',function(){
+       gNode.attr("transform", "translate(0,0) scale(" + d3.zoomTransform($('svg')[0]).k + ")");
+       gLink.attr("transform", "translate(0,0) scale(" + d3.zoomTransform($('svg')[0]).k + ")");
+       d3.zoomTransform($('svg')[0]).x = 0
+       d3.zoomTransform($('svg')[0]).y = 0
+    })
+	
+    function collapseAll() {
+    	root.children.forEach(collapse);
+        update(root);
+    }
+    
+	function collapse(d) {
+		d.search = false;
+    	if (d.children) {
+	      //d._children = d.children;
+	      d._children.forEach(collapse);
+	      d.children = null;
+	    }
+	}
 
     function checkupdate(d){
     	d.checked = $('input[value='+d.data.ID+']').is(':checked');
@@ -234,7 +322,64 @@ function initTreeC(dataTree){
           .duration(100)
           .style("opacity", 0);
       } 
+      
+      function searchTree(obj,search,path){
+    	var oname = obj.data.NM;
+    	var lowname = oname.toLowerCase();
+    	var lowsearch = search.toLowerCase();
+    	  //Adrenocortical Adenoma (ACA)
+		
+    	if(lowname.indexOf(lowsearch) !== -1){ //if search is found return, add the object to the path and return it
+			obj.search = "found";
+			if(obj.parent !== null){
+				path.push(obj.parent);
+			}
+			cnt++;
+		}
+		
+		if(obj.children || obj._children){ //if children are collapsed d3 object will have them instantiated as _children
+			
+			if(obj.parent !== null){
+				path.push(obj.parent);// we assume this path is the right one
+			}
+			var children = (obj.children) ? obj.children : obj._children;
+			
+			var found = [];
+			for(var i=0; i<children.length; i++){
+				var tmp = searchTree(children[i],search,[]);
+				
+				found = found.concat(tmp);
+				
+				
+			}
+			
+			if(found.length != 0){// we were right, this should return the bubbled-up path from the first if statement
+				//path.pop();
+				path =  path.concat(found);
+			}
+			else{// we were right, this should return the bubbled-up path from the first if statement
+				path.pop();
+			}
+			
+		}
+		
+		return path;
+      }
 
+      function openPaths(paths){
+    	  for(var i=0;i<paths.length;i++){
+    		  if(paths[i].id !== "0"){//i.e. not root
+				//paths[i].search = 'found';
+				
+				if(paths[i]._children){ //if children are hidden: open them, otherwise: don't do anything
+					paths[i].children = paths[i]._children;
+			    	//paths[i]._children = null;
+				}
+				update(paths[i]);
+    		  }
+    	  }
+      }
+      
 	  
 	  function update(source) {
 		    const duration = d3.event && d3.event.altKey ? 2500 : 250;
@@ -290,7 +435,7 @@ function initTreeC(dataTree){
 		        	})
 		        .attr("stroke-width", 1)
 		        .on("click", d => {
-			          d.children = d.children ? null : d._children;
+		        	d.children = d.children ? d.children.forEach(collapse) : d._children;
 			          update(d);
 			        });
 		        
@@ -299,11 +444,20 @@ function initTreeC(dataTree){
 		        .attr("x", d => d._children ? -9 : 9)
 		        .attr("text-anchor", d => d._children ? "end" : "start")
 		        .text(d => d.data.NM)
-		        .on("click", d => {
-			          d.children = d.children ? null : d._children;
-			          update(d);
+		        .style("fill",d => {
+					if(d.search==="found"){
+						return "blue";
+					}
+					else{
+						return "black";
+					}
+		        })
+		        .on("click", d => {		
+			        	d.children = d.children ? d.children.forEach(collapse) : d._children;
+			        	update(d);
 			        })
-		      .clone(true).lower();
+		        .clone(true).lower();
+		      
 		    
 		    const checkNode = nodeEnter.append("foreignObject")
 		    	.attr("dy", "0.31em")
@@ -322,33 +476,17 @@ function initTreeC(dataTree){
 		        	}
 		        })
 		        .on("change", d => {
-		        	checkupdate(d)
-			          
+		        	checkupdate(d)   
 			    });
        			
-		    	/*		  checkNode.attr("checked",d=>{ 
-			  if (d.checked == true)
-				return true;
-			  else 
-				return false;
-			});*/
-		    
-		   /* nodeEnter.on("mouseover", (d, i) => {
-		    	console.log(d)
-		    	console.log(i)
-		    	//d3.select("#treeTooltip").attr("transform", d => 'translate('+source.y0+','+source.x0+')').classed('treehidden',false);
-		    	
-	        })
-	        .on("mouseout", (d, i) => {
-	        	//d3.select("#treeTooltip").classed('treehidden',false);
-	        });*/
-		    
 		    // Transition nodes to their new position.
 		    const nodeUpdate = node.merge(nodeEnter).transition(transition)
 		        .attr("transform", d => 'translate('+d.y+','+d.x+')')
 		        .attr("fill-opacity", 1)
 		        .attr("stroke-opacity", 1);
 
+		    
+		    
 		 // Transition exiting nodes to the parent's new position.
 		    const nodeExit = node.exit().transition(transition).remove()
 		        .attr("transform", d => 'translate('+source.y+','+source.x+')')
@@ -582,6 +720,21 @@ function getPatnoResultCheck(dataSet, txtArr, last){
  */
 function initTreeEvent(){
 	//
+	$('input[name="inputDashboardRadio"]').on('change',function(){
+		var dataSet = {};
+		dataSet.PER_CODE = $.session.get("PER_CODE");
+		dataSet.DASHBOARD_TAB = $('input[name="inputDashboardRadio"]:checked').val();
+		
+		var promise = http('dashboard/updateDashboardTabNo', 'post', false , dataSet);
+		
+		promise.then(function(result){
+			showAlert('알림','메인화면이 변경 되었습니다.',null);
+		});
+		promise.fail(function(e){
+			console.log(e);
+		});
+	});
+	
 	$('#btnCohortAnalysis').on('click',function(){
 		gvSpinnerOpen();
 		if(currentDashboardTab == "1"){
@@ -797,7 +950,7 @@ function initTreeEvent(){
 			console.log($(this).val())
 		})
 	});
-	$('#mycohort-tab').on('click',function(){
+	$('#mycohort-tab').on('shown.bs.tab',function(){
 		var dataSet = {};
 		dataSet.PER_CODE = $.session.get("PER_CODE");
 		dataSet.SHARE_CD = 	"CO";

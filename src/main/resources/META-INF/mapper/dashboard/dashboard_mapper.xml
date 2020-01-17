@@ -12,6 +12,15 @@
 		FROM pmsportal.CC_ITEM_CONT
 		WHERE CATE_DETL_SEQ = {CATE_DETL_SEQ}
  	</select> -->
+ 	<update id="updateDashboardTabNo" parameterType="map">
+ 		UPDATE pmsportal.CC_PERINX
+		SET UDT_DT = NOW()
+		, UDT_ID = #{PER_CODE}
+		, CRT_ID = NULL
+		, DASHBOARD_TAB = #{DASHBOARD_TAB}
+ 		WHERE PER_CODE = #{PER_CODE}
+ 	</update>
+ 	
  	<insert id="selectCohortAnalysisPatno" parameterType="map"> 	
  		${PatnoQuery}
  	</insert>
@@ -26,7 +35,7 @@
  	</select>
  	
  	<select id="selectSavedCohortList" parameterType="map" resultType="hashmap">
- 		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT, PER_CODE, TABLE_NM, SHARE_CD
+ 		SELECT SEQ, CATE_DETL_SEQ, CONT_NM, CONT_DESC, CONT_NUM, CRT_ID, CRT_DT, UDT_ID, UDT_DT, PER_CODE, TABLE_NM, SHARE_CD, CANCERTYPE
 		FROM pmsportal.CC_ITEM_CONT
 		WHERE 1=1
 		AND SEQ =  #{SEQ}
@@ -68,6 +77,7 @@
 			SHARE_CD,
 			PER_CODE,
 			TABLE_NM,
+			CANCERTYPE,
 			CRT_ID,
 			CRT_DT,
 			UDT_ID,
@@ -80,6 +90,7 @@
 			#{SHARE_CD},
 			#{PER_CODE},
 			#{TABLE_NM},
+			#{CANCERTYPE},
 			#{CRT_ID},
 			NOW(),
 			#{UDT_ID},

@@ -366,7 +366,8 @@ function addpmidToolTip(node, tip, showDelay, position, theme) {
     $('#'+node+'').qtip(param);
 }
 
-function regBrc(patientId, examNo){
+function regBrc(tt, nt, plasma, buffy, fluid, urine, patientId, examNo){
+    console.log('regBrc', tt, nt, plasma, buffy, fluid, urine, patientId, examNo);
     var ischk=false;
     for(var i=1;i<7; i++){
         if($("#b"+i).prop("checked")){
@@ -381,11 +382,34 @@ function regBrc(patientId, examNo){
         return;
     }
     if (window.confirm("집도의 동의 서명이 필요합니다 분양신청 하시겠습니까?")) {
-        var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
-        console.log('regBrc ',perCode, PATIENTID, eno);
+
+        var dat = [];
+        var idx=0;
+        for(var i=1;i<7; i++){
+            var item ={};
+            if($("#b"+i).prop("checked")){
+                (i===0) ? (item.spcnTypCd='T',item.spcnRsdQt = tt) :
+                (i===1) ? (item.spcnTypCd='N' , item.spcnRsdQt = nt) :
+                (i===2) ? (item.spcnTypCd='P', item.spcnRsdQt = plasma) :
+                (i===3) ? (item.spcnTypCd='B',item.spcnRsdQt = buffy) :
+                (i===4) ? (item.spcnTypCd='F', item.spcnRsdQt = fluid) :
+                (item.spcnTypCd='U',item.spcnRsdQt = urine);
+                examNo+="";
+                // console.log('examNo.substring(0,4)', examNo.substring(0,4), examNo.substring(5));
+                item.examNo = examNo.substring(0,4)+"-"+examNo.substring(5);
+                item.reschPatId=patientId;
+                item.perCode = perCode;
+                dat.push(item);
+            }
+            // var eno = examNo.split("_")[0] + ' '+examNo.split("_")[1];
+
+        }
+        console.log('brc_dat', dat);
+
+        // console.log('regBrc ',perCode, PATIENTID, eno);
         var action = new Action();
         var ds_cond = {};
-        ds_cond.data = {"queryId": "patient.insertBrc",'perCode':perCode,'patientId':patientId,'examNo':eno};
+        ds_cond.data = dat;
         ds_cond.callback = postRegBrc;
         action.regBrc(ds_cond);
     }

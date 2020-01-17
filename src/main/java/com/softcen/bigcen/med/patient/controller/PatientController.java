@@ -2,9 +2,11 @@ package com.softcen.bigcen.med.patient.controller;
 
 import com.softcen.bigcen.med.patient.service.EventServiceImpl;
 import com.softcen.bigcen.med.patient.service.PatientsInfoServiceImpl;
+import com.softcen.bigcen.med.patient.service.BloodServiceImpl;
 import com.softcen.bigcen.med.patient.vo.Event;
 import com.softcen.bigcen.med.patient.vo.Patient;
 import com.softcen.bigcen.med.patient.vo.PatientMut;
+import com.softcen.bigcen.med.patient.vo.Blood;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reactkorea.Result;
 
@@ -64,6 +66,9 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 
 	@Autowired
 	private EventServiceImpl eventService;
+
+	@Autowired
+	private BloodServiceImpl bloodService;
 
 	@RequestMapping(value="/patientMain")
 	public String patientMain(){
@@ -245,14 +250,14 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	 */
 	@ResponseBody
 	@RequestMapping(value="/insertBrc")
-	public void insertBrc(HttpServletResponse response, @RequestBody Map<String,String> param){
+	public void insertBrc(HttpServletResponse response, @RequestBody Blood[] vo){
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 
 		try{
 			ObjectMapper mapper = new ObjectMapper();
-			String queryid = param.get("queryId");
-			String query = param.get("query");
-			int result = patientsInfoService.insertBrc(queryid, param);
+			String queryid = "patient.insertBrc";
+
+			int result = bloodService.insertBrc(queryid, vo);
 //			System.err.println(result);
 			String jdata = "";
 //			jdata = "success : "+ result;

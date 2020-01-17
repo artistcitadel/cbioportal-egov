@@ -162,10 +162,10 @@
           ${query}
     </select>
 
-    <insert id="insertBrc" parameterType="map">
+    <insert id="insertBrc" parameterType="com.softcen.bigcen.med.patient.vo.Blood">
           INSERT INTO pmsportal.CC_RSCH_BRC
-          (PER_CODE, RESCH_PAT_ID, EXAM_NO)
-          values( #{perCode}, #{patientId}, #{examNo} )
+                (PER_CODE, RESCH_PAT_ID, EXAM_NO, SPCN_TYP_CD, SPCN_RSD_QT)
+          values( #{perCode}, #{patientId}, #{examNo}, #{spcnTypCd}, #{spcnRsdQt} )
     </insert>
 
 </mapper>

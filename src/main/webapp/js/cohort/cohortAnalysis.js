@@ -57,6 +57,38 @@ function analysisInit(){
 	//setCohortAnalysisData();
 }
 
+function setArrayCancerType(data){
+	
+	var tmpArr = [];
+	
+	for(var i=0; i<data.length; i++){
+		
+		var tmpSet = data[i];
+		if(tmpSet.checked == true){
+			tmpArr.push(tmpSet.NM);
+		}
+		
+	}
+	
+	
+	return tmpArr.join("|");
+}
+
+function setArraySavedCancerType(data){
+	
+	var tmpArr = [];
+	
+	for(var i=0; i<data.length; i++){
+		
+		var tmpSet = data[i];
+		
+		tmpArr.push(tmpSet.CANCERTYPE);
+		
+	}
+	return tmpArr.join("|");
+}
+
+
 function gvSpinnerOpen(){
 	
 	var strMsg = 'Loading....';
@@ -135,10 +167,10 @@ function setJqxCohortAnalysisData(patientDataList){
 	           { name: 'UCOD_DIAG_CD', type: 'string' },
 	           { name: 'CANCER_REG_YN', type: 'string' },
 	           { name: 'SPCN_CNT', type: 'string' },
-	           { name: 'MUT_CNT', type: 'string' },
-	           { name: 'CNV_CNT', type: 'string' },
-	           { name: 'SV_CNT', type: 'string' },
-	           { name: 'EXP_CNT', type: 'string' },
+	           { name: 'MUT_CNT', type: 'number' },
+	           { name: 'CNV_CNT', type: 'number' },
+	           { name: 'SV_CNT', type: 'number' },
+	           { name: 'EXP_CNT', type: 'number' },
 	           { name: 'CANCER_TYPE', type: 'string' },
 	           { name: 'CANCER_DETAIL', type: 'string' }
 	        ],
@@ -328,7 +360,7 @@ function setCohortKindBox(){
 	else if(dashboardTabNo == "3"){
 		for(var i=0; i<savedMyCohort.length; i++){
 			var html = '';
-			html +=		'<div class="btn-group label-group margin-left-10" id="">';
+			html +=		'<div class="btn-group label-group margin-left-10 SavedCohortModal" num="'+i+'" id="">';
 			html += 		'<small class="label bg-orange">';
 			html +=  			savedMyCohort[i].CONT_NM;
 			html += 		'</small>';
@@ -1374,6 +1406,22 @@ function analysisInitEvent(){
          
 	});
 	
+	$(document).on('click','.SavedCohortModal',function(){
+		var idx = $(this).attr("num");
+		var cohortSet = savedMyCohort[idx];
+		
+		$('#popSelectedCohortModal').modal('show');
+		$('#divSelectedCohort').empty();
+		
+		var html = '';
+		html += '';
+		html += '<label> Cancer Information : ' + cohortSet.CANCERTYPE + '</label>';
+		html += '';
+		html += '';
+		
+		$('#divSelectedCohort').html(html);
+		
+	})
 	
 	$(document).on('click','#btnSelectedCohortModal',function(){
 		console.log(selectedCohort);
@@ -1529,10 +1577,6 @@ function analysisInitEvent(){
 		$('#filterApplyBefore').css('display','inline-block');
 		filterApplyYN = false;
 	});
-	
-	$(document).on('change',$('.filter-box > btn-group'), function(){
-		$('#btnDashboardFilterApply').trigger('click');
-	})
 	
 	
 	$('#btnDashboardFilterApply').on('click',function(){
@@ -1701,13 +1745,15 @@ function analysisInitEvent(){
 			return ;
 		}
 		
-		if(dashboardTabNo == "1" || dashboardTabNo == "2" || dashboardTabNo == "3"){
+		if(dashboardTabNo == "1" || dashboardTabNo == "2"){
 			var dataSet = {};
 			//dataSet.SEQ = $('input[name="itemCate_tree"]:checked').attr('seq');
 			//dataSet.MID_SEQ = $('input[name="itemCate_tree"]:checked').val();
 			//dataSet.CATE_DETL_SEQ = $('#selDashboardCohortList').val();
+			
 			dataSet.CONT_NM = $('#txtDashboardCohortNM').val();
 			dataSet.CONT_DESC = $('#txtDashboardCohortSub').val();
+			dataSet.CANCERTYPE = setArrayCancerType(selectedCohort);
 			dataSet.PER_CODE = $.session.get('PER_CODE');
 			dataSet.UDT_ID = $.session.get('PER_CODE');
 			dataSet.CRT_ID = $.session.get('PER_CODE');
@@ -1732,6 +1778,41 @@ function analysisInitEvent(){
 			promise.fail(function(e){
 				console.log(e)
 			})
+		}
+		else if (dashboardTabNo == "3"){
+			var dataSet = {};
+			//dataSet.SEQ = $('input[name="itemCate_tree"]:checked').attr('seq');
+			//dataSet.MID_SEQ = $('input[name="itemCate_tree"]:checked').val();
+			//dataSet.CATE_DETL_SEQ = $('#selDashboardCohortList').val();
+			
+			dataSet.CONT_NM = $('#txtDashboardCohortNM').val();
+			dataSet.CONT_DESC = $('#txtDashboardCohortSub').val();
+			dataSet.CANCERTYPE = setArraySavedCancerType(savedMyCohort);
+			dataSet.PER_CODE = $.session.get('PER_CODE');
+			dataSet.UDT_ID = $.session.get('PER_CODE');
+			dataSet.CRT_ID = $.session.get('PER_CODE');
+			dataSet.SHARE_CD = "CO";
+			dataSet.TABNO = dashboardTabNo;
+			dataSet.TABLENAME = cohortFilterAllQuery;
+			var selectedArr = getSelectedChartList();
+			dataSet.SELECTED_CHART = selectedArr;
+			
+			var filterArr = getFilterBoxGroup();
+			dataSet.FILTER = filterArr;
+			
+			console.log(dataSet);
+			var promise = http('/dashboard/insertCohortItemCont', 'post' ,true, dataSet);
+			promise.then(function(result){
+				showAlert('알림','저장 되었습니다.',null);
+				
+				console.log(result);
+				$('#mainSaveAdd').trigger('click');
+
+			});
+			promise.fail(function(e){
+				console.log(e)
+			})
+			
 		}
 		
 	});
@@ -1758,7 +1839,7 @@ function analysisInitEvent(){
 			$("#"+graphNM).jqxGrid('setcellvaluebyid', id, "CHK", false);
 
 		}
-		
+		//$('#btnDashboardFilterApply').trigger('click');
 		
 	});
 	
@@ -2011,7 +2092,7 @@ function analysisInitEvent(){
 			
 		}
 	
-	
+		$('#btnDashboardFilterApply').trigger('click');
 
 	});
 	

@@ -715,7 +715,7 @@ function PatientViewMutationTable() {
                 '   <ul class="list-inline list-unstyled" style="display:inline-flex;margin-bottom: 0px;">\n';
             //~annotation column
             var annotationliid='oann_'+key;
-            txt += '<li id="'+annotationliid+'" class="'+clasz+'">\n' ;
+            txt += '<li id="'+annotationliid+'">\n' ;
             txt+='<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
                 '<i class="fa fa-spinner fa-pulse"></i>\n' +
                 '</span>';
@@ -724,7 +724,7 @@ function PatientViewMutationTable() {
 
             //~civic column
             var civicliid='ocivic_'+key;
-            txt += '<li id="'+civicliid+'" class="'+clasz+'">\n' ;
+            txt += '<li id="'+civicliid+'">\n' ;
             txt+='<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
                 '<i class="fa fa-spinner fa-pulse"></i>\n' +
                 '</span>';
@@ -734,23 +734,22 @@ function PatientViewMutationTable() {
             //~my cancer genome
             var hasCancerGenome =_.findIndex(MYCANCERGENOME, ['hugoGeneSymbol',v.geneNm]);
             var userGenomeData = [];
-            var mycancergenometxt='<span class="annotationli annotation-item mcg"></span>';
+            var mycancergenometxt='<span class="annotation-item mcg"></span>';
             if(hasCancerGenome!=-1){
-                clasz = '';
                 mycancergenometxt=getUserGenome('my_'+key+'');
             }
-            txt += '  <li class="'+clasz+'">\n' ;
+            txt += '  <li>\n' ;
             txt+=mycancergenometxt;
             txt+='    </li>\n';
             //~my cancer genome
 
             //~hot spot
             var isHot = _.includes(HOTSPOT, v.geneNm);
-            var hotspottxt='<span class="annotationli annotation-item chang_hotspot"></span>';
+            var hotspottxt='<span class="annotation-item chang_hotspot"></span>';
             if(isHot){
                 hotspottxt=getHotspot('hot_'+key+'');
             }
-            txt += '  <li class="'+clasz+'">\n' ;
+            txt += '  <li>\n' ;
             txt+=hotspottxt;
             txt+='    </li>\n';
             //~hot spot
@@ -826,12 +825,15 @@ function PatientViewMutationTable() {
                     return o.id == 'civic_'+key;
                 });
 
+                $("#oann_"+key).append("<span class='annotation-item'></span>");
                 if(ann.length>0) {
+                    $("#oann_"+key).empty();
                     //$("#ann_"+key).addClass(ann[0].class);
                   var txt = '<span data-gene-nm="' + v.geneNm + '" data-protein="' + v.hgvspVal + '" style="width: 20px;">\n' +
                         ' <i id="ann_'+key+'" class="'+ann[0].class+'" ></i></span>';
                     $("#oann_"+key).append(txt);
                 }
+                $("#ocivic_"+key).append("<span class='annotation-item'></span>");
                 if(civic.length>0) {
                     var idx=0;
                     var alteration = civic[0].id.split("_")[2];
@@ -844,6 +846,7 @@ function PatientViewMutationTable() {
                     }
                     // console.log('alteration ' , alteration, idx);
                     if(idx!==-1) {
+                        $("#ocivic_"+key).empty();
                         var txt = getCivicEl(civic[0].id);
                         $("#ocivic_"+key).append(txt);
                     }

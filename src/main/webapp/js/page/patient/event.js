@@ -47,15 +47,20 @@ function Event() {
         var tip = '';
         tip += "<span>" + util.dateFormat(UNIT, data[0].time) + "</p>";
         for(var i=0;i<data.length;i++) {
-            tip += "<span>검체번호 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].spcnNo + "</span>";
+            tip += "<span>검체번호 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].spcnNo + "</span>";
             if(_.includes(SAMPLENAMES,data[i].spcnNo)){
                 tissue_seq = util.getExamNo(SAMPLES, SAMPLENAMES, data[i].spcnNo);
                 tip+=getDivSample("plot_"+tissue_seq, parseInt(tissue_seq) ) +"</span>";
             }
-            tip += "</br><span>검체형태 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].tissColecCd + "</span></br>";
-            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "</span>";
+            var pspcnNo=data[i].spcnNo.replace("-","");
+            /*tip += "</br><span>검체형태 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].tissColecCd + "</span></br>";
+            tip += "<span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellOrganDiyCd + "</span>";*/
+            tip += "<br/><span>장기코드 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellCd + "</span><br/>";
+            tip += "<span>세부장기코드&nbsp;  : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].cellSpecCd + "</span><br/>";
+            tip += "<span>담당의 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;" + data[i].operator + "<br/></span>";
             // tip += "<input class='btn-link' type='button' value='분양' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')>";
-            tip+="<button style='float:right;' class='btn-xs btn-danger' onClick=regBrc('"+PATIENTID+"','"+replaceAll(data[i].spcnNo,' ','_')+"')> \n" +
+            tip+="<button style='float:right;' class='btn-xs btn-danger' " +
+                "onClick='regBrc("+data[i].tt+" , "+data[i].ntt+" ,  "+data[i].plasma+" ,  "+data[i].buffy+" , "+data[i].fluid+" , "+data[i].urine+" ,"+PATIENTID+","+pspcnNo+")'> \n" +
                 "            분양\n" +
                 "        </button>";
             tip += "</span></span>";
@@ -73,12 +78,12 @@ function Event() {
                 '    </thead>\n' +
                 '    <tbody>\n' +
                 '    <tr>\n' +
-                '        <td><label><input type="checkbox" id="b1" name="b1"> 0</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b2" name="b2"> 0</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b3" name="b3"> 0</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b4" name="b4"> 0</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b5" name="b5"> 0</label></td>\n' +
-                '        <td><label><input type="checkbox" id="b6" name="b6"> 0</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b1" name="b1"> '+ data[i].tt +'</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b2" name="b2"> '+ data[i].ntt +'</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b3" name="b3"> '+ data[i].plasma +'</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b4" name="b4"> '+ data[i].buffy +'</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b5" name="b5"> '+ data[i].fluid +'</label></td>\n' +
+                '        <td><label><input type="checkbox" id="b6" name="b6"> '+ data[i].urine +'</label></td>\n' +
                 '    </tr>\n' +
                 '    </tbody>\n' +
                 '</table>\n' +

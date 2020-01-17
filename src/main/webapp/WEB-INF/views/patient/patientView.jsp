@@ -72,7 +72,7 @@
                 </div>--%>
                     <%--<div class="row" id="row1">--%>
                     <div class="row ttt" style="display:none;">
-                       <div class="col-xs-10 col">
+                       <div class="col-xs-8 col">
 
                 <div>
                     <%--<div style="background-color: #fcf8e3;">--%>
@@ -123,8 +123,8 @@
                 </div>
 
                </div>
-
-              <div class="col-xs-2 col">
+              <br/>
+              <div class="col-xs-3 col" style="float:right;">
                   <div class="btn-group" style="width:auto;">
                   <button id='pat_inquiry' class="btn btn-success" type="button" style="width:auto;">
                       Search
@@ -139,6 +139,11 @@
               </div>
 
              </div>
+                    <div id="noclinical" class="row" style="display:none;">
+                        <div class="col-3" style="margin-left: 30px;">
+                            There are no Clinical Data
+                        </div>
+                    </div>
 
               <%--<br/>--%>
                     <div class="container-fulid page-center ttt" style="display:none;">
@@ -151,7 +156,7 @@
 
                <hr calss="ttt" style="display:none;" />
 
-                <div class="container-fulid">
+                <div class="container-fulid crinacalsection">
                     <div class="row" id="row1">
                         <div class="col-xs-3 col">
                             <%--<input id="cate" type="button" value="항목관리" class="btn btn-link" data-toggle="modal" data-target="#contactModal" style="margin-right:3px;">--%>
@@ -181,7 +186,7 @@
                         </div>
                     </div>--%>
                 </div>
-<p/>
+                <p/>
                     <hr calss="ttt" style="display:none;" />
                     <%--<div class="container-fulid">
                         <div class="row" id="row2">
@@ -194,7 +199,7 @@
                         </div>
                     </div>--%>
                     <%--<div class="container-fulid">--%>
-                    <div id="timeline" style="display:flex;">
+                    <div id="timeline" class="crinacalsection" style="display:flex;">
                         <div id="timeLineContainer"></div>
                     </div>
                 <%--</div>--%>
@@ -412,55 +417,6 @@
 
                 <div class="container-fluid">
                     <div class="row" style="width:100%;float:right;">
-                        <div class="col-md-7" id="expcolcontainer" align="right" style="float:right;display:none;">
-                            <div class="btn-group" style="width:auto;">
-                                <button class="btn btn-success" type="button" style="width:auto;">
-                                    Columns
-                                </button>
-                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
-                                    <li role="presentation"><input id="geneNm_EXPRESSION" type="checkbox"> Gene</li>
-                                    <li role="presentation"><input id="geneExamMthNm_EXPRESSION" type="checkbox"> methods</li>
-                                    <li role="presentation"><input id="ptegGeneReadRsltVal_EXPRESSION" type="checkbox"> Expression Result</li>
-                                    <li role="presentation"><input id="gnex_EXPRESSION" type="checkbox"> Expression Value</li>
-                                    <li role="presentation"><input id="gnexMsrVal_EXPRESSION" type="checkbox"> Expression Unit</li>
-                                </ul>
-                                <form role="search" style="width:210px;">
-                                    <div class="input-group">
-                                        <input type="text" id="search_EXPRESSION" class="form-control" style="margin-left:8px;" placeholder="Search...">
-                                        <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-fulid">
-
-
-                    <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
-                        <span id="expcount"></span> <span id="txtexpressions" style="display:none;">Expressions</span>
-                    </div>
-                    <br/>
-                    <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
-                        <thead>
-                        <tr id='EXPRESSION' class="success">
-                        </tr>
-                        </thead>
-                        <tbody id="EXPRESSION_con">
-                        </tbody>
-                    </table>
-                    <div id="EXPRESSION_pageview" class="com-paging"></div>
-                </div>
-
-                <hr calss="ttt" style="display:none;" />
-
-
-                <div class="container-fluid">
-                    <div class="row" style="width:100%;float:right;">
                         <div class="col-md-2">
                             <div id="st_loader" class="sk-spinner styles-module_color styles-module_small la-line-scale-pulse-out" style="display:none;">
                                 <div></div>
@@ -499,6 +455,9 @@
                         </div>
                     </div>
                 </div>
+
+                    <hr calss="ttt" style="display:none;" />
+
                 <div class="container-fulid">
                     <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
                         <span id="svcount"></span> <span id="txtsvs" style="display:none;">Svs</span>
@@ -516,7 +475,55 @@
                     </div>
                 </div>
 
-                <hr/>
+                    <hr calss="ttt" style="display:none;" />
+
+                    <div class="container-fluid">
+                        <div class="row" style="width:100%;float:right;">
+                            <div class="col-md-7" id="expcolcontainer" align="right" style="float:right;display:none;">
+                                <div class="btn-group" style="width:auto;">
+                                    <button class="btn btn-success" type="button" style="width:auto;">
+                                        Columns
+                                    </button>
+                                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
+                                        <li role="presentation"><input id="geneNm_EXPRESSION" type="checkbox"> Gene</li>
+                                        <li role="presentation"><input id="geneExamMthNm_EXPRESSION" type="checkbox"> methods</li>
+                                        <li role="presentation"><input id="ptegGeneReadRsltVal_EXPRESSION" type="checkbox"> Expression Result</li>
+                                        <li role="presentation"><input id="gnex_EXPRESSION" type="checkbox"> Expression Value</li>
+                                        <li role="presentation"><input id="gnexMsrVal_EXPRESSION" type="checkbox"> Expression Unit</li>
+                                    </ul>
+                                    <form role="search" style="width:210px;">
+                                        <div class="input-group">
+                                            <input type="text" id="search_EXPRESSION" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                                            <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fulid">
+
+
+                        <div class="col-xs-4 col ttt" align="left" style="font-weight: normal;display:none;">
+                            <span id="expcount"></span> <span id="txtexpressions" style="display:none;">Expressions</span>
+                        </div>
+                        <br/>
+                        <table id="EXPRESSION_t" class="table table-bordered" style="display:none;">
+                            <thead>
+                            <tr id='EXPRESSION' class="success">
+                            </tr>
+                            </thead>
+                            <tbody id="EXPRESSION_con">
+                            </tbody>
+                        </table>
+                        <div id="EXPRESSION_pageview" class="com-paging"></div>
+                    </div>
+
+                    <hr/>
 
                 <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
                     <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
@@ -719,6 +726,7 @@
     var isSelectPatient=false;
     function buildPatient(){
         var patients = document.pform.patients.value;
+        resch_pat_id = convrtpad(resch_pat_id);
         if( (pages==='1' && resch_pat_id.length>7 && resch_pat_id.length<15 ) && patientId.length!=10){
             // alert(patients.indexOf(resch_pat_id));
             isSelectPatient = true;
@@ -830,6 +838,17 @@
             document.pform.target="_self";
             document.pform.submit();
         }
+    }
+
+     function convrtpad(dat){
+        if(_.isUndefined(dat) || dat===null)dat="";
+        var len = 10-dat.length;
+        var pad = "";
+        for(var i=0;i<len;i++){
+            pad+="0";
+        }
+        dat = pad+dat;
+        return dat;
     }
 
     $('#confirm').modal({

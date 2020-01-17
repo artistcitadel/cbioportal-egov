@@ -605,7 +605,8 @@ function TimeLine() {
                         this.transform('s1,1');
                     }
                 );
-                r.animate({ cx:position}, 1100);
+
+                r.animate({ cx:position}, 600);
                 //r.transform('S'+tnumber,tnumber+'');
                 //addToolTip(r.node, pixeldata[i].name.join("</br>"), 100, '');
                 addToolTip(r.node, pixelAry[i].name, 100, '');
@@ -840,10 +841,26 @@ function TimeLine() {
             RAW = _.union(RAW, data);
             TIMELINERAW=RAW;
             if(run===pids.length) {
-                // console.log('initRAW ', RAW);
-                var label = "Time since diagnosis";
-                var t = paper.text(55, 11, label).attr({'text-anchor': 'center', 'fill': 'black', 'font-family': 'Nanum Gothic, sans-serif', 'font-size': 12});
-                setTimeLine('C', RAW);
+                console.log('initRAW ', RAW);
+                var bodyidx = _.findIndex(RAW, function(o){
+                   return o.time!=='00000000';
+                });
+                console.log(bodyidx);
+                if(bodyidx!==-1) {
+                    var label = "Time since diagnosis";
+                    var t = paper.text(55, 11, label).attr({
+                        'text-anchor': 'center',
+                        'fill': 'black',
+                        'font-family': 'Nanum Gothic, sans-serif',
+                        'font-size': 12
+                    });
+                    setTimeLine('C', RAW);
+                }else{
+                    $(".crinacalsection").hide();
+                    $("#noclinical").show();
+                    util.hideLoader();
+                    moveMutation();
+                }
             }
         }
         //console.log(run, pids.length);

@@ -125,7 +125,7 @@
         SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
         FROM pmsdev.PMGERSVEM  -- Structural Variations
         UNION
-        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
         FROM pmsdev.PMGERGNEX  -- Expression
         ) GESP
         LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
@@ -221,7 +221,7 @@
         SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
         FROM pmsdev.PMGERSVEM  -- Structural Variations
         UNION
-        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID, 유전자판독결과값
         FROM pmsdev.PMGERGNEX  -- Expression
         ) GESP
         LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
@@ -268,23 +268,23 @@
         -- , GROUP_CONCAT(BAS.EXAM_DT            ORDER BY BAS.GENE_EXAM_SPCN_ID, BAS.EXAM_NO SEPARATOR ', ') AS EXAM_DT             -- 검사일자
         , BAS.GENE_NM  geneNm                -- Gene
         , BAS.GENE_EXAM_MTH_NM  geneExamMthNm        -- Methods
-        , BAS.PTEG_GENE_READ_RSLT_VAL ptegGeneReadRsltVal -- Expression Result
+        , BAS.GENE_READ_RSLT_VAL ptegGeneReadRsltVal -- Expression Result
         , BAS.GNEX  gnex                    -- Expression Value
         , BAS.GNEX_MSR_VAL gnexMsrVal             -- Expression Unit
         FROM ( SELECT GEX.GENE_EXAM_SPCN_ID          -- 유전자검사검체ID (Sample ID) (화면표시X)
         , GEX.EXAM_NO                    -- 검사번호 (화면표시X)
         <choose>
             <when test="sampleId != null and sampleId != ''">
-                , CASE WHEN GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+                , CASE WHEN GEX.GENE_READ_RSLT_VAL = 'Positive' THEN (CASE WHEN LENGTH(SEQ.GENE_EXAM_SPCN_SEQ)=1 THEN '1' ELSE SEQ.GENE_EXAM_SPCN_SEQ END) ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
             </when>
             <otherwise>
-                , CASE WHEN GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
+                , CASE WHEN GEX.GENE_READ_RSLT_VAL = 'Positive' THEN SEQ.GENE_EXAM_SPCN_SEQ ELSE NULL END AS GENE_EXAM_SPCN_SEQ  -- Tumors
             </otherwise>
         </choose>
         , GEX.GENE_NM                    -- Gene
         , GEX.GENE_EXAM_MTH_NM           -- Methods
-        , GEX.PTEG_GENE_READ_RSLT_VAL    -- Expression Result
-        , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.PTEG_GNEX_VAL END AS GNEX  -- Expression Value
+        , GEX.GENE_READ_RSLT_VAL    -- Expression Result
+        , CASE WHEN GEX.GENE_EXAM_MTH_NM = 'NGS' THEN GEX.NGS_GNEX_VAL ELSE GEX.NGS_GNEX_VAL END AS GNEX  -- Expression Value
         , GEX.GNEX_MSR_VAL               -- Expression Unit
         FROM pmsdev.PMGERGNEX GEX
         LEFT OUTER JOIN ( SELECT SPC.GENE_EXAM_SPCN_ID
@@ -302,7 +302,7 @@
         SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
         UNION
-        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
         ) GESP
         LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
@@ -317,7 +317,7 @@
         ) SEQ
         ON GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
         WHERE 1=1
-        AND GEX.PTEG_GENE_READ_RSLT_VAL = 'Positive'  -- 병리검사유전자판독결과값
+        AND GEX.GENE_READ_RSLT_VAL = 'Positive'  -- 병리검사유전자판독결과값
         AND GEX.RESCH_PAT_ID = #{patientId}  -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
@@ -392,7 +392,7 @@
         SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
         UNION
-        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
         ) GESP
         LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본
@@ -459,7 +459,7 @@
         SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERSVEM   -- Structural Variations
         UNION
-        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, PTEG_GENE_READ_RSLT_VAL AS GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
+        SELECT RESCH_PAT_ID, GENE_EXAM_SPCN_ID, GENE_READ_RSLT_VAL  -- 연구환자ID, 유전자검사검체ID(Sample ID), 유전자판독결과값
         FROM pmsdev.PMGERGNEX   -- Expression
         ) GESP
         LEFT OUTER JOIN pmsdev.SSPJMPERC PERC       -- 병리검사기본

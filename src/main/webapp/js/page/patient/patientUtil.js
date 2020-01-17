@@ -335,4 +335,17 @@ function Util() {
         $(".ttt").show();
         $("#xgrid").hide();
     }
+
+    self.hideDom = function(){
+        self.hideLoader();
+        $(".tsmall").hide();
+        $("#divsample").show();
+        $("#divsample").html(SAMPLETEXT);
+        $(".thead").show();
+        $("#txtmutations").show();
+        $("#txtcna").show();
+        $("#txtexpressions").show();
+        $("#txtsvs").show();
+    }
+
 }

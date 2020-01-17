@@ -6,18 +6,25 @@
 
 <mapper namespace="patient">
     <select id="selectBrcList" resultType="com.softcen.bigcen.med.patient.vo.Brc">
-       select 'SPECIMEN' subject,
+      SELECT
+       'SPECIMEN' subject,
        '1' pid,
        'BRC' id,
        'BRC' name,
        a.RCEP_DT time,
-       a.DP_SPCN_NO spcnNo, -- 검체번호
-       CASE WHEN a.TISS_COLEC_CD = 'A1' THEN 'Tissue' WHEN a.TISS_COLEC_CD = 'A2' THEN 'Blood' END tissColecCd,-- 검체형태
-       a.CELL_ORGAN_DIV_CD cellOrganDiyCd, -- 장기코드
-       b.CD_NM cdNm
- FROM SATSMBASE a   -- S_조직세포접수기본
- join SATSMOGCD b on a.TISS_COLEC_CD = b.ORGAN_TISS_LCLAS_CD
-               and a.CELL_ORGAN_DIV_CD = b.ORGAN_TISS_CD
+       BIRC_ID  spcnNo,
+       IFNULL(CELL_ORGAN_DIV_CD,'Unknown') cellCd,
+       IFNULL(DTL_ORGAN_CD,'Unknown') cellSpecCd,
+       aa.KOR_NM  operator,
+       CANCER_TISS_RSD_QT tt,
+       NORL_TISS_RSD_QT ntt,
+       PLSM_RSD_QT plasma,
+       BFCT_RSD_QT buffy,
+       BDFL_RSD_QT fluid,
+       URN_RSD_QT urine
+FROM pmsdev.SATSMBASE a
+JOIN pmsdev.ZZANMUSER aa on a.OPSR_EMPNO =aa.USR_ID
+WHERE 1=1
 AND a.RESCH_PAT_ID = #{patientId}
 
     </select>

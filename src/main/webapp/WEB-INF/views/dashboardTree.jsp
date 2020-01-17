@@ -71,14 +71,26 @@
 								<div class="col-lg-10" style="padding-right:15px;padding-left:0;min-height:870px;">
 									<div class="nav-tabs-custom" style="min-height: 870px;">
 										<ul class="nav nav-tabs" id="myTab">
-											<li class="active">
-												<a href="#subNewCohort" id="newcohort-subtab" class="patientViewTab" pageNum="1" page="tabNewCohort" data-toggle="tab" aria-controls="subNewCohort" aria-selected="true"><b>New Cohort(by Cancer)</b></a>
+											<li class="active" style="text-align: center;">
+												<div style="position: relative; display: block; padding: 10px 15px; background-color: #fff; color: #444;" >
+													<input name="inputDashboardRadio" type="radio" value="1">
+													<a href="#subNewCohort" id="newcohort-subtab" class="patientViewTab" pageNum="1" page="tabNewCohort" data-toggle="tab" aria-controls="subNewCohort" aria-selected="true" style="color: #444;">
+													<b> New Cohort(by Cancer)</b></a>
+												</div>												
 											</li>
-											<li>
-												<a href="#subNewCohortbyPatno" id="newcohortbypatno-subtab" class="patientViewTab" pageNum="2" page="tabNewCohortbyPatno" data-toggle="tab" aria-controls="subNewCohortbyPatno" aria-selected="false"><b>New Cohort(by Patient)</b></a>
+											<li style="text-align: center;">
+												<div style="position: relative; display: block; padding: 10px 15px; background-color: #fff; color: #444;" >
+													<input name="inputDashboardRadio" type="radio" value="2">
+													<a href="#subNewCohortbyPatno" id="newcohortbypatno-subtab" class="patientViewTab" pageNum="2" page="tabNewCohortbyPatno" data-toggle="tab" aria-controls="subNewCohortbyPatno" aria-selected="false" style="color: #444;">
+													<b> New Cohort(by Patient)</b></a>
+												</div>
 											</li>
-											<li>
-												<a href="#subMyCohort" id="mycohort-tab" class="patientViewTab" pageNum="3" page="tabMyCohort" data-toggle="tab"><b>My Cohort</b></a>
+											<li style="text-align: center;">
+												<div style="position: relative; display: block; padding: 10px 15px; background-color: #fff; color: #444;" >
+													<input name="inputDashboardRadio" type="radio" value="3">
+													<a href="#subMyCohort" id="mycohort-tab" class="patientViewTab" pageNum="3" page="tabMyCohort" data-toggle="tab" style="color: #444;">
+													<b> My Cohort</b></a>
+												</div>
 											</li>
 											
 											<div class="btn-group pull-right" style="margin-right:10px; margin-top: 10px;">
@@ -97,10 +109,23 @@
 										</ul>
 										<div class="tab-content" style="padding-bottom:0px;">
 											<div class="tab-pane active" id="subNewCohort" role="tabpanel" aria-labelledby="newcohort-subtab">
+												<div class="col-lg-12" style="z-index:1; height: 30px; margin : 5px;">
+													<div class="input-group input-group-sm pull-left" style="width:50%;">
+									                	<input type="text" class="form-control"  id="customText1" value="">
+									                    <span class="input-group-btn">
+									                      <button type="button" class="btn btn-default btn-flat" id="btnTreeSearchText1">Search</button>
+									                    </span>
+									                    <span id="spanSearchResult" class="form-control-feedback" style="width: 80px;text-align: right;right: 80px;color: grey;top: -3px;"></span>
+									              	</div>
+													<button type="button" class="btn btn-default btn-sm pull-right" id="btnTreeCenter" style="margin-left: 20px;">Tree Center</button>
+													<button type="button" class="btn btn-default btn-sm pull-right" id="collapse_button" style="margin-left: 20px;">Collapse</button>
+												</div>
 												<div class="col-lg-12" style="z-index:1; height: 30px;">
+													
 													<div class="form-group pull-right">
 														<input type="range" class="custom-range" id="customRange1" min="25" max="100" value="50">
-														<label class="pull-right" id="rangeScaleVal">100%</label>
+														<label class="" id="rangeScaleVal">100%</label>
+									              		
 													</div>
 												</div>
 												<div class="box" style="background:#f9f9f9;">
@@ -175,7 +200,7 @@
 	 <footer class="main-footer margin-left-0">
 	 	<tiles:insertAttribute name="footer"/>
 	</footer>
-	
+	<tiles:insertAttribute name="modal"/>
 </div>
 <!-- ./wrapper -->
 <script src="<c:url value="/js/plugins/plotly-latest-1.51.min.js" />"></script>

@@ -2,7 +2,7 @@ package com.softcen.bigcen.med.patient.vo;
 
 import com.reactkorea.RkCmmnVO;
 
-public class PatientMut  extends RkCmmnVO {
+public class PatientMut extends RkCmmnVO {
     private String mttnExamRsltId;
     private String reschPatId;
     private String ms;

@@ -104,9 +104,18 @@ function Specimen() {
             item.name = data[i].name;
 
             item.spcnNo = data[i].spcnNo;
-            item.tissColecCd = data[i].tissColecCd;
-            item.cellOrganDiyCd = data[i].cellOrganDiyCd;
-            item.cdNm = data[i].cdNm;
+            // item.tissColecCd = data[i].tissColecCd;
+            // item.cellOrganDiyCd = data[i].cellOrganDiyCd;
+            // item.cdNm = data[i].cdNm;
+            item.cellCd = data[i].cellCd;
+            item.cellSpecCd = data[i].cellSpecCd;
+            item.operator = data[i].operator;
+            item.tt = data[i].tt;
+            item.ntt = data[i].ntt;
+            item.plasma = data[i].plasma;
+            item.buffy = data[i].buffy;
+            item.fluid = data[i].fluid;
+            item.urine = data[i].urine;
 
             item.show = true;
             item.level = 1;

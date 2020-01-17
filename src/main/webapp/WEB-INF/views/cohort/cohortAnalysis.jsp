@@ -261,6 +261,7 @@ $(document).ready(function(){
 								<label> 설명 </label>
 								<textarea class="form-control" rows="3" placeholder="Enter ..." id="txtDashboardCohortSub" style="margin: 0px 59.5px 0px 0px; height: 300px;"></textarea>
 							</div>
+							<input type="hidden" class="form-control" placeholder="Enter ..." id="txtDashboardCohortCancerType">
 						</div>
 					</div>
 				
@@ -273,7 +274,7 @@ $(document).ready(function(){
 			 	<button type="button" class="btn btn-danger btn-sm pull-right" style="margin-left:10px;" id="btnDashboardCohortClear"> 초기화 </button>
 			 </div>
 			 <div class="btn-group pull-right">
-			 	<button type="button" class="btn btn-primary btn-sm pull-right" style="margin-left:10px;" id="btnDashboardFilterApply"> 필터 적용 </button>
+			 	<button type="button" class="btn btn-primary btn-sm pull-right" style="margin-left:10px; display:none;" id="btnDashboardFilterApply"> 필터 적용 </button>
 			 </div>
 			 
 		</div>
