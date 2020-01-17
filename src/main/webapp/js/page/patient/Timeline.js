@@ -591,8 +591,8 @@ function TimeLine() {
                 if(pixelAry[i].isSample)plotcolor="#000";
                 var stroke_width = (pixelAry[i].stroke>16)?16:pixelAry[i].stroke;
                 var r = p.circle(leftpadding, yRow - 4, pw+1);
-                    r.attr("fill", plotcolor),
-                    r.attr("stroke", plotcolor)
+                    r.attr("fill", plotcolor);
+                    r.attr("stroke", plotcolor);
                     r.attr("stroke-width", stroke_width);
                     //r.attr("stroke-width", pw);
                     r.attr("opacity", 0.5);
