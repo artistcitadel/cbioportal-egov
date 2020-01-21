@@ -841,7 +841,7 @@ function TimeLine() {
             RAW = _.union(RAW, data);
             TIMELINERAW=RAW;
             if(run===pids.length) {
-                console.log('initRAW ', RAW);
+                // console.log('initRAW ', RAW);
                 var bodyidx = _.findIndex(RAW, function(o){
                    return o.time!=='00000000';
                 });

@@ -732,7 +732,8 @@
             isSelectPatient = true;
             patientId = resch_pat_id;
         }
-        if(patientId==""){
+        console.log('patientId ', patientId);
+        if(patientId =="" || patientId =="000000null"){
             patientId = patients.split(",")[0];
         }
         PATIENTID = patientId;

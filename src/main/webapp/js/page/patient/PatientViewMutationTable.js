@@ -3,6 +3,7 @@
  */
 function PatientViewMutationTable() {
     var self = this;
+    var MODE=1;
     var HASOVERVIEW;
     var action,util, annotation;
     self.EVIDENCE = [];
@@ -802,6 +803,7 @@ function PatientViewMutationTable() {
         var targetdiv = self.NODE+"_con";
         //console.log('targetdiv ',targetdiv);
         $("#"+targetdiv).html(txt);
+        if(MODE===2)showAnnotation();
     }
 
     var showAnnotation = function(){
@@ -1066,10 +1068,9 @@ function PatientViewMutationTable() {
             $header.addClass(sortDirection == 1 ? 'sorted-asc' : 'sorted-desc');
             // $table3.children('tbody').empty();
             //$table3.children('tbody').html(buildRowsMutation(rows));
+            MODE=2;
             $table3.children('tbody').html(buildTd(rows));
         });
-
-
     }
 
     var zerotext = function(dat){
