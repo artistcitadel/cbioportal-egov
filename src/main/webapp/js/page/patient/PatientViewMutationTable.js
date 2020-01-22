@@ -345,7 +345,7 @@ function PatientViewMutationTable() {
                 }
                 console.log('includes', temp, value);
 
-                if ($.trim(temp).length === 0) temp = self.TABLE[snode];
+                if ($.trim(temp).length === 0 && value.length==0 )  temp = self.TABLE[snode];
                 self.SORT = true;
                 MODE = 2;
                 // console.log('temp1 ',temp);
@@ -1030,7 +1030,7 @@ function PatientViewMutationTable() {
         console.log('tpage ', tpage);
         //pager.buildPage(1, tpage, el, self, getMutation(), self.NODE);
         pager.buildPage(1, tpage, el, self, json, self.NODE);
-
+        console.log('json ', json);
         buildTd(json);
 
         if(!self.SORT) {

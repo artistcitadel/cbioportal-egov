@@ -419,7 +419,7 @@ function TimeLine() {
                         temp_name.push(pdata[i]);
                         item.id = pdata[i].id;
                         item.time = pdata[i].time;
-                        item.isSample = _.includes(SAMPLENAMES,pdata[i].spcnNo);
+                        item.isSample = _.includes(SAMPLENAMES,pdata[i].examNo);
                         item.name =
                             (pdata[i].id === subject.tissue) ? (event.classify_tissue(temp_name, UNIT)) :
                             (pdata[i].id === subject.brc) ? (event.classify_brc(temp_name, UNIT)) :
