@@ -144,6 +144,26 @@ public class DashboardController extends BigcenMedAbstractController{
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="/updateDashboardTabNo")
+	public Object updateDashboardTabNo(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- updateDashboardTabNo START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			dashboardService.updateDashboardTabNo(paramMap);
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value="/selPatnoResultCheck")
 	public Object selPatnoResultCheck(@RequestBody Map<Object,Object> paramMap){
 		logger.debug("[--- selPatnoResultCheck START ");
@@ -523,6 +543,31 @@ public class DashboardController extends BigcenMedAbstractController{
 		
 		try{
 			resultMap.put("chartDashboardFilter", "");
+			resultMap.put("ERR_CD", "0");
+			resultMap.put("ERR_MSG", "OK");
+			
+		}catch(Exception e){
+			resultMap.put("ERR_CD", "-1");
+			resultMap.put("ERR_MSG", e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * cohort delete
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/deleteMycohortCont")
+	public Object deleteMycohortCont(@RequestBody Map<Object,Object> paramMap){
+		logger.debug("[--- deleteMycohortCont START ");
+		
+		Map<Object,Object> resultMap = new HashMap<Object,Object>();
+		
+		try{
+			dashboardService.deleteMycohortCont(paramMap);
 			resultMap.put("ERR_CD", "0");
 			resultMap.put("ERR_MSG", "OK");
 			

@@ -728,7 +728,7 @@ function initTreeEvent(){
 		var promise = http('dashboard/updateDashboardTabNo', 'post', false , dataSet);
 		
 		promise.then(function(result){
-			showAlert('알림','메인화면이 변경 되었습니다.',null);
+			showAlert('알림','첫 메인화면이 변경 되었습니다. 재로그인시 적용됩니다.',null);
 		});
 		promise.fail(function(e){
 			console.log(e);
@@ -784,17 +784,7 @@ function initTreeEvent(){
 			dataSet.codelist = tmpArr;
 			dataSet.currentTab = currentDashboardTab;
 			dataSet.PER_CODE = $.session.get('PER_CODE');
-			
-/*			$('#hiddenDashboardTab').val('');
-			$('#hiddenDashboardTab').val(currentDashboardTab);
-			$('#hiddenSelectedCancer').val('');
-			$('#hiddenSelectedCancer').val(nvl(JSON.stringify(selectedTreeArr),""));
-			$('#hiddenSelectedCohort').val('null');
-		
-			$('#frmCohortAnalysis').attr('action',gvCONTEXT + '/cohort/cohortAnalysis');
-			$('#frmCohortAnalysis').method = 'POST';
-			$('#frmCohortAnalysis').submit();
-			gvSpinnerClose();*/
+
 			
 			var promise = http('dashboard/selCohortAnalysisPatno', 'post', true , dataSet);
 			promise.then(function(result){
@@ -817,6 +807,11 @@ function initTreeEvent(){
 		}
 		else if(currentDashboardTab == "2"){
 			var dataSet = {};
+			if(checkedPatnoResult.length == 0){
+				showAlert("알림","Success 결과값이 없습니다. 환자번호를 수정해주시거나 Check버튼을 클릭해 주십시오.", null);
+				gvSpinnerClose();
+				return;
+			}
 			dataSet.TXTARR = checkedPatnoResult.toString();
 			dataSet.PER_CODE = $.session.get('PER_CODE');
 			dataSet.KIND = $('input[name="patnoRadios"]:checked').val();
@@ -950,6 +945,29 @@ function initTreeEvent(){
 			console.log($(this).val())
 		})
 	});
+	
+	$('#btnMycohortDelete').on('click',function(){
+		var chkCohort = $('input[name="itemCate_tree"]:checked');
+		var contSeq = [];
+		for(var i=0; i<chkCohort.length; i++) contSeq.push(chkCohort[i].value);
+		
+		var dataSet = {};
+		dataSet.CHKSEQ = contSeq;
+		
+		var promise = http('dashboard/deleteMycohortCont', 'post', true , dataSet);
+		
+		promise.then(function(result){
+			
+			console.log(result);
+			showAlert('알림','삭제가 완료되었습니다.',null);
+			$('#mycohort-tab').trigger('click');
+		});
+		promise.fail(function(e){
+			console.log(e);
+
+		});
+	})
+	
 	$('#mycohort-tab').on('shown.bs.tab',function(){
 		var dataSet = {};
 		dataSet.PER_CODE = $.session.get("PER_CODE");

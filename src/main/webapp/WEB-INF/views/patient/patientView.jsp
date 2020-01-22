@@ -23,7 +23,7 @@
 
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;background-color: white;">
+<div class="content-wrapper" style="margin-left:0px;overflow-y: hidden;background-color: white;width: fit-content;">
     <!-- Content Header (Page header) -->
     <section class="content-header ttt" style="background-color: aliceblue;display:none;">
         <h1>
@@ -131,7 +131,7 @@
                   </button>
                   <form name="patientsearchform" role="search" style="width:auto;">
                       <div class="input-group">
-                          <input type="text" name="search_PAT" id="search_PAT" class="form-control" style="margin-left:8px;" placeholder="Search...">
+                          <input type="text" name="search1_PAT" id="search1_PAT" class="form-control" style="margin-left:8px;" placeholder="Search...">
                           <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
                       </div>
                   </form>
@@ -280,7 +280,7 @@
                                 <div></div>
                             </div>--%>
                         </div>
-                        <div class="col-md-5" align="right" id="mutcolcontainer" style="float:right;display:none;">
+                        <div class="col-md-5" align="right" id="mutcolcontainer" style="float:right;margin-right:20px;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -365,7 +365,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5" align="right" id="cnacolcontainer" style="float:right;display:none;">
+                        <div class="col-md-5" align="right" id="cnacolcontainer" style="float:right;margin-right:20px;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -426,7 +426,7 @@
                                 <div></div>
                             </div>
                         </div>
-                        <div class="col-md-5" id="svcolcontainer" align="right" style="float:right;display:none;">
+                        <div class="col-md-5" id="svcolcontainer" align="right" style="float:right;margin-right:20px;display:none;">
                             <div class="btn-group" style="width:auto;">
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
@@ -647,7 +647,7 @@
 <form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
     <input type="hidden" name="patients" id="patients" value="${patients}"/>
     <input type="hidden" name="query" id="QUERY" value="${QUERY}"/>
-    <input type="hidden" name="resch_pat_id" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
+    <input type="hidden" name="RESCH_PAT_ID" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
     <input type="hidden" name="pages" id="pages" value="${pages}"/>
     <input type="hidden" name="patientId" id="patientId" value="${patientId}"/>
 
@@ -709,7 +709,7 @@
     document.pform.patients.value = patients;
     document.pform.patientId.value = patientId;
     document.pform.pages.value = pages;
-    document.pform.resch_pat_id.value = resch_pat_id;
+    document.pform.RESCH_PAT_ID.value = resch_pat_id;
 
     console.log('pages ', pages);
     console.log('resch_pat_id ', resch_pat_id);
@@ -736,6 +736,8 @@
         if(patientId =="" || patientId =="000000null"){
             patientId = patients.split(",")[0];
         }
+        console.log('patientId ', patientId);
+        if(patientId.length<1)return;
         PATIENTID = patientId;
         QUERY = document.pform.query.value;
 

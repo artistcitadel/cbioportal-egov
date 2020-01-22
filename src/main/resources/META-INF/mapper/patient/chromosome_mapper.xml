@@ -6,35 +6,6 @@
 
 <mapper namespace="patient">
 
-    <select id="selectPatientMuList_temp" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
-        SELECT MTTN_EXAM_RSLT_ID mttnExamRsltId,
-        RESCH_PAT_ID reschPatId,
-        GENE_EXAM_SPCN_ID geneExamSpcnId,
-        EXAM_NO examNo,
-        GENE_EXAM_MTH_NM geneExamMthNm,
-        CHRM_NO chrnNo,
-        GENE_NM geneNm,
-        GENE_VARI_ST_LOC_VAL geneVariStLocVal,
-        GENE_VARI_END_LOC_VAL geneVariEndLocVal,
-        DNA_STRND_VAL dnaStandVal,
-        GENE_VARI_CLSF_NM geneVariClsfNm,
-        GENE_VARI_TYP_NO geneVariTypNo,
-        REF_ALLELE_SQNC_VAL refAlleleSqncVal,
-        VARI_ALLELE_SQNC_VAL variAlleleSqncVal,
-        MTTN_STAT_NO mttnStatNo,
-        HGVSC_VAL hgvscVal,
-        HGVSP_VAL hgvspVal,
-        TOT_ALLELE_READ_CNT totAlleleReadCnt,
-        REF_ALLELE_READ_CNT refAlleleReadCnt,
-        VARI_ALLELE_READ_CNT variAlleleReadCnt,
-        VARI_ALLELE_READ_RT variAlleleReadRt,
-        EXON_LOC_VAL exonLocVal,
-        INTRN_LOC_VAL intrnLocVal,
-        TRSC_ID trscId
-        FROM PMGERMUEM
-        WHERE RESCH_PAT_ID = #{patientId}
-    </select>
-
     <select id="selectPatientMutAxis" resultType="com.softcen.bigcen.med.patient.vo.PatientMut">
         SELECT CHRM_NO chrmNo,
         GENE_ST_LOC_VAL geneStLocVal,

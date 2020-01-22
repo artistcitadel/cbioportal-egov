@@ -205,6 +205,8 @@ $(document).ready(function(){
 	%>
 	
 	selectedCohort = <%=b %>;
+	if(selectedCohort == null) selectedCohort = [];
+	
 	savedMyCohort = <%=c%>;
 	$('#hiddenCohortTab').val(<%=a %>);
 	console.log(savedMyCohort)
@@ -220,7 +222,7 @@ $(document).ready(function(){
 		<li class="active">Cohort Analysis</li>
 	</ol>
 </section>
-<section  class="col-lg-12" style="margin-top:10px;">
+<section  class="" style="padding-left: 15px; padding-right: 15px;margin-top:10px;">
 	<section class="box">
 		<div class="box-header" id="">
 			<i class="ion ion-ios-list-outline"></i>
@@ -286,7 +288,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 </section>
-<section  class="col-lg-12" style="">
+<section  class="" style="padding-left: 15px; padding-right: 15px;">
 	<nav class="navbar navbar-light navbar-background-color margin-top-10" >
 		<div class="row" >
 			<div class="col-lg-12">
@@ -361,11 +363,12 @@ $(document).ready(function(){
 	<input class="form-control" type="hidden" id="hiddenCohortNewCohort" name="NEWCOHORTNAME" value="">
 	<input class="form-control" type="hidden" id="hiddenCohortPatno" name="RESCH_PAT_ID" value="">
 	<input class="form-control" type="hidden" id="hiddenCohortQuery" name="QUERY" value="">
+	<input class="form-control" type="hidden" id="hiddenCohortSpcnQuery" name="SPCNQUERY" value="">
 	<input class="form-control" type="hidden" id="hiddenCohortTreeModal" name="TREE" value="">
 	<input class="form-control" type="hidden" id="hiddenCohortMyCohort" name="MYCOHORT" value="">
 </form>
 <div class="modal fade bs-example-modal-lg" id="popSelectedCohortModal" tabindex="-1" role="dialog" aria-labelledby="popSelectedCohortModalLabel">
-	<div class="modal-dialog modal-lg" style="height:800px; width:80%;" role="document">
+	<div class="modal-dialog modal-lg" style="min-height:300px; width:80%;" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -375,7 +378,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-lg-12">
 		                <div class="box">
-							<div class="box-body padding-20-30" id="divSelectedCohort" style="margin:auto;width:100%;height:800px; ">
+							<div class="box-body padding-20-30" id="divSelectedCohort" style="margin:auto;width:100%;min-height:300px; ">
 								
 							</div>
 						</div>

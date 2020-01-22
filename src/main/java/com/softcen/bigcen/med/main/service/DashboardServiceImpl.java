@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.shared.artifact.filter.StatisticsReportingArtifactFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -161,7 +162,9 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		Map<String,String> paramMap2 = new HashMap<String,String>();
 		
 		StringBuffer sbQuery = new StringBuffer();
+		StringBuffer sbQuerySpcn = new StringBuffer();
 		StringBuffer sbQueryAll = new StringBuffer();
+		StringBuffer sbQueryAllGroupBy = new StringBuffer();
 		List paramArray = new ArrayList();
 		paramArray = (ArrayList)paramMap.get("FILTER");
 		
@@ -185,11 +188,19 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
   				EXEC_SQL = EXEC_SQL.replace("#{CohortTable}", createdtable);
   			}
   			
-  			joinTableQuery.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
-  			joinTableQuery.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
-  			joinTableQuery.append(SQL.SEPERATE + SQL.ON + "1=1");
-  			joinTableQuery.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
-  			  			
+  			if("CLINICAL".equals(tmpMap.get("ITEM_CATE_ID")) || "ETC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+  				joinTableQuery.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+  	  			joinTableQuery.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+  	  			joinTableQuery.append(SQL.SEPERATE + SQL.ON + "1=1");
+  	  			joinTableQuery.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
+  			}
+  			else if("GENOMIC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+  				joinTableQuery.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+  	  			joinTableQuery.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+  	  			joinTableQuery.append(SQL.SEPERATE + SQL.ON + "1=1");
+  	  			joinTableQuery.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_SPCN_ID" + SQL.EQUAL + tAlias + ".RESCH_SPCN_ID");
+  			}
+		
 		}
   		sbQuery.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID");
   		sbQuery.append(SQL.SEPERATE + SQL.FROM);
@@ -197,16 +208,30 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
   		sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
   		sbQuery.append(SQL.AND + "sb0.DELETE_YN = 'N'");
 
+  		sbQuerySpcn.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_SPCN_ID");
+  		sbQuerySpcn.append(SQL.SEPERATE + SQL.FROM);
+  		sbQuerySpcn.append(joinTableQuery);
+  		sbQuerySpcn.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+  		sbQuerySpcn.append(SQL.AND + "sb0.DELETE_YN = 'N'");
   		
-  		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID," + "sb0.DELETE_YN");
+  		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID," + "sb0.RESCH_SPCN_ID," + "sb0.DELETE_YN");
   		sbQueryAll.append(SQL.SEPERATE + SQL.FROM);
   		sbQueryAll.append(joinTableQuery);
   		sbQueryAll.append(SQL.SEPERATE + SQL.WHERE + "1=1");
-		System.out.println(sbQuery.toString());
-		paramMap2.put("FILTER_QUERY", sbQuery.toString());
+		
+  		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.SELECT + "sb0.RESCH_PAT_ID," + "sb0.RESCH_SPCN_ID," + "sb0.DELETE_YN");
+  		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.FROM);
+  		sbQueryAllGroupBy.append(joinTableQuery);
+  		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+  		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.GROUP_BY + "sb0.RESCH_PAT_ID");
+  		
+  		System.out.println(sbQuery.toString());
+		
+  		paramMap2.put("FILTER_QUERY", sbQuery.toString());
 		resultMap.put("all",sbQuery.toString());
 		resultMap.put("sbQueryAll",sbQueryAll.toString());
-		
+		resultMap.put("sbQuerySpcn", sbQuerySpcn.toString());
+		resultMap.put("sbQueryAllGroupBy", sbQueryAllGroupBy.toString());
 		//개별 쿼리
 		for(int i=0; i<paramArray.size(); i++) {
 			List tableList2 = new ArrayList();
@@ -219,6 +244,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			joinTableQuery2.append(SQL.SEPERATE + createdtable + SQL.AS + "sb0");
 			
 			StringBuffer sbQuery2 = new StringBuffer();
+			StringBuffer sbQuerySpcn2 = new StringBuffer();
 			for(int j=0; j<paramArray.size(); j++) {
 				if(j==i) continue;
 				Map tmpMap = (HashMap)paramArray.get(j);
@@ -229,11 +255,20 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 	  			if(EXEC_SQL.contains("#{CohortTable}")) {
 	  				EXEC_SQL = EXEC_SQL.replace("#{CohortTable}", createdtable);
 	  			}
-	  			joinTableQuery2.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
-	  			joinTableQuery2.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
-	  			joinTableQuery2.append(SQL.SEPERATE + SQL.ON + "1=1");
-	  			joinTableQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
 
+	  			if("CLINICAL".equals(tmpMap.get("ITEM_CATE_ID")) || "ETC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+	  				joinTableQuery2.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+		  			joinTableQuery2.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+		  			joinTableQuery2.append(SQL.SEPERATE + SQL.ON + "1=1");
+		  			joinTableQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_PAT_ID" + SQL.EQUAL + tAlias + ".RESCH_PAT_ID");
+	  			}
+	  			else if("GENOMIC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+	  				joinTableQuery2.append(SQL.SEPERATE + SQL.JOIN + "(" + EXEC_SQL);
+	  				joinTableQuery2.append(setjoinwhereQuery(tmpMap, tAlias) + ")" + SQL.AS + tAlias);
+	  				joinTableQuery2.append(SQL.SEPERATE + SQL.ON + "1=1");
+	  				joinTableQuery2.append(SQL.SEPERATE + SQL.AND + "sb0.RESCH_SPCN_ID" + SQL.EQUAL + tAlias + ".RESCH_SPCN_ID");
+	  			}
+	  			
 			}
 			
 			sbQuery2.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_PAT_ID");
@@ -242,13 +277,27 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 	  		sbQuery2.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 	  		sbQuery2.append(SQL.AND + "sb0.DELETE_YN = 'N'");
 			
-			System.out.println(sbQuery2.toString());
+	  		
+	  		sbQuerySpcn2.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "sb0.RESCH_SPCN_ID");
+	  		sbQuerySpcn2.append(SQL.SEPERATE + SQL.FROM);
+	  		sbQuerySpcn2.append(joinTableQuery2);
+	  		sbQuerySpcn2.append(SQL.SEPERATE + SQL.WHERE + "1=1");
+	  		sbQuerySpcn2.append(SQL.AND + "sb0.DELETE_YN = 'N'");
+			
+	  		System.out.println(sbQuery2.toString());
+	  		System.out.println(sbQuerySpcn2.toString());
 			
 			Map<String,String> paramMap3 = new HashMap<String,String>();
 			paramMap3.put("FILTER_QUERY", sbQuery2.toString());
 			
 			Map tmpiMap = (HashMap)paramArray.get(i);
-			resultMap.put(tmpiMap.get("SEQ").toString(), sbQuery2.toString());
+			if("CLINICAL".equals(tmpiMap.get("ITEM_CATE_ID")) || "ETC".equals(tmpiMap.get("ITEM_CATE_ID")) ) {
+				resultMap.put(tmpiMap.get("SEQ").toString(), sbQuery2.toString());
+  			}
+  			else if("GENOMIC".equals(tmpiMap.get("ITEM_CATE_ID"))) {
+  				resultMap.put(tmpiMap.get("SEQ").toString(), sbQuerySpcn2.toString());
+  			}
+			
 		}
 		
 
@@ -270,6 +319,16 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		String subQuery = paramMap.get("SUB_QUERY").toString();
 		String paramChartType = tmpMap.get("CHART_TYPE").toString();
 		String ITEM_COLUMN = tmpMap.get("ITEM_COLUMN").toString();
+		String reschIdStr = "";
+		
+		if("CLINICAL".equals(tmpMap.get("ITEM_CATE_ID")) || "ETC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+			reschIdStr = "F1.RESCH_PAT_ID";
+			
+		}
+		else if("GENOMIC".equals(tmpMap.get("ITEM_CATE_ID"))) {
+			reschIdStr = "F1.RESCH_SPCN_ID";
+			
+		}
 		
 		sbQuery.append(SQL.SEPERATE + SQL.SELECT);
 		sbQuery.append(SQL.SEPERATE + "* , COUNT(*) AS CNT");
@@ -286,7 +345,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			sbQuery.append(SQL.SEPERATE + ")" + SQL.AS + "F1");
 			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 			if(!subQuery.isEmpty()) {
-				sbQuery.append(SQL.SEPERATE + SQL.AND + "F1.RESCH_PAT_ID" + SQL.IN + "(" + subQuery + ")");
+				sbQuery.append(SQL.SEPERATE + SQL.AND + reschIdStr + SQL.IN + "(" + subQuery + ")");
 			}
 			sbQuery.append(SQL.SEPERATE + SQL.GROUP_BY);
 			/*for(int i=0; i<labelStr.length; i++) {
@@ -301,7 +360,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			sbQuery.append(SQL.SEPERATE + ")" + SQL.AS + "F1");
 			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 			if(!subQuery.isEmpty()) {
-				sbQuery.append(SQL.SEPERATE + SQL.AND + "F1.RESCH_PAT_ID" + SQL.IN + "(" + subQuery + ")");
+				sbQuery.append(SQL.SEPERATE + SQL.AND + reschIdStr + SQL.IN + "(" + subQuery + ")");
 			}
 			sbQuery.append(SQL.SEPERATE + SQL.GROUP_BY + "ITEM");
 			sbQuery.append(SQL.SEPERATE + SQL.ORDER_BY + "CNT DESC");
@@ -311,7 +370,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			sbQuery.append(SQL.SEPERATE + ")" + SQL.AS + "F1");
 			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 			if(!subQuery.isEmpty()) {
-				sbQuery.append(SQL.SEPERATE + SQL.AND + "F1.RESCH_PAT_ID" + SQL.IN + "(" + subQuery + ")");
+				sbQuery.append(SQL.SEPERATE + SQL.AND +  reschIdStr + SQL.IN + "(" + subQuery + ")");
 			}
 			sbQuery.append(SQL.SEPERATE + SQL.GROUP_BY + "ITEM");
 			sbQuery.append(SQL.SEPERATE + SQL.ORDER_BY + "CNT DESC");
@@ -321,7 +380,7 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			sbQuery.append(SQL.SEPERATE + ")" + SQL.AS + "F1");
 			sbQuery.append(SQL.SEPERATE + SQL.WHERE + "1=1");
 			if(!subQuery.isEmpty()) {
-				sbQuery.append(SQL.SEPERATE + SQL.AND + "F1.RESCH_PAT_ID" + SQL.IN + "(" + subQuery + ")");
+				sbQuery.append(SQL.SEPERATE + SQL.AND + reschIdStr + SQL.IN + "(" + subQuery + ")");
 			}
 			sbQuery.append(SQL.SEPERATE + SQL.GROUP_BY + "ITEM");
 			sbQuery.append(SQL.SEPERATE + SQL.ORDER_BY + "CNT DESC");
@@ -423,9 +482,20 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 	
 		resultMap.put("newTableName",newTableName);
 		
+		Map ddlMap = new HashMap();
+		StringBuffer sbDDLQueryPat = new StringBuffer();
+		StringBuffer sbDDLQuerySpcn = new StringBuffer();
+		sbDDLQueryPat.append(SQL.CREATE +"INDEX RESCH_PAT_ID_IDX USING BTREE" + SQL.ON + newTableName +"(RESCH_PAT_ID)");
+		sbDDLQuerySpcn.append(SQL.CREATE +"INDEX RESCH_SPCN_ID_IDX USING BTREE" + SQL.ON + newTableName +"(RESCH_SPCN_ID)");
+		
+		ddlMap.put("PatnoQuery", sbDDLQueryPat);
+		dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+		
+		ddlMap.put("PatnoQuery", sbDDLQuerySpcn);
+		dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+		
 		paramMap.put("TABLE_NM", newTableName);
 		dashboardDAO.insertCohortItemCont(paramMap);
-		
 		
 		//System.out.println(paramMap);
 		List selectedArr = new ArrayList();
@@ -450,48 +520,61 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 			dataMap.put("CONT_SEQ",paramMap.get("SEQ"));
 			dataMap.put("CHART_SEQ",filterMap.get("SEQ"));
 			dataMap.put("CHART_TYPE",filterMap.get("CHART_TYPE"));
-			dataMap.put("BASE_TABLE",filterMap.get("BASE_TABLE"));
+			//dataMap.put("BASE_TABLE",filterMap.get("BASE_TABLE"));
 			dataMap.put("CHART_ID",filterMap.get("ITEM_ID"));
 			dataMap.put("CRT_ID",paramMap.get("CRT_ID"));
 			dataMap.put("UDT_ID",paramMap.get("UDT_ID"));
 			dashboardDAO.insertCohortItemContFilter(dataMap);
 			System.out.println(dataMap);
+			
 			List conditionArr = (ArrayList)filterMap.get("CONDITION");
-			for(int j=0; j<conditionArr.size(); j++) {
-				
-				if("GAO".equals(filterMap.get("CHART_TYPE"))) {
+			if("GAO".equals(filterMap.get("CHART_TYPE"))) {
+				for(int j=0; j<conditionArr.size(); j++) {
 					List conditionGAOArr = (ArrayList)conditionArr.get(j);
 					for(int k=0; k<conditionGAOArr.size(); k++) {
 						Map<Object, Object> detlMap = new HashMap<Object,Object>();
-						Map valueMap = (HashMap)conditionGAOArr.get(j);
+						Map valueMap = (HashMap)conditionGAOArr.get(k);
 						//Map filterDetlMap = (HashMap)conditionArr.get(j);
 						detlMap.put("CONT_FILTER_SEQ", dataMap.get("SEQ"));
 						detlMap.put("CHART_SEQ", filterMap.get("SEQ"));
 
 						detlMap.put("CRT_ID",paramMap.get("CRT_ID"));
 						detlMap.put("UDT_ID",paramMap.get("UDT_ID"));
-						for( Object key :  valueMap.keySet() ) {
+						String filterKey = "";
+						String filterValue = "";
+						/*for( Object key :  valueMap.keySet() ) {
 							detlMap.put("FILTER_KEY", key);
 							detlMap.put("FILTER_VALUE", valueMap.get(key));
-							dashboardDAO.insertCohortItemContFilterDetl(detlMap);
-						}
+							filterKey += key;
+							
+						}*/
+						filterKey = String.join("|", valueMap.keySet());
+						filterValue = String.join("|", valueMap.values());
+						detlMap.put("FILTER_KEY", filterKey);
+						detlMap.put("FILTER_VALUE", filterValue);
 						
-						
+						dashboardDAO.insertCohortItemContFilterDetl(detlMap);
 					}
+			
 				}
-				else {
+			}
+			else {
 					Map<Object, Object> detlMap = new HashMap<Object,Object>();
 					detlMap.put("CONT_FILTER_SEQ", dataMap.get("SEQ"));
 					detlMap.put("CHART_SEQ", filterMap.get("SEQ"));
-					detlMap.put("FILTER_VALUE", conditionArr.get(j));
+					
+					String filterValue = String.join("|", conditionArr);
+					
+					detlMap.put("FILTER_VALUE", filterValue);
+					
 					detlMap.put("CRT_ID",paramMap.get("CRT_ID"));
 					detlMap.put("UDT_ID",paramMap.get("UDT_ID"));
 					
 					dashboardDAO.insertCohortItemContFilterDetl(detlMap);
-				}
-				
-				
 			}
+				
+				
+			
 			
 		}
 		
@@ -554,16 +637,18 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		}
 		sbQuery.append(SQL.SEPERATE + "(");
 		sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-		sbQuery.append(SQL.SEPERATE + SQL.DISTINCT + "RESCH_PAT_ID");
-		sbQuery.append(SQL.SEPERATE + "," + "'N'" + SQL.AS + "DELETE_YN");
-		sbQuery.append(SQL.SEPERATE + SQL.FROM + "pmsdev.CLPIMRPID");
+		sbQuery.append(SQL.SEPERATE + SQL.DISTINCT + "a.RESCH_PAT_ID, b.PRCI_MEDIC_RESCH_SPCN_ID as RESCH_SPCN_ID, 'N' as DELETE_YN");
+		//sbQuery.append(SQL.SEPERATE + SQL.DISTINCT + "RESCH_PAT_ID");
+		//sbQuery.append(SQL.SEPERATE + "," + "'N'" + SQL.AS + "DELETE_YN");
+		sbQuery.append(SQL.SEPERATE + SQL.FROM + "pmsdev.MSMAMCAMN a");
+		sbQuery.append(SQL.SEPERATE + SQL.JOIN + "pmsdev.PMGEMSPCN b" + SQL.ON +"a.RESCH_PAT_ID = b.RESCH_PAT_ID");
 		sbQuery.append(SQL.SEPERATE + SQL.WHERE);
 		sbQuery.append(SQL.SEPERATE + "1=1");
 		if(paramMap.get("KIND").equals("patnoA")) {
 			sbQuery.append(SQL.SEPERATE + SQL.AND + "PATNO" + SQL.IN);
 		}
 		else {
-			sbQuery.append(SQL.SEPERATE + SQL.AND + "RESCH_PAT_ID" + SQL.IN);
+			sbQuery.append(SQL.SEPERATE + SQL.AND + "a.RESCH_PAT_ID" + SQL.IN);
 		}
 		sbQuery.append(SQL.SEPERATE + "(");
 		sbQuery.append(SQL.SEPERATE + "");
@@ -573,7 +658,25 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		System.out.println(sbQuery);
 		
 		paramMap.put("PatnoQuery", sbQuery);
-		return dashboardDAO.selectCohortAnalysisPatno(paramMap);
+		
+		Map resultMap = new HashMap();
+		resultMap.put("SUCCESS", dashboardDAO.selectCohortAnalysisPatno(paramMap));
+
+		if(!flag.equals("1")) {
+			Map ddlMap = new HashMap();
+			StringBuffer sbDDLQueryPat = new StringBuffer();
+			StringBuffer sbDDLQuerySpcn = new StringBuffer();
+			sbDDLQueryPat.append(SQL.CREATE +"INDEX RESCH_PAT_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_PAT_ID)");
+			sbDDLQuerySpcn.append(SQL.CREATE +"INDEX RESCH_SPCN_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_SPCN_ID)");
+			
+			ddlMap.put("PatnoQuery", sbDDLQueryPat);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+			
+			ddlMap.put("PatnoQuery", sbDDLQuerySpcn);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+		}
+		
+		return resultMap;
 	}
 	
 	
@@ -607,9 +710,10 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		}
 		sbQuery.append(SQL.SEPERATE + "(");
 		sbQuery.append(SQL.SEPERATE + SQL.SELECT);
-		sbQuery.append(SQL.SEPERATE + SQL.DISTINCT + "RESCH_PAT_ID");
-		sbQuery.append(SQL.SEPERATE + "," + "'N'" + SQL.AS + "DELETE_YN");
-		sbQuery.append(SQL.SEPERATE + SQL.FROM + "pmsdev.MSMAMCAMN");
+		sbQuery.append(SQL.SEPERATE + SQL.DISTINCT + "a.RESCH_PAT_ID, b.PRCI_MEDIC_RESCH_SPCN_ID as RESCH_SPCN_ID, 'N' as DELETE_YN");
+		//sbQuery.append(SQL.SEPERATE + "," + "'N'" + SQL.AS + "DELETE_YN");
+		sbQuery.append(SQL.SEPERATE + SQL.FROM + "pmsdev.MSMAMCAMN a");
+		sbQuery.append(SQL.SEPERATE + SQL.JOIN + "pmsdev.PMGEMSPCN b" + SQL.ON +"a.RESCH_PAT_ID = b.RESCH_PAT_ID");
 		sbQuery.append(SQL.SEPERATE + SQL.WHERE);
 		
 		List codeList = new ArrayList();
@@ -653,9 +757,26 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		}
 		sbQuery.append(SQL.SEPERATE + ")");
 		System.out.println(sbQuery);
-		
 		paramMap.put("PatnoQuery", sbQuery);
-		return dashboardDAO.selectCohortAnalysisPatno(paramMap);
+		
+		Map resultMap = new HashMap();
+		resultMap.put("SUCCESS", dashboardDAO.selectCohortAnalysisPatno(paramMap));
+		
+		if(!flag.equals("1")) {
+			Map ddlMap = new HashMap();
+			StringBuffer sbDDLQueryPat = new StringBuffer();
+			StringBuffer sbDDLQuerySpcn = new StringBuffer();
+			sbDDLQueryPat.append(SQL.CREATE +"INDEX RESCH_PAT_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_PAT_ID)");
+			sbDDLQuerySpcn.append(SQL.CREATE +"INDEX RESCH_SPCN_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_SPCN_ID)");
+			
+			ddlMap.put("PatnoQuery", sbDDLQueryPat);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+			
+			ddlMap.put("PatnoQuery", sbDDLQuerySpcn);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+		}
+		
+		return resultMap;
 	}
 
 	@Override
@@ -780,11 +901,58 @@ public class DashboardServiceImpl extends BigcenMedAbstractServiceImpl implement
 		paramMap.put("PatnoQuery", sbQuery);
 		dashboardDAO.selectCohortAnalysisPatno(paramMap);
 		
-		
+		if(!flag.equals("1")) {
+			Map ddlMap = new HashMap();
+			StringBuffer sbDDLQueryPat = new StringBuffer();
+			StringBuffer sbDDLQuerySpcn = new StringBuffer();
+			sbDDLQueryPat.append(SQL.CREATE +"INDEX RESCH_PAT_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_PAT_ID)");
+			sbDDLQuerySpcn.append(SQL.CREATE +"INDEX RESCH_SPCN_ID_IDX USING BTREE" + SQL.ON + "pmsdata.P"+paramMap.get("PER_CODE").toString() +"(RESCH_SPCN_ID)");
+			
+			ddlMap.put("PatnoQuery", sbDDLQueryPat);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+			
+			ddlMap.put("PatnoQuery", sbDDLQuerySpcn);
+			dashboardDAO.selectCohortAnalysisPatno(ddlMap);
+		}
 		
 		
 		
 		return resultList;
+	}
+
+	@Override
+	public void updateDashboardTabNo(Map<Object, Object> paramMap) throws Exception {
+		// TODO Auto-generated method stub
+		dashboardDAO.updateDashboardTabNo(paramMap);
+	}
+
+	@Override
+	public void deleteMycohortCont(Map<Object, Object> paramMap) throws Exception {
+		// TODO Auto-generated method stub
+		List contArr = (ArrayList)paramMap.get("CHKSEQ");
+		for(int i=0; i<contArr.size(); i++) {
+			paramMap.put("SEQ", contArr.get(i));
+			dashboardDAO.deleteMycohortCont(paramMap);
+			
+			Map delMap = new HashMap();
+			delMap.put("CONT_SEQ", contArr.get(i));
+			List filterArr = (ArrayList)dashboardDAO.selectMycohortContFilter(delMap);
+			
+			dashboardDAO.deleteMycohortContChart(delMap);
+			dashboardDAO.deleteMycohortContFilter(delMap);
+			
+			
+			for(int j=0; j<filterArr.size(); j++) {
+				Map filterDelMap = new HashMap();
+				filterDelMap.put("CONT_FILTER_SEQ", filterArr.get(j));
+				
+				dashboardDAO.deleteMycohortContFilterDetl(filterDelMap);
+			}
+			
+			
+		}
+		
+		
 	}
 	
 }

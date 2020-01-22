@@ -12,6 +12,38 @@
 		FROM pmsportal.CC_ITEM_CONT
 		WHERE CATE_DETL_SEQ = {CATE_DETL_SEQ}
  	</select> -->
+ 	
+ 	<delete id="deleteMycohortCont" parameterType="map">
+ 		DELETE  FROM  pmsportal.CC_ITEM_CONT
+		WHERE	1=1
+		AND 	SEQ = #{SEQ}
+ 	</delete>
+ 	
+ 	<delete id="deleteMycohortContChart" parameterType="map">
+ 		DELETE  FROM  pmsportal.CC_ITEM_CONT_CHART
+		WHERE	1=1
+		AND 	CONT_SEQ = #{CONT_SEQ}
+ 	</delete>
+ 	
+ 	<delete id="deleteMycohortContFilter" parameterType="map">
+ 		DELETE  FROM  pmsportal.CC_ITEM_CONT_FILTER
+		WHERE	1=1
+		AND 	CONT_SEQ = #{CONT_SEQ}
+ 	</delete>
+ 	
+ 	<delete id="deleteMycohortContFilterDetl" parameterType="map">
+ 		DELETE  FROM  pmsportal.CC_ITEM_CONT_FILTER_DETL
+		WHERE	1=1
+		AND 	CONT_FILTER_SEQ = #{CONT_FILTER_SEQ}
+ 	</delete>
+ 	
+ 	<select id="selectMycohortContFilter" parameterType="map" resultType="java.lang.String"> 
+ 		SELECT SEQ
+ 		FROM  pmsportal.CC_ITEM_CONT_FILTER
+ 		WHERE 1=1
+ 		AND CONT_SEQ = #{CONT_SEQ}
+ 	</select>
+ 	
  	<update id="updateDashboardTabNo" parameterType="map">
  		UPDATE pmsportal.CC_PERINX
 		SET UDT_DT = NOW()
@@ -45,12 +77,12 @@
  	
  	<select id="selectPatnoResultCheck" parameterType="map" resultType="java.lang.String">
  		SELECT PATNO
-		FROM pmsdev.CLPIMRPID
+		FROM pmsdev.PMGEMRPID
 		WHERE PATNO in ( ${PATNO} ) 
  	</select>
  	<select id="selectReschPatnoResultCheck" parameterType="map" resultType="java.lang.String">
  		SELECT RESCH_PAT_ID
-		FROM pmsdev.CLPIMRPID
+		FROM pmsdev.PMGEMRPID
 		WHERE RESCH_PAT_ID in ( ${PATNO} ) 
  	</select>
  	

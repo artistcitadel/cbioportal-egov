@@ -177,6 +177,7 @@
 											<div class="tab-pane" id="subMyCohort" role="tabpanel" aria-labelledby="mycohort-subtab">
 												<div class="" id="jqxCohortList" style="text-align: left; overflow-y: auto; max-height:760px;">
 												</div>
+												<button class="btn btn-default" id="btnMycohortDelete">삭제</button>
 											</div>	
 										</div>
 									</div>

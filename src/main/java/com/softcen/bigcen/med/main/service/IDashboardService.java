@@ -6,6 +6,11 @@ import java.util.Map;
 
 public interface IDashboardService {
 	
+	public void deleteMycohortCont(Map<Object, Object> paramMap) throws Exception;
+	
+	
+	public void updateDashboardTabNo(Map<Object, Object> paramMap)  throws Exception;
+	
 	public Object selectSavedCohortList(Map<Object, Object> paramMap) throws Exception;
 	
 	public Object loadselectedCohort(Map<Object, Object> paramMap) throws Exception;

@@ -275,7 +275,7 @@ public class LoginController {
 			request.getSession().setAttribute("DEPT_CODE"		,perinxMap.get("DEPT_CODE"));
 			request.getSession().setAttribute("DEPT_NAME"		,perinxMap.get("DEPT_NAME"));
 			request.getSession().setAttribute("CONTEXT_PATH"	,request.getContextPath());
-
+			request.getSession().setAttribute("DASHBOARD_TAB"	,perinxMap.get("DASHBOARD_TAB"));
 			logger.info("-------------------------");
 			logger.info(request.getHeader("Origin"));
 		

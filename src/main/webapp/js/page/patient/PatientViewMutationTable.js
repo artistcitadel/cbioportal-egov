@@ -71,8 +71,7 @@ function PatientViewMutationTable() {
     ];
 
     self.TH = {},
-
-        self.TH.MUTATIONS = self.mutMap;
+    self.TH.MUTATIONS = self.mutMap;
     self.TH.CNV = self.cnaMap;
     self.TH.EXPRESSION = self.expMap;
     self.TH.SV = self.svMap;
@@ -210,6 +209,9 @@ function PatientViewMutationTable() {
         // });
         //$("[id^='cosmic_']").on('hover', function (e) {
         $('input[type="checkbox"]').change(function() {
+            $("[id^='search_']").val('');
+            MODE=2;
+            self.SORT=true;
             setColumn(this.id);
         });
 
@@ -311,35 +313,47 @@ function PatientViewMutationTable() {
         });
         //~ end myCancerGenome annotation
 
+
+        var timeout = null;
         $("[id^='search_']").keyup(function (event) {
-            event.preventDefault();
+            //event.preventDefault();
             var id = this.id;
-            var value = $(this).val();
-            self.NODE = this.id.split("_")[1];
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+              var value = $(event.target).val();
+              self.NODE = id.split("_")[1];
+              console.log(value);
+              searchData(id, value, self.NODE);
+            }, 1000);
+        });
+
+
+        var searchData = function(id, value, snode){
+            // var id = this.id;
+            // var value = $(this).val();
+            // self.NODE = this.id.split("_")[1];
             var temp=[];
+            console.log(snode);
             if($.trim(value).length>0) {
-                //console.log(self.TABLE[self.NODE]);
-                /*for (var i = 0; i < self.TABLE[self.NODE].length; i++) {
-                    console.log(self.TABLE[self.NODE][i]);
-                    var fi = _.includes(self.TABLE[self.NODE][i], value);
-                    console.log('includes', fi, value);
-                    if (fi) {
-                        temp.push(self.TABLE[self.NODE][i]);
-                    }
-                }*/
-                for (var i = 0; i < self.TABLE[self.NODE].length; i++) {
-                    _.map(self.TABLE[self.NODE][i],function(v){
-                        if(v===value){
-                            temp.push(self.TABLE[self.NODE][i]);
+                for (var i = 0; i < self.TABLE[snode].length; i++) {
+                    _.map(self.TABLE[snode][i], function (v) {
+                        if (v === value) {
+                            console.log('v ', v);
+                            temp.push(self.TABLE[snode][i]);
                         }
                     });
                 }
                 console.log('includes', temp, value);
+
+                if ($.trim(temp).length === 0) temp = self.TABLE[snode];
+                self.SORT = true;
+                MODE = 2;
+                // console.log('temp1 ',temp);
+                // console.log(self.SORT);
+                buildRowsMutation(temp, '1');
             }
-            if($.trim(temp).length===0)temp=self.TABLE[self.NODE];
-            self.SORT = true;
-            buildRowsMutation(temp,'1');
-        });
+        }
+
 
         $("#MUTATIONS_con").on("mouseover", "[id^='cosmic_']",function (e) {
             //$("#MUTATIONS_con td").last().on("hover", "td:eq(last)",function (e) {
@@ -495,7 +509,7 @@ function PatientViewMutationTable() {
     }
 
     var tableDisposer = function(thdata){
-        // console.log('thdata ', thdata , self.NODE);
+        //console.log('thdata ', thdata , self.NODE);
         var data = _.filter(thdata, function(o){
             //console.log(o.subject , self.NODE);
             return o.subject === self.NODE;
@@ -637,10 +651,10 @@ function PatientViewMutationTable() {
         return data.slice(start, end);
     }
     self.showPageBuild = function(data, page, node){
-
         //self.PAGE[node] = page;
         //console.log('pageNode ', self.PAGE[node]);
         self.NODE = node;
+        MODE=2;
         buildTd(data,page);
     }
 
@@ -705,8 +719,8 @@ function PatientViewMutationTable() {
 
             (_includes(self.TH[self.NODE], 'geneNm'))? (txt+='<td align="left"><span font-msmall">' + v.geneNm + '</span></td>') : '';
             (_includes(self.TH[self.NODE], 'geneNm1'))? (txt+='<td align="left"><span font-msmall">' + v.geneNm1 + '</span></td>') : '';
-            (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="left"><span class="font-msmall" style="color:'+getCNAColor(v.hgvspVal)+';white-space: nowrap;"><strong>' + v.hgvspVal + '</strong></span></td>') : '';
             (_includes(self.TH[self.NODE], 'geneExamMthNm'))? (txt+='<td align="center"><span class="font-msmall">' + v.geneExamMthNm + '</span></td>') : '';
+            (_includes(self.TH[self.NODE], 'hgvspVal'))? (txt+='<td align="left"><span class="font-msmall" style="color:'+getCNAColor(v.hgvspVal)+';white-space: nowrap;"><strong>' + v.hgvspVal + '</strong></span></td>') : '';
             // if(_includes(self.TH[self.NODE], 'annotation')) {}
             //var clasz = 'invisible';
             var clasz = 'annotationli';
@@ -995,7 +1009,7 @@ function PatientViewMutationTable() {
     var buildRowsMutation = function(json, dirty) {
         // console.log('buildRowMutation called ',self.ROUNDCNT, json);
 
-        buildTd(json);
+        // buildTd(json);
 
         //var gene = new GenomicOverview(LASTYPOS);
         /*if(!self.ISROUNDMUTATION) {
@@ -1006,16 +1020,22 @@ function PatientViewMutationTable() {
 
         //console.log('self.TABLE[self.NODE].length ', self.NODE);
         var pager = new Pager();
+        console.log('self.node', self.NODE);
         var el = $("#"+self.NODE+"_pageview");
         var tpage = Math.ceil(getMutation().length/10);
         if(!_.isUndefined(dirty)){
-            tpage = Math.ceil(getMutation(json).length/10);
+            // tpage = Math.ceil(getMutation(json).length/10);
+            tpage = Math.ceil(json.length/10);
         }
-        pager.buildPage(1, tpage, el, self, getMutation(), self.NODE);
+        console.log('tpage ', tpage);
+        //pager.buildPage(1, tpage, el, self, getMutation(), self.NODE);
+        pager.buildPage(1, tpage, el, self, json, self.NODE);
+
+        buildTd(json);
 
         if(!self.SORT) {
             //alert(self.ROUNDCNT + ' ' +self.GOALCNT);
-            buildSort();
+            buildSort(json);
         }
         // $("[id^='cosmic_']").trigger('hover');
 
@@ -1034,6 +1054,7 @@ function PatientViewMutationTable() {
         var $table3 = $('#'+targetTable);
         // console.log('$table3 ', $table3);
         var rows = getMutation();
+
         var $headers = $table3.find('thead th').slice(0);
         $headers
             .wrapInner('<a href="#"></a>')
@@ -1053,7 +1074,7 @@ function PatientViewMutationTable() {
             if ($header.hasClass('sorted-asc')) {
                 sortDirection = -1;
             }
-            console.log('rows ',rows);
+            // console.log('rows ',rows);
             rows.sort(function (a, b) {
                 var keyA = a[sortKey];
                 var keyB = b[sortKey];

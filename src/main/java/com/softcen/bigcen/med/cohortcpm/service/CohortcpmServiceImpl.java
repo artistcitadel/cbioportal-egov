@@ -34,26 +34,44 @@ public class CohortcpmServiceImpl extends BigcenMedAbstractServiceImpl implement
 		String tableNM = "P"+paramMap.get("PER_CODE").toString();
 		
 		StringBuffer sbQuery = new StringBuffer();
-		sbQuery.append(SQL.SEPERATE + SQL.SELECT + "RESCH_PAT_ID");
+		sbQuery.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "RESCH_PAT_ID");
 		sbQuery.append(SQL.SEPERATE + SQL.FROM);
 		sbQuery.append(SQL.SEPERATE + "pmsdata." + tableNM);
 		sbQuery.append(SQL.SEPERATE + SQL.WHERE);
 		sbQuery.append(SQL.SEPERATE + "1=1");
 		sbQuery.append(SQL.SEPERATE + SQL.AND + "DELETE_YN = 'N'");
 		
+		StringBuffer sbQuerySpcn = new StringBuffer();
+		sbQuerySpcn.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "RESCH_SPCN_ID");
+		sbQuerySpcn.append(SQL.SEPERATE + SQL.FROM);
+		sbQuerySpcn.append(SQL.SEPERATE + "pmsdata." + tableNM);
+		sbQuerySpcn.append(SQL.SEPERATE + SQL.WHERE);
+		sbQuerySpcn.append(SQL.SEPERATE + "1=1");
+		sbQuerySpcn.append(SQL.SEPERATE + SQL.AND + "DELETE_YN = 'N'");
+		
 		StringBuffer sbQueryAll = new StringBuffer();
-		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + "RESCH_PAT_ID , DELETE_YN" );
+		sbQueryAll.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "RESCH_PAT_ID , RESCH_SPCN_ID , DELETE_YN" );
 		sbQueryAll.append(SQL.SEPERATE + SQL.FROM);
 		sbQueryAll.append(SQL.SEPERATE + "pmsdata." + tableNM);
 		sbQueryAll.append(SQL.SEPERATE + SQL.WHERE);
 		sbQueryAll.append(SQL.SEPERATE + "1=1");
+		
+		StringBuffer sbQueryAllGroupBy = new StringBuffer();
+		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.SELECT + SQL.DISTINCT + "RESCH_PAT_ID , RESCH_SPCN_ID , DELETE_YN" );
+		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.FROM);
+		sbQueryAllGroupBy.append(SQL.SEPERATE + "pmsdata." + tableNM);
+		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.WHERE);
+		sbQueryAllGroupBy.append(SQL.SEPERATE + "1=1");
+		sbQueryAllGroupBy.append(SQL.SEPERATE + SQL.GROUP_BY + "RESCH_PAT_ID");
 		
 		paramMap.put("CohortTableQuery", sbQuery);
 		
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("CohortTableQuery", sbQuery);
 		resultMap.put("CohortTableAllQuery", sbQueryAll);
-
+		resultMap.put("CohortTableSpcnQuery",sbQuerySpcn);
+		resultMap.put("CohortTableAllGroupByQuery",sbQueryAllGroupBy);
+		
 		resultMap.put("selectCohortTable", cohortcpm.selectCohortTable(paramMap));
 		
 		return resultMap;

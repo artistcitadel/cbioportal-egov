@@ -11,6 +11,29 @@ import com.softcen.bigcen.cmm.dao.BigcenMedAbstractMapperDAO;
 @Repository("dashboardDAO")
 public class DashboardDAO extends BigcenMedAbstractMapperDAO{
 	
+	
+	public Object selectMycohortContFilter(Map<Object, Object> paramMap){
+		return sqlSession.selectList("dashboard.selectMycohortContFilter",paramMap);
+	}
+	
+	public void deleteMycohortCont(Map<Object, Object> paramMap) {
+		sqlSession.delete("dashboard.deleteMycohortCont", paramMap);
+	}
+	public void deleteMycohortContChart(Map<Object, Object> paramMap) {
+		sqlSession.delete("dashboard.deleteMycohortContChart", paramMap);
+	}
+	public void deleteMycohortContFilter(Map<Object, Object> paramMap) {
+		sqlSession.delete("dashboard.deleteMycohortContFilter", paramMap);
+	}
+	public void deleteMycohortContFilterDetl(Map<Object, Object> paramMap) {
+		sqlSession.delete("dashboard.deleteMycohortContFilterDetl", paramMap);
+	}
+	
+	
+	public void updateDashboardTabNo(Map<Object, Object> paramMap) {
+		sqlSession.update("dashboard.updateDashboardTabNo", paramMap);
+	}
+	
 	public Object selectSavedCohortList(Map<Object, Object> paramMap){
 		return sqlSession.selectOne("dashboard.selectSavedCohortList",paramMap);
 	}

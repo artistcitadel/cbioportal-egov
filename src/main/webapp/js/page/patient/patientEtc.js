@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
-    console={};
-    console.log = function(){};
+    // console={};
+    // console.log = function(){};
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -15,9 +15,16 @@ $(document).ready(function () {
     var PINFO;
 
     $("#pat_inquiry").on("click",function(){
-        var v = $.trim(document.patientsearchform.search_PAT.value);
+        var v = $.trim(document.patientsearchform.search1_PAT.value);
         if(v.length!=10){alert('10자리수를 입력하세요');return;}
-        document.location.href='/pmp/patient/patientView?RESCH_PAT_ID='+v;
+        // var q = QUERY;
+        // var s = sampleId;
+        // document.location.href='/pmp/patient/patientView?RESCH_PAT_ID='+v+'&QUERY='+q+'&sampleId='+s;
+        document.pform.RESCH_PAT_ID.value=v;
+        document.pform.patientId.value=v;
+        console.log(document.pform.RESCH_PAT_ID.value);
+        document.pform.action='/pmp/patient/patientView';
+        document.pform.submit();
     });
 
     $("#cview").on("click",function(){
