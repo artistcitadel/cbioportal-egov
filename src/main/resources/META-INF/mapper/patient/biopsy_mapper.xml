@@ -5,7 +5,7 @@
 
 
 <mapper namespace="patient">
-    <select id="selectBiopsyList" resultType="com.softcen.bigcen.med.patient.vo.Biopsy">
+    <select id="selectBiopsyList" resultType="com.reactkorea.patient.vo.Biopsy">
       select 'BIOPSY' subject,
        'biopsy' id,
        'biopsy' name,
@@ -17,7 +17,7 @@
        IFNULL(a.DP_SPCN_LOC_CD,'Unknwon') dpSpcnLocCd -- 병리검체위치코드
 from pmsdev.SSSPMPSCN a -- 병리검체의뢰기본
 join pmsdev.SSSPMORDR b on a.ORDR_NO = b.ORDR_NO and a.EXAM_SN = b.EXAM_SN
-where b.RESCH_PAT_ID = #{patientId}
-
+where b.RESCH_PAT_ID != #{patientId}
+limit 500
     </select>
 </mapper>

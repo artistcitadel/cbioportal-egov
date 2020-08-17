@@ -1,7 +1,0 @@
-https://jsfiddle.net/eu81273/a786bsx1/
-https://cancerberosgx.github.io/raphaeljs-tutorial/
-https://github.com/DmitryBaranovskiy/raphaeljs.com/blob/master/index.html
-https://books.google.co.kr/books?id=CUgjCAAAQBAJ&pg=PA148&lpg=PA148&dq=raphaeljs+timeline&source=bl&ots=nIk-0M4Xqz&sig=ACfU3U1WVWQk9SYZKlhNRgpk2hcqJw2iTA&hl=ko&sa=X&ved=2ahUKEwip17u2sdjlAhWY-mEKHSXqB4Y4ChDoATAPegQICRAB#v=onepage&q=raphaeljs%20timeline&f=false
-https://joosten-industries.nl/2015/07/24/a-blinking-light-with-raphael-js/
-https://www.google.com/search?q=raphaeljs+line+reduction&newwindow=1&sxsrf=ACYBGNTraH0ZpSIuY9DonU8hjslvxLKKmA:1573139241513&ei=KTPEXYTxHoW6wAOKxo_gCg&start=10&sa=N&ved=0ahUKEwjEqbCtsNjlAhUFHXAKHQrjA6wQ8tMDCJMB&biw=1272&bih=959
-https://github.com/wout/raphael-svg-import

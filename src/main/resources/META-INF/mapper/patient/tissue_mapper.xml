@@ -5,7 +5,7 @@
 
 
 <mapper namespace="patient">
-    <select id="selectTissueList" resultType="com.softcen.bigcen.med.patient.vo.Tissue">
+    <select id="selectTissueList" resultType="com.reactkorea.patient.vo.Tissue">
        SELECT DISTINCT 'SPECIMEN' subject,
        '1' pid,
        'TISSUE'  id,
@@ -17,7 +17,7 @@
        IFNULL(SPCN_NO,'Unknwon') spcnNo,  -- 검체번호,
        SPCN_EXAM_ORDR_TYP_CD spcnExamOrdrTypCd -- 검체검사처방유형코드
 FROM SSSPMORDR  -- 검체검사처방기본
-WHERE RESCH_PAT_ID = #{patientId}
-
+WHERE RESCH_PAT_ID != #{patientId}
+limit 1500
     </select>
 </mapper>

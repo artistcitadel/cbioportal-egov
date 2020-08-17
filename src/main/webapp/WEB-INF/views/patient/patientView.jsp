@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<% String docRoot = "/pmp/"; %>
+<% String docRoot = "/"; %>
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="/WEB-INF/views/inc_head_top.jsp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/patient.css" type="text/css" />
@@ -18,6 +19,7 @@
             font-weight: 400;
             font-size: 0.9rem;
         }
+        .label-default{background-color:#d2d6de;color:#444}
     </style>
 </head>
 
@@ -42,11 +44,11 @@
             <a id="cview" href="#" class="thead" style="display:none;"><small style="color:#3786C2;">Clinical Data</small></a>
             <a id="sview" href="#" class="thead" style="display:none;"><small style="color:#3786C2;">유사환자</small></a>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-home"></i> </a></li>
-            <li><a href="#">Patient</a></li>
-            <li class="active">Patient View</li>
-        </ol>
+        <%--<ol class="breadcrumb">--%>
+            <%--<li><a href="#"><i class="fa fa-home"></i> </a></li>--%>
+            <%--<li><a href="#">Patient</a></li>--%>
+            <%--<li class="active">Patient View</li>--%>
+        <%--</ol>--%>
     </section>
 
 
@@ -62,7 +64,7 @@
             <div id="container-fluid">
                 <%--<div class="team">
                     <div class="member">
-                        <img class="avatar" src="/pmp/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
+                        <img class="avatar" src="/js/page/patient/images/user.png" alt="" class="img-circle" width="90" height="90">
                         <div class="name" id="patientage"></div>
                         <div class="location">&lt;%&ndash;Seoul&ndash;%&gt;</div>
                         <p class="bio">
@@ -525,12 +527,12 @@
 
                     <hr/>
 
-                <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
-                    <span style="font-size:14px;"><%--Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;--%>
-                    <%--<img src="/pmp/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>--%>
-                        <strong>Asan Cancer Center</strong>
-                    </span>
-                </div>
+                <%--<div class="box-footer text-align-center Footer-module ttt" style="display:none;">--%>
+                    <%--<span style="font-size:14px;">&lt;%&ndash;Inspired by and Kopied by</span> &lt;%&ndash;Memorial Sloan Kettering CancerCenter&ndash;%&gt;&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<img src="/js/page/patient/images/msk-logo-fff-sm.png" style="height:50px"/>&ndash;%&gt;--%>
+                        <%--<strong>Asan Cancer Center</strong>--%>
+                    <%--</span>--%>
+                <%--</div>--%>
             </div>
         </div>
     </div>
@@ -644,7 +646,7 @@
         </div>
     </div>
 
-<form name="pform" id="pform" method="post" action="/pmp/patient/patientView">
+<form name="pform" id="pform" method="post" action="/patient/patientView">
     <input type="hidden" name="patients" id="patients" value="${patients}"/>
     <input type="hidden" name="query" id="QUERY" value="${QUERY}"/>
     <input type="hidden" name="RESCH_PAT_ID" id="RESCH_PAT_ID" value="${RESCH_PAT_ID}"/>
@@ -854,11 +856,11 @@
         return dat;
     }
 
-    $('#confirm').modal({
-        show: false,
-        backdrop: 'static',
-        keyboard: true
-    });
+    // $('#confirm').modal({
+    //     show: false,
+    //     backdrop: 'static',
+    //     keyboard: true
+    // });
 
 </script>
 

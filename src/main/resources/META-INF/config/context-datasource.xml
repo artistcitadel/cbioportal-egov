@@ -11,10 +11,10 @@
                         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd ">
 
 	<context:annotation-config/>
-	<context:component-scan base-package="com.softcen"/>
+	<context:component-scan base-package="com.reactkorea"/>
 
 	<bean id="jdbcProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:bigcen.properties" />
+		<property name="location" value="classpath:reactkorea.properties" />
 	</bean>
 
 
@@ -23,24 +23,25 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
 		<property name="configLocation"  value="classpath:/configuration/mybatis-config.xml" />
-		<property name="typeAliasesPackage" value="com.softcen.bigcen.med.patient"/>
+		<property name="typeAliasesPackage" value="com.reactkorea"/>
 	</bean>
-	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<!--<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${DB_LOG4JDBC_DRIVER}"/>
 		<property name="url" value="${DB_LOG4JDBC_URL}" />
 		<property name="username" value="${DB_COMMON_USER_ID}"/>
 		<property name="password" value="${DB_COMMON_USER_PWD}"/>
 		<property name="defaultAutoCommit" value="false" />
 	</bean>
-	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-		<constructor-arg ref="dataSourceSpied" />
-		<property name="logFormatter">
-			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
-				<property name="loggingType" value="MULTI_LINE" />
-				<property name="sqlPrefix" value=""/>
-			</bean>
-		</property>
-	</bean>
+	<!--<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">-->
+		<!--<constructor-arg ref="dataSourceSpied" />-->
+		<!--<property name="logFormatter">-->
+			<!--<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">-->
+				<!--<property name="loggingType" value="MULTI_LINE" />-->
+				<!--<property name="sqlPrefix" value=""/>-->
+			<!--</bean>-->
+		<!--</property>-->
+	<!--</bean>-->
 	<!-- ###################################################-->
 	<!-- DATASOURCE START									-->
 	<!-- ###################################################-->
@@ -57,20 +58,6 @@
 
 	</bean>
 
-	<bean id="dataSource-VerticaA" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${DB_VERTICA_DRIVER}" />
-		<property name="url" value="${DB_VERTICA_URL}" />
-		<property name="username" value="${DB_VERTICA_USER_ID}" />
-		<property name="password" value="${DB_VERTICA_USER_PWD}" />
-
-		<!-- validation check -->
-		<!-- select 1 : vertica -->
-		<property name="validationQuery" value="${DB_SELECT_CHECK}"/>
-		<property name="testWhileIdle" value="true"/>
-		<property name="timeBetweenEvictionRunsMillis" value="7200000"/>
-	</bean>
-
-
 	<!-- ###################################################-->
 	<!-- DATASOURCE LOG START									-->
 	<!-- ###################################################-->
@@ -83,16 +70,7 @@
               </bean>
           </property>
       </bean>
-
-      <bean id="dataSource-VerticaA-log" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-          <constructor-arg ref="dataSource-VerticaA" />
-          <property name="logFormatter">
-              <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
-                  <property name="loggingType" value="MULTI_LINE" />
-                  <property name="sqlPrefix" value="SQL         :  "/>
-              </bean>
-          </property>
-      </bean> -->
+     -->
 
 
 
@@ -106,24 +84,8 @@
 		<property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
 	</bean>
 
-	<bean id="sqlSessionFactory_verticaA" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- <property name="dataSource" ref="dataSource-VerticaA-log" /> -->
-		<property name="dataSource" ref="dataSource-VerticaA" />
-		<property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
-	</bean>
-
-
 	<bean id="sqlSession-common" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory-common"/>
 	</bean>
-
-	<bean id="sqlSession-verticaA" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory_verticaA"></constructor-arg>
-	</bean>
-
-
-
-
-
 
 </beans>

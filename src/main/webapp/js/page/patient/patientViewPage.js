@@ -13,7 +13,7 @@ function PatientView(){
 
     function setPatientDescription(json){
         console.log('setPatientDescription', json);
-        if(json.length<1)return;
+        if(json.length<1){$("#patientage").html('홍길동');return;}
         // console.log('patientDesc ', json);
         var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
         var sex = json[0].sex === 'M' ? 'Male' :'Female';
@@ -42,7 +42,8 @@ function PatientView(){
         }
 
         AGE = json[0].age;
-        if(json.length>1)AGE=json[1].age;
+        var aage = '';
+        if( json.length>1 && json[1].age>0 ){AGE=json[1].age; aage= AGE+' years old ';}
         SEX = sex;
         CANCERTYPE = ctype;
         CANCERTYPEDETAIL = cancerTypeDetail;
@@ -50,7 +51,7 @@ function PatientView(){
 
         // var txt = json[0].age + ' years old, ' + sex + ', ' + cancerTypeDetail + ', ' + cancerType + ', '+cancerMode;
         cancerType = "<span style='color:"+onco_colors[cancerType]+";'>"+cancerType+"</span>";
-        var txt = json[0].age + ' years old ' + sex + ' ' + cancerType;
+        var txt = aage + sex + ' ' + cancerType;
         // console.log('pat info ', txt);
         // $('.bio').html(txt);
         var pid = '<span id="patienthead" style="color:#3786C2;cursor:default">'+json[0].patientId+'</span>';

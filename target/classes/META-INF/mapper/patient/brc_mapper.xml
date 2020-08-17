@@ -5,7 +5,7 @@
 
 
 <mapper namespace="patient">
-    <select id="selectBrcList" resultType="com.softcen.bigcen.med.patient.vo.Brc">
+    <select id="selectBrcList" resultType="com.reactkorea.patient.vo.Brc">
       SELECT
        'SPECIMEN' subject,
        '1' pid,
@@ -15,7 +15,8 @@
        BIRC_ID  spcnNo,
        IFNULL(CELL_ORGAN_DIV_CD,'Unknown') cellCd,
        IFNULL(DTL_ORGAN_CD,'Unknown') cellSpecCd,
-       aa.KOR_NM  operator,
+      -- aa.KOR_NM  operator,
+       ' ' operator,
        CANCER_TISS_RSD_QT tt,
        NORL_TISS_RSD_QT ntt,
        PLSM_RSD_QT plasma,
@@ -23,9 +24,9 @@
        BDFL_RSD_QT fluid,
        URN_RSD_QT urine
 FROM pmsdev.SATSMBASE a
-JOIN pmsdev.ZZANMUSER aa on a.OPSR_EMPNO =aa.USR_ID
+-- JOIN pmsdev.ZZANMUSER aa on a.OPSR_EMPNO =aa.USR_ID
 WHERE 1=1
-AND a.RESCH_PAT_ID = #{patientId}
-
+AND a.RESCH_PAT_ID != #{patientId}
+limit 1300
     </select>
 </mapper>

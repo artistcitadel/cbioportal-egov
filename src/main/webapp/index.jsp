@@ -7,4 +7,4 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 
-<jsp:forward page="/login/loginForm"/>
+<jsp:forward page="/patient/patientView"/>

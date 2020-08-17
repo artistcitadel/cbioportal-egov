@@ -214,7 +214,7 @@ function Annotation() {
                 '</div>\n' +
                 '<div class="footer" style="background-color: white;">\n' +
                 '<a href="https://oncokb.org/gene/TSC2/KCTD5-TSC2 Fusion" target="_blank">\n' +
-                '          <img src="/pmp/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">\n' +
+                '          <img src="/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">\n' +
                 '</a>\n' +
                 '<span class="pull-right feedback">\n' +
                 //'       <button class="btn btn-default btn-sm btn-xs">Feedback</button>\n' +
@@ -353,7 +353,7 @@ function Annotation() {
                 '    </span>\n' +
                 '      <div class="footer" style="background-color: white;">\n' +
                 '        <a href="https://oncokb.org/gene/TSC2/KCTD5-TSC2 Fusion" target="_blank">\n' +
-                '          <img src="/pmp/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">\n' +
+                '          <img src="/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">\n' +
                 '       </a>\n' +
                 '       <span class="pull-right feedback">\n' +
                 // '       <button class="btn btn-default btn-sm btn-xs">Feedback</button>\n' +

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<% String docRoot = "/pmp/"; %>
+<% String docRoot = "/"; %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,7 +119,7 @@
 	<script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/notify.min.js"></script>
 
 <script>
-  var gvServer = gvSERVER;
+  var gvServer = '/';
 </script>
 </head>
 <%--<body class="hold-transition skin-black sidebar-mini fixed ">--%>

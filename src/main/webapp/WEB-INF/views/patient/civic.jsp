@@ -14,7 +14,7 @@
 
 
 <span class="annotation-item">
-  <img width="14" height="14" src="/pmp/js/page/patient/images/civic-logo.png"  alt='Civic Variant Entry'  />
+  <img width="14" height="14" src="/js/page/patient/images/civic-logo.png"  alt='Civic Variant Entry'  />
 </span>
 
 

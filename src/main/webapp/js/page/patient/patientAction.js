@@ -5,8 +5,8 @@
 function Action() {
     var self = this;
     var TIMEOUT = 50000;
-    var gvSERVER  = gvServer;
-    gvSERVER = '/pmp';
+    var gvSERVER  = '';
+    // gvSERVER = '';
     self.getPatientList = function (props) {
         $.ajax({
             type: "get",

@@ -171,7 +171,7 @@
     </span>
       <div class="footer" style="background-color: white;">
         <a href="https://oncokb.org/gene/TSC2/KCTD5-TSC2 Fusion" target="_blank">
-          <img src="/pmp/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">
+          <img src="/js/page/patient/images/oncokb_logo.png" class="oncokb-logo" alt="OncoKB">
        </a>
        <span class="pull-right feedback">
        <%--<button class="btn btn-default btn-sm btn-xs">Feedback</button>--%>

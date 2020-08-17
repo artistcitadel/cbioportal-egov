@@ -5,7 +5,7 @@
 
 
 <mapper namespace="patient">
-    <select id="selectSugeryList" resultType="com.softcen.bigcen.med.patient.vo.Sugery">
+    <select id="selectSugeryList" resultType="com.reactkorea.patient.vo.Sugery">
        select 'SURGERY' subject,
        'surgery' id,
        'surgery' name,
@@ -21,10 +21,10 @@
       on b.INHOSP_OP_CD = c.INHOSP_OP_CD
     left outer join pmsdev.OPSMCDEPT d -- 집도과코드
       on a.OPDP_CD = d.OPDP_CD
-    where a.RESCH_PAT_ID = #{patientId}
+    where a.RESCH_PAT_ID != #{patientId}
         <![CDATA[
     and CAST(a.OP_DT AS UNSIGNED) > 19900101
     ]]>
-
+limit 1500
     </select>
 </mapper>

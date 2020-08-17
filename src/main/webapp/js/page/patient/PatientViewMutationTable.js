@@ -1115,7 +1115,7 @@ var null2str = function(dat){
 
 var getCivicEl = function(civicid){
     var txt ='<span class="annotation-item">\n' +
-        '<img id="'+civicid+'" width="14px" height="14px" src="/pmp/js/page/patient/images/civic-logo.png"  alt=\'Civic Variant Entry\'  />\n' +
+        '<img id="'+civicid+'" width="14px" height="14px" src="/js/page/patient/images/civic-logo.png"  alt=\'Civic Variant Entry\'  />\n' +
         '</span>';
     return txt;
 }
@@ -1125,7 +1125,7 @@ var getHotspot = function(hotspotId){
         '    <img id="'+hotspotId+'"  \n' +
         '        width="14px" ' +
         '        height="14px" \n' +
-        '        src="/pmp/js/page/patient/images/3d-hotspots.svg" \n' +
+        '        src="/js/page/patient/images/3d-hotspots.svg" \n' +
         '        alt=\'Recurrent Hotspot Symbol\'\n' +
         '            />\n' +
         '            </span>';
@@ -1135,7 +1135,7 @@ var getHotspot = function(hotspotId){
 var getUserGenome = function(id){
     var txt='';
     txt+=' <span class="annotation-item mcg">\n' +
-        '  <img id='+id+' width="14px" height="14px" src="/pmp/js/page/patient/images/mcg_logo.png" alt="My Cancer Genome Symbol" />\n' +
+        '  <img id='+id+' width="14px" height="14px" src="/js/page/patient/images/mcg_logo.png" alt="My Cancer Genome Symbol" />\n' +
         '  </span>';
     return txt;
 }

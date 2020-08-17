@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<% String docRoot = "/pmp/"; %>
+<% String docRoot = "/"; %>
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="/WEB-INF/views/inc_head_top.jsp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/patient.css" type="text/css" />
@@ -18,6 +19,7 @@
             font-weight: 400;
             font-size: 0.9rem;
         }
+        .label-default{background-color:#d2d6de;color:#444}
     </style>
 </head>
 
@@ -32,11 +34,11 @@
             <small style="color:#000">Clinical Data</small>
             <a id="sview" href="#"><small style="color:#3786C2;">유사환자</small></a>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-home"></i> </a></li>
-            <li><a href="#">Patient</a></li>
-            <li class="active">Patient View</li>
-        </ol>
+        <%--<ol class="breadcrumb">--%>
+            <%--<li><a href="#"><i class="fa fa-home"></i> </a></li>--%>
+            <%--<li><a href="#">Patient</a></li>--%>
+            <%--<li class="active">Patient View</li>--%>
+        <%--</ol>--%>
     </section>
 
 
@@ -193,14 +195,14 @@
         </div>
     </div>
 
-    <form name="dform" id="dform" method="post" action="/pmp/patient/patientView">
+    <form name="dform" id="dform" method="post" action="/patient/patientView">
         <input type="hidden" name="patients" value=""/>
         <input type="hidden" name="pages"  value=""/>
         <input type="hidden" name="patientId"  value=""/>
         <input type="hidden" name="resch_pat_id" value=""/>
     </form>
 
-    <form name="pform" id="pform" method="post" action="/pmp/patient/patientResemble">
+    <form name="pform" id="pform" method="post" action="/patient/patientResemble">
 
         <input type="hidden" name="patients" id="patients" value=""/>
         <input type="hidden" name="pages" id="pages" value=""/>

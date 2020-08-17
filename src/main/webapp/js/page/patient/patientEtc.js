@@ -23,7 +23,7 @@ $(document).ready(function () {
         document.pform.RESCH_PAT_ID.value=v;
         document.pform.patientId.value=v;
         console.log(document.pform.RESCH_PAT_ID.value);
-        document.pform.action='/pmp/patient/patientView';
+        document.pform.action='/patient/patientView';
         document.pform.submit();
     });
 

@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<% String docRoot = "/pmp/"; %>
+<% String docRoot = "/"; %>
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="/WEB-INF/views/inc_head_top.jsp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/patient.css" type="text/css" />
@@ -32,11 +33,11 @@
             <a id="cview" href="#"><small style="color:#3786C2;">Clinical Data</small></a>
             <small style="color:#000;">유사환자</small>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-home"></i> </a></li>
-            <li><a href="#">Patient</a></li>
-            <li class="active">Patient View</li>
-        </ol>
+        <%--<ol class="breadcrumb">--%>
+            <%--<li><a href="#"><i class="fa fa-home"></i> </a></li>--%>
+            <%--<li><a href="#">Patient</a></li>--%>
+            <%--<li class="active">Patient View</li>--%>
+        <%--</ol>--%>
     </section>
 
 
@@ -161,11 +162,11 @@
 
                 <hr />
 
-                <div class="box-footer text-align-center Footer-module ttt" style="display:none;">
-                    <span style="font-size:14px;">
-                        <strong>Asan Cancer Center</strong>
-                    </span>
-                </div>
+                <%--<div class="box-footer text-align-center Footer-module ttt" style="display:none;">--%>
+                    <%--<span style="font-size:14px;">--%>
+                        <%--<strong>Asan Cancer Center</strong>--%>
+                    <%--</span>--%>
+                <%--</div>--%>
             </div>
         </div>
     </div>
@@ -217,14 +218,14 @@
         </div>
     </div>
 
-    <form name="dform" id="dform" method="post" action="/pmp/patient/patientView">
+    <form name="dform" id="dform" method="post" action="/patient/patientView">
         <input type="hidden" name="patients" value=""/>
         <input type="hidden" name="pages"  value=""/>
         <input type="hidden" name="patientId"  value=""/>
         <input type="hidden" name="resch_pat_id" value=""/>
     </form>
 
-    <form name="pform" id="pform" method="post" action="/pmp/patient/patientSample">
+    <form name="pform" id="pform" method="post" action="/patient/patientSample">
         <input type="hidden" name="patients" id="patients" value=""/>
         <input type="hidden" name="pages" id="pages" value=""/>
         <input type="hidden" name="patientId" id="patientId" value=""/>
