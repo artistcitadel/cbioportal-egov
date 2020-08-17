@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="<c:url value="/bootstrap/css/bootstrap.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/adminLTE/css/AdminLTE.min.css" />">
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/css/tooltipster.bundle.min.css" type="text/css" />
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css" type="text/css" />
     <link rel="stylesheet" href="<%=docRoot%>js/page/patient/plugin/civic/civicCard.css" type="text/css" />
@@ -80,6 +81,7 @@
     </style>
     <script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jquery-ui-1.8.13.custom.min.js"></script>
+    <script src="<c:url value="/bootstrap/js/bootstrap.min.js" />"></script>
     <script type='text/javascript' src="<%=docRoot%>js/page/patient/plugin/popper.min.js"></script>
     <%--<script type="text/javascript" src="<%//docRoot%>js/page/patient/plugin/datatables/datatables.min.js"></script>--%>
     <script type="text/javascript" src="<%=docRoot%>js/page/patient/plugin/jbox/jbox.all.min.js"></script>

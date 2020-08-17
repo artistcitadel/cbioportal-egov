@@ -222,6 +222,7 @@ limit 5
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
         </if>
+        LIMIT 10
         ) BAS
         GROUP BY
         BAS.GENE_NM
@@ -282,23 +283,21 @@ limit 5
         LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
         ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
         WHERE 1=1
-        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        AND GESP.RESCH_PAT_ID != #{patientId}       -- 연구환자ID (조회조건)
         AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
         ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
         ) SEQ
         ON GEX.GENE_EXAM_SPCN_ID = SEQ.GENE_EXAM_SPCN_ID
         WHERE 1=1
-        AND GEX.GENE_READ_RSLT_VAL = 'Positive'  -- 병리검사유전자판독결과값
+      --  AND GEX.GENE_READ_RSLT_VAL = 'Positive'  -- 병리검사유전자판독결과값
         AND GEX.RESCH_PAT_ID != #{patientId}  -- 연구환자ID (조회조건)
-        <if test="sampleId != null and sampleId != ''">
-            AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
-        </if>
+
         ) BAS
         GROUP BY
         BAS.GENE_NM
         , BAS.GENE_EXAM_MTH_NM
-
+limit 5
     </select>
 
     <select id="selectPatientSVList" resultType="com.reactkorea.patient.vo.PatientMut">
@@ -372,7 +371,7 @@ limit 5
         LEFT OUTER JOIN pmsdev.SSSPMPSCN PSCN       -- 병리검체의뢰기본
         ON PERC.SPCN_GRP_NO = PSCN.SPCN_GRP_NO    -- 검체그룹번호
         WHERE 1=1
-        AND GESP.RESCH_PAT_ID = #{patientId}       -- 연구환자ID (조회조건)
+        AND GESP.RESCH_PAT_ID != #{patientId}       -- 연구환자ID (조회조건)
         AND GESP.GENE_READ_RSLT_VAL = 'Positive'   -- 유전자판독결과값
         ORDER BY PSCN.SPCN_COLEC_DT, PSCN.SPCN_COLEC_DT, GESP.GENE_EXAM_SPCN_ID ) SPC
         , ( SELECT @ROWNUM := 0 ) RNM
@@ -383,14 +382,14 @@ limit 5
         FROM ( SELECT RESCH_PAT_ID
         , GROUP_CONCAT(PAL.ONCOTREE_CD ORDER BY PAL.CANCER_REG_NO, PAL.CANCER_REG_DT SEPARATOR '/') AS OCT_CD  -- Oncotree 암종코드
         FROM pmsdev.MSMAMCAMN PAL        -- 암등록관리기본
-        WHERE RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+        WHERE RESCH_PAT_ID != #{patientId} -- 연구환자ID (조회조건)
         AND VALD_YN = 'Y'
         GROUP BY RESCH_PAT_ID ) ONCO
         ) CAN
         ON GSV.RESCH_PAT_ID = CAN.RESCH_PAT_ID
         WHERE 1=1
         AND GSV.GENE_READ_RSLT_VAL = 'Positive'  -- 유전자판독결과값
-        AND GSV.RESCH_PAT_ID = #{patientId} -- 연구환자ID (조회조건)
+        AND GSV.RESCH_PAT_ID != #{patientId} -- 연구환자ID (조회조건)
         <if test="sampleId != null and sampleId != ''">
             AND SEQ.GENE_EXAM_SPCN_SEQ = #{sampleId}
         </if>
@@ -399,7 +398,7 @@ limit 5
         BAS.GENE_NM1
         , BAS.GENE_NM2
         , BAS.GENE_EXAM_MTH_NM
-
+limit 5
     </select>
 
     <select id="selectPatientMuCosmic" resultType="com.reactkorea.patient.vo.PatientMut">

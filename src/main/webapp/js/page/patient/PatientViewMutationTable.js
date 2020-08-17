@@ -20,7 +20,7 @@ function PatientViewMutationTable() {
     self.GOALCNT = self.NODES.length-1;
     //self.GOALCNT = 2;
     self.QID = ['selectPatientMuList','selectPatientCNAList','selectPatientEXPRESSIONList','selectPatientSVList']
-
+    self.QID1 = ['/json/mut.json','/json/cna.json','/json/exp.json','/json/sv.json']
     self.mutMap = [
         {id:'geneExamSpcnSeq', name:'TUMORS', show:true},
         {id:'geneNm',name:'GENE', show:true},
@@ -53,7 +53,7 @@ function PatientViewMutationTable() {
 
     self.expMap = [
         {id:'geneNm', name:'GENE', show:true},
-        {id:'annotation', name:'ANNOTATION',show:false},
+        // {id:'annotation', name:'ANNOTATION',show:false},
         {id:'geneExamMthNm', name:'METHODS',show:false},
         {id:'ptegGeneReadRsltVal', name:'EXP_RESULT',show:false},
         {id:'gnex', name:'EXP_VALUE',show:false},
@@ -472,6 +472,12 @@ function PatientViewMutationTable() {
         ds_cond.callback = mutation_disposer;
         action.selectPatientMuList(ds_cond);
     }
+    getMutationList1 = function(qid) {
+        var ds_cond = {};
+        ds_cond.data = {"url": qid, "patientId": PATIENTID, "sampleId": SAMPLEID, "query" : QUERY};
+        ds_cond.callback = mutation_disposer;
+        action.selectPatientMuList1(ds_cond);
+    }
 
     var getMutationCosmic = function(prop) {
         var ds_cond = {};
@@ -493,7 +499,9 @@ function PatientViewMutationTable() {
 
     var roundRobin = function(){
         self.NODE = self.NODES[self.ROUNDCNT];
-        getMutationList(self.QID[self.ROUNDCNT]);
+         // getMutationList(self.QID[self.ROUNDCNT]);
+        console.log('self.ROUNDCNT',self.ROUNDCNT);
+        getMutationList1(self.QID1[self.ROUNDCNT]);
     }
     var mutation_disposer = function(json) {
         // console.log('mutation_disposer ', self.NODE,json);
@@ -726,52 +734,54 @@ function PatientViewMutationTable() {
             var clasz = 'annotationli';
             var key = v.geneNm+'_'+astoempty(v.hgvspVal);
             //~annotation column start
-            txt+='<td><div data-test="samples-cell" style="position: relative;">\n' +
-                '   <ul class="list-inline list-unstyled" style="display:inline-flex;margin-bottom: 0px;">\n';
-            //~annotation column
-            var annotationliid='oann_'+key;
-            txt += '<li id="'+annotationliid+'">\n' ;
-            txt+='<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
-                '<i class="fa fa-spinner fa-pulse"></i>\n' +
-                '</span>';
-            txt+='</li>\n';
-            //~annotation column
+            if(self.NODE!=='EXPRESSION') {
+                txt += '<td><div data-test="samples-cell" style="position: relative;">\n' +
+                    '   <ul class="list-inline list-unstyled" style="display:inline-flex;margin-bottom: 0px;">\n';
+                //~annotation column
+                var annotationliid = 'oann_' + key;
+                txt += '<li id="' + annotationliid + '">\n';
+                txt += '<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
+                    '<i class="fa fa-spinner fa-pulse"></i>\n' +
+                    '</span>';
+                txt += '</li>\n';
+                //~annotation column
 
-            //~civic column
-            var civicliid='ocivic_'+key;
-            txt += '<li id="'+civicliid+'">\n' ;
-            txt+='<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
-                '<i class="fa fa-spinner fa-pulse"></i>\n' +
-                '</span>';
-            txt+='</li>\n';
-            //~civic column
+                //~civic column
+                var civicliid = 'ocivic_' + key;
+                txt += '<li id="' + civicliid + '">\n';
+                txt += '<span class="annotation-module_annotation-item annotation-module_annotation-item-load pull-left">\n' +
+                    '<i class="fa fa-spinner fa-pulse"></i>\n' +
+                    '</span>';
+                txt += '</li>\n';
+                //~civic column
 
-            //~my cancer genome
-            var hasCancerGenome =_.findIndex(MYCANCERGENOME, ['hugoGeneSymbol',v.geneNm]);
-            var userGenomeData = [];
-            var mycancergenometxt='<span class="annotation-item mcg"></span>';
-            if(hasCancerGenome!=-1){
-                mycancergenometxt=getUserGenome('my_'+key+'');
+                //~my cancer genome
+                var hasCancerGenome = _.findIndex(MYCANCERGENOME, ['hugoGeneSymbol', v.geneNm]);
+                var userGenomeData = [];
+                var mycancergenometxt = '<span class="annotation-item mcg"></span>';
+                if (hasCancerGenome != -1) {
+                    mycancergenometxt = getUserGenome('my_' + key + '');
+                }
+                txt += '  <li>\n';
+                txt += mycancergenometxt;
+                txt += '    </li>\n';
+                //~my cancer genome
+
+                //~hot spot
+                var isHot = _.includes(HOTSPOT, v.geneNm);
+                var hotspottxt = '<span class="annotation-item chang_hotspot"></span>';
+                if (isHot) {
+                    hotspottxt = getHotspot('hot_' + key + '');
+                }
+                txt += '  <li>\n';
+                txt += hotspottxt;
+                txt += '    </li>\n';
+                //~hot spot
+
+                txt += '  </ul>\n' +
+                    '</div>' +
+                    '</td>';
             }
-            txt += '  <li>\n' ;
-            txt+=mycancergenometxt;
-            txt+='    </li>\n';
-            //~my cancer genome
-
-            //~hot spot
-            var isHot = _.includes(HOTSPOT, v.geneNm);
-            var hotspottxt='<span class="annotation-item chang_hotspot"></span>';
-            if(isHot){
-                hotspottxt=getHotspot('hot_'+key+'');
-            }
-            txt += '  <li>\n' ;
-            txt+=hotspottxt;
-            txt+='    </li>\n';
-            //~hot spot
-
-            txt +='  </ul>\n' +
-                '</div>' +
-                '</td>';
             //~annotation column end
 
             (_includes(self.TH[self.NODE], 'chrnNo'))? (txt+='<td align="center"><span class="font-msmall">' + v.chrnNo + '</span></td>') : '';
@@ -816,6 +826,10 @@ function PatientViewMutationTable() {
         //console.log(txt);
         var targetdiv = self.NODE+"_con";
         //console.log('targetdiv ',targetdiv);
+        // if(self.NODE==='EXPRESSION'){
+        //     console.log('self.NODE', self.TH[self.NODE]);
+        //     console.log(txt);
+        // }
         $("#"+targetdiv).html(txt);
         if(MODE===2)showAnnotation();
     }
@@ -826,7 +840,7 @@ function PatientViewMutationTable() {
         $(".pull-left").remove();
 
         for(var i=0;i<self.NODES.length;i++) {
-            if(self.TABLE[self.NODES[i]].length<1)continue;
+            if(self.TABLE[self.NODES[i]].length<1 || self.NODES[i] === 'EXPRESSION')continue;
             self.NODE = self.NODES[i];
             var dataset = self.TABLE[self.NODES[i]];
             for(var j=0;j<dataset.length;j++){

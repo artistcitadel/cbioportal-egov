@@ -10,8 +10,10 @@ import com.reactkorea.patient.vo.Blood;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reactkorea.Result;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +55,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value="/patient")
 public class PatientController {
 
-private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
+//private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LogManager.getLogger("com.reactkorea");
+
+//private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
 
 	@Autowired
 	private PatientsInfoServiceImpl patientsInfoService;
@@ -87,6 +92,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 														@RequestParam(value="pages",defaultValue="1") String pages,
 														@RequestParam(value="patients",defaultValue="") String patients,
 														@RequestParam(value="patientId",defaultValue="") String patientId){
+		logger.info("\n### patientMain...");
 		model.addAttribute("QUERY", QUERY);
 		model.addAttribute("RESCH_PAT_ID", RESCH_PAT_ID);
 		return "/patient/patientView";
@@ -145,7 +151,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	@ResponseBody
 	@RequestMapping(value="/selectPatientz")
 	public void fetchPatients(HttpServletResponse response, @RequestBody Map<String,String> param){
-		logger.debug("/selectPatientz");
+		logger.info("/selectPatientz");
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 
 		try{
@@ -157,7 +163,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 			Result<List> ar = patientsInfoService.fetchPatients(queryid, param);
 			String jdata = "";
 			jdata = mapper.writeValueAsString(ar.getData());
-			logger.debug(" result is " + jdata);
+//			logger.info(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(jdata);
@@ -175,7 +181,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	@ResponseBody
 	@RequestMapping(value="/selectList")
 	public void fetch(HttpServletResponse response, @RequestBody Patient vo){
-		logger.debug("/selectList");
+		logger.info("/selectList");
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 
 		try{
@@ -183,7 +189,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 			Result<List<Patient>> ar = patientService.fetch(vo.getQueryId(), vo);
 			String jdata = "";
 			jdata = mapper.writeValueAsString(ar.getData());
-			logger.debug(" result is " + jdata);
+			logger.info(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(jdata);
@@ -202,7 +208,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	@ResponseBody
 	@RequestMapping(value="/selectEventList")
 	public void fetchEvent(HttpServletResponse response, @RequestBody Event vo){
-		logger.debug("/selectEventList");
+		logger.info("/selectEventList");
 		Map<Object,Object> resultMap = new HashMap<Object,Object>();
 
 		try{
@@ -210,7 +216,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 			Result<List<Patient>> ar = eventService.fetch(vo.getQueryId(), vo);
 			String jdata = "";
 			jdata = mapper.writeValueAsString(ar.getData());
-			logger.debug(" result is " + jdata);
+//			logger.info(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(jdata);
@@ -228,13 +234,13 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 	@ResponseBody
 	@RequestMapping(value="/selectPatientMuList")
 	public void selectPatientMuList(HttpServletResponse response, @RequestBody PatientMut vo){
-		logger.debug("/selectPatientMuList called ");
+		logger.info("/selectPatientMuList called ");
 		try{
 			ObjectMapper mapper = new ObjectMapper();
 			Result<List<PatientMut>> ar = patientMutService.fetch(vo.getQueryId(), vo);
 			String jdata = "";
 			jdata = mapper.writeValueAsString(ar.getData());
-			logger.debug(" result is " + jdata);
+//			logger.info(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(jdata);
@@ -262,7 +268,7 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 			String jdata = "";
 //			jdata = "success : "+ result;
 			jdata = mapper.writeValueAsString(result);
-			logger.debug(" result is " + jdata);
+//			logger.info(" result is " + jdata);
 			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(jdata);

@@ -152,12 +152,28 @@ function ThumbnailExpandVAFPlot() {
             var temp=[];
             for (var i = 0; i < mergedMutations.length; i++) {
                 mutation = mergedMutations[i];
-                // console.log("ThumbnailExpandVAFPlot computeMutationFrequencyBySample", mutation);
+                console.log("ThumbnailExpandVAFPlot computeMutationFrequencyBySample", mutation);
                 var tumorSeq = $.trim(mutation.geneExamSpcnSeq);   // tumoreseq
+                tumorSeq = value;
+                // (tumorSeq.indexOf(',') === -1) ?
+                //     tumorSeq = "1" :
+                //     (
+                //         _.forEach(examSeq.split(","), function (v) {
+                //             spcnSeq.push($.trim(v))
+                //         })
+                //     )
+
                 var tumorRefCount = parseInt(mutation.refAlleleReadCnt);   // tumorRefCount
                 var tumorAltCount = parseInt(mutation.variAlleleReadCnt);  // tumorAltCount
                 var seq = $.trim(value);
 
+                if(isNaN(tumorRefCount))tumorRefCount=0;
+                if(isNaN(tumorAltCount))tumorAltCount=0;
+                console.log('seq',seq);
+                console.log('tumorSeq',tumorSeq);
+                console.log('tumorSeq.indexOf(seq)',tumorSeq.indexOf(seq));
+                console.log('tumorAltCount',tumorAltCount);
+                console.log('tumorRefCount',tumorRefCount);
                 if (tumorSeq.indexOf(seq) !=-1 && tumorAltCount >= 0 && tumorRefCount >= 0) {
                     freq = tumorAltCount / (tumorRefCount + tumorAltCount);
                     temp.push(freq);
@@ -192,9 +208,9 @@ function ThumbnailExpandVAFPlot() {
             }
         });
 
-       // console.log('computeMutationFrequencyBySample', ret);
+        // console.log('computeMutationFrequencyBySample', ret);
        // return ret;
-       //  console.log('freq data',ret);
+         console.log('freq data',ret);
         var options={};
         var props = {};
         props.colors = colors;

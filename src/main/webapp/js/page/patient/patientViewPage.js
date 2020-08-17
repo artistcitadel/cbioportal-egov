@@ -13,7 +13,7 @@ function PatientView(){
 
     function setPatientDescription(json){
         console.log('setPatientDescription', json);
-        if(json.length<1){$("#patientage").html('홍길동');return;}
+        if(json.length<1){$("#patientage").html('101010101'+document.pform.pages.value+' Male');return;}
         // console.log('patientDesc ', json);
         var biocondition = json[0].deathYn === 'Y' ? 'survival' :'decease';
         var sex = json[0].sex === 'M' ? 'Male' :'Female';

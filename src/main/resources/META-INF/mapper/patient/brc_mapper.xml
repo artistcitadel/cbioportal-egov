@@ -27,6 +27,6 @@ FROM pmsdev.SATSMBASE a
 -- JOIN pmsdev.ZZANMUSER aa on a.OPSR_EMPNO =aa.USR_ID
 WHERE 1=1
 AND a.RESCH_PAT_ID != #{patientId}
-limit 1300
+limit 1000
     </select>
 </mapper>

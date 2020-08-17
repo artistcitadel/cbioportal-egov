@@ -394,6 +394,7 @@ function TimeLine() {
                 else {
                     // console.log('temp_name.length ',temp_name.length);
                     item = {};
+                    // console.log('p[0]',p['0']);
                     item.axis = p['0'].axis;
                     item.count = p['0'].count;
                     if(temp_name.length>1) {

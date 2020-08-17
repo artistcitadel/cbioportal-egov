@@ -7,17 +7,26 @@
 <mapper namespace="patient">
     <select id="selectPathologyList" resultType="com.reactkorea.patient.vo.Pathology">
         -- PATHOLOGY_EXAM
-        select 'PATHOLOGY_EXAM' subject,
+--         select 'PATHOLOGY_EXAM' subject,
+--                a.GENE_EXAM_MTH_NM id,
+--                a.GENE_EXAM_MTH_NM name,
+--                b.ORDR_DIRECT_DT time,
+--                a.EXAM_CD examCd, -- 검사코드,
+--                a.EXAM_KOR_NM examKorNm -- 검사명
+--         from pmsdev.PMGEMEMTH a
+--         join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
+--         WHERE a.GENE_EXAM_MTH_NM != ''
+select 'PATHOLOGY_EXAM' subject,
                a.GENE_EXAM_MTH_NM id,
                a.GENE_EXAM_MTH_NM name,
-               b.ORDR_DIRECT_DT time,
+               a.ORDR_DIRECT_DT time,
                a.EXAM_CD examCd, -- 검사코드,
                a.EXAM_KOR_NM examKorNm -- 검사명
         from pmsdev.PMGEMEMTH a
-        join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
-        WHERE a.GENE_EXAM_MTH_NM != ''
-          and b.RESCH_PAT_ID != #{patientId}
-limit 1500
+       -- join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
+       -- WHERE a.GENE_EXAM_MTH_NM != ''
+
+limit 1000
     </select>
 
     <select id="selectPathHrc" resultType="com.reactkorea.patient.vo.Pathology">

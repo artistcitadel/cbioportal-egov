@@ -18,6 +18,6 @@
 from pmsdev.SSSPMPSCN a -- 병리검체의뢰기본
 join pmsdev.SSSPMORDR b on a.ORDR_NO = b.ORDR_NO and a.EXAM_SN = b.EXAM_SN
 where b.RESCH_PAT_ID != #{patientId}
-limit 500
+limit 1000
     </select>
 </mapper>

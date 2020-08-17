@@ -231,6 +231,32 @@ function Action() {
             }
         });
     }
+    self.selectPatientMuList1 = function (props,arg) {
+        console.log(props.data.url);
+        $.getJSON(props.data.url, function(data ) {
+            props.callback(data,arg);
+        });
+
+        // $.ajax({
+        //     type: "get",
+        //     /*headers: {
+        //         Authorization: apiKey
+        //     },*/
+        //     dataType: "json",
+        //     cache: false,
+        //     url: props.data.url,
+        //     contentType: "application/json",
+        //     data: JSON.stringify(props.data),
+        //     callback: props.disposer,
+        //     //timeout: 10000,
+        //     success: function (json) {
+        //         props.callback(json, arg);
+        //     },
+        //     error: function (request, status, error) {
+        //         console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        //     }
+        // });
+    }
 
     self.regBrc = function (props){
         console.log(props.data);

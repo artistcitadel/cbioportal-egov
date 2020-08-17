@@ -341,11 +341,15 @@ function GenomicOverview() {
 
     var getCnaPixelMap = function(p,row) {
         row-=0.5;
-        // console.log('getCnaPixelMap called');
+        console.log('getCnaPixelMap called');
         var cnaObj = self.cnaObjData;
         // console.log('cnaObj ', cnaObj);
 
         var spcnSeq = [];
+        var cnacnt = cnaObj.length;
+        console.log('cnacnt ',cnacnt);
+        if(cnacnt>2)cnacnt=2;
+        console.log('cnacnt ',cnacnt);
         for (var i = 0; i < cnaObj.length; i++) {
             var examSeq = cnaObj[i].geneExamSpcnSeq;
             (examSeq.indexOf(',') === -1) ?
@@ -357,14 +361,15 @@ function GenomicOverview() {
                 )
         }
         var spcnSeq1 = _.uniq(spcnSeq);
-         // console.log('CNA spcnSeq ',spcnSeq1);
+         console.log('CNA spcnSeq ',spcnSeq1);
+        // spcnSeq1 = util.spcnSeqFilter(spcnSeq1, SAMPLEID);
         // spcnSeq1 = util.spcnSeqFilter(spcnSeq1, SAMPLEID);
 
          // MERGEDSEQ = MERGEDSEQ.concat(spcnSeq1);
          MERGEDMUTATION = MERGEDMUTATION.concat(cnaObj);
 
         _.forEach(spcnSeq1, function (v) {
-            //console.log(' vis ', v);
+            // console.log(' vis ', v);
             var pixelMap = [];
             var len = 0;
             var genomeMeasured = 0;
@@ -423,7 +428,15 @@ function GenomicOverview() {
         len=0;
         });
 
-        getStPixelMap(p, row);// st,
+        // getStPixelMap(p, row);// st,
+        if(MERGEDMUTATION.length>0){
+            // MERGEDSEQ = _.uniq(MERGEDSEQ);
+            // console.log('MERGEDSEQ ',MERGEDSEQ);
+            // console.log('SAMPLES ',SAMPLES);
+            // console.log('MERGEDMUTATION ',MERGEDMUTATION);
+            var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
+            thumbnailExpandVAFPlot.init(SAMPLES, MERGEDMUTATION);
+        }
     }
 
     var getStPixelMap = function(p,row) {
@@ -488,6 +501,7 @@ function GenomicOverview() {
         if(MERGEDMUTATION.length>0){
           // MERGEDSEQ = _.uniq(MERGEDSEQ);
             // console.log('MERGEDSEQ ',MERGEDSEQ);
+            // console.log('SAMPLES ',SAMPLES);
             // console.log('MERGEDMUTATION ',MERGEDMUTATION);
           var thumbnailExpandVAFPlot = new ThumbnailExpandVAFPlot();
           thumbnailExpandVAFPlot.init(SAMPLES, MERGEDMUTATION);

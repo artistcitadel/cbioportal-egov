@@ -25,6 +25,6 @@
         <![CDATA[
     and CAST(a.OP_DT AS UNSIGNED) > 19900101
     ]]>
-limit 1500
+limit 1000
     </select>
 </mapper>

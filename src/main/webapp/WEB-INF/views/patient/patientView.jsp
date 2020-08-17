@@ -169,7 +169,7 @@
                         <div class="col-xs-3 col text-align-right">
                             <label class="label-default" style="width: auto;text-align: right; margin-right: 10px; margin-top: 7px;" id="dhead"></label>
                             <input id="xgrid" type="button" value="Grid on" class="btn btn-sm btn-success ttt" style="display:none;">
-                            <input id="reset" type="button" value="Reset" class="btn btn-sm btn-default ttt" style="display:none;margin-right:3px;">
+                            <input id="reset" type="button" value="Reset" class="btn btn-sm btn-default ttt" style="display:none;margin-right:3px;float:right">
                             <%--<label style="width: 50px; text-align: right; margin-right: 10px; margin-top: 7px;">Zoom</label>--%>
                             <%--<input id="zoomin" type="button" value="+">--%>
                             <%--<input id="zoomout" type="button" value="-">--%>
@@ -287,7 +287,7 @@
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
                                 </button>
-                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" style="height:36px">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle dropdown</span>
                                 </button>
@@ -372,7 +372,7 @@
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
                                 </button>
-                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" style="height:36px">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle dropdown</span>
                                 </button>
@@ -433,7 +433,7 @@
                                 <button class="btn btn-success" type="button" style="width:auto;">
                                     Columns
                                 </button>
-                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" style="height:36px">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle dropdown</span>
                                 </button>
@@ -486,7 +486,7 @@
                                     <button class="btn btn-success" type="button" style="width:auto;">
                                         Columns
                                     </button>
-                                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown">
+                                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" style="height:36px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle dropdown</span>
                                     </button>
