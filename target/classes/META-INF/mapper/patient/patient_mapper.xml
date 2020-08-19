@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patient">
+
+    <select id="selectPatientCategory" resultType="com.reactkorea.patient.vo.Patient">
+        SELECT
+        '1' checked,
+        ITEM_ID id,
+        ITEM_NM name,
+        ITEM_CATE_ID pid
+        FROM
+             pmsportal.CC_ITEM_MGMT
+        WHERE PROGRM_ID = 'PATIENT_TIME'
+        AND length(ITEM_ID)>0
+        UNION
+        SELECT
+                '1' checked,
+               ITEM_CATE_ID id,
+               ITEM_CATE_ID name,
+                '0' pid
+        FROM
+             pmsportal.CC_ITEM_MGMT
+        WHERE PROGRM_ID = 'PATIENT_TIME'
+    </select>
+
+    <select id="selectPatientMutCol" resultType="com.reactkorea.patient.vo.Patient">
+        SELECT DISTINCT ITEM_CATE_ID subject, ITEM_ID id , ITEM_NM name FROM pmsportal.CC_ITEM_MGMT
+        WHERE PROGRM_ID = 'PATIENT_MUTATION' AND LENGTH(ITEM_ID)>0 AND DEFAULT_YN = 'Y'
+        ORDER BY 1
+    </select>
+
+    <select id="selectPatientDescription" resultType="com.reactkorea.patient.vo.Patient">
+        SELECT m.RESCH_PAT_ID patientId,
+        IFNULL((select AGE from WPPIMINFO where RESCH_PAT_ID = m.RESCH_PAT_ID LIMIT 1),'') age,
+        IFNULL((select SEX_CD from WPPIMINFO where RESCH_PAT_ID = m.RESCH_PAT_ID LIMIT 1),'') sex,
+        IFNULL( m.ONCOTREE_CD, '')  cancerType,
+        IFNULL( m.PRMR_ORGAN_CD , '') cancerTypeDetail,
+        IFNULL( m.MRPH_DIAG_CD, '') cancerMode
+         from pmsdev.MSMAMCAMN m
+         where m.RESCH_PAT_ID = #{patientId}
+
+ 	</select>
+
+    <select id="selectPatientzz" parameterType="map" resultType="hashmap">
+          ${query}
+    </select>
+
+    <insert id="insertBrc" parameterType="com.reactkorea.patient.vo.Blood">
+          INSERT INTO pmsportal.CC_RSCH_BRC
+                (PER_CODE, RESCH_PAT_ID, EXAM_NO, SPCN_TYP_CD, SPCN_RSD_QT)
+          values( #{perCode}, #{patientId}, #{examNo}, #{spcnTypCd}, #{spcnRsdQt} )
+    </insert>
+
+</mapper>
+
+

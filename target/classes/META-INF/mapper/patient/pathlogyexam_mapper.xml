@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="patient">
+    <select id="selectPathologyList" resultType="com.reactkorea.patient.vo.Pathology">
+        -- PATHOLOGY_EXAM
+--         select 'PATHOLOGY_EXAM' subject,
+--                a.GENE_EXAM_MTH_NM id,
+--                a.GENE_EXAM_MTH_NM name,
+--                b.ORDR_DIRECT_DT time,
+--                a.EXAM_CD examCd, -- 검사코드,
+--                a.EXAM_KOR_NM examKorNm -- 검사명
+--         from pmsdev.PMGEMEMTH a
+--         join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
+--         WHERE a.GENE_EXAM_MTH_NM != ''
+select 'PATHOLOGY_EXAM' subject,
+               a.GENE_EXAM_MTH_NM id,
+               a.GENE_EXAM_MTH_NM name,
+               a.ORDR_DIRECT_DT time,
+               a.EXAM_CD examCd, -- 검사코드,
+               a.EXAM_KOR_NM examKorNm -- 검사명
+        from pmsdev.PMGEMEMTH a
+       -- join pmsdev.SSPJMPEJP b on a.EXAM_CD = b.EXAM_CD
+       -- WHERE a.GENE_EXAM_MTH_NM != ''
+
+limit 1000
+    </select>
+
+    <select id="selectPathHrc" resultType="com.reactkorea.patient.vo.Pathology">
+      SELECT
+      'PATHOLOGY_EXAM' subject,
+      GENE_EXAM_MTH_NM id,
+      GENE_EXAM_MTH_NM name
+      from PMGEMEMTH
+      WHERE LENGTH(GENE_EXAM_MTH_NM)>0 GROUP BY GENE_EXAM_MTH_NM
+    </select>
+    <select id="selectPathList1" resultType="com.reactkorea.patient.vo.Pathology">
+      SELECT DISTINCT
+       'PATHOLOGY_EXAM' subject,
+       b.GENE_EXAM_MTH_NM pid,
+       b.EXAM_CD id,
+       b.EXAM_ENG_NM name,
+       a.ORDR_DIRECT_DT time
+       from pmsdev.OOODMEXAM a join pmsdev.PMGEMEMTH b on a.ORDR_CD = b.EXAM_CD
+       WHERE b.GENE_EXAM_MTH_NM != ''
+       AND a.RESCH_PAT_ID != #{patientId}
+        <if test="inParam != null and inParam != ''">
+            AND b.GENE_EXAM_MTH_NM IN( #{inParam} )
+        </if>
+
+    </select>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd ">
+
+	<context:annotation-config/>
+	<context:component-scan base-package="com.reactkorea"/>
+
+	<bean id="jdbcProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:reactkorea.properties" />
+	</bean>
+
+
+	<!--<context:component-scan base-package="com.asan"/>-->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
+		<property name="configLocation"  value="classpath:/configuration/mybatis-config.xml" />
+		<property name="typeAliasesPackage" value="com.reactkorea"/>
+	</bean>
+	<!--<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${DB_LOG4JDBC_DRIVER}"/>
+		<property name="url" value="${DB_LOG4JDBC_URL}" />
+		<property name="username" value="${DB_COMMON_USER_ID}"/>
+		<property name="password" value="${DB_COMMON_USER_PWD}"/>
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+	<!--<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">-->
+		<!--<constructor-arg ref="dataSourceSpied" />-->
+		<!--<property name="logFormatter">-->
+			<!--<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">-->
+				<!--<property name="loggingType" value="MULTI_LINE" />-->
+				<!--<property name="sqlPrefix" value=""/>-->
+			<!--</bean>-->
+		<!--</property>-->
+	<!--</bean>-->
+	<!-- ###################################################-->
+	<!-- DATASOURCE START									-->
+	<!-- ###################################################-->
+	<bean id="dataSource-common" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${DB_COMMON_DRIVER}"/>
+		<property name="url" value="${DB_COMMON_URL}"/>
+		<property name="username" value="${DB_COMMON_USER_ID}"/>
+		<property name="password" value="${DB_COMMON_USER_PWD}"/>
+
+		<!-- validation check -->
+		<property name="validationQuery" value="select 1"/>
+		<property name="testWhileIdle" value="true"/>
+		<property name="timeBetweenEvictionRunsMillis" value="7200000"/>
+
+	</bean>
+
+	<!-- ###################################################-->
+	<!-- DATASOURCE LOG START									-->
+	<!-- ###################################################-->
+	<!--  <bean id="dataSource-common-log" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+          <constructor-arg ref="dataSource-common" />
+          <property name="logFormatter">
+              <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                  <property name="loggingType" value="MULTI_LINE" />
+                  <property name="sqlPrefix" value="SQL         :  "/>
+              </bean>
+          </property>
+      </bean>
+     -->
+
+
+
+	<!-- ###################################################-->
+	<!-- SESSION FACTORY START								-->
+	<!-- ###################################################-->
+
+	<bean id="sqlSessionFactory-common" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource-common" />
+		<!-- <property name="configLocation" value="classpath:/META-INF/sqlmap/config/sql-mapper-config.xml" /> -->
+		<property name="mapperLocations" value="classpath:/META-INF/mapper/**/*.xml" />
+	</bean>
+
+	<bean id="sqlSession-common" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory-common"/>
+	</bean>
+
+</beans>
